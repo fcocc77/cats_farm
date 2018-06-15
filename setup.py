@@ -32,8 +32,6 @@ def compile_ ( project ):
 
 	print "Compiling " + dirname + "..."
 
-
-
 	if platform == "win32":
 		exe = dirname + "/" + basename + ".exe"
 
@@ -43,8 +41,6 @@ def compile_ ( project ):
 		os.system( "set path=" + os.path.dirname( make ) + "; && cd " + dirname + " && " + make + " > %temp%/null")
 
 		shutil.move( exe, linuxInstall + "/bin/win/" + basename + ".exe" )
-
-
 
 	else:
 		exe = dirname + "/" + basename
@@ -61,13 +57,13 @@ def compile_ ( project ):
 def compiler_install():
 	if platform == "win32":
 		if not os.path.isdir( "C:/Qt" ):
-			zf = ZipFile( path + "/qt5/win/Qt5.7.1.zip", "r" )
+			zf = ZipFile( path + "/qt/win/Qt5.7.1.zip", "r" )
 			zf.extractall( "C:/" )
 
 	if platform == "linux2":
 		if not os.path.isdir( "/opt/Qt5.7.1" ):
 			# untar QT5
-			tar = tarfile.open( path + "/qt5/linux/Qt5.7.1.tar.gz" )
+			tar = tarfile.open( path + "/qt/linux/Qt5.7.1.tar.gz" )
 			for i in tar:
 				tar.extract(i, path = "/opt")
 			tar.close()
@@ -75,11 +71,10 @@ def compiler_install():
 
 		# install rpms nesesarios
 		rpms = ""
-		for rpm in os.listdir( path + "/qt5/linux/libs" ):
-			rpms +=  path + "/qt5/linux/libs/" + rpm + " "
+		for rpm in os.listdir( path + "/qt/linux/libs" ):
+			rpms +=  path + "/qt/linux/libs/" + rpm + " "
 		os.system( "yum -y install " + rpms + " &> /dev/null" )
 		#----------------------
-
 
 def sublime_build():
 	if platform == "win32": 
@@ -132,13 +127,13 @@ def linux_install():
 	os.system( "service cserver start ")
 
 def linux_uninstall():
-	
+
 	os.system( "service cserver stop ")
 	cserver =  "/etc/init.d/cserver"
 	if os.path.isfile(cserver): os.remove( cserver )
 
 	if os.path.isdir(linuxInstall): shutil.rmtree(linuxInstall)
-	
+
 	desktop = "/usr/share/applications/CatsFarm.desktop"
 	if os.path.isfile(desktop): os.remove(desktop)
 
@@ -156,7 +151,7 @@ def windows_install():
 	copydir( path + "/sound", windowsInstall + "/sound" )
 	copydir( path + "/theme", windowsInstall + "/theme" )
 	#-----------------------------------------------------
-	
+
 	compile_( "CatsFarm-Monitor", windowsInstall + "/code/monitor/main.cpp",  windowsInstall + "/icons/monitor.ico" )
 	compile_( "CatsFarm-Manager", windowsInstall + "/code/manager/main.cpp",  windowsInstall + "/icons/manager.ico" )
 	compile_( "CatsFarm-Server", windowsInstall + "/code/server/main.cpp",  windowsInstall + "/icons/server.ico" )
