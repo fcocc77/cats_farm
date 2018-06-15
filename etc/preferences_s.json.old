@@ -1,0 +1,74 @@
+{
+    "groups": [
+        "Noice"
+    ],
+    "paths": {
+        "cinema": [
+            "C:/Program Files/MAXON/Cinema 4D R19/CINEMA 4D.exe",
+            "/usr/local/Applications/MAXON/CINEMA 4D R19/CINEMA 4D.app/Contents/MacOS/CINEMA 4D",
+            "/Applications/MAXON/CINEMA 4D R19/CINEMA 4D.app/Contents/MacOS/CINEMA 4D",
+            "",
+            "",
+            ""
+        ],
+        "fusion": [
+            "/opt/BlackmagicDesign/Fusion9/Fusion",
+            "C:/Program Files/Blackmagic Design/Fusion 9/Fusion.exe",
+            "",
+            ""
+        ],
+        "houdini": [
+            "/opt/hfs16.0.736/bin/hython",
+            "C:/Program Files/Side Effects Software/Houdini 16.0.736/bin/hython.exe",
+            "/usr/local/Applications/Houdini/Houdini16.0.736/Frameworks/Houdini.framework/Versions/16.0.736/Resources/bin/hython",
+            "/usr/local/Applications/Houdini/Houdini16.0.557/Frameworks/Houdini.framework/Versions/16.0.557/Resources/bin/hython",
+            "/Applications/Houdini/Houdini16.0.736/Frameworks/Houdini.framework/Versions/16.0.736/Resources/bin/hython",
+            "",
+            ""
+        ],
+        "maya": [
+            "/usr/autodesk/maya2017/bin/Render",
+            "C:/Program Files/Autodesk/Maya2017/bin/Render.exe",
+            "/usr/local/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render",
+            "/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render",
+            "",
+            ""
+        ],
+        "noice": [
+            "/opt/solidangle/mtoa/bin/noice",
+            "C:/Program Files/solidangle/mtoa/bin/noice.exe",
+            "",
+            ""
+        ],
+        "nuke": [
+            "/usr/local/Nuke10.5v4/Nuke10.5",
+            "/usr/local/Nuke9.0v9/Nuke9.0",
+            "C:/Program Files/Nuke9.0v9/Nuke9.0.exe",
+            "C:/Program Files/Nuke10.0v4/Nuke10.0.exe",
+            "C:/Program Files/Nuke10.5v4/Nuke10.5.exe",
+            "/usr/local/Applications/Nuke10.5v4/Nuke10.5v4.app/Contents/MacOS/Nuke10.5v4",
+            "/usr/local/Applications/Nuke9.0v9/Nuke9.0v9.app/Contents/MacOS/Nuke9.0v9",
+            "/Applications/Nuke10.5v4/Nuke10.5v4.app/Contents/MacOS/Nuke10.5v4",
+            "/Applications/Nuke9.0v9/Nuke9.0v9.app/Contents/MacOS/Nuke9.0v9",
+            "",
+            "",
+            ""
+        ],
+        "system": [
+            "/mnt/server_01",
+            "/media/server_01",
+            "//192.168.10.45/server_01",
+            "/Volumes/server_01",
+            "/Volumes/server_01-1",
+            "//VBOXSVR/server_01",
+            "Z:",
+            "W:",
+            "",
+            ""
+        ]
+    },
+    "servers": [
+        "jumpcats-001",
+        "server1"
+    ]
+}

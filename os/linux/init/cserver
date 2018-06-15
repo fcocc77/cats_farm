@@ -1,0 +1,51 @@
+#!/bin/bash
+. /etc/init.d/functions
+
+pid_file='/opt/Cats-Farm/os/linux/init/serverPID'
+
+start() {
+
+	pid=$(cat $pid_file)
+
+	if ! kill -0 $pid > /dev/null 2>&1; then
+		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/Cats-Farm/bin/linux' && ./server & echo $! > $pid_file
+	else
+		echo "CatsFarm Server is running now."
+	fi
+
+}
+
+stop() {
+	cpid=$(cat $pid_file)
+	ppid=$(pgrep -P $cpid)
+
+	if kill -0 $cpid > /dev/null 2>&1; then
+		kill $ppid
+		kill $cpid
+		echo "CatsFarm Server has stopped."
+	else
+		echo "Is not running."
+	fi
+
+}
+
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	status)
+		status cserver
+	;;
+	restart|reload|condrestart)
+		stop
+		start
+	;;
+	*)
+	echo $"Usage: $0 {start|stop|restart|reload|status}"
+	exit 1
+esac
+
+exit 0

@@ -1,0 +1,23 @@
+get_manager_info::updateServer: loop
+get_manager_info::updateGroup: loop
+tcp_client::client: _send.dump()
+tcp_client::client: sending size packet.
+tcp_client::client: waitForReadyRead.
+tcp_client::client: sending packet.
+tcp_client::client: recieve size packet.
+tcp_client::client: send if is loop.
+tcp_client::client: recive.
+tcp_client::client: parse received packet.
+get_manager_info::updateJob: loop
+get_manager_info::updateServer: loop
+get_manager_info::updateGroup: loop
+tcp_client::client: _send.dump()
+tcp_client::client: sending size packet.
+tcp_client::client: waitForReadyRead.
+tcp_client::client: sending packet.
+tcp_client::client: recieve size packet.
+tcp_client::client: send if is loop.
+tcp_client::client: recive.
+tcp_client::client: parse received packet.
+tcp_client::client: _send.dump()
+tcp_client::client: sending size packet.

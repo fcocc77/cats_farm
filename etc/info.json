@@ -1,0 +1,500 @@
+{
+    "groups": {
+        "AllServer": {
+            "activeMachine": 1,
+            "name": "AllServer",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        },
+        "Cinema": {
+            "activeMachine": 1,
+            "name": "Cinema",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        },
+        "Fusion": {
+            "activeMachine": 1,
+            "name": "Fusion",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        },
+        "Hola": {
+            "activeMachine": 1,
+            "name": "Hola",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        },
+        "Houdini": {
+            "activeMachine": 1,
+            "name": "Houdini",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        },
+        "Maya": {
+            "activeMachine": 1,
+            "name": "Maya",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        },
+        "Nuke": {
+            "activeMachine": 1,
+            "name": "Nuke",
+            "server": [
+                [
+                    "jumpcats-001",
+                    true
+                ]
+            ],
+            "status": false,
+            "totaMachine": 1
+        }
+    },
+    "jobs": {
+        "claro_turbina_v01-render_0001": {
+            "active_task": 0,
+            "comment": "Comment",
+            "estimated_time": "...",
+            "extra": " -pr 3 -sr 3 -v 0.5 -tr 0",
+            "failed_task": 0,
+            "instances": 1,
+            "name": "claro_turbina_v01-render_0001",
+            "old_p": 0,
+            "priority": 50,
+            "progres": 1,
+            "project": "//192.168.10.45/server_01/2018/claro_and_cia/shot_010/3d/maya/images/claro_turbina_v01-render_0001.exr",
+            "render": "",
+            "server": [
+                "jumpcats-001"
+            ],
+            "software": "Noice",
+            "status": "Completed",
+            "submit_finish": "tiempo",
+            "submit_start": "2018-05-17 18:50:01",
+            "suspended_task": 0,
+            "system": "Windows",
+            "task": [
+                {
+                    "first_frame": 1,
+                    "last_frame": 1,
+                    "name": "Task_001",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                }
+            ],
+            "tasks": 1,
+            "timer": "...",
+            "timer2": "...",
+            "timer_last_active": false,
+            "total_render_time": "...",
+            "vetoed_servers": [],
+            "waiting_task": 0
+        },
+        "claro_turbina_v01-render_0001_0": {
+            "active_task": 0,
+            "comment": "Comment",
+            "estimated_time": "...",
+            "extra": " -pr 3 -sr 3 -v 0.5 -tr 0",
+            "failed_task": 0,
+            "instances": 1,
+            "name": "claro_turbina_v01-render_0001_0",
+            "old_p": 0,
+            "priority": 50,
+            "progres": 3,
+            "project": "//192.168.10.45/server_01/2018/claro_and_cia/shot_010/3d/maya/images/claro_turbina_v01-render_0001.exr",
+            "render": "",
+            "server": [
+                "jumpcats-001"
+            ],
+            "software": "Noice",
+            "status": "Completed",
+            "submit_finish": "tiempo",
+            "submit_start": "2018-05-17 18:50:23",
+            "suspended_task": 0,
+            "system": "Windows",
+            "task": [
+                {
+                    "first_frame": 1,
+                    "last_frame": 1,
+                    "name": "Task_001",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                },
+                {
+                    "first_frame": 2,
+                    "last_frame": 2,
+                    "name": "Task_002",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                },
+                {
+                    "first_frame": 3,
+                    "last_frame": 3,
+                    "name": "Task_003",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                }
+            ],
+            "tasks": 3,
+            "timer": "...",
+            "timer2": "...",
+            "timer_last_active": false,
+            "total_render_time": "...",
+            "vetoed_servers": [],
+            "waiting_task": 0
+        },
+        "claro_turbina_v01-render_0001_1": {
+            "active_task": 0,
+            "comment": "Comment",
+            "estimated_time": "...",
+            "extra": " -pr 3 -sr 3 -v 0.5 -tr 0",
+            "failed_task": 0,
+            "instances": 1,
+            "name": "claro_turbina_v01-render_0001_1",
+            "old_p": 0,
+            "priority": 50,
+            "progres": 2,
+            "project": "//192.168.10.45/server_01/2018/claro_and_cia/shot_010/3d/maya/images/claro_turbina_v01-render_0001.exr",
+            "render": "",
+            "server": [
+                "jumpcats-001"
+            ],
+            "software": "Noice",
+            "status": "Completed",
+            "submit_finish": "tiempo",
+            "submit_start": "2018-05-17 18:50:40",
+            "suspended_task": 0,
+            "system": "Windows",
+            "task": [
+                {
+                    "first_frame": 1,
+                    "last_frame": 2,
+                    "name": "Task_001",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                },
+                {
+                    "first_frame": 3,
+                    "last_frame": 3,
+                    "name": "Task_002",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                }
+            ],
+            "tasks": 2,
+            "timer": "...",
+            "timer2": "...",
+            "timer_last_active": false,
+            "total_render_time": "...",
+            "vetoed_servers": [],
+            "waiting_task": 0
+        },
+        "claro_turbina_v01-render_0001_2": {
+            "active_task": 0,
+            "comment": "Comment",
+            "estimated_time": "...",
+            "extra": " -pr 3 -sr 3 -v 0.5 -tr 0",
+            "failed_task": 0,
+            "instances": 1,
+            "name": "claro_turbina_v01-render_0001_2",
+            "old_p": 0,
+            "priority": 50,
+            "progres": 2,
+            "project": "//192.168.10.45/server_01/2018/claro_and_cia/shot_010/3d/maya/images/claro_turbina_v01-render_0001.exr",
+            "render": "",
+            "server": [
+                "jumpcats-001"
+            ],
+            "software": "Noice",
+            "status": "Completed",
+            "submit_finish": "tiempo",
+            "submit_start": "2018-05-17 18:50:50",
+            "suspended_task": 0,
+            "system": "Windows",
+            "task": [
+                {
+                    "first_frame": 1,
+                    "last_frame": 2,
+                    "name": "Task_001",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                },
+                {
+                    "first_frame": 3,
+                    "last_frame": 4,
+                    "name": "Task_002",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                }
+            ],
+            "tasks": 2,
+            "timer": "...",
+            "timer2": "...",
+            "timer_last_active": false,
+            "total_render_time": "...",
+            "vetoed_servers": [],
+            "waiting_task": 0
+        },
+        "claro_turbina_v01-render_0001_3": {
+            "active_task": 0,
+            "comment": "Comment",
+            "estimated_time": "...",
+            "extra": " -pr 3 -sr 3 -v 0.5 -tr 0",
+            "failed_task": 0,
+            "instances": 1,
+            "name": "claro_turbina_v01-render_0001_3",
+            "old_p": 0,
+            "priority": 50,
+            "progres": 2,
+            "project": "//192.168.10.45/server_01/2018/claro_and_cia/shot_010/3d/maya/images/claro_turbina_v01-render_0001.exr",
+            "render": "",
+            "server": [
+                "jumpcats-001"
+            ],
+            "software": "Noice",
+            "status": "Completed",
+            "submit_finish": "tiempo",
+            "submit_start": "2018-05-17 18:53:09",
+            "suspended_task": 0,
+            "system": "Windows",
+            "task": [
+                {
+                    "first_frame": 1,
+                    "last_frame": 2,
+                    "name": "Task_001",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                },
+                {
+                    "first_frame": 3,
+                    "last_frame": 4,
+                    "name": "Task_002",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                }
+            ],
+            "tasks": 2,
+            "timer": "...",
+            "timer2": "...",
+            "timer_last_active": false,
+            "total_render_time": "...",
+            "vetoed_servers": [],
+            "waiting_task": 0
+        },
+        "claro_turbina_v01-render_0001_4": {
+            "active_task": 0,
+            "comment": "Comment",
+            "estimated_time": "...",
+            "extra": " -pr 3 -sr 3 -v 0.5 -tr 0",
+            "failed_task": 0,
+            "instances": 1,
+            "name": "claro_turbina_v01-render_0001_4",
+            "old_p": 0,
+            "priority": 50,
+            "progres": 2,
+            "project": "//192.168.10.45/server_01/2018/claro_and_cia/shot_010/3d/maya/images/claro_turbina_v01-render_0001.exr",
+            "render": "",
+            "server": [
+                "jumpcats-001"
+            ],
+            "software": "Noice",
+            "status": "Completed",
+            "submit_finish": "tiempo",
+            "submit_start": "2018-05-17 18:54:27",
+            "suspended_task": 0,
+            "system": "Windows",
+            "task": [
+                {
+                    "first_frame": 1,
+                    "last_frame": 2,
+                    "name": "Task_001",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                },
+                {
+                    "first_frame": 3,
+                    "last_frame": 4,
+                    "name": "Task_002",
+                    "server": "jumpcats-001:0",
+                    "status": "finished",
+                    "time": "00:00:00"
+                }
+            ],
+            "tasks": 2,
+            "timer": "...",
+            "timer2": "...",
+            "timer_last_active": false,
+            "total_render_time": "...",
+            "vetoed_servers": [],
+            "waiting_task": 0
+        }
+    },
+    "servers": {
+        "jumpcats-001": {
+            "cpu": 16,
+            "cpu_cores": 8,
+            "host": "192.168.10.43",
+            "instances": [
+                [
+                    0,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    1,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    2,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    3,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    4,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    5,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    6,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    7,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    8,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    9,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    10,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    11,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    12,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    13,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    14,
+                    0,
+                    false,
+                    "..."
+                ],
+                [
+                    15,
+                    0,
+                    false,
+                    "..."
+                ]
+            ],
+            "log": "Noice Render.Noice Render.\n",
+            "max_instances": 1,
+            "name": "jumpcats-001",
+            "ram": 11,
+            "ram_total": 40,
+            "ram_used": 4.400000095367432,
+            "response_time": 1526597838,
+            "schedule": "0-0",
+            "schedule_state_0": true,
+            "schedule_state_1": false,
+            "sshPass": "vfx",
+            "sshUser": "root",
+            "status": "idle",
+            "system": "Windows",
+            "temp": 0,
+            "vbox": false,
+            "vmSoftware": ""
+        }
+    }
+}

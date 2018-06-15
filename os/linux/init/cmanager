@@ -1,0 +1,35 @@
+#!/bin/bash
+. /etc/init.d/functions
+
+start() {
+
+
+	'installFolder/os/linux/init/manager_run.py' start
+}
+
+stop() {
+	   
+	'installFolder/os/linux/init/manager_run.py' stop
+
+}
+
+
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	status)
+		status catsfarm_manager
+	;;
+	restart|reload|condrestart)
+		stop
+		start
+	;;
+	*)
+	echo $"Usage: $0 {start|stop|restart|reload|status}"
+	exit 1
+esac
+exit 0
