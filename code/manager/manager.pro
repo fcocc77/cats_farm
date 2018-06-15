@@ -3,7 +3,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 
 TEMPLATE = app
-TARGET = ./manager
+TARGET = ../manager
 RC_ICONS = ../../icons/manager.ico
 
 CONFIG += console c++14

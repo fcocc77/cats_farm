@@ -10,10 +10,10 @@
     "projectLine": "",
     "renderLine": "",
     "searchRadius": "3",
-    "serverBox": 1,
+    "serverBox": -1,
     "serverGroupBox": 0,
     "softwareBox": 5,
-    "suspendBox": false,
+    "suspendBox": true,
     "taskSize": "2",
     "temporalRange": "0",
     "variance": "0.5"
