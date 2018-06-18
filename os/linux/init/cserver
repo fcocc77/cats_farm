@@ -1,14 +1,14 @@
 #!/bin/bash
 . /etc/init.d/functions
 
-pid_file='/opt/Cats-Farm/os/linux/init/serverPID'
+pid_file='/opt/cats_farm/os/linux/init/serverPID'
 
 start() {
 
 	pid=$(cat $pid_file)
 
 	if ! kill -0 $pid > /dev/null 2>&1; then
-		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/Cats-Farm/bin/linux' && ./server & echo $! > $pid_file
+		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && ./server & echo $! > $pid_file
 	else
 		echo "CatsFarm Server is running now."
 	fi

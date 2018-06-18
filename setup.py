@@ -7,9 +7,9 @@ import subprocess
 path = os.path.dirname(__file__)
 
 # Rutas de Instalacion
-linuxInstall="/opt/Cats-Farm"
-windowsInstall="C:/Cats-Farm"
-macInstall="/usr/local/Cats-Farm"
+linuxInstall="/opt/cats_farm"
+windowsInstall="C:/cats_farm"
+macInstall="/usr/local/cats_farm"
 #--------------------------
 
 def copydir( src, dst ):
