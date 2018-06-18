@@ -115,3 +115,5 @@ code/monitor/release/ui_tasks_tree.o
 code/monitor/release/util.o
 code/monitor/release/video.o
 log/bugs.txt
+etc/info.json
+etc/info.json.old
