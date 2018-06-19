@@ -117,3 +117,12 @@ code/monitor/release/video.o
 log/bugs.txt
 etc/info.json
 etc/info.json.old
+code/utils/release/utils.exe
+code/utils/release/util.o
+code/utils/release/main.o
+code/utils/Makefile.Release
+code/utils/Makefile.Debug
+code/utils/.qmake.stash
+code/utils/release/video.o
+code/utils/release/os.o
+code/utils/Makefile

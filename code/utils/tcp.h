@@ -275,7 +275,15 @@ public:
 
 					json _send;
 					if ( recv_ready ) _send = { update_recv, input };
-
+					else {
+						/* Cuando el recv_ready no esta listo
+						el loop continua en la siguiente iteracion
+						por que si sigue da conflicto en el server
+						al recibir los paquetes y se queda pegado */
+						sleep(1);
+						continue;
+					}
+					
 					debug("tcp_client::client: _send.dump()");
 					try{ send = _send.dump(); }
 					catch( exception& e ){ send = ""; }
