@@ -83,7 +83,7 @@ public:
 				recv_ok = true;
 			}
 			catch( exception& e ){}
-			
+
 			if ( recv_ok ) send =  ( ( _class->*func )( _pks, _input ) ).dump();
 			else send = {};
 			//-----------------------------------------------------------
@@ -197,23 +197,16 @@ public:
 
 	void widget_update(){
 
-		/* 	Error runtime: cuando se usa una variable que todavia se esta transfiriendo
-			por eso se usan 2 bool recv_ready y send_ready:
-			-----------------------
-			File: ../utils/json.h, Line 10608
-			Expression: m_type != value_t::object or m_value.object != nullptr
-			-----------------------
-		*/
+		/* recv_ready y send_ready son para que json no de error de memoria
+		cuando se intercambian las variable entre client y client_widget */
+		*recv_ready = false;
 
 		if ( *send_ready ){ 
-
-			*recv_ready = false;
 			json _send = *update_send;
 			*update_recv = ( _class->*func )( _send );
-			*recv_ready = true; 
-			
 		}
 
+		*recv_ready = true; 
 	}
 };
 
@@ -269,12 +262,16 @@ public:
 			while ( socket->state() ){ // si el server se deconecta se rompe el loop
 
 				if ( loop ) {
+					/* recv_ready y send_ready son para que json no de error de memoria
+					cuando se intercambian las variable entre client y client_widget */
 					send_ready = false;
-					update_send = _recv;
-					send_ready = true;
 
 					json _send;
-					if ( recv_ready ) _send = { update_recv, input };
+					if ( recv_ready ) {
+						update_send = _recv;
+						_send = { update_recv, input };
+
+					}
 					else {
 						/* Cuando el recv_ready no esta listo
 						el loop continua en la siguiente iteracion
@@ -283,43 +280,39 @@ public:
 						sleep(1);
 						continue;
 					}
-					
-					debug("tcp_client::client: _send.dump()");
+
+					send_ready = true;
+
 					try{ send = _send.dump(); }
 					catch( exception& e ){ send = ""; }
 
 				}
-				debug("tcp_client::client: sending size packet.");
 				// 1 - envia tamanio de paquete
 				socket->write( to_string(send.size()).c_str() );
 				if (  not socket->error()  ) socket->waitForBytesWritten(whait); 
 				//-------------------------------------------------
-				debug("tcp_client::client: waitForReadyRead.");
+
 				//4
 				socket->waitForReadyRead(whait);
 				socket->readAll();
 
-				debug("tcp_client::client: sending packet.");
 				// 5 envia paquete
 				socket->write(send.c_str());
 				if (  not socket->error()  ) socket->waitForBytesWritten(whait);
 				//-------------------------------------
 
-				debug("tcp_client::client: recieve size packet.");
 				// 8 recive tamanio de paquete
 				int size;
 				socket->waitForReadyRead(whait);
 				size = socket->readAll().toInt();
 				//------------------------------------
 
-				debug("tcp_client::client: send if is loop.");
 				//9 envia si la accion si es en loop o no
 				if ( loop ){ socket->write("true"); }
 				else{ socket->write("false"); }
 				if (  not socket->error()  ) socket->waitForBytesWritten(whait); 
 				//-------------------------------------------------
 
-				debug("tcp_client::client: recive.");
 				// 12 recive paquete
 				recv = "";
 				int totalBytesRead = 0;
@@ -330,7 +323,7 @@ public:
 					}       
 				}
 				//----------------------------------------------------
-				debug("tcp_client::client: parse received packet.");
+
 				/* Si se desconecta el servidor, no termina la transferencia de los
 				paquete, y el json al hacer parse da un error, por eso try except.*/
 				try{ _recv = json::parse( recv.toStdString() ); }
