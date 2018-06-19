@@ -124,6 +124,9 @@ def linux_install():
 	copyfile( path + "/os/linux/link/CatsFarm.desktop" , "/usr/share/applications")
 
 	shutil.copy( linuxInstall + "/os/linux/init/cserver", "/etc/init.d/cserver")
+	# los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
+	os.system( "sed -i -e 's/\r//g' /etc/init.d/cserver") 
+	#--------------------------------------------------------------------------------
 	os.system( "service cserver start ")
 
 def linux_uninstall():
