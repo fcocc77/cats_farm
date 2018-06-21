@@ -126,3 +126,7 @@ code/utils/.qmake.stash
 code/utils/release/video.o
 code/utils/release/os.o
 code/utils/Makefile
+etc/panel.json.old
+code/utils/utils.exe
+etc/panel.json
+code/utils/main.cpp

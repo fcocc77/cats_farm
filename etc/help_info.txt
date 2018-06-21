@@ -1,0 +1,8 @@
+
+---------- Busca si el puerto esta activo y por que proceso -------
+netstat -tulpn | grep 7001
+-------------------------------------------------------------------
+
+---------- Matar proceso que se esta ensendido -----------
+	fuser -k 7001/tcp
+----------------------------------------------------------

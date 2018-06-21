@@ -34,48 +34,29 @@ json manager::recieve_monitor_thread( json recv ){
 }
 
 void manager::kill_tasks( job_struct *job, bool _delete ){
-	
+
 	//desactica servers que estaban activos por este job
-	vector <string> active_server;
+	json active_server;
 
 	for ( auto task : job->task ){
 		if ( not ( task->server == "...") ){
 			if ( task->status == "active" ){
-				active_server.push_back( task->server );
+				auto s = split( task->server, ":" );	
+				active_server[s[0]].push_back( stoi(s[1]) );				
 			}
 		}
 	}
-	
-	//active_server.push_back("z:");
 
-	vector <string>  a; 
-	string c, server_name, server_instance;
-	struct name_instance { string name; vector <string> instances; };
-	vector <name_instance> active_server_instance;
-
-	sorted( active_server );
-	
-	for ( auto server : active_server  ){
-		
-		auto s = split( server, ":");
-		server_name = s[0]; server_instance = s[1];
-		if ( a.empty() ){ c = server_name; }
-
-		if ( not ( server_name == c ) ){
-			name_instance ni = { c, a };
-			active_server_instance.push_back( ni );
-		}
-		a.push_back( server_instance );
-		c = server_name;
-
-	}
 	if ( _delete ){	
 		erase_by_name( jobs, job->name );
 	}
 
-	for ( auto s : active_server_instance ){
-		//auto server =  find_struct( servers, s.name );
-		//tcpClient( server->host, 7001, s.instances, 3 );
+	for ( auto server : servers ){
+		json ins = active_server[ server->name ];
+
+		if ( not ins.empty() ){
+			tcpClient( server->host, 7001, ins, 3 );			
+		}
 	}
 }
 
@@ -109,7 +90,7 @@ void manager::jobAction( json pks ){
 			}
         }
 
-		if ( job_action == "restart" ){					
+		if ( job_action == "restart" ){
 
 			kill_tasks( job, false );
 
@@ -130,7 +111,7 @@ void manager::jobAction( json pks ){
 				task->time = "...";
 			}
 			//-------------------------------------
-			
+
         }
 
 		resetAllServer();
@@ -144,7 +125,6 @@ json manager::jobOptions( json pks ){
 		json job_name = _job[0];
 		json options = _job[1]; 
 		json action = _job[2];
-
 
 		auto job = find_struct( jobs, job_name );
 
@@ -163,15 +143,13 @@ json manager::jobOptions( json pks ){
 			job->task_size = options[7];
 			job->name = options[8];
 
-
 			auto tasks = make_task( job->first_frame, job->last_frame, job->task_size );
 			job->task = tasks;
 			job->waiting_task = tasks.size();
 			job->tasks = tasks.size();
-			
+
 			resetAllServer();
 		}
-
 
 		if ( action == "read" ){ 
 			json _server;
@@ -185,7 +163,7 @@ json manager::jobOptions( json pks ){
 		}
 
 	}
-	
+
 	return {};
 }
 
@@ -304,7 +282,7 @@ void manager::groupAction( json pks ){
 
 	if ( group_action == "delete" ){
 		// elimina servers del grupo
-		 
+
 		for ( auto _group : group_machine ){
             auto name = _group[0], 
             server = _group[1];
@@ -406,7 +384,7 @@ json manager::preferencesAction( json pks ){
 
 	if ( pks == "read" ){
 		return  jread( "../../etc/preferences.json" );
-		
+
 	}
 	else{
 		preferences[ "paths" ] = pks;
@@ -421,9 +399,6 @@ json manager::jobLogAction( json pks ){
 	string server_name = pks;
 	auto server = find_struct( servers, server_name );
 	string result = server->log;
-
-
-
 
 	return result;
 }
