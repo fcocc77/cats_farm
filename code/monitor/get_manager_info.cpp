@@ -2,7 +2,6 @@
 
 void get_manager_info::actions(){
 	connect( jobsList, &QTreeWidget::itemClicked, this, &get_manager_info::getTask );
-
 }
 
 void get_manager_info::managerRecieve(){

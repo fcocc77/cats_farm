@@ -284,7 +284,7 @@ void group_actions::groupAddMachine(){
 	}
 
 	//-----------------------------------------------
-	
+
 	json group_machine;
 	for ( auto item : groupList->selectedItems() ){  
 		string group_name = item->text(2).toStdString();
@@ -316,7 +316,6 @@ void group_actions::groupAddMachine(){
 	json pks = { groups,"groupAction" };
 
 	tcpClient( managerHost, 7000, pks, 3 );
-	
 }
 
 void group_actions::groupDelete(){

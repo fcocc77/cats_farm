@@ -33,7 +33,6 @@ for l in f.readlines():
 			debug = True
 #------------------------------------
 
-
 remove_files = [ "Makefile", "Makefile.Debug", "Makefile.Release", ".qmake.stash", "object_script.monitor.Debug", "object_script.monitor.Release" ]
 
 if platform == "win32":

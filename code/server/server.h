@@ -20,17 +20,12 @@ using namespace nlohmann;
 #include <QObject>
 #include <QFileInfo>
 
-
-
 class server : public QObject{
 public:
 
 	string path;
 
 	server( string exe );
-
-
-
 
 	string render_task( json recv );
 	string post_software( int total_frame, string log_file, string software);
@@ -41,10 +36,6 @@ public:
 	bool vbox_working();
 	json recieveManager( json data, int input );
 
-
-	
-
-
 	vector <bool> taskKill = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 	vector <bool> renderInstance = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 	vector <int> pid = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
@@ -52,14 +43,6 @@ public:
 	json preferences;
 	const string managerHost = fread( "../../etc/manager_host" );
 
-
-
 };
-
-
-
-
-
-
 
 #endif // SERVER_H

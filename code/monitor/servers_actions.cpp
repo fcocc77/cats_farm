@@ -4,7 +4,6 @@
 
 void servers_actions::init(){
     actions();
-
 }
 
 void servers_actions::actions(){
@@ -197,7 +196,6 @@ void servers_actions::serverSSH(){
 	else cmd = "gnome-terminal -e 'sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip + "'";
 
 	os::back( cmd );
-
 }
 
 void servers_actions::serverVNC(){
@@ -229,7 +227,8 @@ void servers_actions::serverMessage( json ( servers_actions::*funtion )( string,
 	}
 }
 
-void servers_actions::serverActionMessage(){}
+void servers_actions::serverActionMessage(){
+}
 
 json servers_actions::serverAction( string action, string info ){
 

@@ -10,18 +10,16 @@
 #include <QLabel>
 //-----------
 
-
 // Utils Library
 #include "../utils/os.h"
 
 //----------
 
-
 class ui_server_options : public QDockWidget{
 public:
 
     ui_server_options();
-   
+
     void ui();
 
 	//server_option_ui
@@ -30,16 +28,5 @@ public:
 	//------------------
 
 };
-
-
-
-
-
-
-
-
-
-
-
 
 #endif //UI_SERVER_OPTIONS

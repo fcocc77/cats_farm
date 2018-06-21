@@ -1,7 +1,6 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
-
 struct task_struct{
 	string name;
 	string status;
@@ -77,7 +76,6 @@ struct server_struct{
 	string log;
 };
 
-
 struct serverFromGroupStruct{
 	string name;
 	bool status;
@@ -108,7 +106,5 @@ struct makejob_struct{
 		int instances;
 		string render;
 };
-
-
 
 #endif //STRUCT_H

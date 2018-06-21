@@ -6,8 +6,6 @@ using namespace std;
 #include "../utils/json.h"
 using namespace nlohmann;
 
-
-
 struct shared_variables{
     json server_display;
     json jobs;
@@ -15,7 +13,5 @@ struct shared_variables{
     bool stopUpdate;
 
 };
-
-
 
 #endif //SHARED_VARIABLES_H

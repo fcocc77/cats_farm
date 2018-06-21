@@ -15,7 +15,6 @@ vector <int> os::getStat(){
 
 	}
 
-
 	return cpu;
 }
 
@@ -124,7 +123,7 @@ int os::ramTotal(){
 
 	int total; 
 	static int total_ram;
-	
+
 	if ( not total_ram ){
 		if ( _linux ){
 			string mem=fread("/proc/meminfo");
@@ -142,7 +141,7 @@ int os::ramTotal(){
 
 			try{ total_ram = stoll(_ram) / 1024 / 1024 / 1024;}
 			catch(...){}
-			
+
 		}
 
 	}
@@ -293,7 +292,6 @@ void os::remove( string _file ){
 
 void os::rename( string src, string dst ){
 	std::rename( src.c_str(), dst.c_str() );
-
 }
 
 string os::dirname( string file ){
@@ -318,7 +316,6 @@ bool os::isdir( string dir ){
 	if ( os::isfile(dir) ) return false;
 	else if ( sh( cmd ).empty() ) return false;
 	else return true;
-
 }
 
 void os::kill( int pid ){
@@ -357,7 +354,6 @@ void os::kill( int pid ){
 	else if ( _win32 ){
 		sh( "Taskkill /PID " + to_string(pid) );
 	}
-
 }
 
 vector <string> os::listdir( string folder, bool onlyname ){

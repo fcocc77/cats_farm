@@ -8,25 +8,21 @@
 #include <QDebug>
 //----------
 
-
 #include <iostream>
 using namespace std;
 
 #include "ui_tasks_tree.h"
 #include "ui_jobs_tree.h"
 
-
-
 class tasks_actions : public QObject{
 public:
-    
+
     ui_jobs_tree *jobsList;
 	ui_tasks_tree *taskList;
     QMainWindow *monitor;
 
     const string managerHost = fread( "../../etc/manager_host" );
 
-    
     template < class T >
     tasks_actions( T *_monitor ){
 
@@ -34,10 +30,8 @@ public:
     	taskList = _monitor->taskList;
         jobsList = _monitor->jobsList;
 
-
     	acionts();
     }
-
 
 	// Task Action
 	QAction *taskSuspendAction = new QAction("Suspend");
@@ -53,12 +47,6 @@ public:
 
 	//-----------------
 
-
 };
-
-
-
-
-
 
 #endif //TASKS_ACTIONS_H

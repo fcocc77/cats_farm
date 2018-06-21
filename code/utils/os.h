@@ -22,7 +22,6 @@ using namespace std;
 	#include <windows.h>
 #endif
 
-
 class os{
 public:
 

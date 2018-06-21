@@ -2,7 +2,6 @@
 
 ui_job_options::ui_job_options(){
     ui();
-
 }
 
 void ui_job_options::ui(){
@@ -25,7 +24,7 @@ void ui_job_options::ui(){
 				QLabel *labelJobName = new QLabel("Job Name:");
 				labelJobName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 				labelJobName->setMinimumWidth(70);
-				
+
 				hbox1->addWidget(labelJobName);
 				hbox1->addWidget(jobName); // esta en el .h
 
@@ -44,13 +43,11 @@ void ui_job_options::ui(){
 				labelPriority->setMinimumWidth(70);
 
 				QCheckBox *priority0 = new QCheckBox("Very Low");
-				
+
 				QCheckBox *priority1 = new QCheckBox("Low");
 				QCheckBox *priority2 = new QCheckBox("Normal");
 				QCheckBox *priority3 = new QCheckBox("High");
 				QCheckBox *priority4 = new QCheckBox("Very High");
-				
-
 
 				hbox4->addWidget(labelPriority);
 				hbox4->addWidget(priority0);
@@ -65,8 +62,6 @@ void ui_job_options::ui(){
 
 			box_1_vbox->addWidget(widget4);	
 		//---------------------------------
-
-
 
 		QWidget *box_1_widget = new QWidget();
 		box_1_widget->setLayout(box_1_vbox);	
@@ -121,14 +116,14 @@ void ui_job_options::ui(){
 				QLabel *instances_label = new QLabel("Instances:");
 				instances_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 				instances_label->setMinimumWidth(70);
-				
+
 				hbox5->addWidget(instances_label);
 				hbox5->addWidget(instances);
 
 			QWidget *widget5 = new QWidget();
 			widget5->setLayout(hbox5);
 			widget5->setObjectName("style2");
-			
+
 			box_2_vbox->addWidget(widget5);	
 		//---------------------------------
 
@@ -196,12 +191,11 @@ void ui_job_options::ui(){
 
 		main_vbox->addWidget(dialog);
 
-
 	QWidget *main_widget = new QWidget();
 	main_widget->setLayout(main_vbox);
 
 	//------------------------------------------
-    
+
     dialog->setStandardButtons( QDialogButtonBox::Cancel | QDialogButtonBox::Ok );
 
 	this->setObjectName("Job Option");

@@ -1,19 +1,15 @@
 #include "manager.h"
 
-
-
-
 void manager::update_all(){
-	while(1){ 
+	while(1){
 
 		update_jobs();
 		container_save();
 		update_server();
 		update_group();
-		
+
 		sleep(1);
 	}
-
 }
 
 void manager::container_save(){
@@ -25,11 +21,7 @@ void manager::container_save(){
 	if ( sec > 10 ){
 		jwrite( "../../etc/info.json", struct_to_json() ); 
 		sec = 0;
-	} 
-
-	
-
-
+	}
 }
 
 json manager::update_server_thread( json recv ){
@@ -47,8 +39,6 @@ json manager::update_server_thread( json recv ){
 		float ram_used = recv[8];
 		int cpu_cores = recv[9];
 		string log = recv[10];
-		
-
 
 		int response_time = time(0);
 
@@ -105,9 +95,8 @@ json manager::update_server_thread( json recv ){
 
 	    }
 
-
 	}
-	
+
 	return preferences;
 }
 
@@ -194,7 +183,6 @@ bool manager::iTime( string schedule ){
 		else{ return false; }
 	}
 	//----------------------------------------------
-
 }
 
 void manager::update_group(){
@@ -211,7 +199,6 @@ void manager::update_group(){
 	//------------------------------------------------
 	json grouplist;
 
-	
     for ( auto group : groups ){
 		grouplist.push_back( group->name );
 		int totaMachine = 0, activeMachine = 0;
@@ -241,9 +228,8 @@ void manager::update_group(){
 		group->activeMachine = activeMachine;
 
     }
-	
+
 	preferences[ "groups" ] = grouplist;
-	
 }
 
 void manager::update_jobs(){
@@ -289,12 +275,10 @@ void manager::update_jobs(){
             }
 
 			timer1 = time(0) - timer1;
-			
-			
+
 			if ( job->timer2 == "..." ) timer2 = 0;
 			else timer2 = stof( job->timer2 );
 
-			
 			timer2 = timer1 + timer2;
 			job->timer2 = to_string( timer2 );
 			//--------------------------------------

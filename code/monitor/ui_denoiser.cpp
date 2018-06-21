@@ -9,7 +9,6 @@ void ui_denoiser::ui(){
 		QVBoxLayout *vbox2 = new QVBoxLayout();
 		vbox2->setContentsMargins(15,15,15,15);
 
-
 			QHBoxLayout *hbox8 = new QHBoxLayout();
 			hbox8->setContentsMargins(0,0,0,0);
 				labelFile->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
@@ -26,7 +25,7 @@ void ui_denoiser::ui(){
 
 			QHBoxLayout *hbox8_2 = new QHBoxLayout();
 			hbox8_2->setContentsMargins(0,0,0,0);
-				
+
 				QLabel *patchRadius_label = new QLabel("Patch Radius:");
 				patchRadius_label->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 				patchRadius_label->setMinimumWidth(70);
@@ -40,7 +39,7 @@ void ui_denoiser::ui(){
 
 			QHBoxLayout *hbox8_3 = new QHBoxLayout();
 			hbox8_3->setContentsMargins(0,0,0,0);
-				
+
 				QLabel *searchRadius_label = new QLabel("Search Radius:");
 				searchRadius_label->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 				searchRadius_label->setMinimumWidth(70);
@@ -54,7 +53,7 @@ void ui_denoiser::ui(){
 
 			QHBoxLayout *hbox8_4 = new QHBoxLayout();
 			hbox8_4->setContentsMargins(0,0,0,0);
-				
+
 				QLabel *variance_label = new QLabel("Variance:");
 				variance_label->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 				variance_label->setMinimumWidth(70);
@@ -68,7 +67,7 @@ void ui_denoiser::ui(){
 
 			QHBoxLayout *hbox8_5 = new QHBoxLayout();
 			hbox8_5->setContentsMargins(0,0,0,0);
-				
+
 				QLabel *temporalRange_label = new QLabel("Temporal Range:");
 				temporalRange_label->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
 				temporalRange_label->setMinimumWidth(70);
@@ -79,7 +78,6 @@ void ui_denoiser::ui(){
 			widget8_5->setLayout(hbox8_5);	
 			widget8_5->setObjectName("style2");
 			vbox2->addWidget(widget8_5);
-
 
 		QWidget *widget2 = new QWidget();
 		widget2->setLayout(vbox2);	
@@ -449,7 +447,6 @@ void ui_denoiser::submitUpdateBox( int action ){
 		if ( action ) serverGroupBox->setCurrentIndex( index );
 	}
 	//-----------------------------------------------
-
 }
 
 void ui_denoiser::submitPanelOpen(){

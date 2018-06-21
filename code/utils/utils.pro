@@ -1,10 +1,6 @@
-
-
 TEMPLATE = app
 TARGET = utils
 CONFIG += console c++14
-
-
 
 QT += core gui multimedia widgets
 

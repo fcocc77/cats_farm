@@ -1,6 +1,5 @@
 #include "submit.h"
 
-
 void submit::init( int argc, char const *argv[] ){
 
 	string arg, jobName, server, serverGroup, firstFrame, lastFrame, taskSize, priority, 
@@ -39,10 +38,8 @@ void submit::init( int argc, char const *argv[] ){
 
 	string path = os::dirname(os::dirname(os::dirname(argv[0])));
 	string managerHost = fread( path + "/etc/manager_host" );
-	
+
 	if ( argc > 2 )
 		tcpClient( managerHost, 7000, info, 0 );
-
-
 }
 

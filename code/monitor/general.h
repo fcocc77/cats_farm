@@ -67,16 +67,12 @@ public:
     // General Funcions
     void init();   
     void actions();
-
     void notifyIcon();
     void style_ui();
-
     void show_splash();
-
     void fileOpen();
     void fileOutputOpen();
     //----------------------------
-
 };
 
 #endif //GENERAL_H

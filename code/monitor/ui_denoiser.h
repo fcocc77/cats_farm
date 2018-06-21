@@ -28,7 +28,6 @@
 using namespace nlohmann;
 //----------
 
-
 class qcombobox : public QComboBox{
 Q_OBJECT
 private slots:
@@ -91,15 +90,13 @@ public:
 	QLineEdit *fileLine = new QLineEdit();
 	QLabel *outputFile = new QLabel("Output:");
 	QPushButton *fileFile = new QPushButton("Exr Sequence");
-	
-	
+
 	// parameter noice
 	QLineEdit *patchRadius = new QLineEdit();
 	QLineEdit *searchRadius = new QLineEdit();
 	QLineEdit *variance = new QLineEdit();
 	QLineEdit *temporalRange = new QLineEdit();
 	//------------------------------------
-
 
 	QLineEdit *jobName = new QLineEdit();
 	qcombobox *serverBox = new qcombobox();

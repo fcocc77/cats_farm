@@ -15,7 +15,7 @@ void manager::render_job(){
 			return cmp;} 
 	    );
 		//----------------------------------------------------------------
-		
+
 		//si el trabajo esta en cola se manda a render
 		for ( auto job : jobs ){
 			debug("manager::render_job: for job");
@@ -29,13 +29,12 @@ void manager::render_job(){
 						machinesList.push_back( s->name );
 				}				
 			}
-			
 
 			for ( auto s : job->server )
 				if ( not in_vector( s, machinesList ) ) 
 					machinesList.push_back(s);
 			//------------------------------------------------------
-			
+
 			for ( auto server : servers ){
 				debug("manager::render_job: for server");
 				bool serverOK = 0;
@@ -83,20 +82,19 @@ void manager::render_job(){
 							}
 						}
 					}
-				
+
 					if ( reset_render ) break;
 				}
-			
+
 				if ( reset_render ) break;
 			}
 
 			if ( reset_render ) break;
-			
+
 		}
-		
+
 		sleep(1);
 	}
-
 }
 
 void manager::render_task( server_struct *server, inst_struct *instance, job_struct *job ){
@@ -127,7 +125,6 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 		instance->job_task = job->name + " : " + task->name;
 		//-------------------------------------------------
 
-
 		if ( instance->reset ){ break; }
 		//----------------------------------------
 		if ( server->status == "absent" ){ break; }
@@ -147,9 +144,9 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 
 			// Envia a renderar la tarea al servidor que le corresponde
 			json pks = { project, software, instance->index, first_frame, last_frame, jobSystem, extra, render };
-			
+
 			json result =  tcpClient( server->host, 7001, pks, 0 );
-			
+
 			if ( not ( result == "ok" ) ){
 				if ( result == "kill" ){
 
@@ -164,10 +161,10 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 
 					break;
 				}
-				
+
 				else { // if failed
 					result == "failed";
-					
+
 					job->vetoed_servers.push_back( server->name );
 
 					job->failed_task = 1;
@@ -249,20 +246,20 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 				//-----------------------------------------------------
 
 				json system_path = preferences["paths"]["system"];
-				
+
 				//obtiene ruta correcta
 				string src_path, dst_path, extra;
 
 				for ( string p1 : system_path ){
 					for ( string p2 : system_path){
 						extra = replace( project, p1, p2 );
-			
+
 						if ( os::isfile( extra ) ){
 							src_path = p1;
 							dst_path = p2;
 							break;
 						}
-						
+
 					}
 
 					if ( os::isfile( extra ) ){
@@ -270,12 +267,12 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 					}
 				}
 				//--------------------------------------
-				
+
 				_dirname = replace( _dirname, src_path, dst_path );
 				if ( os::isdir( _dirname ) ){
 					concat( _dirname + "/" + _basename );
 				}
-				
+
 			}
 		}
 		//------------------------------------------------------------

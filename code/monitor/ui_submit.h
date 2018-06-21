@@ -103,15 +103,12 @@ public:
 
 	//--------------------------------------------
 
-
 	// parameter noice
 	QLineEdit *patchRadius = new QLineEdit();
 	QLineEdit *searchRadius = new QLineEdit();
 	QLineEdit *variance = new QLineEdit();
 	QLineEdit *temporalRange = new QLineEdit();
 	//------------------------------------
-
-
 
 public slots:
 	void submitSoftwareBox( int index );

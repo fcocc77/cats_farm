@@ -11,23 +11,21 @@
 #include <QCheckBox>
 //-----------
 
-
 // Utils Library
 #include "../utils/os.h"
 
 //----------
 
-
 class ui_job_options : public QDockWidget{
 public:
 
     ui_job_options();
-   
+
     void ui();
 
     //jobs
 	QLineEdit *jobName = new QLineEdit();
-	
+
 	QLineEdit *firstFrame = new QLineEdit();
 	QLineEdit *lastFrame = new QLineEdit();
 	QLineEdit *taskSize = new QLineEdit();
@@ -48,16 +46,5 @@ public:
 	//-----------------------------------------------
 
 };
-
-
-
-
-
-
-
-
-
-
-
 
 #endif //UI_JOB_OPTIONS

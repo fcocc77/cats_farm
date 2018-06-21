@@ -95,5 +95,4 @@ public:
 
 };
 
-
 #endif //GROUP_ACTIONS_H

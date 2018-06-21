@@ -1,10 +1,7 @@
 #include "ui_tasks_tree.h"
 
-
-
 ui_tasks_tree::ui_tasks_tree(){
     ui();
-
 }
 
 void ui_tasks_tree::ui(){

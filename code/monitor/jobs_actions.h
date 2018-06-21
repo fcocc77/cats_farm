@@ -47,7 +47,7 @@ public:
     ui_groups_tree *groupList;
     ui_job_options *uiJobOptions;
     get_manager_info *getManagerInfo;
-    
+
     QDockWidget *log_dock = new QDockWidget( "Logs" );
     QThread *log_thread = new QThread();    
     QPlainTextEdit *plainLog;

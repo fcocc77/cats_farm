@@ -37,36 +37,30 @@ using namespace std;
 #include <vector>
 using namespace std;
 
-
 class monitor : public QMainWindow{
 Q_OBJECT
 
 public:
-	// este es el constructor
-	monitor(){QMainWindow(0);}; 
-	//---------------------------
-    
+    // este es el constructor
+    monitor(){QMainWindow(0);}; 
+    //---------------------------
+
     bool app_started = false;
     QToolBar *toolBar = new QToolBar();
-
 
     //log
     QPlainTextEdit *log_text = new QPlainTextEdit();
     QDockWidget *log_dock = new QDockWidget( "Logs" );
 
-
-   
     shared_variables *shared = new shared_variables();
-    
 
-    
     // declaracion de modulos
     ui_servers_tree *serverList = new ui_servers_tree( this );
     ui_groups_tree *groupList = new ui_groups_tree();
     ui_submit *uiSubmit = new ui_submit( this );
     ui_denoiser *uiDenoiser = new ui_denoiser( this );
     ui_tasks_tree *taskList = new ui_tasks_tree();
-	ui_jobs_tree *jobsList = new ui_jobs_tree( this );
+    ui_jobs_tree *jobsList = new ui_jobs_tree( this );
     ui_server_options *uiServerOptions = new ui_server_options();
     ui_job_options *uiJobOptions = new ui_job_options();
     group_actions *groupActions = new group_actions( this );
@@ -76,38 +70,15 @@ public:
     tasks_actions *taskActions = new tasks_actions( this );
     general *_general = new general( this );
     //------------------------------------------------------------------------
-    
+
     void init();
     void assamble();
     //void ui();
-    
-    
+
     void main_menu();
     void tool_bar();
     void log_ui();
 
-
-
-
-
-
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif //MAIN_WINDOW_H

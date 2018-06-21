@@ -21,13 +21,7 @@ public:
     void ui();
 
 	QDockWidget *dock = new QDockWidget("Groups");
-	
-
 
 };
-
-
-
-
 
 #endif //UI_TASKS_TREE

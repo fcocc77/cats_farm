@@ -18,7 +18,6 @@ using namespace std;
 
 #include "shared_variables.h"
 
-
 class ui_servers_tree : public QTreeWidget {
 public:
     QMainWindow *monitor;
@@ -36,10 +35,8 @@ public:
     void ui();
     void actions();
 
-
-
 	QDockWidget *dock = new QDockWidget("Servers");
-	
+
 	// display job list
 	QAction *showAllAction = new QAction("Show All",this);
 	QAction *hideAllAction = new QAction("Hide All",this);
@@ -50,11 +47,6 @@ public:
 	QAction *displayOffAction = new QAction("OFF",this);
 	//------------------------------------------------
 
-
 };
-
-
-
-
 
 #endif //UI_SERVER_TREE

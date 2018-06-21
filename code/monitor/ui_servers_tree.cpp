@@ -53,7 +53,6 @@ void ui_servers_tree::actions(){
 	connect( displayOffAction, &QAction::triggered, this, [=] (){ displayAction("off"); }  );
 	displayOffAction->setCheckable(true);
 	displayOffAction->setChecked( shared->server_display["off"] );
-
 }
 
 void ui_servers_tree::ui(){

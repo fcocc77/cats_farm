@@ -48,7 +48,6 @@ public:
     group_actions *groupActions;
     shared_variables *shared;
 
-
     template < class T >
     get_manager_info( T *_monitor ){
         monitor = _monitor;

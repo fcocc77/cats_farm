@@ -1,13 +1,6 @@
 #include "main_window.h"
 
-
-
-
 void monitor::init(){
-    
-
-
-
 
     //shared->server_display = {0,0,0,0,0,0,0};
     main_menu();
@@ -41,11 +34,10 @@ void monitor::init(){
 		else{ closeApp(); }
 	}
     */
-
 }
 
 void monitor::assamble(){
-	
+
 	this->setCentralWidget( jobsList->widget );	
 	this->addDockWidget( Qt::LeftDockWidgetArea, uiSubmit );
 	this->addDockWidget( Qt::LeftDockWidgetArea, uiDenoiser );
@@ -56,10 +48,7 @@ void monitor::assamble(){
 	this->addToolBar( toolBar );
 	this->addDockWidget( Qt::LeftDockWidgetArea, uiJobOptions );
 	this->addDockWidget( Qt::LeftDockWidgetArea, log_dock );
-	
-
 }
-
 
 /*
 void monitor::startApp(){
@@ -95,7 +84,7 @@ void monitor::ui(){
 */
 
 void monitor::main_menu(){
-	
+
 	// Main Menu-------------------------------------
 	QMenuBar *mainMenu = menuBar();
 	QMenu *fileMenu = new QMenu("&File", this );
@@ -151,11 +140,10 @@ void monitor::main_menu(){
 	helpMenu->addAction( _general->aboutAction );
 
 	//--------------------------------------------------
-	
 }
 
 void monitor::tool_bar(){
-	
+
 	// toolBar
 
 	toolBar->setObjectName("ToolBar");
@@ -169,12 +157,12 @@ void monitor::tool_bar(){
 	toolBar->setIconSize(QSize(24,24));
 	toolBar->setMovable(0);
 	toolBar->setWindowTitle("Tools Bar");
-	
+
 	//---------------------
 }
 
 void monitor::log_ui(){
-	
+
 	log_text->setObjectName("style1");
 
 	QVBoxLayout *hbox = new QVBoxLayout();
@@ -186,6 +174,4 @@ void monitor::log_ui(){
 	log_dock->setWidget( widget );
 
 	log_dock->hide();
-	
 }	
-//---------------------------------------------

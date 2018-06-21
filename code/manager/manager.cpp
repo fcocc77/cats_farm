@@ -12,8 +12,6 @@ void manager::init(){
     reactive_all();
     // Recive la informacion del suministrador y crea un jobs con sus tareas
 
-
-
 	tcpServer( 7000, &manager::server_tcp, this );
 
 	threading( &manager::update_all, this );
@@ -21,9 +19,7 @@ void manager::init(){
 	threading( &manager::render_job, this );
 }
 
-
 json manager::server_tcp( json pks, int input ){
-
 
 	if ( input == 0 ) return make_job( pks );
 	if ( input == 1 ) return update_server_thread( pks );
@@ -31,7 +27,6 @@ json manager::server_tcp( json pks, int input ){
 	if ( input == 3 ) return recieve_monitor_thread( pks );
 
 	return {};
-
 }
 
 void manager::reactive_all(){
@@ -95,8 +90,6 @@ json manager::make_job( json recv ){
 
 	submit_start = currentDateTime(0);
 
-
-
 	// checkea si el nombre esta en la lista, si esta le pone un padding
 	string job_name = _job_name;
 
@@ -115,7 +108,6 @@ json manager::make_job( json recv ){
 	//----------------------------------------------------------------------
 
 	auto tasks = make_task( _first_frame, _last_frame, _task_size );
-
 
 	job_struct *_job = new job_struct;
 
@@ -156,9 +148,7 @@ json manager::make_job( json recv ){
 	return {};
 }
 
-
 vector <task_struct*> manager::make_task( int first_frame, int last_frame, int task_size ){
-
 
 	//Crea una lista de tareas con el frame de inicio y final
 	vector <int> range;
@@ -182,8 +172,6 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 		if ( l == last_frame ){ break; }
 	}
 	//--------------------------------------------------------
-
-
 
 	// create tasks
 	vector <task_struct*> tasks;
@@ -210,10 +198,7 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 	}
 	//--------------------------------
 
-
 	return tasks;
-
-
 }
 
 // Envia  informacion de jobs al monitor

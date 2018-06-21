@@ -1,8 +1,5 @@
 #include "settings.h"
 
-
-
-
 void settings::ui(){
 
 	QVBoxLayout *layout_ui = new QVBoxLayout();
@@ -59,7 +56,6 @@ void settings::style(){
         )
     );
     //-------------------------------------
-
 
     // mantiene la ventana por encima de todo
     Qt::WindowFlags flags = windowFlags();
@@ -210,8 +206,6 @@ void settings::path_ui(){
 	noice_edit->setObjectName("style1");
 	tab_widget->addTab( widget7, "Arnold Noice" );
 	//--------------------------------------
-
-
 }
 
 void settings::pathSusRead(){
@@ -254,7 +248,6 @@ void settings::pathSusRead(){
 		fusion_edit->setPlainText( fusion );
 		noice_edit->setPlainText( noice );
     }
-
 }
 
 void settings::pathSusWrite(){
@@ -283,6 +276,5 @@ void settings::pathSusWrite(){
 	}
 
 	tcpClient( managerHost, 7000, { paths, "preferences" }, 3 );
-	
 }
 

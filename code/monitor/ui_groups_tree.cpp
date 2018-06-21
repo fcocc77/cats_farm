@@ -2,9 +2,7 @@
 
 ui_groups_tree::ui_groups_tree(){
     ui();
-
 }
-
 
 void ui_groups_tree::ui(){
 
@@ -58,7 +56,6 @@ void ui_groups_tree::ui(){
 
 	dock->setObjectName("Groups");
 	dock->setWidget( widget );
-
 
 	//---------------------------------------------------------------------------------
 }

@@ -1,8 +1,5 @@
 #include "ui_jobs_tree.h"
 
-
-
-
 void ui_jobs_tree::ui(){
 
 	QVBoxLayout *hbox = new QVBoxLayout();
@@ -13,7 +10,6 @@ void ui_jobs_tree::ui(){
 	hbox->addWidget( job_tile );
 	hbox->addWidget( this );
 	widget->setLayout( hbox );
-
 
 	this->setColumnCount(10);
     QStringList columns { "Job Name", "Priority","Software", "Task Progress", "Status", 
@@ -33,8 +29,6 @@ void ui_jobs_tree::ui(){
 	this->setColumnWidth(7,150);    
 	this->setColumnWidth(8,150);
 
-
-
 	this->setContextMenuPolicy( Qt::CustomContextMenu );
 
 	this->setSortingEnabled(true);
@@ -43,12 +37,9 @@ void ui_jobs_tree::ui(){
 	//------------------------------------------------------------------------------
 }
 
-
-
 void ui_jobs_tree::dragEnterEvent(QDragEnterEvent *event) {
     event->acceptProposedAction();
 }
-
 
 void ui_jobs_tree::dragMoveEvent(QDragMoveEvent *event){
     event->acceptProposedAction();
@@ -61,7 +52,6 @@ void ui_jobs_tree::dropEvent(QDropEvent *event){
 	uiSubmit->submitDrop( path );
     event->acceptProposedAction();
 }
-
 
 void ui_jobs_tree::mousePressEvent(QMouseEvent *event){
     QTreeView::mousePressEvent(event);

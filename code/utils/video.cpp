@@ -1,6 +1,5 @@
 #include <iostream>
 
-
 using namespace std;
 
 #include "util.h"
@@ -46,7 +45,7 @@ void concat(string folder){
 	concat = ffmpeg+" -y -f concat "+safe+" -i "+'"'+list+'"'+" -c copy "+'"'+movie+'"';
 	null=dirMovie+"/null";
 	cmd = concat+logMetod+'"'+null+'"';
-	
+
 	os::sh(cmd);
 
 	//------------------------------------------

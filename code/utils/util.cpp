@@ -14,7 +14,6 @@ string replace( string frase, string src, string dst ){
     }
 
     return frase;
-
 }//-----------------------------------------------
 
 string between( string frase, string before, string after ){
@@ -59,7 +58,6 @@ json jread( string path ){
         try { return json::parse( fread( path + ".old" ) ); }
         catch( exception& e ){}
     };
-    
 
     return {};
     //-----------------------------------
@@ -184,11 +182,9 @@ const string secToTime( float sec ){
 }
 
 void debug( QString bug ){
-    
+
     /*
     static ofstream file( "../../log/monitor.log" , ios::app);
-
-
 
     static int lines = 0;
     lines++;
@@ -200,14 +196,11 @@ void debug( QString bug ){
     file.close();
     */
     //qDebug() << bug;
-
 }
 
 void print( string input ){ 
      qDebug() << QString::fromStdString(input);
-
 }
-
 
 string path(){
 
@@ -216,7 +209,4 @@ string path(){
     if ( _win32 ) return paths["win"];
     else if ( _darwin ) return paths["mac"];
     else return paths["linux"];
-
-
-
 }

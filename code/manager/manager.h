@@ -30,7 +30,6 @@ public:
 	json preferences = jread( "../../etc/preferences.json" );
 	bool reset_render;
 
-
 	void init();
 	json make_job( json recv );
 	vector <task_struct*> make_task( int first_frame, int last_frame, int task_size );
@@ -61,8 +60,7 @@ public:
     void update_group();
     void update_jobs();
 	void container_save();
-	void update_all();	    
-	
+	void update_all();
 
 	// encuentra un index por el nombre de un vector de estructuras
 	template < typename T > // para que el retorno sea diferente al primer argumento
@@ -73,7 +71,7 @@ public:
 		return lista[0];
 	}
 	//-----------------------------------------------------------------
-	
+
 	template < typename T > 
     bool is_struct( T lista, string name ){
 		for ( auto s : lista ){
@@ -81,7 +79,6 @@ public:
 		}
 		return false;
     }
-
 
 	void erase_by_name( auto& lista, string name ){
 		int i = 0;
@@ -92,8 +89,6 @@ public:
 
 		lista.erase( lista.begin() + i, lista.begin() + i+1 );
 	}
-
-	
 };
 
 #endif //MANAGER_H

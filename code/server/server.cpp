@@ -5,7 +5,6 @@ server::server( string exe ){
 
     tcpClient( managerHost, 7000, &server::send_resources, this, 1 );
 	tcpServer( 7001, &server::recieveManager, this );
-
 }
 
 json server::send_resources( json recv ){
@@ -36,7 +35,6 @@ json server::send_resources( json recv ){
 						};
 
 	return server_info;
-
 }
 
 bool server::vbox_working(){

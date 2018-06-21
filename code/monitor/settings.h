@@ -41,8 +41,7 @@ public:
 
 		pathSusRead();
 	}; 
-	//---------------------------   
-
+	//---------------------------
 
 private:
 
@@ -70,8 +69,6 @@ private:
     void pathSusWrite();
     //--------------------------
 
-
 };
-
 
 #endif //SETTINGS_H

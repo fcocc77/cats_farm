@@ -1,12 +1,9 @@
 #include "ui_server_options.h"
 
-
-
 ui_server_options::ui_server_options(){
     ui();
 
 }
-
 
 void ui_server_options::ui(){
 
@@ -77,5 +74,4 @@ void ui_server_options::ui(){
 	this->setWidget(widget);
 	this->hide();
 	this->setWindowTitle("Server Options");
-
 }

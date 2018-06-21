@@ -64,9 +64,8 @@ void general::style_ui(){
 	monitor->setStyleSheet( style.c_str() );
 }
 
-void general::show_splash(){}
-
-//-----------------------------
+void general::show_splash(){
+}
 
 void general::notifyIcon(){
 	notify = new QSystemTrayIcon( QIcon( "../../icons/monitor.png" ), monitor );
@@ -130,7 +129,9 @@ void general::notifyIcon(){
 	});
 }
 
-void general::fileOpen(){}
+void general::fileOpen(){
+}
 
-void general::fileOutputOpen(){}
+void general::fileOutputOpen(){
+}
 

@@ -37,7 +37,7 @@ if dopType:
 	ini=dirname+"/initialstate"
 	if not os.path.isdir(ini):
 		os.mkdir(ini)
-	
+
 	# chekea si el .sim anterior existe
 	init_frame=ini+"/"+basename+str(first_frame-1)+".sim"
 	if not os.path.isfile(init_frame):

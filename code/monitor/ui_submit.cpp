@@ -407,8 +407,6 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		projectLine->setText("");
 		outputFile->setText("...");
 	}
-
-
 }
 
 void ui_submit::submitSetPanel( QString file_name ){
@@ -475,7 +473,6 @@ void ui_submit::submitUpdateBox( int action ){
 		if ( action ) serverGroupBox->setCurrentIndex( index );
 	}
 	//-----------------------------------------------
-
 }
 
 void ui_submit::submitPanelOpen(){
@@ -489,12 +486,11 @@ void ui_submit::submitPanelOpen(){
 		outputLine->setText( QString::fromStdString(panel["outputLine"]) );
 		renderLine->setText( QString::fromStdString(panel["renderLine"]) );
 		softwareBox->setCurrentIndex( panel["softwareBox"] );
-		
+
 		patchRadius->setText( QString::fromStdString( panel["patchRadius"]) );
 		searchRadius->setText( QString::fromStdString( panel["searchRadius"]) );	
 		variance->setText( QString::fromStdString( panel["variance"]) );	
-		temporalRange->setText( QString::fromStdString( panel["temporalRange"]) );		
-
+		temporalRange->setText( QString::fromStdString( panel["temporalRange"]) );
 
 		jobName->setText( QString::fromStdString( panel["jobName"]) );	
 		firstFrame->setText( QString::fromStdString( panel["firstFrame"]) );	
@@ -515,13 +511,11 @@ void ui_submit::submitPanelSave(){
 				    { "fileLine", fileLine->text().toStdString() },
 				    { "outputLine", outputLine->text().toStdString() },
 				    { "renderLine", renderLine->text().toStdString() },
-				    
+
 				    { "patchRadius", patchRadius->text().toStdString() },
 				    { "searchRadius", searchRadius->text().toStdString() },
 				    { "variance", variance->text().toStdString() },
 				    { "temporalRange", temporalRange->text().toStdString() },
-
-
 
 				    { "jobName", jobName->text().toStdString() },
 				    { "firstFrame", firstFrame->text().toStdString() },
@@ -550,13 +544,7 @@ void ui_submit::submitAction( QString software ){
 		dirProject = " -pr " + patchRadius->text() + 
 					" -sr " + searchRadius->text() + 
 					" -v " + variance->text() + 
-					" -tr " + temporalRange->text();  
-
-
-	
-
-
-
+					" -tr " + temporalRange->text();
 
 	string system;
 	if ( _linux ){ system = "Linux"; }
