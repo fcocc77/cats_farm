@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-#include "../utils/os.h"
+#include "../../code/utils/os.h"
 #include <QDebug>
 #include <QString>
 

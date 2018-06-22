@@ -48,7 +48,7 @@ string denoiser( string input, string exe, int pr, int sr, float vr, int tr, int
 
 	string cmd = "\"" + exe + "\"" + parameter +" -i \"" + first_frame + "\"" + inputs_list + " -o \"" + output + "\"";
 
-	return os::sh(cmd);
+	os::system(cmd);
 }
 
 string getFrame( string path, int frame ){

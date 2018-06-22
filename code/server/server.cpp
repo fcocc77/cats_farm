@@ -79,11 +79,9 @@ json server::recieveManager( json recv, int input ){
 
 	if ( input == 3 ){
 
-		for ( auto i : recv ){
-			int instance = i;
-			taskKill[instance] = true;
-
-			os::kill( pid[instance] );
+		for ( int i : recv ){
+			taskKill[i] = true;
+			os::kill( pid[i] );
 		}
 
 	}

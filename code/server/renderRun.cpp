@@ -254,21 +254,21 @@ string server::pre_software(string software, string project, int first_frame, in
 		for ( auto e : paths["noice"] ){
 			 exe = e; //e.rstrip()
 			 if ( os::isfile( exe ) ){ break; }
- 		}
- 		//-----------------------------------------------
+		}
+		//-----------------------------------------------
 
-		int pr = stoi( split( split( extra, "-pr ")[1], " -sr " )[0] );
-		int sr = stoi( split( split( extra, "-sr ")[1], " -v " )[0] );
-		float vr = stof( split( split( extra, "-v ")[1], " -tr " )[0] );
-		int tr = stoi( split( extra, "-tr ")[1] );
+		string pr = split( split( extra, "-pr ")[1], " -sr " )[0];
+		string sr = split( split( extra, "-sr ")[1], " -v " )[0];
+		string vr = split( split( extra, "-v ")[1], " -tr " )[0];
+		string tr = split( extra, "-tr ")[1];
 
-		string _log;
-		for (int i = first_frame; i <= last_frame; ++i )
-			_log += denoiser( project, exe, pr, sr, vr, tr, i );
+		string denoiser;
+		if ( _linux ) denoiser = path + "/bin/linux/denoiser";
+		else if ( _win32 ) denoiser = path + "/bin/win/denoiser.exe";
+		else denoiser = path + "/bin/mac/denoiser";
 
-		fwrite( log_file, _log );
-
-		cmd = "Noice, No need cmd.";
+		cmd = denoiser + " \"" + project + "\" " + exe + " " + pr + " " + sr + " " + 
+						vr + " " + tr + " " + to_string(first_frame) + " " + to_string(last_frame);
 
 	}
 
