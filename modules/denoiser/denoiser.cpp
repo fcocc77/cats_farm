@@ -1,6 +1,6 @@
 #include "denoiser.h"
 
-string denoiser( string input, string exe, int pr, int sr, float vr, int tr, int frame ){
+void denoiser( string input, string exe, int pr, int sr, float vr, int tr, int frame ){
 
 	int _fr = tr;
 	vector <string> inputs;
@@ -47,7 +47,6 @@ string denoiser( string input, string exe, int pr, int sr, float vr, int tr, int
 	string parameter = " -pr " + to_string(pr) + " -sr " + to_string(sr) + " -v " + to_string(vr);
 
 	string cmd = "\"" + exe + "\"" + parameter +" -i \"" + first_frame + "\"" + inputs_list + " -o \"" + output + "\"";
-
 	os::system(cmd);
 }
 

@@ -19,7 +19,6 @@ HEADERS += 	./server.h \
 			../utils/threading.h \
 			../utils/util.h \
 			../utils/video.h \
-			../utils/denoiser.h
 
 SOURCES += 	./main.cpp \
 			./server.cpp \  
@@ -27,5 +26,3 @@ SOURCES += 	./main.cpp \
 			../utils/util.cpp \ 
 			../utils/video.cpp \
 			../utils/os.cpp \
-			../utils/denoiser.cpp
-

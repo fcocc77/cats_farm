@@ -153,3 +153,8 @@ code/server/debug/renderRun.o
 code/server/Makefile.Release
 code/server/Makefile.Debug
 code/server/Makefile
+etc/panel.json.old
+etc/panel.json
+code/monitor/.monitor.pro.swp
+code/monitor/.monitor.pro.swo
+bin/win/denoiser.exe

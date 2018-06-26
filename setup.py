@@ -120,6 +120,7 @@ def linux_install():
 	#compile_( linuxInstall + "/code/monitor/manager.pro" )
 	#compile_( linuxInstall + "/code/manager/monitor.pro" )
 	compile_( linuxInstall + "/code/server/server.pro" )
+	compile_( linuxInstall + "/modules/denoiser/denoiser.pro" )
 
 	copyfile( path + "/os/linux/link/CatsFarm.desktop" , "/usr/share/applications")
 

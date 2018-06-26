@@ -4,7 +4,6 @@ int main(int argc, char const *argv[]){
 
 	string project = argv[1];
 	string exe = argv[2];
-
 	int pr = stoi( argv[3] );
 	int sr = stoi( argv[4] );
 	float vr = stof( argv[5] );

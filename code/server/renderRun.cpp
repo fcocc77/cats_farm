@@ -267,9 +267,8 @@ string server::pre_software(string software, string project, int first_frame, in
 		else if ( _win32 ) denoiser = path + "/bin/win/denoiser.exe";
 		else denoiser = path + "/bin/mac/denoiser";
 
-		cmd = denoiser + " \"" + project + "\" " + exe + " " + pr + " " + sr + " " + 
+		cmd = denoiser + " \"" + project + "\" \"" + exe + "\" " + pr + " " + sr + " " + 
 						vr + " " + tr + " " + to_string(first_frame) + " " + to_string(last_frame);
-
 	}
 
 	awrite( "../../log/called_log", cmd );
