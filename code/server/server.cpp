@@ -1,8 +1,6 @@
 #include "server.h"
 
 server::server( string exe ){
-	path = os::dirname( os::dirname( os::dirname( exe ) ) );
-
     tcpClient( managerHost, 7000, &server::send_resources, this, 1 );
 	tcpServer( 7001, &server::recieveManager, this );
 }

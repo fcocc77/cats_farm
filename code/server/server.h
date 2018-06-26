@@ -21,9 +21,6 @@ using namespace nlohmann;
 
 class server : public QObject{
 public:
-
-	string path;
-
 	server( string exe );
 
 	string render_task( json recv );

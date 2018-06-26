@@ -54,7 +54,7 @@ string server::render_task( json recv ){
 
 		//--------------------------------------
 
-		string log_file = path + "/log/render_log_" + to_string( instance );
+		string log_file = path() + "/log/render_log_" + to_string( instance );
 		//os::remove( log_file );
 
 		string cmd = pre_software(software, project, first_frame, last_frame, extra, 
@@ -159,7 +159,7 @@ string server::pre_software(string software, string project, int first_frame, in
 
 		string hipFile = replace( project, src_path, dst_path );
 
-		string render_file = path + "/modules/houdiniCatsFarm.py " + 
+		string render_file = path() + "/modules/houdiniCatsFarm.py " + 
 							hipFile + " " + render + " " + to_string( first_frame ) + " " + to_string( last_frame );
 
 		cmd = '"' + exe + "\" " + render_file;
@@ -263,12 +263,15 @@ string server::pre_software(string software, string project, int first_frame, in
 		string tr = split( extra, "-tr ")[1];
 
 		string denoiser;
-		if ( _linux ) denoiser = path + "/bin/linux/denoiser";
-		else if ( _win32 ) denoiser = path + "/bin/win/denoiser.exe";
-		else denoiser = path + "/bin/mac/denoiser";
+		if ( _linux ) denoiser = path() + "/bin/linux/denoiser";
+		else if ( _win32 ) denoiser = path() + "/bin/win/denoiser.exe";
+		else denoiser = path() + "/bin/mac/denoiser";
 
 		cmd = denoiser + " \"" + project + "\" \"" + exe + "\" " + pr + " " + sr + " " + 
 						vr + " " + tr + " " + to_string(first_frame) + " " + to_string(last_frame);
+	
+		print(cmd);
+
 	}
 
 	awrite( "../../log/called_log", cmd );

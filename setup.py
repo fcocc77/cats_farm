@@ -114,6 +114,7 @@ def linux_install():
 	copydir( path + "/log", linuxInstall + "/log" )
 	copydir( path + "/os/linux", linuxInstall + "/os/linux" )
 	copydir( path + "/sound", linuxInstall + "/sound" )
+	copydir( path + "/modules", linuxInstall + "/modules" )
 	copydir( path + "/theme", linuxInstall + "/theme" )
 	#-----------------------------------------------------
 
