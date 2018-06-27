@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 import shutil
 import os
 from sys import platform
+from sys import argv
 import tarfile
 from zipfile import ZipFile
 import subprocess
@@ -11,6 +13,22 @@ linuxInstall="/opt/cats_farm"
 windowsInstall="C:/cats_farm"
 macInstall="/usr/local/cats_farm"
 #--------------------------
+
+# Datos Generales
+ip = "192.168.10.43"
+manager_start = False
+server_start = True
+degug = False
+#-----------------------
+
+# Checkea si hay argumentos
+try:
+	action = argv[1]
+	manager_start = int( argv[2] )
+	manager_start = int( argv[3] )
+	ip = argv[4]
+except: None
+#-------------------------
 
 def copydir( src, dst ):
 	if not os.path.isdir( dst ): 
@@ -33,22 +51,28 @@ def compile_ ( project ):
 	print "Compiling " + dirname + "..."
 
 	if platform == "win32":
-		exe = dirname + "/" + basename + ".exe"
+		ProgramData = "C:/ProgramData/cats_farm/" + basename
+		if not os.path.isdir( ProgramData ): os.makedirs( ProgramData );
+
+		exe = ProgramData + "/release/" + basename + ".exe"
 
 		if os.path.isfile(exe): os.remove(exe)
 
-		os.system("cd " + dirname + " && " + qmake + " " + project + " > %temp%/null" )
-		os.system( "set path=" + os.path.dirname( make ) + "; && cd " + dirname + " && " + make + " > %temp%/null")
+		os.system("cd " + ProgramData + " && " + qmake + " " + project + " > %temp%/null" )
+		os.system( "set path=" + os.path.dirname( make ) + "; && cd " + ProgramData + " && " + make + " > %temp%/null")
 
-		shutil.move( exe, linuxInstall + "/bin/win/" + basename + ".exe" )
+		shutil.move( exe, windowsInstall + "/bin/win/" + basename + ".exe" )
 
 	else:
-		exe = dirname + "/" + basename
+		temp = "/var/tmp/" + basename
+		if not os.path.isdir( temp ): os.makedirs( temp );
+
+		exe = temp + "/" + basename
 
 		if os.path.isfile(exe): os.remove(exe)
 
-		os.system("cd " + dirname +" && " + qmake + " "+project + " &> /dev/null")
-		os.system("cd " + dirname + " && source /opt/rh/devtoolset-7/enable && make > /dev/null")
+		os.system("cd " + temp +" && " + qmake + " "+project + " &> /dev/null")
+		os.system("cd " + temp + " && source /opt/rh/devtoolset-7/enable && make > /dev/null")
 
 		shutil.move( exe, linuxInstall + "/bin/linux/" + basename )
 
@@ -118,8 +142,8 @@ def linux_install():
 	copydir( path + "/theme", linuxInstall + "/theme" )
 	#-----------------------------------------------------
 
-	#compile_( linuxInstall + "/code/monitor/manager.pro" )
-	#compile_( linuxInstall + "/code/manager/monitor.pro" )
+	compile_( linuxInstall + "/code/monitor/manager.pro" )
+	compile_( linuxInstall + "/code/manager/monitor.pro" )
 	compile_( linuxInstall + "/code/server/server.pro" )
 	compile_( linuxInstall + "/modules/denoiser/denoiser.pro" )
 
@@ -154,12 +178,17 @@ def windows_install():
 	copydir( path + "/log", windowsInstall + "/log" )
 	copydir( path + "/os/win", windowsInstall + "/os/win" )
 	copydir( path + "/sound", windowsInstall + "/sound" )
+	copydir( path + "/modules", windowsInstall + "/modules" )
 	copydir( path + "/theme", windowsInstall + "/theme" )
 	#-----------------------------------------------------
 
-	compile_( "CatsFarm-Monitor", windowsInstall + "/code/monitor/main.cpp",  windowsInstall + "/icons/monitor.ico" )
-	compile_( "CatsFarm-Manager", windowsInstall + "/code/manager/main.cpp",  windowsInstall + "/icons/manager.ico" )
-	compile_( "CatsFarm-Server", windowsInstall + "/code/server/main.cpp",  windowsInstall + "/icons/server.ico" )
+	f = open( windowsInstall + "/etc/manager_host" , "w" )
+	f.write( ip )
+	f.close()
+
+	compile_( windowsInstall + "/code/server/server.pro" )
+	compile_( windowsInstall + "/code/monitor/monitor.pro" )
+	compile_( windowsInstall + "/code/manager/manager.pro" )
 
 	copyfile( windowsInstall + "/os/win/link/CatsFarm Monitor.lnk" , "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
 

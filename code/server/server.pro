@@ -5,9 +5,9 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 RC_ICONS = ../../icons/server.ico
 
 TEMPLATE = app
-TARGET = ./server
+TARGET = server
 
-CONFIG += console c++14 debug
+CONFIG += console c++14
 
 QT += core gui multimedia widgets
 

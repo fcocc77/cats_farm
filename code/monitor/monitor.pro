@@ -2,7 +2,7 @@
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 TEMPLATE = app
-TARGET = ../monitor
+TARGET = monitor
 CONFIG += c++14 #console
 #CONFIG += debug
 
