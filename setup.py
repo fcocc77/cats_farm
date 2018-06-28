@@ -189,12 +189,13 @@ def windows_install():
 	compile_( windowsInstall + "/code/server/server.pro" )
 	compile_( windowsInstall + "/code/monitor/monitor.pro" )
 	compile_( windowsInstall + "/code/manager/manager.pro" )
+	compile_( windowsInstall + "/modules/denoiser/denoiser.pro" )
 
 	copyfile( windowsInstall + "/os/win/link/CatsFarm Monitor.lnk" , "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
 
 def windows_uninstall():
 	if os.path.isdir( windowsInstall ):
-		shutil.rmtree( windowsInstall )
+		os.system("RD /S /Q \"" + windowsInstall + "\"" )
 	lnk = "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
 	if os.path.isfile( lnk ):
 		os.remove( lnk )

@@ -20,24 +20,24 @@ vector <int> os::getStat(){
 
 int os::cpuUsed(){
 
-    static int usage;
-    string result;
-    if ( _win32 ){
-        result = sh("wmic cpu get loadpercentage");
-        result = replace(result, "LoadPercentage", "");
+	static int usage;
+	string result;
+	if ( _win32 ){
+		result = sh("wmic cpu get loadpercentage");
+		result = replace(result, "LoadPercentage", "");
 
-        try { usage = stoi(result); }
-        catch( exception &e ){}
-    }
+		try { usage = stoi(result); }
+		catch( exception &e ){}
+	}
 
-    else if ( _linux ){
+	else if ( _linux ){
 
-    	int prev_idle, idle, prev_not_idle, not_idle, prev_total, total;
-    	float totald, idled;
+		int prev_idle, idle, prev_not_idle, not_idle, prev_total, total;
+		float totald, idled;
 
-    	auto prev=getStat();
+		auto prev=getStat();
 		usleep(100000);
-    	auto current=getStat();
+		auto current=getStat();
 
 		prev_idle = prev[3] + prev[4];
 		idle = current[3] + current[4];
@@ -63,7 +63,7 @@ int os::cpuUsed(){
 
 	}
 
-    return usage;
+	return usage;
 }
 
 vector <float> os::ram(){
@@ -307,8 +307,8 @@ string os::basename( string file ){
 }
 
 bool os::isfile( string file ){
-    ifstream infile(file);
-    return infile.good();
+	ifstream infile(file);
+	return infile.good();
 }
 
 bool os::isdir( string dir ){
@@ -317,6 +317,37 @@ bool os::isdir( string dir ){
 	else if ( sh( cmd ).empty() ) return false;
 	else return true;
 }
+
+#ifdef _WIN32
+void KillProcessTree( DWORD myprocID ){
+
+	PROCESSENTRY32 pe;
+
+	memset(&pe, 0, sizeof(PROCESSENTRY32));
+	pe.dwSize = sizeof(PROCESSENTRY32);
+
+	HANDLE hSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+	if (::Process32First(hSnap, &pe))
+	{
+		do // Recursion
+		{
+			if (pe.th32ParentProcessID == myprocID)
+				KillProcessTree(pe.th32ProcessID);
+		} 
+		while (::Process32Next(hSnap, &pe));
+	}
+
+	// kill the main process
+	HANDLE hProc = ::OpenProcess(PROCESS_ALL_ACCESS, FALSE, myprocID);
+
+	if (hProc)
+	{
+		::TerminateProcess(hProc, 1);
+		::CloseHandle(hProc);
+	}
+}
+#endif
 
 void os::kill( int pid ){
 	if ( _linux ){
@@ -351,9 +382,9 @@ void os::kill( int pid ){
 		}
 	}
 
-	else if ( _win32 ){
-		sh( "Taskkill /PID " + to_string(pid) );
-	}
+	#ifdef _WIN32
+		KillProcessTree(pid);
+	#endif
 }
 
 vector <string> os::listdir( string folder, bool onlyname ){
@@ -396,15 +427,15 @@ const string os::hostName(){
 }
 
 const string os::ip(){
- 	string _ip;
- 	int i = 0;
- 	for ( auto ip : QNetworkInterface::allAddresses() ){
+	string _ip;
+	int i = 0;
+	for ( auto ip : QNetworkInterface::allAddresses() ){
 		_ip = ip.toString().toStdString();
 		string first = split( _ip, "." )[0];
 		if ( first == "192" ) return _ip ;
 		i++;
- 	}
- 	return "";
+	}
+	return "";
 }
 
 void os::back( string cmd ){

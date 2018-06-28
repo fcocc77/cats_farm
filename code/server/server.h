@@ -7,8 +7,6 @@ using namespace std;
 #include <thread>
 
 #include "../utils/util.h"
-//#include "../manager/structs.h"
-
 #include "../utils/json.h"
 
 using namespace nlohmann;

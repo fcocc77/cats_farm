@@ -20,6 +20,7 @@ using namespace std;
 
 #ifdef _WIN32
 	#include <windows.h>
+	#include <TlHelp32.h>
 #endif
 
 class os{
