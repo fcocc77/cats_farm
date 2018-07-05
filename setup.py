@@ -77,6 +77,7 @@ def compile_ ( project ):
 		shutil.move( exe, linuxInstall + "/bin/linux/" + basename )
 
 	print "Finished Compler."
+	print "---------------------------------------------"
 
 def compiler_install():
 	if platform == "win32":
@@ -142,8 +143,8 @@ def linux_install():
 	copydir( path + "/theme", linuxInstall + "/theme" )
 	#-----------------------------------------------------
 
-	compile_( linuxInstall + "/code/monitor/manager.pro" )
-	compile_( linuxInstall + "/code/manager/monitor.pro" )
+	compile_( linuxInstall + "/code/manager/manager.pro" )
+	compile_( linuxInstall + "/code/monitor/monitor.pro" )
 	compile_( linuxInstall + "/code/server/server.pro" )
 	compile_( linuxInstall + "/modules/denoiser/denoiser.pro" )
 

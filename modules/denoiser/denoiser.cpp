@@ -43,8 +43,9 @@ void denoiser( string input, string exe, int pr, int sr, float vr, int tr, int f
 	//-------------------------
 	string output = dirname + "/" + basename_without + "noice_" + pad_ext;
 	//-------------------------------------------------------
-
-	string parameter = " -pr " + to_string(pr) + " -sr " + to_string(sr) + " -v " + to_string(vr);
+	string layers = " -l diffuse_direct -l diffuse_indirect -l specular_direct -l specular_indirect";
+	//-------------------------------------------------------
+	string parameter = layers + " -pr " + to_string(pr) + " -sr " + to_string(sr) + " -v " + to_string(vr);
 
 	string cmd = "\"" + exe + "\"" + parameter +" -i \"" + first_frame + "\"" + inputs_list + " -o \"" + output + "\"";
 	os::system(cmd);

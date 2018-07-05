@@ -65,7 +65,7 @@ string server::render_task( json recv ){
 		QProcess proc;
 		proc.start( QString::fromStdString(cmd) );
 		pid[instance] = proc.processId();
-		proc.waitForFinished();
+		proc.waitForFinished(-1);
 		QString output = proc.readAllStandardOutput();
 		proc.close();
 
