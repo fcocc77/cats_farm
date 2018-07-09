@@ -1,18 +1,46 @@
 #!/bin/bash
 . /etc/init.d/functions
 
+pid_file='/opt/cats_farm/os/linux/init/managerPID'
+log_file='/opt/cats_farm/log/manager.log'
+debug=$(cat '/opt/cats_farm/etc/debug')
+
+run() {
+	# mata el pid a partir del puerto de catsfarm
+	fuser -k 7000/tcp &>/dev/null
+	#----------------------------------
+	if $debug; then
+		rm $log_file &> /dev/null
+		echo "Started debugging."
+		gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q ./manager &> /dev/null
+	else
+		./manager &> /dev/null
+	fi
+}
+
 start() {
+ 	pid=$(cat $pid_file)
 
-
-	'installFolder/os/linux/init/manager_run.py' start
+	if ! kill -0 $pid > /dev/null 2>&1; then
+		echo "CatsFarm Manager has started."
+		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && run &>/dev/null & echo $! > $pid_file
+	else
+		echo "CatsFarm Manager is running now."
+	fi
 }
 
 stop() {
-	   
-	'installFolder/os/linux/init/manager_run.py' stop
+	cpid=$(cat $pid_file)
+	ppid=$(pgrep -P $cpid)
 
+	if kill -0 $cpid > /dev/null 2>&1; then
+		kill $ppid
+		kill $cpid
+		echo "CatsFarm Manager has stopped."
+	else
+		echo "Is not running."
+	fi
 }
-
 
 case "$1" in
 	start)
@@ -22,7 +50,7 @@ case "$1" in
 		stop
 	;;
 	status)
-		status catsfarm_manager
+		status cmanager
 	;;
 	restart|reload|condrestart)
 		stop
@@ -32,4 +60,5 @@ case "$1" in
 	echo $"Usage: $0 {start|stop|restart|reload|status}"
 	exit 1
 esac
+
 exit 0

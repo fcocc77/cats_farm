@@ -3,6 +3,7 @@ import paramiko
 import os
 
 path=os.path.dirname(os.path.abspath(__file__))
+path = path.replace("\\","/").replace("/192.168.10.45","mnt")
 
 class ssh():
 	def __init__(self,ip,username,password,cmd):
@@ -18,25 +19,27 @@ class ssh():
 
 			self.read = stdout
 
-machines=["192.168.10.43", "192.168.10.45","192.168.10.46","192.168.10.47","192.168.10.48","192.168.10.49"]
+servers=["192.168.10.45","192.168.10.46","192.168.10.47","192.168.10.48","192.168.10.49", "192.168.10.52"]
 
-for machine in machines:
+for _server in servers:
 
 	manager_name="192.168.10.45"
 
-	if machine==manager_name:
-		manager="y"
-		server="y"
+	if _server==manager_name:
+		manager="1"
+		server="1"
 	else:
-		manager="n"
-		server="y"
+		manager="0"
+		server="1"
 
 	try:
-
-		uninstall='python "'+path+'/setup.py" uninstall '+manager+" "+server+" "+manager_name
-		print ssh(machine,"root","vfx",uninstall).read
-
-		install='python "'+path+'/setup.py" install '+manager+" "+server+" "+manager_name
-		print ssh(machine,"root","vfx",install).read
+		print _server + ": --------------------"
+		print "	- Uninstalling..."
+		uninstall = 'python "'+path+'/setup.py" 0 ' + manager+" "+server+" "+manager_name
+		ssh(_server,"root","vfx",uninstall).read
+		print "	- Installing..."
+		install='python "'+path+'/setup.py" 1 '+manager+" "+server+" "+manager_name
+		ssh(_server,"root","vfx",install)
+		print "-----------------------------------" 
 	except:
-		print machine+" error"
+		print _server+" error"

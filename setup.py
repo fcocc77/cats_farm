@@ -23,9 +23,9 @@ debug = True
 
 # Checkea si hay argumentos
 try:
-	action = argv[1]
+	action = int( argv[1] )
 	manager_start = int( argv[2] )
-	manager_start = int( argv[3] )
+	server_start = int( argv[3] )
 	ip = argv[4]
 except: None
 #-------------------------
@@ -159,6 +159,11 @@ def linux_install():
 	copyfile( path + "/os/linux/link/CatsFarm.desktop" , "/usr/share/applications")
 
 	shutil.copy( linuxInstall + "/os/linux/init/cserver", "/etc/init.d/cserver")
+	shutil.copy( linuxInstall + "/os/linux/init/cmanager", "/etc/init.d/cmanager")
+
+	f = open( linuxInstall + "/etc/manager_host" , "w" )
+	f.write( ip )
+	f.close()
 
 	if debug:dbug="true"
 	else:dbug="false"
@@ -166,9 +171,11 @@ def linux_install():
 	f.write(dbug)
 	f.close()
 	# los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
-	os.system( "sed -i -e 's/\r//g' /etc/init.d/cserver") 
+	os.system( "sed -i -e 's/\r//g' /etc/init.d/cserver")
+	os.system( "sed -i -e 's/\r//g' /etc/init.d/cmanager")  
 	#--------------------------------------------------------------------------------
-	os.system( "service cserver start ")
+	os.system( "service cserver start &>/dev/null" )
+	os.system( "service cmanager start &>/dev/null" )
 
 def linux_uninstall():
 
@@ -222,7 +229,9 @@ if platform == "win32":
 	windows_uninstall()
 	windows_install()
 elif platform == "linux2":
-	None
-	linux_uninstall()
-	linux_install()
+	if action:
+		linux_uninstall()
+		linux_install()
+	else:
+		linux_uninstall()
 

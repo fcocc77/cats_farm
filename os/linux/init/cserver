@@ -7,7 +7,7 @@ debug=$(cat '/opt/cats_farm/etc/debug')
 
 run() {
 	# mata el pid a partir del puerto de catsfarm
-	fuser -k 7001/tcp
+	fuser -k 7001/tcp &>/dev/null
 	#----------------------------------
 	if $debug; then
 		rm $log_file &> /dev/null
@@ -23,7 +23,7 @@ start() {
 
 	if ! kill -0 $pid > /dev/null 2>&1; then
 		echo "CatsFarm Server has started."
-		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && run & echo $! > $pid_file
+		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && run &>/dev/null & echo $! > $pid_file
 	else
 		echo "CatsFarm Server is running now."
 	fi
