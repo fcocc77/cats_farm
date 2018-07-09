@@ -18,7 +18,7 @@ macInstall="/usr/local/cats_farm"
 ip = "192.168.10.43"
 manager_start = False
 server_start = True
-degug = False
+debug = True
 #-----------------------
 
 # Checkea si hay argumentos
@@ -50,6 +50,11 @@ def compile_ ( project ):
 
 	print "Compiling " + dirname + "..."
 
+	if debug:
+		f = open(project, "a")
+		f.write("\n\nCONFIG += debug")
+		f.close()
+
 	if platform == "win32":
 		ProgramData = "C:/ProgramData/cats_farm/" + basename
 		if not os.path.isdir( ProgramData ): os.makedirs( ProgramData );
@@ -64,7 +69,10 @@ def compile_ ( project ):
 		shutil.move( exe, windowsInstall + "/bin/win/" + basename + ".exe" )
 
 	else:
-		temp = "/var/tmp/" + basename
+		if debug: name = basename + "_debug"
+		else: name = basename
+
+		temp = "/var/tmp/" + name
 		if not os.path.isdir( temp ): os.makedirs( temp );
 
 		exe = temp + "/" + basename
@@ -151,6 +159,12 @@ def linux_install():
 	copyfile( path + "/os/linux/link/CatsFarm.desktop" , "/usr/share/applications")
 
 	shutil.copy( linuxInstall + "/os/linux/init/cserver", "/etc/init.d/cserver")
+
+	if debug:dbug="true"
+	else:dbug="false"
+	f = open( linuxInstall + "/etc/debug", "w" )
+	f.write(dbug)
+	f.close()
 	# los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
 	os.system( "sed -i -e 's/\r//g' /etc/init.d/cserver") 
 	#--------------------------------------------------------------------------------

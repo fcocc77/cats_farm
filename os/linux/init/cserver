@@ -2,17 +2,31 @@
 . /etc/init.d/functions
 
 pid_file='/opt/cats_farm/os/linux/init/serverPID'
+log_file='/opt/cats_farm/log/server.log'
+debug=$(cat '/opt/cats_farm/etc/debug')
+
+run() {
+	# mata el pid a partir del puerto de catsfarm
+	fuser -k 7001/tcp
+	#----------------------------------
+	if $debug; then
+		rm $log_file &> /dev/null
+		echo "Started debugging."
+		gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q ./server &> /dev/null
+	else
+		./server &> /dev/null
+	fi
+}
 
 start() {
-
-	pid=$(cat $pid_file)
+ 	pid=$(cat $pid_file)
 
 	if ! kill -0 $pid > /dev/null 2>&1; then
-		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && ./server & echo $! > $pid_file
+		echo "CatsFarm Server has started."
+		export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && run & echo $! > $pid_file
 	else
 		echo "CatsFarm Server is running now."
 	fi
-
 }
 
 stop() {
@@ -26,7 +40,6 @@ stop() {
 	else
 		echo "Is not running."
 	fi
-
 }
 
 case "$1" in
