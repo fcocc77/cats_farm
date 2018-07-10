@@ -18,7 +18,7 @@ macInstall="/usr/local/cats_farm"
 ip = "192.168.10.43"
 manager_start = False
 server_start = True
-debug = True
+debug = False
 #-----------------------
 
 # Checkea si hay argumentos
