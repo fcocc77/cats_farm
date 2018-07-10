@@ -20,7 +20,7 @@ public:
 
     void ui();
 
-	QDockWidget *dock = new QDockWidget("Groups");
+	QDockWidget *dock = new QDockWidget("Tasks");
 
 };
 
