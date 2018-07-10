@@ -280,14 +280,10 @@ void os::mkdir ( string path ){
 }
 
 void os::remove( string _file ){
-	if ( _win32 ){
-		if ( isfile(_file) ) std::remove( _file.c_str() );
-		else {
-			string cmd = "echo Y | rd /S " + replace( _file, "/", "\\" ); 
-			sh( cmd );
-		}
-	}
-	else std::remove( _file.c_str() );
+	QFile file ( QString::fromStdString(_file) );
+	file.remove();
+	QDir dir;
+	dir.remove( QString::fromStdString(_file) );
 }
 
 void os::rename( string src, string dst ){
@@ -439,8 +435,9 @@ const string os::ip(){
 }
 
 void os::back( string cmd ){
-	if ( _win32 ) cmd = "\"" + cmd + "\"";
-	popen( cmd.c_str(), "r");
+	QProcess pro;
+	pro.startDetached(QString::fromStdString(cmd) );
+	pro.waitForStarted();
 }
 
 const string os::user(){

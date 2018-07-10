@@ -192,7 +192,7 @@ void servers_actions::serverSSH(){
 	ip = recv[2];
 
 	string cmd;
-	if ( _win32 ) cmd = "start /wait cmd /k ssh " + sshUser + "@" + ip;
+	if ( _win32 ) cmd = "cmd /C ssh " + sshUser + "@" + ip;
 	else cmd = "gnome-terminal -e 'sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip + "'";
 
 	os::back( cmd );

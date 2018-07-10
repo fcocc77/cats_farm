@@ -13,7 +13,8 @@ using namespace std;
 #include <QNetworkInterface>
 #include <QDirIterator>
 #include <QDir>
-
+#include <QFile>
+#include <QProcess>
 //librerias propias
 #include "util.h"
 //--------------------
