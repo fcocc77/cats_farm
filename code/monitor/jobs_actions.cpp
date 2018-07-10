@@ -51,6 +51,10 @@ void jobs_actions::actions(){
 	connect( jobModifyAction, &QAction::triggered, this, &jobs_actions::jobModify);
 	jobModifyAction->setShortcut( QString("M") );
 
+	connect( uiJobOptions->dialog, &QDialogButtonBox::accepted, this, &jobs_actions::jobOptionsOk );	
+	connect( uiJobOptions->dialog, &QDialogButtonBox::rejected, [this](){
+		uiJobOptions->hide();
+	});
 	//-----------------------------------------------------------------------
 }
 
@@ -180,7 +184,7 @@ void jobs_actions::jobModify(){
 		int first_frame = pks[7];
 		int last_frame = pks[8];
 
-		uiJobOptions->priority->setText( QString::number( priority ) );
+		uiJobOptions->priority->setCurrentIndex( priority );
 		uiJobOptions->firstFrame->setText( QString::number( first_frame ) );
 		uiJobOptions->lastFrame->setText( QString::number( last_frame ) );
 		uiJobOptions->jobName->setText( QString::fromStdString( _job_name ) );
@@ -235,19 +239,13 @@ void jobs_actions::jobModify(){
 			}
 			uiJobOptions->serverGroupAsign->addTopLevelItem( item );
 		}
-
-		connect( uiJobOptions->dialog, &QDialogButtonBox::accepted, this, &jobs_actions::jobOptionsOk );	
-		connect( uiJobOptions->dialog, &QDialogButtonBox::rejected, [this](){
-			uiJobOptions->hide();
-		});
-
 	}
 }
 
 void jobs_actions::jobOptionsOk(){
+
 	//Obtiene servideros chekeados para el job seleccionado
 	json machines;
-
 	for (int i = 0; i < uiJobOptions->serverAsign->topLevelItemCount(); ++i){
 		auto item = uiJobOptions->serverAsign->topLevelItem(i); 
 		string name = item->text(0).toStdString();
@@ -268,10 +266,9 @@ void jobs_actions::jobOptionsOk(){
 			group.push_back(name);
 		}
 	}
-
 	//--------------------------------------------
 
-	int priority = uiJobOptions->priority->text().toInt();
+	int priority = uiJobOptions->priority->currentIndex();
 	int first_frame = uiJobOptions->firstFrame->text().toInt();
 	int last_frame = uiJobOptions->lastFrame->text().toInt();
 	int task_size = uiJobOptions->taskSize->text().toInt();
@@ -285,20 +282,28 @@ void jobs_actions::jobOptionsOk(){
 
 	json pks;
 	auto selected = jobsList->selectedItems();
-	selected.push_back( firstJobItem );
+	selected.push_front( firstJobItem );
 
+	vector <string> repeatItem;
 	for ( auto item : selected ){
-
 		string job_name = item->text(0).toStdString();
 		json options = { machines, group, priority, comment, instances, first_frame, last_frame, task_size, _job_name };
-		pks.push_back( { job_name, options, "write" } );
-
+		// el primer item se repite asi que si esta 2 veces no lo agrega otra vez
+		if ( not in_vector( job_name, repeatItem ) )
+			pks.push_back( { job_name, options, "write" } );
+		repeatItem.push_back( job_name );
+		//-------------------------------------------------------
 	}
 	pks = { pks, "jobOptions" };
 
-	tcpClient( managerHost, 7000, pks, 3 );
+	QString ask = "Sure you want to send the changes? \nSome frames will be lost due to the size of the tasks.";
 
-	uiJobOptions->hide();
+	QMessageBox::StandardButton reply;
+	reply = QMessageBox::question( monitor, "Job Options", ask, QMessageBox::Yes | QMessageBox::No );
+	if (reply == QMessageBox::Yes) {
+		tcpClient( managerHost, 7000, pks, 3 );
+		uiJobOptions->hide();
+	}
 }
 
 void jobs_actions::jobMessage( void ( jobs_actions::*funtion )( string ), string action, 

@@ -38,23 +38,19 @@ void ui_job_options::ui(){
 			QHBoxLayout *hbox4 = new QHBoxLayout();
 			hbox4->setContentsMargins(0,0,0,0);
 				//------------------------------
-				QLabel *labelPriority = new QLabel("Priority:");
-				labelPriority->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-				labelPriority->setMinimumWidth(70);
+				QLabel *labelPriority = new QLabel("           Priority:");
+				labelPriority->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+				labelPriority->setMaximumWidth(70);
 
-				QCheckBox *priority0 = new QCheckBox("Very Low");
-
-				QCheckBox *priority1 = new QCheckBox("Low");
-				QCheckBox *priority2 = new QCheckBox("Normal");
-				QCheckBox *priority3 = new QCheckBox("High");
-				QCheckBox *priority4 = new QCheckBox("Very High");
-
+				priority->addItems({"Very Low", "Low", "Normal", "High", "Very High"});
+				priority->setCurrentIndex(2);
+				priority->setMaximumWidth(80);
+				
 				hbox4->addWidget(labelPriority);
-				hbox4->addWidget(priority0);
-				hbox4->addWidget(priority1);
-				hbox4->addWidget(priority2);
-				hbox4->addWidget(priority3);
-				hbox4->addWidget(priority4);
+				hbox4->addWidget(priority);
+				QLabel *null = new QLabel(" ");
+				hbox4->addWidget(null);
+
 
 			QWidget *widget4 = new QWidget();
 			widget4->setLayout(hbox4);

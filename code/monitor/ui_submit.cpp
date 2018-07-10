@@ -158,12 +158,18 @@ void ui_submit::ui(){
 			QHBoxLayout *hbox13 = new QHBoxLayout();
 			hbox13->setContentsMargins(0,0,0,0);
 
-				QLabel *labelPriority = new QLabel("Priority:");
-				labelPriority->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-				labelPriority->setMinimumWidth(70);
+				QLabel *labelPriority = new QLabel("           Priority:");
+				labelPriority->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+				labelPriority->setMaximumWidth(70);
 
+				priority->addItems({"Very Low", "Low", "Normal", "High", "Very High"});
+				priority->setCurrentIndex(2);
+				priority->setMaximumWidth(80);
+				
 				hbox13->addWidget(labelPriority);
 				hbox13->addWidget(priority);
+				QLabel *null = new QLabel(" ");
+				hbox13->addWidget(null);
 			QWidget *widget13 = new QWidget();
 			widget13->setLayout(hbox13);	
 			widget13->setObjectName("style2");
@@ -496,7 +502,7 @@ void ui_submit::submitPanelOpen(){
 		firstFrame->setText( QString::fromStdString( panel["firstFrame"]) );	
 		lastFrame->setText( QString::fromStdString( panel["lastFrame"]) );
 		taskSize->setText( QString::fromStdString( panel["taskSize"]) );	
-		priority->setText( QString::fromStdString( panel["priority"]) );	
+		priority->setCurrentIndex( int( panel["priority"] ) );	
 		serverBox->setCurrentIndex( int( panel["serverBox"] ) );
 		serverGroupBox->setCurrentIndex( int( panel["serverGroupBox"] ) );
 		commentLine->setText( QString::fromStdString( panel["commentLine"]) );
@@ -521,7 +527,7 @@ void ui_submit::submitPanelSave(){
 				    { "firstFrame", firstFrame->text().toStdString() },
 				    { "lastFrame", lastFrame->text().toStdString() },
 				    { "taskSize", taskSize->text().toStdString()  },
-				    { "priority", priority->text().toStdString() },
+				    { "priority", priority->currentIndex() },
 				    { "serverBox",  serverBox->currentIndex() },
 				    { "serverGroupBox", serverGroupBox->currentIndex() },
 				    { "softwareBox", softwareBox->currentIndex() },
@@ -558,7 +564,7 @@ void ui_submit::submitAction( QString software ){
 		            firstFrame->text().toInt(),
 		            lastFrame->text().toInt(),
 		            taskSize->text().toInt(),
-		            priority->text().toInt(),
+		            priority->currentIndex(),
 		            suspend,
 		            commentLine->text().toStdString(),
 		            software.toStdString(),
@@ -577,7 +583,6 @@ void ui_submit::submitAction( QString software ){
 	if ( firstFrame->text().isEmpty() ) { details += "First Frame\n"; ok = false; }
 	if ( lastFrame->text().isEmpty() ) { details += "Last Frame\n"; ok = false; }
 	if ( taskSize->text().isEmpty() ) { details += "Task Size\n"; ok = false; }
-	if ( priority->text().isEmpty() ) { details += "Priority\n"; ok = false; }
 
 	QMessageBox *msg = new QMessageBox( this );
 	msg->setWindowTitle("Submit Information");

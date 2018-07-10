@@ -17,7 +17,6 @@ json manager::recieve_monitor_thread( json recv ){
 	auto pks = recv[0], id = recv[1];
 
 	if ( not pks.empty() ){
-
 		if ( id =="jobAction" ){ jobAction( pks ); }
 		if ( id == "jobOptions" ){ return jobOptions( pks ); }
 		if ( id == "serverOptions" ){ return serverOptions( pks ); }
@@ -120,8 +119,11 @@ void manager::jobAction( json pks ){
 }
 
 json manager::jobOptions( json pks ){
+	vector <string> names;
+	int num = 0;
+	string _name;
+	for ( auto _job : pks ){
 
-	for ( auto _job : pks ){ 
 		json job_name = _job[0];
 		json options = _job[1]; 
 		json action = _job[2];
@@ -138,15 +140,66 @@ json manager::jobOptions( json pks ){
 			job->priority = options[2];
 			job->comment = options[3];
 			job->instances = options[4];
-			job->first_frame = options[5];
-			job->last_frame = options[6];
-			job->task_size = options[7];
-			job->name = options[8];
+			int _first_frame = options[5];
+			int _last_frame = options[6];
+			int _task_size = options[7];
 
-			auto tasks = make_task( job->first_frame, job->last_frame, job->task_size );
-			job->task = tasks;
-			job->waiting_task = tasks.size();
-			job->tasks = tasks.size();
+			// el nombre se repite se pone un numero al final del nombre 
+			string name = options[8];
+			if ( not num  ) job->name = name;
+			else job->name = name + "_" + to_string(num);
+			num++;
+			//------------------------------------------------
+
+			// si el first_frame, last_frame y task_size no se modifican no crea las tares otra vez
+			if ( ( job->first_frame != _first_frame ) or ( job->last_frame != _last_frame )   
+				or ( job->task_size != _task_size ) ){
+
+				job->first_frame = _first_frame;
+				job->last_frame = _last_frame;
+				job->task_size = _task_size;
+
+				// obtiene los frames segun el estado
+				vector <int> finished;
+				vector <int> suspended;
+				for ( auto task : job->task ){
+					if ( ( task->status == "suspended" ) )
+						for (int i = task->first_frame; i <= task->last_frame; ++i)
+							suspended.push_back(i);
+
+					if ( ( task->status == "finished" ) )
+						for (int i = task->first_frame; i <= task->last_frame; ++i)
+							finished.push_back(i);
+				}
+				//----------------------------------------------------
+
+				auto tasks = make_task( job->first_frame, job->last_frame, job->task_size );
+				job->task = tasks;
+				job->waiting_task = tasks.size();
+				job->tasks = tasks.size();
+
+				int progres = 0;
+				for ( auto task : job->task ){ 
+					int task_size = task->last_frame - task->first_frame + 1;
+
+					int _finished = 0;
+					int _suspended = 0;
+
+					for (int i = task->first_frame; i <= task->last_frame; ++i){
+						for ( int f : finished ) if ( i == f ) _finished++;
+						for ( int s : suspended ) if ( i == s ) _suspended++;
+					}
+
+					if ( task_size == _finished ){
+						task->status = "finished";
+						progres++;
+					}
+					if ( task_size == _suspended )
+						task->status = "suspended";
+
+				}
+				job->progres = progres;
+			}//----------------------------------------
 
 			resetAllServer();
 		}
@@ -377,7 +430,6 @@ void manager::groupCreate( json pks ){
 
     groups.push_back( group );
 
-    qDebug() << "create in manager";
 }
 
 json manager::preferencesAction( json pks ){

@@ -93,7 +93,7 @@ public:
 	QLineEdit *jobName = new QLineEdit();
 	combobox *serverBox = new combobox();
 	combobox *serverGroupBox = new combobox();
-	QLineEdit *priority = new QLineEdit();
+	QComboBox *priority = new QComboBox();
 	QLineEdit *taskSize = new QLineEdit();
 	QLineEdit *commentLine = new QLineEdit();
 	QLineEdit *firstFrame = new QLineEdit();
