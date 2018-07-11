@@ -3,11 +3,10 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 
 TEMPLATE = app
-TARGET = ../submit
+TARGET = submit
 RC_ICONS = ../../icons/monitor.ico
 
 CONFIG += console c++14
-#CONFIG += debug
 
 QT += core gui multimedia widgets
 

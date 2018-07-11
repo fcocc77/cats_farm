@@ -15,7 +15,7 @@ macInstall="/usr/local/cats_farm"
 #--------------------------
 
 # Datos Generales
-ip = "192.168.10.43"
+ip = "192.168.10.45"
 manager_start = False
 server_start = True
 debug = False
@@ -135,6 +135,52 @@ def sublime_build():
 		os.system( "chmod 777 " + dirs + "/QT5-C++.sublime-build" )
 		os.system( "chmod 777 " + dirs + "/QT5-C++.py" )
 
+def nuke_module(install):
+	pluginsSys=["/usr/local/nuke/plugins","C:/Program Files/nuke/plugins","/Applications/nuke/nuke.app/Contents/MacOS/plugins"]
+
+	for a in range(9,11):
+		for b in range(10):
+			for s in pluginsSys:
+				for d in ["0","5"]:
+					nukeVersion="Nuke"+str(a)+"."+d+"v"+str(b)
+					plugins=s.replace("nuke",nukeVersion)
+
+					if os.path.isdir(plugins):
+
+						menuPy=plugins+"/menu.py"
+
+						if os.path.isfile(menuPy):
+
+							l1="import nukeCatsFarm\n"
+							l2='menuBarCat = nuke.menu("Nuke")\n'
+							l3="menuBarCat.addCommand('J_Script/SendToCatsfarm...', 'nukeCatsFarm.catsFarmSend()', 'Ctrl+r')\n"
+
+							if install:
+								f=open(menuPy,"a")
+								f.write(l1)
+								f.write(l2)
+								f.write(l3)
+								f.close()
+
+								shutil.copy(path+"/modules/nukeCatsFarm.py",plugins)
+
+							else:
+								nukeCatsFarm=plugins+"/nukeCatsFarm.py"
+								if os.path.isfile(nukeCatsFarm):
+									os.remove(nukeCatsFarm)
+
+								f=open(menuPy,"r")
+								lines=f.read()
+								f.close()
+
+								s=lines.replace(l1,"").replace(l2,"").replace(l3,"")
+
+								f=open(menuPy,"w")
+								f.write(s)
+								f.close()
+
+						#--------------------------------------------------------------
+
 def linux_install():
 	if not os.path.isdir(linuxInstall):
 		os.mkdir( linuxInstall )
@@ -177,6 +223,8 @@ def linux_install():
 	os.system( "service cserver start &>/dev/null" )
 	os.system( "service cmanager start &>/dev/null" )
 
+	nuke_module(1)
+
 def linux_uninstall():
 
 	os.system( "service cserver stop ")
@@ -187,6 +235,8 @@ def linux_uninstall():
 
 	desktop = "/usr/share/applications/CatsFarm.desktop"
 	if os.path.isfile(desktop): os.remove(desktop)
+
+	nuke_module(0)
 
 def windows_install():
 	if not os.path.isdir(windowsInstall):
@@ -211,9 +261,12 @@ def windows_install():
 	compile_( windowsInstall + "/code/server/server.pro" )
 	compile_( windowsInstall + "/code/monitor/monitor.pro" )
 	compile_( windowsInstall + "/code/manager/manager.pro" )
+	compile_( windowsInstall + "/code/submit/submit.pro" )
 	compile_( windowsInstall + "/modules/denoiser/denoiser.pro" )
-
+	
 	copyfile( windowsInstall + "/os/win/link/CatsFarm Monitor.lnk" , "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
+
+	nuke_module(1)
 
 def windows_uninstall():
 	if os.path.isdir( windowsInstall ):
@@ -221,6 +274,8 @@ def windows_uninstall():
 	lnk = "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
 	if os.path.isfile( lnk ):
 		os.remove( lnk )
+
+	nuke_module(0)
 
 compiler_install()
 #sublime_build()

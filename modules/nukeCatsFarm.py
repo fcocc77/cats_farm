@@ -5,15 +5,15 @@ import nuke
 ### detecta el sistema operativo
 if platform == "win32": 
 	system="Windows"
-	path = "C:/CatsFarm"
+	path = "C:/cats_farm"
 	bin = path + "/bin/win"
 elif platform  == "darwin": 
 	system="Mac"
-	path = "/usr/local/CatsFarm"
+	path = "/usr/local/cats_farm"
 	bin = path + "/bin/mac"
 else:
 	system = "Linux"
-	path = "/opt/CatsFarm"
+	path = "/opt/cats_farm"
 	bin = path + "/bin/linux"
 #-------------------------------------------------------
 
@@ -58,16 +58,11 @@ class catsFarmSend():
 
 		p.addSingleLineInput('Frame Range', writeFirstFrame+"-"+writeLastFrame)
 		p.addSingleLineInput('Task Size', '10')
-		p.addSingleLineInput('Priority', '50')
 
-		preferences = jread(path+"/etc/preferences_s.json")
-
-		server="none"
-		for s in preferences["servers"]:
-			server=server+" "+s
-		p.addEnumerationPulldown('Server', server)
+		p.addEnumerationPulldown('Priority', "Normal Very\\ Low Low High Very\\ High")
 
 		#posiciona los grupos con Nuke Name al inicio
+		preferences = jread(path+"/etc/preferences_s.json")
 		nukeGroups=["NUKE","nuke","Nuke"]
 		serverGroups=[]
 		for s in preferences["groups"]:
@@ -101,7 +96,12 @@ class catsFarmSend():
 		taskSize = p.value("Task Size")
 		priority = str(p.value("Priority"))
 
-		server = str(p.value("Server"))
+		if priority == "Normal": priority = "2"
+		if priority == "Very Low": priority = "0"
+		if priority == "Low": priority = "1"
+		if priority == "High": priority = "3"
+		if priority == "Very High": priority = "4"
+
 		serverGroup = str(p.value("Server Group"))
 		instances = str(p.value("Instances"))
 
@@ -166,13 +166,12 @@ class catsFarmSend():
 			else:
 			   suspend = '0'
 
-			server=server.replace("none","None")
 			serverGroup=serverGroup.replace("none","None")
 			#---------------------------------
 
 			cmd = ( bin + "/submit.exe " +
 						"-jobName " + jobName + 
-						" -server " + server +
+						" -server " + "none" +
 						" -serverGroup " + serverGroup +
 						" -firstFrame " + firstFrame +
 						" -lastFrame " + lastFrame +
