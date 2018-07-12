@@ -84,7 +84,16 @@ public:
 			}
 			catch( exception& e ){}
 
-			if ( recv_ok ) send =  ( ( _class->*func )( _pks, _input ) ).dump();
+			if ( recv_ok ){
+				try{
+					// Al hacer dump al json puede crashar asi que se pone intentar
+					send =  ( ( _class->*func )( _pks, _input ) ).dump();
+					//----------------------------------------------------
+				}
+				catch(...){
+					send = {};
+				}
+			}
 			else send = {};
 			//-----------------------------------------------------------
 
