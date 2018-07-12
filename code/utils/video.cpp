@@ -16,16 +16,18 @@ void concat(string folder){
 		ffmpeg = "ffmpeg";
 		logMetod = " &> ";
 	}
-
+	name=os::basename(folder);
 	dirMovie=os::dirname(folder);
-	list=dirMovie+"/list_"+os::basename(folder);
+	list=dirMovie+"/list_"+name;
 
 	//listado de movies en la carpeta
 	movie_list="";
 	auto dir_list = os::listdir(folder);
 	sort( dir_list.begin(), dir_list.end() );
 	for (auto i : dir_list){
-		movie_list+="file '"+i+"'\n";
+		string ext = split( i, "." ).back(); 		
+		if ( ext == "mov" )		
+			movie_list+="file '"+i+"'\n";
 	}
 	//-------------------------
 
@@ -34,8 +36,6 @@ void concat(string folder){
 	//----------------------------------
 
 	// crea ruta del exportacion
-	name=os::basename(dir_list[0]);
-	name=name.substr( 0, (name.find_last_of("_") ) );
 	movie=dirMovie+"/"+name+".mov";
 	//-----------------------------------------
 
@@ -45,7 +45,6 @@ void concat(string folder){
 	concat = ffmpeg+" -y -f concat "+safe+" -i "+'"'+list+'"'+" -c copy "+'"'+movie+'"';
 	null=dirMovie+"/null";
 	cmd = concat+logMetod+'"'+null+'"';
-
 	os::sh(cmd);
 
 	//------------------------------------------
@@ -57,7 +56,8 @@ void concat(string folder){
 	//----------------------
 
 	// borra carpeta de los videos separados
-	os::remove(folder);
+	if ( os::isfile(movie) )	
+		os::remove(folder);
 	//---------------------------------------
 
 }

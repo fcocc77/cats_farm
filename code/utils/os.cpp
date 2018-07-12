@@ -282,8 +282,8 @@ void os::mkdir ( string path ){
 void os::remove( string _file ){
 	QFile file ( QString::fromStdString(_file) );
 	file.remove();
-	QDir dir;
-	dir.remove( QString::fromStdString(_file) );
+	QDir dir( QString::fromStdString(_file) );
+	dir.removeRecursively();	
 }
 
 void os::rename( string src, string dst ){
@@ -303,15 +303,11 @@ string os::basename( string file ){
 }
 
 bool os::isfile( string file ){
-	ifstream infile(file);
-	return infile.good();
+	return QFile( QString::fromStdString( file ) ).exists();
 }
 
 bool os::isdir( string dir ){
-	string cmd = "if exist \"" + dir + "\" echo 1";
-	if ( os::isfile(dir) ) return false;
-	else if ( sh( cmd ).empty() ) return false;
-	else return true;
+	return QDir( QString::fromStdString( dir ) ).exists();
 }
 
 #ifdef _WIN32
