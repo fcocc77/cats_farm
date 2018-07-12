@@ -16,7 +16,7 @@ macInstall="/usr/local/cats_farm"
 
 # Datos Generales
 ip = "192.168.10.45"
-manager_start = True
+manager_start = False
 server_start = True
 action = True
 debug = False
@@ -264,8 +264,27 @@ def windows_install():
 	compile_( windowsInstall + "/code/manager/manager.pro" )
 	compile_( windowsInstall + "/code/submit/submit.pro" )
 	compile_( windowsInstall + "/modules/denoiser/denoiser.pro" )
-	
+
 	copyfile( windowsInstall + "/os/win/link/CatsFarm Monitor.lnk" , "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
+
+	# Create Services
+	serverIP = "192.168.10.45"
+	serverUSER = "server1"
+	serverPASS = "jump77cats"
+	#----------------------------
+	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
+	psexec = windowsInstall + "/os/win/service/PsExec.exe" # comando para excecute en SYSTEM USER
+	os.system( psexec + " cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
+	os.system( psexec + " cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
+	#-------------------------------------
+	os.system( nssm + " install cserver " + windowsInstall + "/bin/win/server.exe" )
+	os.system( nssm + " install cmanager " + windowsInstall + "/bin/win/manager.exe" )
+	#-------------------------------------
+	if server_start: os.system( nssm + " start cserver")
+	else: os.system( "sc config cserver start= disabled" )
+	if manager_start: os.system( nssm + " start cmanager")
+	else: os.system( "sc config cmanager start= disabled" )
+	#-------------------------------------
 
 	nuke_module(1)
 
@@ -277,6 +296,14 @@ def windows_uninstall():
 		os.remove( lnk )
 
 	nuke_module(0)
+
+	# remove services
+	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
+	os.system( nssm + " stop cserver")
+	os.system( nssm + " remove cserver confirm")
+	os.system( nssm + " stop cmanager")
+	os.system( nssm + " remove cmanager confirm")	
+	#----------------------------------------------------------
 
 compiler_install()
 #sublime_build()
