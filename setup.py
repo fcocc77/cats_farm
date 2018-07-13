@@ -31,6 +31,10 @@ try:
 except: None
 #-------------------------
 
+def sh( cmd ):
+	proc = subprocess.Popen( cmd, stdout=subprocess.PIPE , stderr=subprocess.PIPE, shell=True )
+	return proc.communicate()[0]
+
 def copydir( src, dst ):
 	if not os.path.isdir( dst ): 
 		shutil.copytree( src, dst )
@@ -64,8 +68,8 @@ def compile_ ( project ):
 
 		if os.path.isfile(exe): os.remove(exe)
 
-		os.system("cd " + ProgramData + " && " + qmake + " " + project + " > %temp%/null" )
-		os.system( "set path=" + os.path.dirname( make ) + "; && cd " + ProgramData + " && " + make + " > %temp%/null")
+		sh( "cd " + ProgramData + " && " + qmake + " " + project )
+		sh( "set path=" + os.path.dirname( make ) + "; && cd " + ProgramData + " && " + make )
 
 		shutil.move( exe, windowsInstall + "/bin/win/" + basename + ".exe" )
 
@@ -80,12 +84,12 @@ def compile_ ( project ):
 
 		if os.path.isfile(exe): os.remove(exe)
 
-		os.system("cd " + temp +" && " + qmake + " "+project + " &> /dev/null")
-		os.system("cd " + temp + " && source /opt/rh/devtoolset-7/enable && make > /dev/null")
+		sh( "cd " + temp +" && " + qmake + " " + project )
+		sh( "cd " + temp + " && source /opt/rh/devtoolset-7/enable && make" )
 
 		shutil.move( exe, linuxInstall + "/bin/linux/" + basename )
 
-	print "Finished Compler."
+	print "The " + basename + " compilation finishes."
 	print "---------------------------------------------"
 
 def compiler_install():
@@ -107,7 +111,7 @@ def compiler_install():
 		rpms = ""
 		for rpm in os.listdir( path + "/qt/linux/libs" ):
 			rpms +=  path + "/qt/linux/libs/" + rpm + " "
-		os.system( "yum -y install " + rpms + " &> /dev/null" )
+		sh( "yum -y install " + rpms )
 		#----------------------
 
 def sublime_build():
@@ -133,8 +137,8 @@ def sublime_build():
 
 		copyfile( path + "/modules/QT5-C++.py", dirs )
 
-		os.system( "chmod 777 " + dirs + "/QT5-C++.sublime-build" )
-		os.system( "chmod 777 " + dirs + "/QT5-C++.py" )
+		sh( "chmod 777 " + dirs + "/QT5-C++.sublime-build" )
+		sh( "chmod 777 " + dirs + "/QT5-C++.py" )
 
 def nuke_module(install):
 	pluginsSys=["/usr/local/nuke/plugins","C:/Program Files/nuke/plugins","/Applications/nuke/nuke.app/Contents/MacOS/plugins"]
@@ -218,17 +222,17 @@ def linux_install():
 	f.write(dbug)
 	f.close()
 	# los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
-	os.system( "sed -i -e 's/\r//g' /etc/init.d/cserver")
-	os.system( "sed -i -e 's/\r//g' /etc/init.d/cmanager")  
+	sh( "sed -i -e 's/\r//g' /etc/init.d/cserver")
+	sh( "sed -i -e 's/\r//g' /etc/init.d/cmanager")  
 	#--------------------------------------------------------------------------------
-	os.system( "service cserver start &>/dev/null" )
-	os.system( "service cmanager start &>/dev/null" )
+	sh( "service cserver start" )
+	sh( "service cmanager start " )
 
 	nuke_module(1)
 
 def linux_uninstall():
 
-	os.system( "service cserver stop ")
+	sh( "service cserver stop ")
 	cserver =  "/etc/init.d/cserver"
 	if os.path.isfile(cserver): os.remove( cserver )
 
@@ -240,6 +244,7 @@ def linux_uninstall():
 	nuke_module(0)
 
 def windows_install():
+	print "---------------------------------------------"
 	if not os.path.isdir(windowsInstall):
 		os.mkdir( windowsInstall )
 
@@ -274,23 +279,23 @@ def windows_install():
 	#----------------------------
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
 	psexec = windowsInstall + "/os/win/service/PsExec.exe" # comando para excecute en SYSTEM USER
-	os.system( psexec + " cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
-	os.system( psexec + " cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
+	sh( psexec + " cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
+	sh( psexec + " cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
 	#-------------------------------------
-	os.system( nssm + " install cserver " + windowsInstall + "/bin/win/server.exe" )
-	os.system( nssm + " install cmanager " + windowsInstall + "/bin/win/manager.exe" )
+	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/server.exe" )
+	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/manager.exe" )
 	#-------------------------------------
-	if server_start: os.system( nssm + " start cserver")
-	else: os.system( "sc config cserver start= disabled" )
-	if manager_start: os.system( nssm + " start cmanager")
-	else: os.system( "sc config cmanager start= disabled" )
+	if server_start: sh( nssm + " start \"CatsFarm Server\"")
+	else: sh( "sc config \"CatsFarm Server\" start= disabled" )
+	if manager_start: sh( nssm + " start \"CatsFarm Manager\"")
+	else: sh( "sc config \"CatsFarm Manager\" start= disabled" )
 	#-------------------------------------
 
 	nuke_module(1)
 
 def windows_uninstall():
 	if os.path.isdir( windowsInstall ):
-		os.system("RD /S /Q \"" + windowsInstall + "\"" )
+		sh("RD /S /Q \"" + windowsInstall + "\"" )
 	lnk = "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
 	if os.path.isfile( lnk ):
 		os.remove( lnk )
@@ -299,10 +304,16 @@ def windows_uninstall():
 
 	# remove services
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
-	os.system( nssm + " stop cserver")
-	os.system( nssm + " remove cserver confirm")
-	os.system( nssm + " stop cmanager")
-	os.system( nssm + " remove cmanager confirm")	
+	sh( nssm + " stop cserver")
+	sh( nssm + " remove cserver confirm")
+	sh( nssm + " stop cmanager")
+	sh( nssm + " remove cmanager confirm")	
+
+	sh( nssm + " stop \"CatsFarm Server\"")
+	sh( nssm + " remove \"CatsFarm Server\" confirm")
+	sh( nssm + " stop \"CatsFarm Manager\"")
+	sh( nssm + " remove \"CatsFarm Manager\" confirm")	
+	
 	#----------------------------------------------------------
 
 compiler_install()
