@@ -2,8 +2,8 @@
 [Desktop Entry]
 
 Name=CatsFarm Monitor
-Exec=/opt/CatsFarm/bin/linux/CatsFarmMonitor
-Icon=/opt/CatsFarm/icons/monitor.png
+Exec=/opt/cats_farm/bin/linux/monitor
+Icon=/opt/cats_farm/icons/monitor.png
 Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
 Type=Application
 Name[en_US]=CatsFarm

@@ -384,13 +384,11 @@ vector <string> os::listdir( string folder, bool onlyname ){
 	QDir ruta = QString::fromStdString(folder);
 	QDirIterator it(ruta);
 
-	int i = 0;
 	while (it.hasNext()){ 
 		string file = it.next().toStdString();
-		if ( onlyname ) file = basename( file );
-		i++;
-		if ( i>2 ) list_dir.push_back( file ); //elimina los item ./ y ../
-
+		string name = basename( file );
+		if ( onlyname ) file = name;
+		if ( ( name != "." ) and ( name != ".." ) ) list_dir.push_back( file );
 	}
 
 	return list_dir;
