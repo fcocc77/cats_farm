@@ -279,9 +279,13 @@ def windows_install():
 	#----------------------------
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
 	psexec = windowsInstall + "/os/win/service/PsExec.exe" # comando para excecute en SYSTEM USER
-	sh( psexec + " cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
-	sh( psexec + " cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
+	sh( psexec + " -i -s cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
+	sh( psexec + " -i -s cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
 	#-------------------------------------
+	sh( psexec + " -i -s net use /delete z:" ) # demonta el z: 
+	sh( psexec + " -i -s net use z: \\\\" + serverIP + "\\server_01x /user:" + serverUSER + " " + serverPASS ) # actualiza para que no de error
+	sh( psexec + " -i -s net use z: \\\\" + serverIP + "\\server_01 /user:" + serverUSER + " " + serverPASS ) # monta el z: 
+	#----------------------------
 	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/server.exe" )
 	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/manager.exe" )
 	#-------------------------------------
