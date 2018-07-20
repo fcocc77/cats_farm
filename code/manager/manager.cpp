@@ -241,7 +241,10 @@ void manager::json_to_struct( json info ){
 		_jobs->suspended_task = job[ "suspended_task" ];
 		_jobs->failed_task = job[ "failed_task" ];
 		_jobs->active_task = job[ "active_task" ];
-
+		_jobs->task_size = job[ "task_size" ];
+		_jobs->first_frame = job[ "first_frame" ];
+		_jobs->last_frame = job[ "last_frame" ];
+		
 		for ( auto t : job[ "task" ] ){
 			task_struct *_tasks = new task_struct; 
 			_tasks->name = t[ "name" ];  
@@ -349,7 +352,10 @@ json manager::struct_to_json(){
 		i[ "suspended_task" ] = job->suspended_task;
 		i[ "failed_task" ] = job->failed_task;
 		i[ "active_task" ] = job->active_task;
-
+		i[ "task_size" ] = job->task_size;
+		i[ "first_frame" ] = job->first_frame;
+		i[ "last_frame" ] = job->last_frame;
+		
 		for ( auto task : job->task ){
 			json t;
 			t[ "name" ] = task->name ;  
