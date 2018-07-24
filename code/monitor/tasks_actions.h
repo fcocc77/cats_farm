@@ -36,11 +36,13 @@ public:
 	// Task Action
 	QAction *taskSuspendAction = new QAction("Suspend");
 	QAction *taskRestartAction = new QAction("Restart");
+	QAction *taskRenderServerAction = new QAction("Select server tasks");
 	//------------------------------------------------
 
 	// Task Funtions
 	void task_popup();
 	void taskRestart();
+	void taskRenderServer();
 	void taskMessage( string action, QString ask, QString tile );
 	void taskAction( string action );
     void acionts();

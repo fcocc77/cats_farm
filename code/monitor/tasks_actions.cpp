@@ -11,6 +11,9 @@ void tasks_actions::acionts(){
 		taskAction( "suspend" );} 
 	);
 	connect( taskRestartAction, &QAction::triggered, this, &tasks_actions::taskRestart );
+
+	connect( taskRenderServerAction, &QAction::triggered, this, &tasks_actions::taskRenderServer );
+
 	//-----------------------------------------------------
 }
 
@@ -22,6 +25,7 @@ void tasks_actions::task_popup(){
 		menu->addAction( taskSuspendAction );
 		menu->addSeparator();
 		menu->addAction( taskRestartAction );
+		menu->addAction( taskRenderServerAction );
 		menu->popup( QCursor::pos() );
 
 	}
@@ -33,6 +37,21 @@ void tasks_actions::taskRestart(){
 	string action = "resume";
 
 	taskMessage( action, ask, tile );
+}
+
+void tasks_actions::taskRenderServer(){
+	auto selected = taskList->selectedItems();
+	string _server =  selected[0]->text( 3 ).toStdString();
+	_server = split( _server, ":" )[0];
+
+	for (int i = 0; i <  taskList->topLevelItemCount(); ++i){
+		auto item = taskList->topLevelItem(i);
+
+		string server =  item->text( 3 ).toStdString();
+		server = split( server, ":" )[0];
+		if ( _server == server ) item->setSelected(true);
+	}
+
 }
 
 void tasks_actions::taskMessage( string action, QString ask, QString tile ){
