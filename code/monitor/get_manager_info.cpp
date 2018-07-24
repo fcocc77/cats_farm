@@ -690,7 +690,7 @@ void get_manager_info::updateTask(){
 
 			if ( status == "finished" ){
 				for (int i = 0; i < 5; ++i){
-					item->setForeground( i, QColor(100,130,200) );
+					item->setForeground( i, QColor(80,150,200) );
 				}
 			}
 
