@@ -1,2 +1,1 @@
-# cats_farm
-RenderFarm Manager
+Cats Farm: RenderFarm Manager.
