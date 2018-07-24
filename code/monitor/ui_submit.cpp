@@ -422,22 +422,12 @@ void ui_submit::submitSetPanel( QString file_name ){
 	string ext = split( file, "." ).back();
 	string name = replace( os::basename( file ), "."+ext, "" );
 
-	if ( ( ext == "mb" ) or ( ext == "ma" ) ){
-		softwareBox->setCurrentIndex(1);
-	}
-	if ( ext == "nk" ){
-		softwareBox->setCurrentIndex(0);
-	}
-
-	if ( ext == "c4d" ){
-		softwareBox->setCurrentIndex(3);
-	}
-	if ( ext == "hip" ){
-		softwareBox->setCurrentIndex(2);
-	}
-	if ( ext == "comp" ){
-		softwareBox->setCurrentIndex(4);
-	}
+	if ( ( ext == "mb" ) or ( ext == "ma" ) ) softwareBox->setCurrentIndex(1);
+	if ( ext == "nk" )softwareBox->setCurrentIndex(0);
+	if ( ext == "c4d" ) softwareBox->setCurrentIndex(3);
+	if ( ext == "hip" ) softwareBox->setCurrentIndex(2);
+	if ( ext == "comp" )softwareBox->setCurrentIndex(4);
+	if ( ext == "exr" ) softwareBox->setCurrentIndex(5);
 
 	fileLine->setText( QString::fromStdString( file ) );
 	jobName->setText( QString::fromStdString ( name ) );
