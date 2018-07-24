@@ -18,25 +18,26 @@ void get_manager_info::managerRecieve(){
 json get_manager_info::managerRecieveUpdate( json recv ){
 
 	static int timelapse;
+	if ( not recv.empty() ){ 
+		if ( not shared->stopUpdate ){ 
+			shared->servers = recv["servers"]; // para el log
+			shared->jobs = recv["jobs"]; // para las tasks y para el log
+			updateJob(  recv["jobs"] );
+			updateServer( recv["servers"] );
+			updateGroup( recv["groups"] );
+		}
 
-	if ( not shared->stopUpdate ){ 
-		shared->servers = recv["servers"]; // para el log
-		shared->jobs = recv["jobs"]; // para las tasks y para el log
-		updateJob(  recv["jobs"] );
-		updateServer( recv["servers"] );
-		updateGroup( recv["groups"] );
-
-	}
-	else{ 
-		/* va sumando segundos, y si es mayor a 3 seg, se puede actualizar otra vez;
-		esto es para que cuando se borre un item, no vuelva a aparecer y desaparecer */
-		timelapse++; 
-		if ( timelapse > 3 ){  
-			shared->stopUpdate = false;
-			timelapse = 0;
+		else{ 
+			/* va sumando segundos, y si es mayor a 3 seg, se puede actualizar otra vez;
+			esto es para que cuando se borre un item, no vuelva a aparecer y desaparecer */
+			timelapse++; 
+			if ( timelapse > 3 ){  
+				shared->stopUpdate = false;
+				timelapse = 0;
+			}
 		}
 	}
-
+	
 	return {};
 }
 
