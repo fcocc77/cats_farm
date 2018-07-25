@@ -104,6 +104,7 @@ public:
 	//--------------------------------------------
 
 	// parameter noice
+	QWidget *widgetNoice = new QWidget();
 	QLineEdit *patchRadius = new QLineEdit();
 	QLineEdit *searchRadius = new QLineEdit();
 	QLineEdit *variance = new QLineEdit();

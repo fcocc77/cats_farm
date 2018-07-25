@@ -1,12 +1,13 @@
 #include "ui_submit.h"
 
 void ui_submit::ui(){
-	QVBoxLayout *vbox1 = new QVBoxLayout();
-	vbox1->setContentsMargins(15,15,15,15);
+
+	QVBoxLayout *vboxSubmit = new QVBoxLayout();
+	vboxSubmit->setContentsMargins(15,15,15,15);
 
 		QStringList items = {"Nuke","Maya","Houdini","Cinema4D","Fusion", "Noice"};
 		softwareBox->addItems(items);
-		vbox1->addWidget(softwareBox);
+		vboxSubmit->addWidget(softwareBox);
 
 	    // box 1
 		QVBoxLayout *vbox2 = new QVBoxLayout();
@@ -70,12 +71,12 @@ void ui_submit::ui(){
 		widget2->setLayout(vbox2);	
 		widget2->setObjectName("style1");
 
-		vbox1->addWidget(widget2);
+		vboxSubmit->addWidget(widget2);
 		//---------------------------------------
 
-	    // box 2
-		QVBoxLayout *vbox3 = new QVBoxLayout();
-		vbox3->setContentsMargins(15,15,15,15);
+	    // box 1.5
+		QVBoxLayout *vboxNoice = new QVBoxLayout();
+		vboxNoice->setContentsMargins(15,15,15,15);
 
 			QHBoxLayout *hbox10_1 = new QHBoxLayout();
 			hbox10_1->setContentsMargins(0,0,0,0);
@@ -99,8 +100,17 @@ void ui_submit::ui(){
 			widget10_1->setLayout(hbox10_1);	
 			widget10_1->setObjectName("style2");
 
-			vbox3->addWidget(widget10_1);
+			vboxNoice->addWidget(widget10_1);
 
+		widgetNoice->setLayout(vboxNoice);	
+		widgetNoice->setObjectName("style1");
+
+		vboxSubmit->addWidget(widgetNoice);
+		//---------------------------------------
+
+	    // box 2
+		QVBoxLayout *vbox3 = new QVBoxLayout();
+		vbox3->setContentsMargins(15,15,15,15);
 			QHBoxLayout *hbox10 = new QHBoxLayout();
 			hbox10->setContentsMargins(0,0,0,0);
 				QLabel *labelJobName = new QLabel("Job Name:");
@@ -119,7 +129,7 @@ void ui_submit::ui(){
 		widget3->setLayout(vbox3);	
 		widget3->setObjectName("style1");
 
-		vbox1->addWidget(widget3);
+		vboxSubmit->addWidget(widget3);
 		//---------------------------------------
 
 		// box 3
@@ -165,7 +175,7 @@ void ui_submit::ui(){
 				priority->addItems({"Very Low", "Low", "Normal", "High", "Very High"});
 				priority->setCurrentIndex(2);
 				priority->setMaximumWidth(80);
-				
+
 				hbox13->addWidget(labelPriority);
 				hbox13->addWidget(priority);
 				QLabel *null = new QLabel(" ");
@@ -179,7 +189,7 @@ void ui_submit::ui(){
 		widget4->setLayout(vbox4);	
 		widget4->setObjectName("style1");
 
-		vbox1->addWidget(widget4);
+		vboxSubmit->addWidget(widget4);
 		//---------------------------------------
 
 		// box 4
@@ -217,7 +227,7 @@ void ui_submit::ui(){
 		QWidget *widget5 = new QWidget();
 		widget5->setLayout(vbox5);	
 		widget5->setObjectName("style1");
-		vbox1->addWidget(widget5);
+		vboxSubmit->addWidget(widget5);
 		//--------------------------------------
 
 		// box 5
@@ -228,14 +238,14 @@ void ui_submit::ui(){
 		QWidget *widget6 = new QWidget();
 		widget6->setLayout(vbox6);	
 		widget6->setObjectName("style1");
-		vbox1->addWidget(widget6);
+		vboxSubmit->addWidget(widget6);
 
 		//---------------------------------------
 	QWidget *widget1 = new QWidget();
-	widget1->setLayout(vbox1);
-    widget1->setMaximumHeight(500); //el tamanio maximo del widget
+	widget1->setLayout(vboxSubmit);
+    widget1->setMaximumHeight(590); //el tamanio maximo del widget
 
-	vbox1->addWidget(buttom);
+	vboxSubmit->addWidget(buttom);
 
 	//------------------------------------------------
 
@@ -323,6 +333,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		fileFile->setText("Script");
 		renderLine->setText("Write1");
 		outputFile->setText("...");
+		widgetNoice->setVisible(false);
 	}
 
 	if ( software == "Maya" ){
@@ -338,6 +349,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		fileFile->setText("Scene");
 		renderLine->setText("");
 		outputFile->setText("...");
+		widgetNoice->setVisible(false);
 
 		string file_name = ( fileLine->text() ).toStdString();
 
@@ -349,6 +361,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		}
 
 		projectLine->setText( QString::fromStdString(file_name) );
+
 	}
 
 	if ( software == "Houdini" ){
@@ -365,6 +378,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		renderLine->setText("/out/arnold1");
 		projectLine->setText("");
 		outputFile->setText("...");
+		widgetNoice->setVisible(false);
 	}
 	if ( software == "Cinema4D" ){
 		projectLine->setDisabled(1);
@@ -380,6 +394,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		renderLine->setText("");
 		projectLine->setText("");
 		outputFile->setText("...");
+		widgetNoice->setVisible(false);
 	}
 
 	if ( software == "Fusion" ){
@@ -396,6 +411,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		renderLine->setText("");
 		projectLine->setText("");
 		outputFile->setText("...");
+		widgetNoice->setVisible(false);
 	}
 
 	if ( software == "Noice" ){
@@ -412,6 +428,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		renderLine->setText("");
 		projectLine->setText("");
 		outputFile->setText("...");
+		widgetNoice->setVisible(true);
 	}
 }
 
@@ -423,10 +440,10 @@ void ui_submit::submitSetPanel( QString file_name ){
 	string name = replace( os::basename( file ), "."+ext, "" );
 
 	if ( ( ext == "mb" ) or ( ext == "ma" ) ) softwareBox->setCurrentIndex(1);
-	if ( ext == "nk" )softwareBox->setCurrentIndex(0);
+	if ( ext == "nk" ) softwareBox->setCurrentIndex(0);
 	if ( ext == "c4d" ) softwareBox->setCurrentIndex(3);
 	if ( ext == "hip" ) softwareBox->setCurrentIndex(2);
-	if ( ext == "comp" )softwareBox->setCurrentIndex(4);
+	if ( ext == "comp" ) softwareBox->setCurrentIndex(4);
 	if ( ext == "exr" ) softwareBox->setCurrentIndex(5);
 
 	fileLine->setText( QString::fromStdString( file ) );
