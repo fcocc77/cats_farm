@@ -276,7 +276,7 @@ void get_manager_info::updateServer( json recv ){
 		}
 
 		if ( display ){ 
-			if ( _win32 ){
+			if ( system == "Windows" ){
 				if ( shared->server_display["window"] ){ //Windows
 					displayServer.push_back( server_name );
 				}
