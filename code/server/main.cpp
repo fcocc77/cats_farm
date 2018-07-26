@@ -2,8 +2,8 @@
 
 int main( int argc, char *argv[] ){
 	QApplication a(argc, argv);
-
-	server _server();
+	server s;
+	s.init();
 
     return a.exec();
 }

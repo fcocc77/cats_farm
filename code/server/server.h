@@ -21,10 +21,10 @@ using namespace nlohmann;
 
 class server : public QObject{
 public:
-	server();
 
 	render *_render = new render();
 
+	void init();
 	json send_resources( json recv );
 	bool vbox_working();
 	json recieveManager( json data, int input );
