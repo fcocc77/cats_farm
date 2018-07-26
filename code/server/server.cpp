@@ -1,15 +1,17 @@
 #include "server.h"
 
-server::server( string exe ){
+server::server(){
+
     tcpClient( managerHost, 7000, &server::send_resources, this, 1 );
 	tcpServer( 7001, &server::recieveManager, this );
+
 }
 
 json server::send_resources( json recv ){
 
 	if ( not recv.empty() ){
-		preferences = recv;
-		jwrite( "../../etc/preferences_s.json", preferences );
+		_render->preferences = recv;
+		jwrite( "../../etc/preferences_s.json", _render->preferences );
 	}
 
 	string system;
@@ -59,7 +61,7 @@ json server::recieveManager( json recv, int input ){
 	debug("server::recieveManager.");
 	string send;
 
-	if ( input == 0 ) send = render_task( recv );
+	if ( input == 0 ) send = _render->render_task( recv );
 
 	if ( input == 1 ) send = fread( "../../log/server_log" );
 
@@ -78,8 +80,8 @@ json server::recieveManager( json recv, int input ){
 	if ( input == 3 ){
 
 		for ( int i : recv ){
-			taskKill[i] = true;
-			os::kill( pid[i] );
+			_render->taskKill[i] = true;
+			os::kill( _render->pid[i] );
 		}
 
 	}

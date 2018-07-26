@@ -1,4 +1,3 @@
-
 # disable unsused variables warning
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
@@ -12,6 +11,7 @@ CONFIG += console c++14
 QT += core gui multimedia widgets
 
 HEADERS += 	./server.h \
+			./render.h \
 			../manager/structs.h \
 			../utils/json.h \
 			../utils/os.h \
@@ -22,7 +22,7 @@ HEADERS += 	./server.h \
 
 SOURCES += 	./main.cpp \
 			./server.cpp \  
-			./renderRun.cpp \ 
+			./render.cpp \ 
 			../utils/util.cpp \ 
 			../utils/video.cpp \
 			../utils/os.cpp \

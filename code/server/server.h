@@ -17,24 +17,18 @@ using namespace nlohmann;
 #include <QObject>
 #include <QFileInfo>
 
+#include "render.h"
+
 class server : public QObject{
 public:
-	server( string exe );
+	server();
 
-	string render_task( json recv );
-	string post_software( int total_frame, string log_file, string software);
-	string pre_software(string software, string project, int first_frame, int last_frame,
-					string extra, int instance, string src_path, 
-					string dst_path, string jobSystem, string render, string log_file );
+	render *_render = new render();
+
 	json send_resources( json recv );
 	bool vbox_working();
 	json recieveManager( json data, int input );
 
-	vector <bool> taskKill = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-	vector <bool> renderInstance = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-	vector <int> pid = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
-
-	json preferences;
 	const string managerHost = fread( "../../etc/manager_host" );
 
 };
