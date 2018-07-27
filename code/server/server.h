@@ -26,7 +26,6 @@ public:
 
 	void init();
 	json send_resources( json recv );
-	bool vbox_working();
 	json recieveManager( json data, int input );
 
 	const string managerHost = fread( "../../etc/manager_host" );

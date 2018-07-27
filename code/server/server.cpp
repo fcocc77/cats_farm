@@ -25,7 +25,7 @@ json server::send_resources( json recv ){
 						 os::ramPercent(),
 						 os::cpuTemp(),
 						 system,
-						 vbox_working(),
+						 _render->vbox_working(),
 						 os::ramTotal(),
 						 os::ramUsed(),
 						 os::cpuCount(),
@@ -33,25 +33,6 @@ json server::send_resources( json recv ){
 						};
 
 	return server_info;
-}
-
-bool server::vbox_working(){
-	// Virtual Machin status
-
-	string vm;
-	if ( _linux ){
-		string vm_cmd = "'VBoxManage list runningvms'";
-		vm = "runuser -l " + os::user() + " -c " + vm_cmd; 
-	}
-	if ( _win32 ){
-		vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
-	}
-
-	string running = split( os::sh(vm), " " )[0];
-
-	if ( running == "\"win2016\"" ){ return true; }
-	else { return false; }
-	//------------------------------------------
 }
 
 json server::recieveManager( json recv, int input ){

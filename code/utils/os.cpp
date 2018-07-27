@@ -121,7 +121,6 @@ void os::system( string cmd ){
 
 int os::ramTotal(){
 
-	int total; 
 	static int total_ram;
 
 	if ( not total_ram ){

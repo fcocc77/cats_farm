@@ -31,14 +31,17 @@ public:
 			src_path.push_back("none");
 			dst_path.push_back("none");
 		} //-------------------------------------------
-
 	}
 
 	string render_task( json recv );
 	string qprocess( string cmd, int ins );
+	void vbox_turn( bool turn );
+	bool vbox_working();	
+	void suspend_vbox();
 	bool nuke( int ins );
 	bool maya( int ins );
 	bool houdini( int ins );
+	string cinema_vbox( string cmd, int ins );
 	bool cinema( int ins );
 	bool fusion( int ins );
 	bool noice( int ins );
