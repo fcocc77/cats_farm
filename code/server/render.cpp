@@ -340,6 +340,11 @@ bool render::noice( int ins ){
 	string cmd = denoiser + " \"" + project[ ins ] + "\" \"" + exe + "\" " + pr + " " + sr + " " + 
 					vr + " " + tr + " " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
 
+	// rendering ...
+	// ----------------------------------
+	qprocess( cmd, ins );
+	// ----------------------------------
+
 	return true;
 }
 
