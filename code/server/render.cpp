@@ -238,12 +238,12 @@ void render::vbox_turn( bool turn ){
 	string get_user = "grep '/bin/bash' /etc/passwd | cut -d':' -f1";                
 	string user = split( os::sh( get_user ), "\n" )[1];
 	//------------------------------------------------------
-
 	string vm;
+
 	if ( turn ){
 
 		if ( _linux ){
-			vm = "'VBoxManage startvm win2016 --type headless'";
+			vm = "\"VBoxManage startvm win2016 --type headless\"";
 			vm = "runuser -l " + user + " -c " + vm;
 		}
 		if ( _win32 )
@@ -254,7 +254,7 @@ void render::vbox_turn( bool turn ){
 	else{
 
 		if ( _linux ){
-			vm = "'VBoxManage controlvm win2016 savestate'";
+			vm = "\"VBoxManage controlvm win2016 savestate\"";
 			vm = "runuser -l " + user + " -c " + vm;
 		}
 		if ( _win32 )
@@ -335,28 +335,28 @@ string render::cinema_vbox( string cmd, int ins ){
 	string log;
 	int wait = 0;
 	while (1){ 
-		string vbox_render = fread( setting + "/vbox_render_" + _ins );
-
-		if ( vbox_render == "0" ){ 
+		int vbox_render = stoi( fread( setting + "/vbox_render_" + _ins ) );
+		
+		if ( vbox_render == 0 ){ 
 			log = fread( setting + "/vbox_log_" + _ins );
 			break;
 		}
 
 		// espera respuesta del servervm (que es 2) si no responde en 200 segundos se rompe el loop
-		if ( vbox_render != "2" )
+		if ( vbox_render != 2 ){
 			wait++;
 			if ( wait == 200 ){
 				fwrite( setting + "/vbox_render_" + _ins, "0" );
 				log = "Server VM not responding, May be the Virtual Machine is OFF.";
 				break;
 			}
+		}
 		//---------------------------------------------------------
 
 		sleep(1);
 	}
 
 	fwrite( setting + "/vbox_kill_" + _ins, "0" );
-
 	return log;
 }
 
@@ -366,8 +366,11 @@ bool render::cinema( int ins ){
 	os::remove( log_file );
 
 	project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
+	
+	string g_log; 
+	if ( _linux ) g_log = "\" g_logfile=\"" + log_file + "\""; // para el virtualbox	
 
-	string args = " -nogui -render \"" + project[ ins ] + "\" g_logfile=\"" + log_file + "\"" +
+	string args = " -nogui -render \"" + project[ ins ] + g_log +
 				 " -frame " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
 
 	//Obtiene el excecutable que existe en este sistema

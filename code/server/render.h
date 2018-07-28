@@ -3,6 +3,7 @@
 
 #include "../utils/util.h"
 #include "../utils/json.h"
+#include "../utils/threading.h"
 using namespace nlohmann;
 
 class render : public QObject{
@@ -31,6 +32,8 @@ public:
 			src_path.push_back("none");
 			dst_path.push_back("none");
 		} //-------------------------------------------
+	
+		threading( &render::suspend_vbox, this );
 	}
 
 	string render_task( json recv );
