@@ -13,7 +13,8 @@ public:
 	vector <int> first_frame, last_frame, pid;
 	vector <string> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
 	vector <bool> taskKill, renderInstance;
-
+	bool virtualbox_cinema;
+	
 	render(){
 		// inicializar instancias 16 veces
 		for (int i = 0; i < 15; ++i){
@@ -33,18 +34,17 @@ public:
 			dst_path.push_back("none");
 		} //-------------------------------------------
 	
-		threading( &render::suspend_vbox, this );
+		//threading( &render::suspend_vbox, this );
 	}
 
 	string render_task( json recv );
-	string qprocess( string cmd, int ins );
+	string qprocess( string cmd, int ins = -1 );
 	void vbox_turn( bool turn );
 	bool vbox_working();	
 	void suspend_vbox();
 	bool nuke( int ins );
 	bool maya( int ins );
 	bool houdini( int ins );
-	string cinema_vbox( string cmd, int ins );
 	bool cinema( int ins );
 	bool fusion( int ins );
 	bool noice( int ins );

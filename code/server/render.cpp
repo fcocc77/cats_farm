@@ -88,7 +88,7 @@ string render::render_task( json recv ){
 string render::qprocess( string cmd, int ins ){
 	QProcess proc;
 	proc.start( QString::fromStdString(cmd) );
-	pid[ins] = proc.processId();
+	if ( ins > -1 ) pid[ins] = proc.processId();
 	proc.waitForFinished(-1);
 	QString output = proc.readAllStandardOutput();
 	proc.close();
@@ -234,31 +234,18 @@ bool render::houdini( int ins ){
 }
 
 void render::vbox_turn( bool turn ){
-	// get user
-	string get_user = "grep '/bin/bash' /etc/passwd | cut -d':' -f1";                
-	string user = split( os::sh( get_user ), "\n" )[1];
-	//------------------------------------------------------
+
 	string vm;
-
 	if ( turn ){
-
-		if ( _linux ){
-			vm = "\"VBoxManage startvm win2016 --type headless\"";
-			vm = "runuser -l " + user + " -c " + vm;
-		}
-		if ( _win32 )
-			vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" startvm win2016 --type headless";
+		if ( _linux ) vm = "VBoxManage startvm win2016 --type headless";
+		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" startvm win2016 --type headless";
 
 		os::back( vm );
 	}
 	else{
 
-		if ( _linux ){
-			vm = "\"VBoxManage controlvm win2016 savestate\"";
-			vm = "runuser -l " + user + " -c " + vm;
-		}
-		if ( _win32 )
-			vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
+		if ( _linux ) vm = "\"VBoxManage controlvm win2016 savestate\"";
+		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
 
 		os::back( vm );
 
@@ -270,13 +257,9 @@ bool render::vbox_working(){
 	// Virtual Machin status
 
 	string vm;
-	if ( _linux ){
-		string vm_cmd = "'VBoxManage list runningvms'";
-		vm = "runuser -l " + os::user() + " -c " + vm_cmd; 
-	}
-	if ( _win32 ){
-		vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
-	}
+	if ( _linux ) vm = "VBoxManage list runningvms";
+
+	if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
 
 	string running = split( os::sh(vm), " " )[0];
 
@@ -287,77 +270,20 @@ bool render::vbox_working(){
 
 void render::suspend_vbox(){
 
-	// checkea si virtualbox esta activo
-	auto vbox_active = [=](){
-		if ( fread( path() + "/log/vbox" ) == "1" ){ // si esta prendido virtual box
-			for ( int i = 0; i < 15; ++i ){
-				string vbox_render = path() + "/etc/vbox_render_" + to_string( i );
-				string vr = fread( vbox_render );
-				if ( ( vr == "1" ) or ( vr == "2" ) ) return false;
-			}	
-		}
-		return true;
-	}; //------------------------------------
-
+	// checkea si el Cinama 4D esta abierto y si no se apaga la maquina virtual
+	int runningTimes = 0;
 	while (1){
-		//espera 30 seg y chekea si la vm esta activa si no la apaga
-		if ( vbox_active() ){
-			bool stop = true;
-			for ( int i = 0; i < 30; ++i ){
-				if ( not vbox_active() ){
-					stop = false;
-					break;
-				} 
-				sleep(1);			
-			}
 
-			if ( stop ) vbox_turn( false );
-		}
-		sleep(1);
-	}
-}
-
-string render::cinema_vbox( string cmd, int ins ){
-	string _ins = to_string( ins );
-	string setting = path() + "/etc";
-
-	fwrite( setting + "/vbox_render_" + _ins, "1" );
-	fwrite( setting + "/vbox_cmd_" + _ins, cmd );
-
-	os::system( "chmod 777 -R " + setting + "/vbox_render_" + _ins );
-
-	// inicia virtual machine
-	if ( not vbox_working() ){
-		fwrite( path() + "/log/vbox", "1" );
-		vbox_turn( true );
-	} //--------------------------------
-
-	string log;
-	int wait = 0;
-	while (1){ 
-		int vbox_render = stoi( fread( setting + "/vbox_render_" + _ins ) );
-		
-		if ( vbox_render == 0 ){ 
-			log = fread( setting + "/vbox_log_" + _ins );
-			break;
-		}
-
-		// espera respuesta del servervm (que es 2) si no responde en 200 segundos se rompe el loop
-		if ( vbox_render != 2 ){
-			wait++;
-			if ( wait == 200 ){
-				fwrite( setting + "/vbox_render_" + _ins, "0" );
-				log = "Server VM not responding, May be the Virtual Machine is OFF.";
-				break;
+		if ( not virtualbox_cinema ) {
+			runningTimes ++;
+			if ( runningTimes > 15 ) { // si no se esta usando Cinema4D, al numero 15 se apaga la maquina 
+				if ( vbox_working() ) vbox_turn( false ); 
+				runningTimes = 0;
 			}
 		}
-		//---------------------------------------------------------
 
 		sleep(1);
-	}
-
-	fwrite( setting + "/vbox_kill_" + _ins, "0" );
-	return log;
+	} //-----------------------------------------------------------------------
 }
 
 bool render::cinema( int ins ){
@@ -365,37 +291,78 @@ bool render::cinema( int ins ){
 	string log_file = path() + "/log/render_log_" + to_string( ins );
 	os::remove( log_file );
 
-	project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
-	
-	string g_log; 
-	if ( _linux ) g_log = "\" g_logfile=\"" + log_file + "\""; // para el virtualbox	
+	string log, cmd;
 
-	string args = " -nogui -render \"" + project[ ins ] + g_log +
-				 " -frame " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
-
-	//Obtiene el excecutable que existe en este sistema
-	string exe;
-	for ( auto e : preferences["paths"]["cinema"] ){
-		 exe = e; 
-		 if ( os::isfile( exe ) ){ break; }
+	if ( _linux ){ // en linux se usa una maquina virtual
+		virtualbox_cinema = true;
+		//Obtiene el excecutable de cinema de windows
+		string exe_windows;
+		for ( auto e : preferences["paths"]["cinema"] ){
+			exe_windows = e; 
+			if ( in_string( "C:/", exe_windows ) ) break;
 		}
 		//-----------------------------------------------
 
-	string cmd = '"' + exe + '"' + args;
+		// replaza las rutas para virtualbox
+		for ( auto s :  preferences["paths"]["system"] )
+			project[ ins ] = replace( project[ ins ], s, "//VBOXSVR/server_01" );
+		//-------------------------------------------------------------------------
 
-	string log;
-	// rendering ...
-	// ----------------------------------
-	if ( _linux ){
-		string vcmd = project[ ins ] + "&vm&" + args + "&vm&Cinema4D";
-		log = cinema_vbox( vcmd, ins );
+		// con este commando se puede enviar comandos a la maquina virtual y te regresa un resultado
+		string guestcontrol = "VBoxManage --nologo guestcontrol win2016 run --exe  C:\\\\Windows\\\\system32\\\\cmd.exe --username Administrator --password Jump77cats --verbose --wait-stdout --wait-stderr -- C:\\\\Windows\\\\SysWOW64\\\\cmd.exe \"/c\" ";
+		// --------------------------------------------------------------
+		cmd = guestcontrol + "\"" + exe_windows + "\" \"-nogui\" \"-render\" \"" + project[ ins ] + "\" \"-frame\" \"" + to_string( first_frame[ ins ] ) + "\" \"" + to_string( last_frame[ ins ] ) + "\"";
+
+		// inicia virtual machine
+		if ( not vbox_working() ) vbox_turn( true );
+
+		// checkea si la maquina esta lista para renderear
+		string check = guestcontrol + " \"echo vm_is_ready\"";
+
+		int i = 0;		
+		while( not in_string( "vm_is_ready", qprocess( check ) ) ){ // espera que la maquina este lista
+			print( " prendiendo...");			
+			sleep(1);
+			if ( i > 200 ) break;
+		}
+		//--------------------------------
+
+		// rendering ...
+		// ----------------------------------
+		print("\nstart_render\n");
+		print(cmd);
+
+		log = qprocess( cmd, ins );
+		//-------------------------------
+		print("\nend_render\n");
 		fwrite( log_file, log );
+
+		virtualbox_cinema = false;
 	}
-	else {
+
+	else{
+
+		project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
+
+		string args = " -nogui -render \"" + project[ ins ] + "\" g_logfile=\"" + log_file + "\"" +
+					 " -frame " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
+
+		//Obtiene el excecutable que existe en este sistema
+		string exe;
+		for ( auto e : preferences["paths"]["cinema"] ){
+			 exe = e; 
+			 if ( os::isfile( exe ) ){ break; }
+			}
+			//-----------------------------------------------
+
+		cmd = '"' + exe + '"' + args;
+
+		// rendering ...
+		// ----------------------------------
 		qprocess( cmd, ins );
 		log = fread( log_file );
+		//----------------------
 	}
-	// ----------------------------------
 
 	// post render
 	if ( in_string( "Rendering successful: ", log ) ) return true;
