@@ -19,7 +19,7 @@ ip = "192.168.10.45"
 manager_start = False
 server_start = True
 action = True
-debug = False
+debug = True
 #-----------------------
 
 # Checkea si hay argumentos
@@ -225,8 +225,8 @@ def linux_install():
 	sh( "sed -i -e 's/\r//g' /etc/init.d/cserver")
 	sh( "sed -i -e 's/\r//g' /etc/init.d/cmanager")  
 	#--------------------------------------------------------------------------------
-	sh( "service cserver start" )
-	sh( "service cmanager start " )
+	if server_start: os.system( "service cserver start" )
+	if manager_start: os.system( "service cmanager start " )
 
 	nuke_module(1)
 
