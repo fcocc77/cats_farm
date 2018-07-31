@@ -59,6 +59,12 @@ json server::recieveManager( json recv, int input ){
 	if ( input == 3 ){
 
 		for ( int i : recv ){
+			// kill cinema 4d que esta dentro de la maquina virtual
+			if ( _render->VMCinemaActive ) {
+				string VMCinemaKill = _render->guestcontrol + "\"taskkill\" \"-im\" \"Cinema 4D.exe\" \"-f\"";
+				_render->qprocess( VMCinemaKill );
+			} //-------------------------------------------------------------------------
+
 			_render->taskKill[i] = true;
 			os::kill( _render->pid[i] );
 		}
