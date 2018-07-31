@@ -243,8 +243,7 @@ void render::vbox_turn( bool turn ){
 		os::back( vm );
 	}
 	else{
-
-		if ( _linux ) vm = "\"VBoxManage controlvm win2016 savestate\"";
+		if ( _linux ) vm = "VBoxManage controlvm win2016 savestate";
 		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
 
 		os::back( vm );
@@ -270,18 +269,19 @@ bool render::vbox_working(){
 
 void render::suspend_vbox(){
 
-	// checkea si el Cinama 4D esta abierto y si no se apaga la maquina virtual
-	int runningTimes = 0;
+	// checkea si el Cinama 4D esta en render y si no se apaga la maquina virtual
+	VMCinemaRunningTimes = 0;
 	while (1){
-
-		if ( not virtualbox_cinema ) {
-			runningTimes ++;
-			if ( runningTimes > 15 ) { // si no se esta usando Cinema4D, al numero 15 se apaga la maquina 
-				if ( vbox_working() ) vbox_turn( false ); 
-				runningTimes = 0;
+		if ( not VMCinemaActive ) {
+			VMCinemaRunningTimes ++;
+			if ( VMCinemaRunningTimes > 10 ) { // si no se esta usando Cinema4D, al numero 10 se apaga la maquina 
+				if ( vbox_working() and VMCinemaTurn ) { // solo si esta prendida y si la prendio catsfarm
+					vbox_turn( false ); 
+					VMCinemaTurn = false;
+				}
+				VMCinemaRunningTimes = 0;
 			}
 		}
-
 		sleep(1);
 	} //-----------------------------------------------------------------------
 }
@@ -294,7 +294,7 @@ bool render::cinema( int ins ){
 	string log, cmd;
 
 	if ( _linux ){ // en linux se usa una maquina virtual
-		virtualbox_cinema = true;
+		VMCinemaActive = true;
 		//Obtiene el excecutable de cinema de windows
 		string exe_windows;
 		for ( auto e : preferences["paths"]["cinema"] ){
@@ -314,30 +314,36 @@ bool render::cinema( int ins ){
 		cmd = guestcontrol + "\"" + exe_windows + "\" \"-nogui\" \"-render\" \"" + project[ ins ] + "\" \"-frame\" \"" + to_string( first_frame[ ins ] ) + "\" \"" + to_string( last_frame[ ins ] ) + "\"";
 
 		// inicia virtual machine
-		if ( not vbox_working() ) vbox_turn( true );
+		if ( not vbox_working() ) {
+			vbox_turn( true );
+			VMCinemaTurn = true;
+		}
 
 		// checkea si la maquina esta lista para renderear
 		string check = guestcontrol + " \"echo vm_is_ready\"";
 
 		int i = 0;		
+		bool problem = false;
 		while( not in_string( "vm_is_ready", qprocess( check ) ) ){ // espera que la maquina este lista
-			print( " prendiendo...");			
 			sleep(1);
-			if ( i > 200 ) break;
+			if ( i > 200 ) {
+				problem = true;
+				log = "The Virtual Machine has a problem.";
+				break;
+			}
 		}
 		//--------------------------------
 
 		// rendering ...
 		// ----------------------------------
-		print("\nstart_render\n");
-		print(cmd);
-
-		log = qprocess( cmd, ins );
+		if ( not problem ) log = qprocess( cmd, ins );
 		//-------------------------------
-		print("\nend_render\n");
 		fwrite( log_file, log );
 
-		virtualbox_cinema = false;
+		//para que se apague la maquina virtual si no se uas
+		VMCinemaActive = false;
+		VMCinemaRunningTimes = 0;
+		//----------------------------
 	}
 
 	else{

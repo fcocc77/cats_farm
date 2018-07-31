@@ -13,7 +13,9 @@ public:
 	vector <int> first_frame, last_frame, pid;
 	vector <string> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
 	vector <bool> taskKill, renderInstance;
-	bool virtualbox_cinema;
+	bool VMCinemaActive;
+	bool VMCinemaTurn;
+	int VMCinemaRunningTimes;
 	
 	render(){
 		// inicializar instancias 16 veces
@@ -34,7 +36,7 @@ public:
 			dst_path.push_back("none");
 		} //-------------------------------------------
 	
-		//threading( &render::suspend_vbox, this );
+		threading( &render::suspend_vbox, this );
 	}
 
 	string render_task( json recv );
