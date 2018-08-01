@@ -19,7 +19,8 @@ ip = "192.168.10.45"
 manager_start = False
 server_start = True
 action = True
-debug = True
+if platform == "linux2": debug = True
+else: debug = False 
 #-----------------------
 
 # Checkea si hay argumentos
@@ -279,12 +280,13 @@ def windows_install():
 	#----------------------------
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
 	psexec = windowsInstall + "/os/win/service/PsExec.exe" # comando para excecute en SYSTEM USER
+	shutil.copy( psexec, "C:/Windows/System32" )
 	sh( psexec + " -i -s cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
 	sh( psexec + " -i -s cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
 	#-------------------------------------
-	sh( psexec + " -i -s net use /delete z:" ) # demonta el z: 
-	sh( psexec + " -i -s net use z: \\\\" + serverIP + "\\server_01x /user:" + serverUSER + " " + serverPASS ) # actualiza para que no de error
-	sh( psexec + " -i -s net use z: \\\\" + serverIP + "\\server_01 /user:" + serverUSER + " " + serverPASS ) # monta el z: 
+	sh( psexec + " -i -s net use /delete j:" ) # demonta el j: 
+	sh( psexec + " -i -s net use j: \\\\" + serverIP + "\\server_01x /user:" + serverUSER + " " + serverPASS ) # actualiza para que no de error
+	sh( psexec + " -i -s net use j: \\\\" + serverIP + "\\server_01 /user:" + serverUSER + " " + serverPASS ) # monta el j: 
 	#----------------------------
 	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/server.exe" )
 	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/manager.exe" )
@@ -294,6 +296,11 @@ def windows_install():
 	if manager_start: sh( nssm + " start \"CatsFarm Manager\"")
 	else: sh( "sc config \"CatsFarm Manager\" start= disabled" )
 	#-------------------------------------
+
+	# ssh service
+	sh( nssm + " install sshd " + windowsInstall + "/os/win/ssh/bin/sshd.exe" )
+	sh( nssm + " start sshd")
+	#-----------------------------------------------------
 
 	nuke_module(1)
 
@@ -308,16 +315,13 @@ def windows_uninstall():
 
 	# remove services
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
-	sh( nssm + " stop cserver")
-	sh( nssm + " remove cserver confirm")
-	sh( nssm + " stop cmanager")
-	sh( nssm + " remove cmanager confirm")	
-
 	sh( nssm + " stop \"CatsFarm Server\"")
 	sh( nssm + " remove \"CatsFarm Server\" confirm")
 	sh( nssm + " stop \"CatsFarm Manager\"")
 	sh( nssm + " remove \"CatsFarm Manager\" confirm")	
-	
+	# sshd -------------
+	sh( nssm + " stop sshd")
+	sh( nssm + " remove sshd confirm")		
 	#----------------------------------------------------------
 
 compiler_install()

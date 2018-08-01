@@ -309,7 +309,7 @@ bool render::cinema( int ins ){
 		//-------------------------------------------------------------------------
 
 		// con este commando se puede enviar comandos a la maquina virtual y te regresa un resultado
-		guestcontrol = "VBoxManage --nologo guestcontrol win2016 run --exe  C:\\\\Windows\\\\system32\\\\cmd.exe --username Administrator --password Jump77cats --verbose --wait-stdout --wait-stderr -- C:\\\\Windows\\\\SysWOW64\\\\cmd.exe \"/c\" ";
+		guestcontrol = "VBoxManage --nologo guestcontrol win2016 run --exe  C:\\\\Windows\\\\system32\\\\cmd.exe --username Administrator --password Jump77cats -- C:\\\\Windows\\\\SysWOW64\\\\cmd.exe \"/c\" ";
 		// --------------------------------------------------------------
 		cmd = guestcontrol + "\"" + exe_windows + "\" \"-nogui\" \"-render\" \"" + project[ ins ] + "\" \"-frame\" \"" + to_string( first_frame[ ins ] ) + "\" \"" + to_string( last_frame[ ins ] ) + "\"";
 

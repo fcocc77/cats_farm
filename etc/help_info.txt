@@ -6,3 +6,7 @@ netstat -tulpn | grep 7001
 ---------- Matar proceso que se esta ensendido -----------
 	fuser -k 7001/tcp
 ----------------------------------------------------------
+
+---------- Agrega directorio de QT --------------------
+find /opt/Qt5.7.1/ -type f -exec touch {} + 
+-------------------------------------------------------
