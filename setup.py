@@ -42,7 +42,8 @@ def copydir( src, dst ):
 
 def copyfile( src, dst ):
 	if not os.path.isfile( dst ): 
-		shutil.copy( src, dst )
+		try: shutil.copy( src, dst )
+		except: None
 
 def compile_ ( project ):
 	if platform == "linux2":
@@ -298,8 +299,7 @@ def windows_install():
 	#-------------------------------------
 
 	# ssh service
-	sh( nssm + " install sshd " + windowsInstall + "/os/win/ssh/bin/sshd.exe" )
-	sh( nssm + " start sshd")
+
 	#-----------------------------------------------------
 
 	nuke_module(1)
@@ -319,10 +319,6 @@ def windows_uninstall():
 	sh( nssm + " remove \"CatsFarm Server\" confirm")
 	sh( nssm + " stop \"CatsFarm Manager\"")
 	sh( nssm + " remove \"CatsFarm Manager\" confirm")	
-	# sshd -------------
-	sh( nssm + " stop sshd")
-	sh( nssm + " remove sshd confirm")		
-	#----------------------------------------------------------
 
 compiler_install()
 #sublime_build()
