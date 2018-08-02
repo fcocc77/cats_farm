@@ -318,14 +318,19 @@ def windows_uninstall():
 	sh( nssm + " stop \"CatsFarm Server\"")
 	sh( nssm + " remove \"CatsFarm Server\" confirm")
 	sh( nssm + " stop \"CatsFarm Manager\"")
-	sh( nssm + " remove \"CatsFarm Manager\" confirm")	
+	sh( nssm + " remove \"CatsFarm Manager\" confirm")
+
+	if os.path.isdir( windowsInstall ): 
+		print "----------------------------"
+		print "Some files are still in use."
+		print "----------------------------"
+		return False
+	else: return True
 
 compiler_install()
-#sublime_build()
 
 if platform == "win32":
-	windows_uninstall()
-	windows_install()
+	if ( windows_uninstall() ): windows_install()
 elif platform == "linux2":
 	if action:
 		linux_uninstall()
