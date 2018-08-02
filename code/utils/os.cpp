@@ -153,8 +153,7 @@ float os::ramUsed(){
 }
 
 int os::cpuTemp(){
-	int temp=0;
-
+	static int temp = 0;
 	if ( _linux ){
 
 		try{
@@ -182,7 +181,40 @@ int os::cpuTemp(){
 		}
 		catch (exception& e){
 		}
+	}
 
+	if ( _win32 ){
+		static int csv_delete;
+		csv_delete++;
+		// Obtiene la temperatura a partir de un sensor con interface core temp, no es lo mas optimo hasta el momento
+		string core_temp_dir = path() + "/os/win/core_temp";
+
+		for ( string f : os::listdir( core_temp_dir ) ){
+			string ext = f.substr( f.length() - 3 );
+			if ( ext == "csv" ){
+				string _file = fread( f );
+				if ( not _file.empty() ){
+
+					string tempRead = split( fread( f ), "\n" ).end()[-2] ;
+
+					auto core = split( split( tempRead, ",,," )[0], "," );
+
+					int cores = 0;
+					if ( core.size() == 5 ){
+						for ( int i = 1; i < 5; ++i ){
+							try{ cores += stoi( core[i] ); } // puede dar error si no es numero
+							catch(...){}
+						}
+					}
+					if ( cores ) temp = cores/4;
+				}
+
+				if ( csv_delete > 10 ){
+					os::remove(f);
+					csv_delete = 0;
+				}
+			}
+		}
 	}
 
 	return temp;

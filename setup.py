@@ -292,14 +292,16 @@ def windows_install():
 	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/server.exe" )
 	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/manager.exe" )
 	#-------------------------------------
+
 	if server_start: sh( nssm + " start \"CatsFarm Server\"")
 	else: sh( "sc config \"CatsFarm Server\" start= disabled" )
 	if manager_start: sh( nssm + " start \"CatsFarm Manager\"")
 	else: sh( "sc config \"CatsFarm Manager\" start= disabled" )
 	#-------------------------------------
 
-	# ssh service
-
+	# core temp
+	sh( nssm + " install \"Core Temp\" " + windowsInstall + "/os/win/core_temp/core_temp.exe" )
+	sh( nssm + " start \"Core Temp\"")
 	#-----------------------------------------------------
 
 	nuke_module(1)
