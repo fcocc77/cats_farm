@@ -34,6 +34,17 @@ void monitor::init(){
 		else{ closeApp(); }
 	}
     */
+
+    qthread( &monitor::update, this );
+}
+
+void monitor::update(){
+	// si el archivo esta en 1 muestra el monitor
+	static string showMonitor = path() + "/etc/showMonitor";
+	if ( not ( fread( showMonitor ) == "0" ) ){
+		this->show();
+		fwrite( showMonitor, "0" );
+	} // ----------------------------
 }
 
 void monitor::assamble(){

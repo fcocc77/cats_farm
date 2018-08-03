@@ -195,7 +195,7 @@ int os::cpuTemp(){
 				string _file = fread( f );
 				if ( not _file.empty() ){
 
-					string tempRead = split( fread( f ), "\n" ).end()[-2] ;
+					string tempRead = split( fread( f ), "\n" ).end()[-1] ;
 
 					auto core = split( split( tempRead, ",,," )[0], "," );
 

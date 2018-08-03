@@ -36,7 +36,7 @@ string fread( string path ){
         output+=line+"\n";
     }
 
-    return output;
+    return output.erase( output.size() - 1); // borra el ultimo \n
 }
 
 void fwrite( string path, string data ){

@@ -45,6 +45,11 @@ public:
     monitor(){QMainWindow(0);}; 
     //---------------------------
 
+    ~monitor(){
+        string openMonitor = path() + "/etc/openMonitor";
+        fwrite( openMonitor, "0" ); // escrebe que el monitor ya esta cerrado
+    }
+
     bool app_started = false;
     QToolBar *toolBar = new QToolBar();
 
@@ -74,7 +79,7 @@ public:
     void init();
     void assamble();
     //void ui();
-
+    void update();
     void main_menu();
     void tool_bar();
     void log_ui();
