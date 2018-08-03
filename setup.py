@@ -321,6 +321,9 @@ def windows_uninstall():
 	sh( nssm + " remove \"CatsFarm Server\" confirm")
 	sh( nssm + " stop \"CatsFarm Manager\"")
 	sh( nssm + " remove \"CatsFarm Manager\" confirm")
+	
+	sh( nssm + " stop \"Core Temp\"")
+	sh( nssm + " remove \"Core Temp\" confirm")
 
 	if os.path.isdir( windowsInstall ): 
 		print "----------------------------"
