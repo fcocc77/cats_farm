@@ -15,86 +15,107 @@ void threading(auto func){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { func(); });         
 	thread->start();
+	thread->exit();	
 }
 
 void threading(auto func, auto arg1 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { func(arg1); });         
 	thread->start();
+	thread->exit();	
 }
 
 void threading(auto func, auto arg1, auto arg2 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { func(arg1, arg2); });         
 	thread->start();
+	thread->exit();	
 }
 
 void threading(auto func, auto arg1, auto arg2, auto arg3 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { func(arg1, arg2, arg3); });         
 	thread->start();
+	thread->exit();	
 }
 
 void threading(auto func, auto arg1, auto arg2, auto arg3, auto arg4 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { func(arg1, arg2, arg3, arg4); });         
 	thread->start();
+	thread->exit();	
 }
 
 void threading(auto func, auto arg1, auto arg2, auto arg3, auto arg4, auto arg5 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { func(arg1, arg2, arg3, arg4, arg5); });         
 	thread->start();
+	thread->exit();	
 }
 
 template < class C >
 void threading(auto (C::*func), C *_class ){
-
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )(); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void  threading(auto (C::*func), C *_class, auto arg1 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void threading(auto (C::*func), C *_class, auto arg1, auto arg2 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1, arg2 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void threading(auto (C::*func), C *_class, auto arg1, auto arg2, auto arg3 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1, arg2, arg3 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void threading(auto (C::*func), C *_class, auto arg1, auto arg2, auto arg3, auto arg4 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1, arg2, arg3, arg4 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void threading(auto (C::*func), C *_class, auto arg1, auto arg2, auto arg3, auto arg4, auto arg5 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1, arg2, arg3, arg4, arg5 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void threading(auto (C::*func), C *_class, auto arg1, auto arg2, auto arg3, auto arg4, auto arg5, auto arg6 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1, arg2, arg3, arg4, arg5, arg6 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class C >
 void threading(auto (C::*func), C *_class, auto arg1, auto arg2, auto arg3, auto arg4, auto arg5, auto arg6, auto arg7 ){
 	QThread *thread = new QThread;
 	QObject::connect( thread, &QThread::started, [=]() { ( _class->*func )( arg1, arg2, arg3, arg4, arg5, arg6, arg7 ); });         
-	thread->start();}
+	thread->start();
+	thread->exit();	
+}
 
 template < class T >
 class qthread_class : public QThread{
