@@ -34,12 +34,10 @@ public:
 		func = _func;
 		_class = __class;
 		socketDescriptor = _socketDescriptor;
-
 	}
 
 	void run(){
 		qsocket = new QTcpSocket();
-
 		if ( !qsocket->setSocketDescriptor( socketDescriptor )) return;
 
 		string send;
@@ -47,26 +45,26 @@ public:
 		json _recv = {};
 		json _pks = {};
 		int _input = 0;
-		int whait = -1; // en -1 significa que no tiene timeout para los waitForBytesWritten y waitForReadyRead
+		int wait = -1; // en -1 significa que no tiene timeout para los waitForBytesWritten y waitForReadyRead
 		// waitForConnected: espera que un cliente se conecte a este socket
 		while ( qsocket->waitForConnected(5000) ){
 
 			// 2 recive tamanio de paquete
 			int size;
-			qsocket->waitForReadyRead(whait);
+			qsocket->waitForReadyRead(wait);
 			size = qsocket->readAll().toInt();
 			//------------------------------------
 
 			//3
 			qsocket->write("ok");
-			if (  not qsocket->error()  ){ qsocket->waitForBytesWritten(whait); }
+			qsocket->waitForBytesWritten(wait);
 			//
 
 			// 6 recive paquete
 			recv = "";
 			int totalBytesRead = 0;
 			while (totalBytesRead < size ) {
-				if ( qsocket->waitForReadyRead(whait) ) {
+				if ( qsocket->waitForReadyRead(wait) ) {
 						totalBytesRead += qsocket->bytesAvailable();
 						recv +=  qsocket->readAll();
 				}       
@@ -100,25 +98,26 @@ public:
 			// 7 - envia tamanio de paquete
 			// cuando el cliente de desconecta da un error, si no da el error, espera los byte escritos
 			qsocket->write( to_string( send.size()).c_str() );
-			if (  not qsocket->error()  ){ qsocket->waitForBytesWritten(whait); }
+			qsocket->waitForBytesWritten(wait);
 			//-------------------------------------------------
 
 			//10 recive info de loop
-			qsocket->waitForReadyRead(whait);
+			qsocket->waitForReadyRead(wait);
 			QString loop = qsocket->readAll();
 			//--------------------------------------------
-
+			//print(send);
 			// 11 envia paquete
 			qsocket->write(send.c_str());
-			if (  not qsocket->error()  ){ qsocket->waitForBytesWritten(whait); } 
+			qsocket->waitForBytesWritten(wait);
 			//-------------------------------------
 
-			if ( loop == "false" ){ break; }
+			if ( loop == "false" ) {
+				qsocket->waitForReadyRead(wait); // espera respuesta para terminar
+				break;
+			} 
 		}
 
 		qsocket->close();
-		exec();
-
 	}
 };
 
@@ -152,7 +151,6 @@ protected:
 	void incomingConnection( qintptr socketDescriptor ){
 		tcp_socket<T> *_tcp_socket = new tcp_socket<T>( socketDescriptor, port, func, _class );
 		_tcp_socket->start();
-
 	}
 };
 
@@ -192,7 +190,11 @@ public:
 	void run(){
 		// si es que el la funcion actualiza con los widget de QT, usa un QTimer para que no se pegue,
 		// si no usa un hilo normal
-		if ( widget ) qtimer->start(1000);
+		if ( widget ) {
+			qtimer->start(1000);
+			exec();
+		}
+
 		else {
 			while(1){
 				widget_update();
@@ -200,7 +202,6 @@ public:
 			}
 		}
 		//-----------------------------------------------------------------
-		exec();
 
 	}
 
@@ -254,13 +255,12 @@ public:
 
 	void run(){
 		client();
-		exec();
 	}
 
 	json client(){
 
 		QTcpSocket *socket = new QTcpSocket();
-		int whait = -1;
+		int wait = -1;
 		string send = pks.dump();
 		QString recv;
 		json _recv = {};
@@ -296,37 +296,38 @@ public:
 					catch( exception& e ){ send = ""; }
 
 				}
+
 				// 1 - envia tamanio de paquete
 				socket->write( to_string(send.size()).c_str() );
-				if (  not socket->error()  ) socket->waitForBytesWritten(whait); 
+				socket->waitForBytesWritten(wait); 
 				//-------------------------------------------------
 
 				//4
-				socket->waitForReadyRead(whait);
+				socket->waitForReadyRead(wait);
 				socket->readAll();
 
 				// 5 envia paquete
 				socket->write(send.c_str());
-				if (  not socket->error()  ) socket->waitForBytesWritten(whait);
+				socket->waitForBytesWritten(wait);
 				//-------------------------------------
 
 				// 8 recive tamanio de paquete
 				int size;
-				socket->waitForReadyRead(whait);
+				socket->waitForReadyRead(wait);
 				size = socket->readAll().toInt();
 				//------------------------------------
 
 				//9 envia si la accion si es en loop o no
 				if ( loop ){ socket->write("true"); }
 				else{ socket->write("false"); }
-				if (  not socket->error()  ) socket->waitForBytesWritten(whait); 
+				socket->waitForBytesWritten(wait); 
 				//-------------------------------------------------
 
 				// 12 recive paquete
 				recv = "";
 				int totalBytesRead = 0;
 				while (totalBytesRead < size ) {
-					if ( socket->waitForReadyRead(whait) ) {
+					if ( socket->waitForReadyRead(wait) ) {							
 							totalBytesRead += socket->bytesAvailable();
 							recv +=  socket->readAll();
 					}       
@@ -347,9 +348,7 @@ public:
 
 			if ( loop ) sleep(3);
 			else return _recv;
-
 		}
-
 		return {};
 	}
 };
@@ -364,12 +363,14 @@ template < class T >
 void tcpClient(  string _host, int _port, json ( T::*_func )( json ), T *_class, int _input, bool widget = false ){
 	// inicia thread de tcp socket
 	tcp_client *_client = new tcp_client( _host, _port, _class, _input ); 
+	_client->exit();
 	_client->start();
 	//-------------------------------------
 
 	// inicia thread de update widget
 	tcp_client_widget < T >  *_widget = new tcp_client_widget < T >( _func, _class, &_client->update_send, 
 								&_client->update_recv,  &_client->send_ready, &_client->recv_ready, widget );     
+	_widget->exit();
 	_widget->start();
 	//-------------------------------------
 }
@@ -377,6 +378,7 @@ void tcpClient(  string _host, int _port, json ( T::*_func )( json ), T *_class,
 template < class T >
 json tcpClient( T _host, int _port, json _pks, int _input ){
 	tcp_client *_client = new tcp_client( _host, _port, _pks, _input ); 
+	_client->exit();
 	return _client->client();
 }
 
