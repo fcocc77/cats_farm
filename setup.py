@@ -279,9 +279,7 @@ def windows_install():
 
 		if not "logon failure" in login:
 			sh( nssm + " set \"CatsFarm Manager\" ObjectName  \".\\" + user + "\" \""+ password + "\"" )
-
 			fwrite( user_file, password )
-
 			break
 		if x > 0: print "Wrong password..."
 	#-----------------------------------------
