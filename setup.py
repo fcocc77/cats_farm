@@ -45,6 +45,20 @@ def copyfile( src, dst ):
 		try: shutil.copy( src, dst )
 		except: None
 
+def fread( path ):
+	if os.path.isfile( path ):
+		f = open( path, "r" )
+		read = f.read()
+		f.close()
+	else: read = "";
+
+	return read
+
+def fwrite( path, info ):
+	f = open( path, "w" )
+	f.write(info)
+	f.close()
+
 def compile_ ( project ):
 	if platform == "linux2":
 		qmake = "/opt/Qt5.7.1/5.7/gcc_64/bin/qmake"
@@ -115,32 +129,6 @@ def compiler_install():
 			rpms +=  path + "/qt/linux/libs/" + rpm + " "
 		sh( "yum -y install " + rpms )
 		#----------------------
-
-def sublime_build():
-	if platform == "win32": 
-		proc = subprocess.Popen( "%username%", stdout=subprocess.PIPE , stderr=subprocess.PIPE, shell=True)
-		user = proc.communicate()[1].split("'")[1]
-
-		dirs = "C:/Users/" + user + "/AppData/Roaming/Sublime Text 3/Packages/User"
-
-		f = open( dirs + "/QT5-C++.sublime-build", "w" )
-		f.write( '{ "cmd":["python", "' + dirs + '/QT5-C++.py","${file}"]}' )
-		f.close()
-
-		copyfile( path + "/modules/QT5-C++.py", dirs )
-
-	else: 
-		user = os.listdir("/home")[0]
-		dirs = "/home/" + user + "/.config/sublime-text-3/Packages/User"
-
-		f = open( dirs + "/QT5-C++.sublime-build", "w" )
-		f.write( '{ "cmd":["python", "' + dirs + '/QT5-C++.py","${file}"]}' )
-		f.close()
-
-		copyfile( path + "/modules/QT5-C++.py", dirs )
-
-		sh( "chmod 777 " + dirs + "/QT5-C++.sublime-build" )
-		sh( "chmod 777 " + dirs + "/QT5-C++.py" )
 
 def nuke_module(install):
 	pluginsSys=["/usr/local/nuke/plugins","C:/Program Files/nuke/plugins","/Applications/nuke/nuke.app/Contents/MacOS/plugins"]
@@ -262,9 +250,7 @@ def windows_install():
 	copydir( path + "/theme", windowsInstall + "/theme" )
 	#-----------------------------------------------------
 
-	f = open( windowsInstall + "/etc/manager_host" , "w" )
-	f.write( ip )
-	f.close()
+	fwrite(  windowsInstall + "/etc/manager_host", ip )
 
 	compile_( windowsInstall + "/code/server/server.pro" )
 	compile_( windowsInstall + "/code/monitor/monitor.pro" )
@@ -274,34 +260,44 @@ def windows_install():
 
 	copyfile( windowsInstall + "/os/win/link/CatsFarm Monitor.lnk" , "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
 
-	# Create Services
-	serverIP = "192.168.10.45"
-	serverUSER = "server1"
-	serverPASS = "jump77cats"
-	#----------------------------
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
-	psexec = windowsInstall + "/os/win/service/PsExec.exe" # comando para excecute en SYSTEM USER
-	shutil.copy( psexec, "C:/Windows/System32" )
-	sh( psexec + " -i -s cmdkey /delete:" + serverIP ) # borra la credencias y ya existe
-	sh( psexec + " -i -s cmdkey /add:" + serverIP + " /user:" + serverUSER + " /pass:" + serverPASS ) # Guarda la credencial del servidor en system user
-	#-------------------------------------
-	sh( psexec + " -i -s net use /delete j:" ) # demonta el j: 
-	sh( psexec + " -i -s net use j: \\\\" + serverIP + "\\server_01x /user:" + serverUSER + " " + serverPASS ) # actualiza para que no de error
-	sh( psexec + " -i -s net use j: \\\\" + serverIP + "\\server_01 /user:" + serverUSER + " " + serverPASS ) # monta el j: 
-	#----------------------------
+
 	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/server.exe" )
 	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/manager.exe" )
 	#-------------------------------------
 
-	if server_start: sh( nssm + " start \"CatsFarm Server\"")
-	else: sh( "sc config \"CatsFarm Server\" start= disabled" )
-	if manager_start: sh( nssm + " start \"CatsFarm Manager\"")
+	# ingrsar clave de usuario
+	user = sh("echo %username%").strip()
+	for x in range(5):
+		user_file = "C:/ProgramData/cats_farm/user"
+
+		if x == 0: password = fread( user_file )
+		else: password = raw_input( user + ' password: ')
+
+		sh( nssm + " set \"CatsFarm Server\" ObjectName  \".\\" + user + "\" \""+ password + "\"" )
+		login = sh( "sc start \"CatsFarm Server\"")
+
+		if not "logon failure" in login:
+			sh( nssm + " set \"CatsFarm Manager\" ObjectName  \".\\" + user + "\" \""+ password + "\"" )
+
+			fwrite( user_file, password )
+
+			break
+		if x > 0: print "Wrong password..."
+	#-----------------------------------------
+
+	if server_start: sh( "sc start \"CatsFarm Server\"")
+	else: 
+		sh( "sc stop \"CatsFarm Server\"")
+		sh( "sc config \"CatsFarm Server\" start= disabled" )
+
+	if manager_start: sh( "sc start \"CatsFarm Manager\"")
 	else: sh( "sc config \"CatsFarm Manager\" start= disabled" )
 	#-------------------------------------
 
 	# core temp
-	sh( nssm + " install \"Core Temp\" " + windowsInstall + "/os/win/core_temp/core_temp.exe" )
-	sh( nssm + " start \"Core Temp\"")
+	sh( nssm + " install \"CatsFarm CoreTemp\" " + windowsInstall + "/os/win/core_temp/core_temp.exe" )
+	sh( nssm + " start \"CatsFarm CoreTemp\"")
 	#-----------------------------------------------------
 
 	nuke_module(1)
@@ -321,9 +317,12 @@ def windows_uninstall():
 	sh( nssm + " remove \"CatsFarm Server\" confirm")
 	sh( nssm + " stop \"CatsFarm Manager\"")
 	sh( nssm + " remove \"CatsFarm Manager\" confirm")
-	
-	sh( nssm + " stop \"Core Temp\"")
-	sh( nssm + " remove \"Core Temp\" confirm")
+
+	sh( nssm + " stop \"Core Temp\"") # borrar en un tiempo mas
+	sh( nssm + " remove \"Core Temp\" confirm") # borrar en un tiempo mas
+
+	sh( nssm + " stop \"CatsFarm CoreTemp\"")
+	sh( nssm + " remove \"CatsFarm CoreTemp\" confirm")
 
 	if os.path.isdir( windowsInstall ): 
 		print "----------------------------"
