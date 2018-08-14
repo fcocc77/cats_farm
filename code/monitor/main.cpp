@@ -1,12 +1,18 @@
 #include "main_window.h"
 
 int main( int argc, char *argv[] ){
-	string openMonitor = path() + "/etc/openMonitor";
 	string showMonitor = path() + "/etc/showMonitor";
+	
 	// si el monitor esta abierto no lo abre
-	if ( fread( openMonitor ) != "1" ){
-		fwrite( openMonitor, "1" );
+	int count = 0;
+	if  ( _win32 ){ 
+		auto lista = split( os::sh( "tasklist -fi \"IMAGENAME eq monitor.exe\"" ), "\n" );
+		for ( string l : lista ) if ( in_string( "monitor.exe", l ) ) count++;
+	}
+	else count = 1;
+	//------------------------------------------
 
+	if ( count == 1 ){
 		QApplication a(argc, argv);
 		monitor w;
 		w.init();
