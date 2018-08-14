@@ -6,6 +6,7 @@ from sys import argv
 import tarfile
 from zipfile import ZipFile
 import subprocess
+from time import sleep
 path = os.path.dirname(__file__)
 
 # Rutas de Instalacion
@@ -302,17 +303,13 @@ def windows_install():
 	if not os.path.isdir( OpenSSH ):
 		shutil.move( windowsInstall + "/os/win/OpenSSH", OpenSSH )
 	sh( nssm + " install \"CatsFarm SSHD\" \"" + OpenSSH + "/bin/sshd_service.exe\"" )
+	sh( nssm + " set \"CatsFarm SSHD\" ObjectName  \".\\" + user + "\" \""+ password + "\"" )
 	sh( nssm + " start \"CatsFarm SSHD\"")
 	#------------------------------------------------------------------
 
 	nuke_module(1)
 
 def windows_uninstall():
-	if os.path.isdir( windowsInstall ):
-		sh("RD /S /Q \"" + windowsInstall + "\"" )
-	lnk = "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
-	if os.path.isfile( lnk ):
-		os.remove( lnk )
 
 	nuke_module(0)
 
@@ -332,6 +329,15 @@ def windows_uninstall():
 	sh( nssm + " stop \"CatsFarm SSHD\"")
 	sh( nssm + " remove \"CatsFarm SSHD\" confirm")
 
+	sh( "taskkill -f -im \"CatsFarm Monitor.exe\"" );
+	
+	sleep( 0.1 )
+	if os.path.isdir( windowsInstall ):
+		sh("RD /S /Q \"" + windowsInstall + "\"" )
+	lnk = "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
+	if os.path.isfile( lnk ):
+		os.remove( lnk )
+
 	if os.path.isdir( windowsInstall ): 
 		return False
 	else: return True
@@ -339,7 +345,6 @@ def windows_uninstall():
 compiler_install()
 
 if platform == "win32":
-	windows_uninstall()
 	if windows_uninstall(): windows_install()
 	else:
 		print "----------------------------"
