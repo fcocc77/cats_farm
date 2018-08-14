@@ -429,7 +429,6 @@ void manager::groupCreate( json pks ){
 	//-----------------------------------------------
 
     groups.push_back( group );
-
 }
 
 json manager::preferencesAction( json pks ){

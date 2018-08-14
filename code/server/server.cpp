@@ -19,6 +19,23 @@ json server::send_resources( json recv ){
 
 	string log = fread( "../../log/render_log_0" );
 
+	//get ssh user
+	bool usr = false;
+	static string username;
+	static string userpass;
+
+	if ( not usr ){ 
+		if ( _win32 ){ 
+			username = split( os::sh("echo %username%"), " " )[0];
+			userpass = fread( "C:/ProgramData/cats_farm/user" );
+		}
+		else{
+			username = "root";
+			userpass = "vfx";
+		}
+		usr = true;
+	} //------------------------------------------
+
 	json server_info = { os::hostName(),
 						 os::ip(),
 						 os::cpuUsed(),
@@ -29,7 +46,9 @@ json server::send_resources( json recv ){
 						 os::ramTotal(),
 						 os::ramUsed(),
 						 os::cpuCount(),
-						 log
+						 log,
+						 username,
+						 userpass
 						};
 
 	return server_info;

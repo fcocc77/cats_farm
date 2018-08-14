@@ -99,8 +99,8 @@ def compile_ ( project ):
 
 		if os.path.isfile(exe): os.remove(exe)
 
-		sh( "cd " + temp +" && " + qmake + " " + project )
-		sh( "cd " + temp + " && source /opt/rh/devtoolset-7/enable && find /opt/Qt5.7.1/ -type f -exec touch {} + && make" )
+		sh( "cd \"" + temp +"\" && " + qmake + " " + project )
+		sh( "cd \"" + temp + "\" && source /opt/rh/devtoolset-7/enable && find /opt/Qt5.7.1/ -type f -exec touch {} + && make" )
 
 		shutil.move( exe, linuxInstall + "/bin/linux/" + basename )
 

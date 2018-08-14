@@ -39,6 +39,8 @@ json manager::update_server_thread( json recv ){
 		float ram_used = recv[8];
 		int cpu_cores = recv[9];
 		string log = recv[10];
+		string sshUser = recv[11];
+		string sshPass = recv[12];
 
 		int response_time = time(0);
 
@@ -71,8 +73,8 @@ json manager::update_server_thread( json recv ){
 	        server->response_time = response_time;
 	        server->instances = instances;
 	        server->max_instances = 1;
-	        server->sshUser = "root";
-	        server->sshPass = "vfx";
+	        server->sshUser = sshUser;
+	        server->sshPass = sshPass;
 	        server->schedule = "0-0";
 	        server->schedule_state_0 = 1;
 	        server->schedule_state_1 = 1;

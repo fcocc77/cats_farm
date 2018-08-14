@@ -12,9 +12,9 @@ run() {
 	if $debug; then
 		rm $log_file &> /dev/null
 		echo "Started debugging."
-		/opt/rh/devtoolset-7/root/usr/bin/gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q ./server &> /dev/null
+		/opt/rh/devtoolset-7/root/usr/bin/gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q "./CatsFarm Server" &> /dev/null
 	else
-		./server &> /dev/null
+		"./CatsFarm Server" &> /dev/null
 	fi
 }
 
