@@ -261,8 +261,8 @@ def windows_install():
 
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
 
-	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/CatsFarm server.exe" )
-	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/CatsFarm Manager.exe" )
+	sh( nssm + " install \"CatsFarm Server\" \"" + windowsInstall + "/bin/win/CatsFarm Server.exe\"" )
+	sh( nssm + " install \"CatsFarm Manager\" \"" + windowsInstall + "/bin/win/CatsFarm Manager.exe\"" )
 	#-------------------------------------
 
 	# ingrsar clave de usuario
@@ -331,7 +331,10 @@ def windows_uninstall():
 compiler_install()
 
 if platform == "win32":
-	if ( windows_uninstall() ): windows_install()
+	for x in range(10):
+		if ( windows_uninstall() ): 
+			windows_install()
+			break
 elif platform == "linux2":
 	if action:
 		linux_uninstall()

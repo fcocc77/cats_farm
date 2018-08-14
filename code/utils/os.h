@@ -52,6 +52,7 @@ public:
 	static const string user();
 	static void back( string cmd );
 	static void rename( string src, string dst );
+	static string qp( string cmd );
 
 private:
 	static void copymove( string src, string dst, bool copy );

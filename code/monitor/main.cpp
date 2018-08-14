@@ -6,8 +6,8 @@ int main( int argc, char *argv[] ){
 	// si el monitor esta abierto no lo abre
 	int count = 0;
 	if  ( _win32 ){ 
-		auto lista = split( os::sh( "tasklist -fi \"IMAGENAME eq monitor.exe\"" ), "\n" );
-		for ( string l : lista ) if ( in_string( "monitor.exe", l ) ) count++;
+		auto lista = split( os::qp( "tasklist -fi \"IMAGENAME eq CatsFarm Monitor.exe\"" ), "\n" );
+		for ( string l : lista ) if ( in_string( "CatsFarm Monitor.exe", l ) ) count++;
 	}
 	else count = 1;
 	//------------------------------------------

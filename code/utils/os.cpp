@@ -476,3 +476,12 @@ const string os::user(){
 	else { return ""; };
 }
 
+string os::qp( string cmd ){
+	QProcess proc;
+	proc.start( QString::fromStdString(cmd) );
+	proc.waitForFinished(-1);
+	QString output = proc.readAllStandardOutput();
+	proc.close();
+
+	return output.toStdString();
+}
