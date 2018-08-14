@@ -4,7 +4,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 RC_ICONS = ../../icons/server.ico
 
 TEMPLATE = app
-TARGET = server
+TARGET = "CatsFarm Server"
 
 CONFIG += console c++14
 

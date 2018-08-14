@@ -2,7 +2,7 @@
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 TEMPLATE = app
-TARGET = monitor
+TARGET = "CatsFarm Monitor"
 CONFIG += c++14
 
 RC_ICONS = ../../icons/monitor.ico

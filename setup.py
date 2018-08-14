@@ -66,10 +66,9 @@ def compile_ ( project ):
 		qmake = "C:/Qt/Qt5.7.1/5.7/mingw53_32/bin/qmake.exe"
 		make = "C:/Qt/Qt5.7.1/Tools/mingw530_32/bin/mingw32-make.exe"
 
-	dirname = os.path.dirname(project).replace("\\","/")
-	basename = os.path.basename(dirname)
+	basename = fread( project ).split( "TARGET" )[1].split("\n")[0].strip().strip("=").strip().strip("\"")
 
-	print "Compiling " + dirname + "..."
+	print "Compiling " + basename + "..."
 
 	if debug:
 		f = open(project, "a")
@@ -262,8 +261,8 @@ def windows_install():
 
 	nssm = windowsInstall + "/os/win/service/nssm.exe" # para crear servicios
 
-	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/server.exe" )
-	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/manager.exe" )
+	sh( nssm + " install \"CatsFarm Server\" " + windowsInstall + "/bin/win/CatsFarm server.exe" )
+	sh( nssm + " install \"CatsFarm Manager\" " + windowsInstall + "/bin/win/CatsFarm Manager.exe" )
 	#-------------------------------------
 
 	# ingrsar clave de usuario
