@@ -193,7 +193,7 @@ void servers_actions::serverSSH(){
 
 	string disable_ask = " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
 	string cmd;
-	string ssh = path() + "/os/win/ssh/bin/ssh.exe";
+	string ssh = "\"C:/Program Files/OpenSSH/bin/ssh.exe\"";
 	if ( _win32 ) cmd = "cmd /C " + ssh + disable_ask + sshUser + "@" + ip;
 	else cmd = "gnome-terminal -e 'sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip + "'";
 

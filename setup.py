@@ -297,6 +297,14 @@ def windows_install():
 	sh( nssm + " start \"CatsFarm CoreTemp\"")
 	#-----------------------------------------------------
 
+	# sshd service
+	OpenSSH = "C:/Program Files/OpenSSH"
+	if not os.path.isdir( OpenSSH ):
+		shutil.move( windowsInstall + "/os/win/OpenSSH", OpenSSH )
+	sh( nssm + " install \"CatsFarm SSHD\" \"" + OpenSSH + "/bin/sshd_service.exe\"" )
+	sh( nssm + " start \"CatsFarm SSHD\"")
+	#------------------------------------------------------------------
+
 	nuke_module(1)
 
 def windows_uninstall():
@@ -321,20 +329,23 @@ def windows_uninstall():
 	sh( nssm + " stop \"CatsFarm CoreTemp\"")
 	sh( nssm + " remove \"CatsFarm CoreTemp\" confirm")
 
+	sh( nssm + " stop \"CatsFarm SSHD\"")
+	sh( nssm + " remove \"CatsFarm SSHD\" confirm")
+
 	if os.path.isdir( windowsInstall ): 
-		print "----------------------------"
-		print "Some files are still in use."
-		print "----------------------------"
 		return False
 	else: return True
 
 compiler_install()
 
 if platform == "win32":
-	for x in range(10):
-		if ( windows_uninstall() ): 
-			windows_install()
-			break
+	windows_uninstall()
+	if windows_uninstall(): windows_install()
+	else:
+		print "----------------------------"
+		print "Some files are still in use."
+		print "----------------------------"
+
 elif platform == "linux2":
 	if action:
 		linux_uninstall()
