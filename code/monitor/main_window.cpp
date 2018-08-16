@@ -61,39 +61,6 @@ void monitor::assamble(){
 	this->addDockWidget( Qt::LeftDockWidgetArea, log_dock );
 }
 
-/*
-void monitor::startApp(){
-	app_started = true;
-
-	managerRecieve();
-
-	// escribe el proceso de la app
-	fwrite( "../../log/monitorPID", " monitor pid ");
-	//-----------------------------
-
-	submitUpdateBox();
-	submitPanelOpen();
-	submitSoftwareBox();
-}
-
-// UI (inteface)-------------------------- 
-void monitor::ui(){	
-	actions();
-	main_menu();
-	tool_bar();
-	style_ui();
-	job_list_ui();
-	server_list_ui();
-	task_list_ui();
-	group_list_ui();
-	submit_ui();
-	job_option_ui();
-	server_option_ui();
-	log_ui();
-}
-
-*/
-
 void monitor::main_menu(){
 
 	// Main Menu-------------------------------------
