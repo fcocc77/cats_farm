@@ -16,7 +16,7 @@ public:
 	bool VMCinemaActive;
 	bool VMCinemaTurn;
 	int VMCinemaRunningTimes;
-	string guestcontrol;
+	string VMSH;
 	
 	render(){
 		// inicializar instancias 16 veces
