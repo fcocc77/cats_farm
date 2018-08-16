@@ -226,6 +226,10 @@ def linux_uninstall():
 	cserver =  "/etc/init.d/cserver"
 	if os.path.isfile(cserver): os.remove( cserver )
 
+	sh( "service cmanager stop ")
+	cmanager =  "/etc/init.d/cmanager"
+	if os.path.isfile(cmanager): os.remove( cmanager )
+
 	if os.path.isdir(linuxInstall): shutil.rmtree(linuxInstall)
 
 	desktop = "/usr/share/applications/CatsFarm.desktop"
