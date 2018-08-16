@@ -66,7 +66,7 @@ void manager::render_job(){
 								}
 								//------------------------------------------
 
-								if ( not ( vetoed_times >= 5 ) ){// este numero es la cantidad de veces que puede fallar el servidor antes que de bloquee
+								if ( not ( vetoed_times >= 3 ) ){// este numero es la cantidad de veces que puede fallar el servidor antes que de bloquee
 
 									if ( job->waiting_task ){
 										auto instance = server->instances[ins];

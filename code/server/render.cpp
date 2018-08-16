@@ -90,7 +90,7 @@ string render::qprocess( string cmd, int ins ){
 	proc.start( QString::fromStdString(cmd) );
 	if ( ins > -1 ) pid[ins] = proc.processId();
 	proc.waitForFinished(-1);
-	QString output = proc.readAllStandardOutput();
+	QString output = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
 	proc.close();
 
 	return output.toStdString();

@@ -200,7 +200,7 @@ void debug( QString bug ){
 }
 
 void print( string input ){ 
-     qDebug() << QString::fromStdString(input);
+    qDebug().nospace().noquote() << QString::fromStdString(input);
 }
 
 string path(){

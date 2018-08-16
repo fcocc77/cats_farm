@@ -17,8 +17,6 @@ json server::send_resources( json recv ){
 	else if ( _win32 ) system="Windows";
 	else { system="Mac"; }
 
-	string log = fread( "../../log/render_log_0" );
-
 	//get ssh user
 	bool usr = false;
 	static string username;
@@ -46,7 +44,7 @@ json server::send_resources( json recv ){
 						 os::ramTotal(),
 						 os::ramUsed(),
 						 os::cpuCount(),
-						 log,
+						 "log",
 						 username,
 						 userpass
 						};
@@ -61,18 +59,10 @@ json server::recieveManager( json recv, int input ){
 
 	if ( input == 0 ) send = _render->render_task( recv );
 
-	if ( input == 1 ) send = fread( "../../log/server_log" );
-
-	if ( input == 2 ){
-		string log_file;
-		if ( recv == "failed" ){ log_file = "../../log/render_log"; }
-		else{ log_file = "../../log/render_log_0"; }
-
-		// Lee el log render
-		string log = fread( log_file );
-		string called_log = fread( "../../log/called_log" );
-
-		send = called_log + "\n\n" + log;
+	if ( input == 1 ) {
+		bool failed = recv;
+		if ( failed ) send = fread( "../../log/render_log" );
+		else send = fread( "../../log/render_log_0" );
 	}
 
 	if ( input == 3 ){

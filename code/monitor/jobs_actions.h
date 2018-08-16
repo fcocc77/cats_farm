@@ -41,68 +41,68 @@ using namespace nlohmann;
 
 class jobs_actions : public QObject{
 public:
-    QMainWindow *monitor;
-    ui_jobs_tree *jobsList;
-    ui_servers_tree *serverList;
-    ui_groups_tree *groupList;
-    ui_job_options *uiJobOptions;
-    get_manager_info *getManagerInfo;
+	QMainWindow *monitor;
+	ui_jobs_tree *jobsList;
+	ui_servers_tree *serverList;
+	ui_groups_tree *groupList;
+	ui_job_options *uiJobOptions;
+	get_manager_info *getManagerInfo;
 
-    QDockWidget *log_dock = new QDockWidget( "Logs" );
-    QThread *log_thread = new QThread();    
-    QPlainTextEdit *plainLog;
-    string log_server;
-    shared_variables *shared;
+	QThread *log_thread = new QThread();    
+	QPlainTextEdit *log_text;
+	QDockWidget *log_dock;
+	string log_server;
+	shared_variables *shared;
 
-    template < class T >
-    jobs_actions( T *_monitor  ){
-        monitor = _monitor;
-        jobsList = _monitor->jobsList;
-        serverList = _monitor->serverList;
-        groupList = _monitor->groupList;
-        uiJobOptions = _monitor->uiJobOptions;
-        getManagerInfo = _monitor->getManagerInfo;
-        log_dock = _monitor->log_dock;
-        shared = _monitor->shared;
-        init();
-    }
+	template < class T >
+	jobs_actions( T *_monitor  ){
+		monitor = _monitor;
+		jobsList = _monitor->jobsList;
+		serverList = _monitor->serverList;
+		groupList = _monitor->groupList;
+		uiJobOptions = _monitor->uiJobOptions;
+		getManagerInfo = _monitor->getManagerInfo;
+		log_text = _monitor->log_text;
+		log_dock = _monitor->log_dock;
+		shared = _monitor->shared;
+		init();
+	}
 
-    //-------------------
-    QTreeWidgetItem *firstJobItem;
+	//-------------------
+	QTreeWidgetItem *firstJobItem;
 
-    // variables Generales
-    const string managerHost = fread( "../../etc/manager_host" );
-    //--------------------------------------
+	// variables Generales
+	const string managerHost = fread( "../../etc/manager_host" );
+	//--------------------------------------
 
-    // Job Acciones
-    QAction *deleteAction = new QAction( "Delete" );
-    QAction *jobSuspendAction = new QAction("Suspend");
-    QAction *jobResumeAction = new QAction("Resume");
-    QAction *jobRestartAction = new QAction("Restart");
-    QAction *jobUnlockServersAction = new QAction("Enable blocked servers");
-    QAction *jobLogAction = new QAction("Show Log");
-    QAction *jobModifyAction = new QAction("Modify");
-    QAction *jobShowRenderFolderAction = new QAction("Show Render Folder");
-    //------------------------------------------------
+	// Job Acciones
+	QAction *deleteAction = new QAction( "Delete" );
+	QAction *jobSuspendAction = new QAction("Suspend");
+	QAction *jobResumeAction = new QAction("Resume");
+	QAction *jobRestartAction = new QAction("Restart");
+	QAction *jobUnlockServersAction = new QAction("Enable blocked servers");
+	QAction *jobLogAction = new QAction("Show Log");
+	QAction *jobModifyAction = new QAction("Modify");
+	QAction *jobShowRenderFolderAction = new QAction("Show Render Folder");
+	//------------------------------------------------
 
-    // Jobs Funcions
-    void init();
-    void actions();
-    void job_popup();
-    void jobShowLog();
-    void jobLogUpdate();
-    void jobModify();
-    void jobOptionsOk();
+	// Jobs Funcions
+	void init();
+	void actions();
+	void job_popup();
+	void jobShowLog();
+	void jobModify();
+	void jobOptionsOk();
 
-    void jobDeleteStart( string action );   
-    void jobAction( string action );
+	void jobDeleteStart( string action );   
+	void jobAction( string action );
 
-    void jobMessage( void ( jobs_actions::*funtion )( string ), string action, 
-                            QString ask, QString tile, jobs_actions *_class );
+	void jobMessage( void ( jobs_actions::*funtion )( string ), string action, 
+							QString ask, QString tile, jobs_actions *_class );
 
-    void itemDelete();
+	void itemDelete();
 
-    //-----------------------------
+	//-----------------------------
 
 };
 

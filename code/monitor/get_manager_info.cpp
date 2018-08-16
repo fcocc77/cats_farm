@@ -20,8 +20,7 @@ json get_manager_info::managerRecieveUpdate( json recv ){
 	static int timelapse;
 	if ( not recv.empty() ){ 
 		if ( not shared->stopUpdate ){ 
-			shared->servers = recv["servers"]; // para el log
-			shared->jobs = recv["jobs"]; // para las tasks y para el log
+			shared->jobs = recv["jobs"]; // para las tasks
 			updateJob(  recv["jobs"] );
 			updateServer( recv["servers"] );
 			updateGroup( recv["groups"] );

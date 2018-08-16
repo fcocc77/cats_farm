@@ -88,18 +88,6 @@ void jobs_actions::jobShowLog(){
 	auto selected = jobsList->selectedItems();
 	if ( not selected.empty() ){
 
-	    // log plaintText
-		plainLog = new QPlainTextEdit();
-		plainLog->setObjectName( "style1" );
-		plainLog->setReadOnly( true );
-		plainLog->setCenterOnScroll( true );
-		QVBoxLayout *hbox = new QVBoxLayout();
-		hbox->addWidget( plainLog );
-		QWidget *widget = new QWidget();
-		widget->setLayout( hbox );
-		log_dock->setWidget( widget );
-		//-------------------------------
-
 		string job_name = selected[0]->text(0).toStdString();
 
 		// encuentra job seleccionado en la jobs recividos
@@ -113,42 +101,53 @@ void jobs_actions::jobShowLog(){
 
 			if ( not ( log_server == "...") ){
 
-				if ( log_thread->isRunning() )
-					log_thread->terminate();
+				vector <string> vetoed_host;
+				vector <string> vetoed_name;
+				vector <string> all_host;
+				vector <string> all_name;
 
-				jobLogUpdate();
-				log_thread = qthread( &jobs_actions::jobLogUpdate, this );		
+				for (int i = 0; i < serverList->topLevelItemCount(); ++i) {
+					auto item = serverList->topLevelItem(i);
+					string name = item->text(0).toStdString();
+					string _host = item->text(7).toStdString();
+
+					for ( string vs : job["vetoed_servers"] ){ 
+						if ( name == vs ) {
+							vetoed_host.push_back( _host );
+							vetoed_name.push_back( name );
+						}
+					}
+					if ( name == log_server ){ 
+						all_host.push_back( _host );
+						all_name.push_back( name );
+					}
+				}
+
+				string _name;
+				string _host;
+				json failed;
+				if ( not all_host.empty() ) {
+					_host = all_host[0];
+					_name = all_name[0];
+					failed = false;
+				}
+				if ( not vetoed_host.empty() ) {
+					_host = vetoed_host[0];
+					_name = vetoed_name[0];
+					failed = true;
+				}
+
+				string result = tcpClient( _host, 7001, failed, 1 );
+
+				log_text->setPlainText( QString::fromStdString( _name + " Log:\n\n" + result) );
 				break;
 
 			}
-			else {
-
-				if ( log_thread->isRunning() )
-					log_thread->terminate();
-
-				plainLog->setPlainText( "The jobs has not yet rendered" );
-
-			}
-
+			else log_text->setPlainText( "The jobs has not yet rendered" );
 		}
 
 		log_dock->show();
-
 	}
-}
-
-void jobs_actions::jobLogUpdate(){
-
-	string result;
-	// si el server esta en la lista de server copia el log a result
-	for ( auto server : shared->servers ){
-		if (  server["name"] == log_server ){ 
-			result = server["log"];
-			break;
-		}
-	} //---------------------------------------------
-
-	plainLog->setPlainText( QString::fromStdString(result) );
 }
 
 void jobs_actions::jobModify(){
