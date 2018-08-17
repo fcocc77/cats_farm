@@ -141,15 +141,9 @@ void monitor::tool_bar(){
 
 void monitor::log_ui(){
 
-	log_text->setObjectName("style1");
-
-	QVBoxLayout *hbox = new QVBoxLayout();
-	hbox->addWidget(log_text);
-	QWidget *widget = new QWidget();
-	widget->setLayout( hbox );
+	log_text->m_Editor->setObjectName("style1");
 
 	log_dock->setObjectName("Logs");
-	log_dock->setWidget( widget );
-
+	log_dock->setWidget( log_text );
 	log_dock->hide();
 }	

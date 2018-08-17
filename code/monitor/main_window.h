@@ -32,8 +32,9 @@ using namespace std;
 #include "servers_actions.h"
 #include "tasks_actions.h"
 #include "shared_variables.h"
+#include "../external/QCodeEditor/QCodeEditor_Example.hpp"
 //--------------------------------------
-
+#include <QTextEdit>
 #include <vector>
 using namespace std;
 
@@ -54,7 +55,7 @@ public:
     QToolBar *toolBar = new QToolBar();
 
     //log
-    QPlainTextEdit *log_text = new QPlainTextEdit();
+    kgl::QCodeEditor_Example *log_text = new kgl::QCodeEditor_Example();
     QDockWidget *log_dock = new QDockWidget( "Logs" );
 
     shared_variables *shared = new shared_variables();

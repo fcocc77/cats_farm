@@ -4,6 +4,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 TEMPLATE = app
 TARGET = "CatsFarm Monitor"
 CONFIG += c++14
+INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 
 RC_ICONS = ../../icons/monitor.ico
 
@@ -32,7 +33,20 @@ HEADERS += 	./general.h \
 			../utils/threading.h \
 			../utils/util.h \
 			../utils/video.h \
-			../manager/structs.h
+			../manager/structs.h \
+			# QCodeEditor 
+			../external/QCodeEditor/QCodeEditor_Example.hpp \
+			../external/QCodeEditor/include/KGL/Design/QCodeEditorDesign.hpp \
+			../external/QCodeEditor/include/KGL/Design/QCodeEditorSheets.hpp \
+			../external/QCodeEditor/include/KGL/Design/QLineColumnPadding.hpp \
+			../external/QCodeEditor/include/KGL/Design/QSyntaxRule.hpp \
+			../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp \
+			../external/QCodeEditor/include/KGL/Widgets/QCodeEditorHighlighter.hpp \
+			../external/QCodeEditor/include/KGL/Widgets/QCodeEditorLineWidget.hpp \
+			../external/QCodeEditor/include/KGL/Widgets/QCodeEditorPopup.hpp \
+			../external/QCodeEditor/include/KGL/KGLConfig.hpp \
+			../external/QCodeEditor/include/KGL/Design/XmlHelper.hpp \
+			#-------------------------------------
 
 SOURCES += 	./main.cpp \
 			./main_window.cpp \
@@ -54,4 +68,22 @@ SOURCES += 	./main.cpp \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \
+			# QCodeEditor
+			../external/QCodeEditor/QCodeEditor_Example.cpp \
+			../external/QCodeEditor/src/Design/QCodeEditorDesign.cpp \
+			../external/QCodeEditor/src/Design/QCodeEditorSheets.cpp \
+			../external/QCodeEditor/src/Design/QLineColumnPadding.cpp \
+			../external/QCodeEditor/src/Design/QSyntaxRule.cpp \
+			../external/QCodeEditor/src/Widgets/QCodeEditor.cpp \
+			../external/QCodeEditor/src/Widgets/QCodeEditorEvents.cpp \
+			../external/QCodeEditor/src/Widgets/QCodeEditorHighlighter.cpp \
+			../external/QCodeEditor/src/Widgets/QCodeEditorLineWidget.cpp \
+			../external/QCodeEditor/src/Widgets/QCodeEditorPopup.cpp \
+			../external/QCodeEditor/src/Widgets/QCodeEditorSlots.cpp \
+			../external/QCodeEditor/src/Design/XmlHelper.cpp \
+			#-------------------------------------
 
+RESOURCES += \
+	# QCodeEditor
+    ../external/QCodeEditor/files/res.qrc
+    #---------------------------------------

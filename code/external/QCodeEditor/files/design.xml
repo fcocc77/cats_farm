@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<design>
+    <!-- Order of declaration and character case does not matter -->
+    <editorbackcolor>#ffffff</editorbackcolor>
+    <editortextcolor>#333333</editortextcolor>
+    <editorbordercolor>#b9b9b9</editorbordercolor>
+    <linecolumnbackcolor>#e9e9e9</linecolumnbackcolor>
+    <linecolumntextcolor>#6a9fc6</linecolumntextcolor>
+    <linecolumnseparatorcolor>#b9b9b9</linecolumnseparatorcolor>
+    <activelinecolor>#fc9100</activelinecolor>
+    <intelliboxbackcolor>#fafafa</intelliboxbackcolor>
+    <intelliboxtextcolor>#333333/intelliboxtextcolor>
+    <intelliboxbordercolor>#b9b9b9</intelliboxbordercolor>
+    <intelliboxselectionbackcolor>#c0dcf3</intelliboxselectionbackcolor>
+    <intelliboxselectionbordercolor>#90c8f6</intelliboxselectionbordercolor>
+    <intelliboxpressbackcolor>#90c8f6</intelliboxpressbackcolor>
+    <intelliboxpressbordercolor>#60b0f9</intelliboxpressbordercolor>
+    <editorborder>0 0 0 0</editorborder> <!-- left, top, right, bottom -->
+    <intelliboxborder>1 1 1 1</intelliboxborder>
+    <linecolumnpadding>16 16</linecolumnpadding> <!-- left, right -->
+    <popupsize>400 300</popupsize> <!-- width, height -->
+    <haslinecolumn>true</haslinecolumn>
+    <showfocusrect>false</showfocusrect>
+    <firstlineone>true</firstlineone>
+</design>

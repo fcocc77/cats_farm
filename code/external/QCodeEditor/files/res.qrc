@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>rule_cpp.xml</file>
+        <file>design.xml</file>
+    </qresource>
+</RCC>

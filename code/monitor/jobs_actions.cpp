@@ -139,11 +139,11 @@ void jobs_actions::jobShowLog(){
 
 				string result = tcpClient( _host, 7001, failed, 1 );
 
-				log_text->setPlainText( QString::fromStdString( _name + " Log:\n\n" + result) );
+				log_text->m_Editor->setPlainText( QString::fromStdString( _name + " Log:\n\n" + result) );
 				break;
 
 			}
-			else log_text->setPlainText( "The jobs has not yet rendered" );
+			else log_text->m_Editor->setPlainText( "The jobs has not yet rendered" );
 		}
 
 		log_dock->show();

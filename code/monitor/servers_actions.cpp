@@ -175,7 +175,7 @@ void servers_actions::serverLog(){
 	string result;
 	result = tcpClient( host, 7001, true, 1 );
 
-	log_text->setPlainText( QString::fromStdString(result));
+	log_text->m_Editor->setPlainText( QString::fromStdString(result));
 	log_dock->show();
 }
 

@@ -36,7 +36,7 @@ using namespace nlohmann;
 #include "ui_job_options.h"
 #include "get_manager_info.h"
 #include "shared_variables.h"
-
+#include "../external/QCodeEditor/QCodeEditor_Example.hpp"
 //-----------------
 
 class jobs_actions : public QObject{
@@ -48,8 +48,9 @@ public:
 	ui_job_options *uiJobOptions;
 	get_manager_info *getManagerInfo;
 
-	QThread *log_thread = new QThread();    
-	QPlainTextEdit *log_text;
+	QThread *log_thread = new QThread();
+
+	kgl::QCodeEditor_Example *log_text;
 	QDockWidget *log_dock;
 	string log_server;
 	shared_variables *shared;
