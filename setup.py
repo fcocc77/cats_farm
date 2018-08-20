@@ -313,6 +313,17 @@ def windows_install():
 	sh( nssm + " start \"CatsFarm SSHD\"")
 	#------------------------------------------------------------------
 
+	# desbloquear puertos firewall
+	sh( "netsh advfirewall firewall delete rule name=\"CatsFarm Ports:7000,7001\"" ) # delete
+	sh( "netsh advfirewall firewall delete rule name=\"sshd Ports:22\"" ) # delete
+
+	sh( "netsh advfirewall firewall add rule name=\"CatsFarm Ports:7000,7001\" dir=in action=allow enable=yes profile=Any protocol=TCP localport=7000,7001" )
+	sh( "netsh advfirewall firewall add rule name=\"CatsFarm Ports:7000,7001\" dir=out action=allow enable=yes profile=Any protocol=TCP localport=7000,7001" )
+
+	sh( "netsh advfirewall firewall add rule name=\"sshd Ports:22\" dir=in action=allow enable=yes profile=Any protocol=TCP localport=22" )
+	sh( "netsh advfirewall firewall add rule name=\"sshd Ports:22\" dir=out action=allow enable=yes profile=Any protocol=TCP localport=22" )
+	#------------------------------------------------------------------------------------
+
 	nuke_module(1)
 
 def windows_uninstall():
@@ -336,7 +347,7 @@ def windows_uninstall():
 	sh( nssm + " remove \"CatsFarm SSHD\" confirm")
 
 	sh( "taskkill -f -im \"CatsFarm Monitor.exe\"" );
-	
+
 	sleep( 0.1 )
 	if os.path.isdir( windowsInstall ):
 		sh("RD /S /Q \"" + windowsInstall + "\"" )
