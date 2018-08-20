@@ -80,11 +80,11 @@ void get_manager_info::updateJob( json recv ){
 
 		int p = job["priority"];
 
-		if ( p == 0 ) priority = "Very Low";
-		else if ( p == 1 ) priority = "Low";
+		if ( p == 0 ) priority = "Very High";
+		else if ( p == 1 ) priority = "High";
 		else if ( p == 2 ) priority = "Normal";
-		else if ( p == 3 ) priority = "High";
-		else priority = "Very High";
+		else if ( p == 3 ) priority = "Low";
+		else priority = "Very Low";
 		//-------------------------------
 
 		// si el jobs se borro recientemente no se agrega ni actualiza

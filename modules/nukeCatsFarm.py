@@ -97,10 +97,10 @@ class catsFarmSend():
 		priority = str(p.value("Priority"))
 
 		if priority == "Normal": priority = "2"
-		if priority == "Very Low": priority = "0"
-		if priority == "Low": priority = "1"
-		if priority == "High": priority = "3"
-		if priority == "Very High": priority = "4"
+		if priority == "Very High": priority = "0"
+		if priority == "High": priority = "1"
+		if priority == "Low": priority = "3"
+		if priority == "Very Low": priority = "4"
 
 		serverGroup = str(p.value("Server Group"))
 		instances = str(p.value("Instances"))

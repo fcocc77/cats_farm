@@ -42,7 +42,7 @@ void ui_job_options::ui(){
 				labelPriority->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 				labelPriority->setMaximumWidth(70);
 
-				priority->addItems({"Very Low", "Low", "Normal", "High", "Very High"});
+				priority->addItems({"Very High", "High", "Normal", "Low", "Very Low"});
 				priority->setCurrentIndex(2);
 				priority->setMaximumWidth(80);
 				
