@@ -141,9 +141,19 @@ void monitor::tool_bar(){
 
 void monitor::log_ui(){
 
-	log_text->m_Editor->setObjectName("style1");
+	kgl::QCodeEditorDesign design(":/design.xml");
+	QList< kgl::QSyntaxRule > rules = kgl::QSyntaxRules::loadFromFile(":/rule_cpp.xml", design);
 
+	log_text->setRules(rules);
+	log_text->setKeywords({ "printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset" });
+
+	QWidget *widget = new QWidget();
+	QVBoxLayout *hbox = new QVBoxLayout();
+	hbox->addWidget( log_text );
+	widget->setLayout( hbox );
+
+	log_text->setObjectName("Logs");
 	log_dock->setObjectName("Logs");
-	log_dock->setWidget( log_text );
+	log_dock->setWidget( widget );
 	log_dock->hide();
 }	

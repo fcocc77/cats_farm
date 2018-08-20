@@ -20,7 +20,6 @@
 using namespace nlohmann;
 #include <iostream>
 using namespace std;
-#include "../external/QCodeEditor/QCodeEditor_Example.hpp"
 
 // monitor modules
 #include "ui_jobs_tree.h"
@@ -37,7 +36,7 @@ public:
     ui_servers_tree *serverList;
     ui_groups_tree *groupList;
     ui_server_options *uiServerOptions;
-    kgl::QCodeEditor_Example *log_text;
+    QPlainTextEdit *log_text;
     QDockWidget *log_dock;
 
 

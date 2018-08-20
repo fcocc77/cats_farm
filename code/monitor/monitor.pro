@@ -3,7 +3,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 TEMPLATE = app
 TARGET = "CatsFarm Monitor"
-CONFIG += c++14
+CONFIG += c++14 console
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 
 RC_ICONS = ../../icons/monitor.ico
@@ -35,7 +35,6 @@ HEADERS += 	./general.h \
 			../utils/video.h \
 			../manager/structs.h \
 			# QCodeEditor 
-			../external/QCodeEditor/QCodeEditor_Example.hpp \
 			../external/QCodeEditor/include/KGL/Design/QCodeEditorDesign.hpp \
 			../external/QCodeEditor/include/KGL/Design/QCodeEditorSheets.hpp \
 			../external/QCodeEditor/include/KGL/Design/QLineColumnPadding.hpp \
@@ -69,7 +68,6 @@ SOURCES += 	./main.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \
 			# QCodeEditor
-			../external/QCodeEditor/QCodeEditor_Example.cpp \
 			../external/QCodeEditor/src/Design/QCodeEditorDesign.cpp \
 			../external/QCodeEditor/src/Design/QCodeEditorSheets.cpp \
 			../external/QCodeEditor/src/Design/QLineColumnPadding.cpp \

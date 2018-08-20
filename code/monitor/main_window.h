@@ -32,7 +32,7 @@ using namespace std;
 #include "servers_actions.h"
 #include "tasks_actions.h"
 #include "shared_variables.h"
-#include "../external/QCodeEditor/QCodeEditor_Example.hpp"
+#include "../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp"
 //--------------------------------------
 #include <QTextEdit>
 #include <vector>
@@ -55,7 +55,7 @@ public:
     QToolBar *toolBar = new QToolBar();
 
     //log
-    kgl::QCodeEditor_Example *log_text = new kgl::QCodeEditor_Example();
+    kgl::QCodeEditor *log_text = new kgl::QCodeEditor(this);
     QDockWidget *log_dock = new QDockWidget( "Logs" );
 
     shared_variables *shared = new shared_variables();

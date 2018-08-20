@@ -39,6 +39,8 @@ namespace kgl {
         : QWidget(parent),
           m_Parent(parent),
           m_EditorView(parent->viewport()) {
+
+        this->setObjectName("QCodeEditorLineWidget");
     }
 
     ///
@@ -80,9 +82,7 @@ namespace kgl {
         QPainter painter(this);
 
         // Paints the background and the separator
-        painter.fillRect(content, design.lineColumnBackColor());
         painter.setPen(design.lineColumnSeparatorColor());
-        painter.drawLine(content.width()-1, 0, content.width()-1, height()-1);
         painter.setPen(design.lineColumnTextColor());
 
         // Retrieves the visible line numbers

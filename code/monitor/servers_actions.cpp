@@ -170,13 +170,15 @@ void servers_actions::serverCpuLimit( int limit ){
 void servers_actions::serverLog(){
 
 	auto selected = serverList->selectedItems();
-	string host = ( selected[0]->text(7) ).toStdString();
+	if ( not selected.empty() ){ 
+		string host = ( selected[0]->text(7) ).toStdString();
 
-	string result;
-	result = tcpClient( host, 7001, true, 1 );
+		string result;
+		result = tcpClient( host, 7001, true, 1 );
 
-	log_text->m_Editor->setPlainText( QString::fromStdString(result));
-	log_dock->show();
+		log_text->setPlainText( QString::fromStdString(result));
+		log_dock->show();
+	}
 }
 
 void servers_actions::serverMaxInstances( int ins ){

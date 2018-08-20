@@ -163,7 +163,7 @@
 /*---------------------------------------*/
 
 /* QScrollBar */
-	
+
 	QScrollBar:horizontal
 	{
 		background-color: rgb(35, 35, 35);
@@ -191,7 +191,6 @@
 		margin-top: 11;
 		margin-bottom: 11;
 	}
-
 
 	QScrollBar::add-line:horizontal,
 	QScrollBar::add-line:vertical, 
@@ -379,7 +378,6 @@
 		color: rgb(100, 100, 100);
 	}
 
-
 	QWidget#style2{
 		background-color: rgb(40, 40, 40);
 	}
@@ -389,4 +387,18 @@
 		border: 1px solid rgb(60, 60, 60);
 		border-radius: 3px;
 	}
+/*--------------------------*/
+
+/* QCodeEditor */
+	QWidget#QCodeEditorLineWidget{
+		background-color: rgb(30, 30, 30);
+	}
+
+	QWidget#Logs{
+		background-color: rgb(40, 40, 40);
+		border-color: rgb(255, 170, 0);
+		border: 1px solid rgb(45, 45, 45);
+		border-radius: 3px;
+	}
+
 /*--------------------------*/
