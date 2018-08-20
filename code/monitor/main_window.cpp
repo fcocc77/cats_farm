@@ -146,7 +146,8 @@ void monitor::log_ui(){
 
 	log_text->setRules(rules);
 	log_text->setKeywords({ "printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset" });
-
+	log_text->setReadOnly( true );
+	
 	QWidget *widget = new QWidget();
 	QVBoxLayout *hbox = new QVBoxLayout();
 	hbox->addWidget( log_text );
