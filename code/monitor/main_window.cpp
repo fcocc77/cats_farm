@@ -144,6 +144,7 @@ void monitor::log_ui(){
 	kgl::QCodeEditorDesign design(":/design.xml");
 	QList< kgl::QSyntaxRule > rules = kgl::QSyntaxRules::loadFromFile(":/rule_cpp.xml", design);
 
+	log_text->setDesign(design);
 	log_text->setRules(rules);
 	log_text->setKeywords({ "printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset" });
 	log_text->setReadOnly( true );
