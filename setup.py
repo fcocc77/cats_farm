@@ -100,8 +100,10 @@ def compile_ ( project ):
 
 		if os.path.isfile(exe): os.remove(exe)
 
+		sh( "find " + linuxInstall + " -type f -exec touch {} +" ) # Aniade directorio de catsfarm para poder compilarlo
+		sh( "find /opt/Qt5.7.1/ -type f -exec touch {} +" ) # Aniade directorio de QT5
 		sh( "cd \"" + temp +"\" && " + qmake + " " + project )
-		sh( "cd \"" + temp + "\" && source /opt/rh/devtoolset-7/enable && find /opt/Qt5.7.1/ -type f -exec touch {} + && make" )
+		sh( "cd \"" + temp + "\" && source /opt/rh/devtoolset-7/enable && make" )
 
 		shutil.move( exe, linuxInstall + "/bin/linux/" + basename )
 
