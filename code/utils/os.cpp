@@ -149,7 +149,8 @@ int os::ramTotal(){
 }
 
 float os::ramUsed(){
-	return (ramTotal()*ramPercent())/100.0;
+	float used = ( ramTotal() * ramPercent() ) / 100.0; 
+	return roundf( used * 10 ) / 10; // roundf limita los decimales
 }
 
 int os::cpuTemp(){

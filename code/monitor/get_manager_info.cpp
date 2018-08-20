@@ -311,7 +311,7 @@ void get_manager_info::updateServer( json recv ){
 		int temp = server["temp"];
 		bool vbox_status = server["vbox"];
 		int ram_total = server["ram_total"];
-		int ram_used = server["ram_used"];
+		float ram_used = server["ram_used"];
 		int cpu_cores = server["cpu_cores"];
 
         vector <inst_struct*> instances;
