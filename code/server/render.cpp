@@ -139,7 +139,6 @@ bool render::nuke( int ins ){
 	string cmd = '"' + exe + '"' + args;
 
 	string log_file = path() + "/log/render_log_" + to_string( ins );
-	os::remove( log_file );
 
 	// rendering ...
 	// ----------------------------------
@@ -209,7 +208,6 @@ bool render::houdini( int ins ){
 	string cmd = '"' + exe + "\" " + render_file;
 
 	string log_file = path() + "/log/render_log_" + to_string( ins );
-	os::remove( log_file );
 
 	// rendering ...
 	// ----------------------------------
@@ -289,8 +287,6 @@ void render::suspend_vbox(){
 bool render::cinema( int ins ){
 
 	string log_file = path() + "/log/render_log_" + to_string( ins );
-	os::remove( log_file );
-
 	string log, cmd;
 
 	if ( _linux ){ // en linux se usa una maquina virtual
@@ -336,7 +332,7 @@ bool render::cinema( int ins ){
 			}
 		}
 		//--------------------------------
-
+		
 		// rendering ...
 		// ----------------------------------
 		if ( not problem ) log = qprocess( cmd, ins );

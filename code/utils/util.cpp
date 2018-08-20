@@ -41,6 +41,7 @@ string fread( string path ){
 }
 
 void fwrite( string path, string data ){
+    os::remove( path );
     ofstream myfile( path );
     myfile << data;
     myfile.close();

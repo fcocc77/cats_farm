@@ -3,7 +3,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 TEMPLATE = app
 TARGET = "CatsFarm Monitor"
-CONFIG += c++14 console
+CONFIG += c++14
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 
 RC_ICONS = ../../icons/monitor.ico
