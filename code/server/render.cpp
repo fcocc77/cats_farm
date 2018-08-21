@@ -170,13 +170,7 @@ bool render::maya( int ins ){
 		//-----------------------------------------------
 	args = replace( args, src_path[ ins ], dst_path[ ins ] );
 
-	//evita que maya de error al iniciar el servicio de catsfarm server al iniciar la maquina
-	string MAYA_DISABLE_CIP;
-	if ( _linux ) MAYA_DISABLE_CIP = "export MAYA_DISABLE_CIP=1 && ";
-	else MAYA_DISABLE_CIP = "";
-	//--------------------------------------------------------------------------------------
-
-	string cmd = MAYA_DISABLE_CIP + '"' + exe + "\" " + args;
+	string cmd = '"' + exe + "\" " + args;
 
 	// rendering ...
 	// ----------------------------------
@@ -332,7 +326,7 @@ bool render::cinema( int ins ){
 			}
 		}
 		//--------------------------------
-		
+
 		// rendering ...
 		// ----------------------------------
 		if ( not problem ) log = qprocess( cmd, ins );
@@ -381,35 +375,21 @@ bool render::fusion( int ins ){
 	os::remove( log_file );
 
 	project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
-	extra[ ins ] = replace( extra[ ins ], src_path[ ins ], dst_path[ ins ] );
 
-	string ext = extra[ ins ].substr( extra[ ins ].length() - 3 );
-	if ( ext == "mov" ){
-
-		string folder = extra[ ins ].erase( extra[ ins ].length() - 4 );
-		string base_name = os::basename( folder );
-		if ( not os::isdir( folder ) ){
-			os::mkdir( folder );
-			if (_linux ){
-				system( ("chmod 777 -R " + folder).c_str() );
-			}
-		}
-		string padding = ( "000000" + to_string( first_frame[ ins ] ) );
-		padding = padding.erase( padding.length() - 7 );
-		string output = folder + "/" + base_name + "_" + padding + "." + ext;
+	if ( _win32 ){
+		project[ ins ] = replace( project[ ins ], "/", "\\" );
+		log_file = replace( log_file, "/", "\\" );
 	}
-	else{ string output = extra[ ins ]; }
 
-	string args = " " + project[ ins ] + " -render -verbose " +
-					" " + to_string( first_frame[ ins ] ) + ' ' + to_string( last_frame[ ins ] ) + " -quit ";
+	string args = " " + project[ ins ] + " --verbose --render --start " + to_string( first_frame[ ins ] ) + " --end " + to_string( last_frame[ ins ] ) + " /log " + log_file;
 
 	//Obtiene el excecutable que existe en este sistema
 	string exe;
 	for ( auto e : preferences["paths"]["fusion"] ){
 		 exe = e;
 		 if ( os::isfile( exe ) ){ break; }
-		}
-		//-----------------------------------------------
+	}
+	//-----------------------------------------------
 
 	string cmd = '"' + exe + '"' + args;
 

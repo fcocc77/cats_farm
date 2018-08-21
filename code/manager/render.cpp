@@ -232,7 +232,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 
 	if ( Completed ){
 		debug("manager::render_task: Completed");
-		if ( software == "Nuke" or software == "Fusion" ){
+		if ( software == "Nuke" ){
 
 			string ext = extra.substr( extra.length() - 3 );
 
