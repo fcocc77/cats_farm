@@ -194,8 +194,7 @@ def linux_install():
 	copydir( path + "/theme", linuxInstall + "/theme" )
 	#-----------------------------------------------------
 
-	compile_( linuxInstall + "/code/manager/manager.pro" )
-	compile_( linuxInstall + "/code/monitor/monitor.pro" )
+	if manager_start: compile_( linuxInstall + "/code/manager/manager.pro" )
 	compile_( linuxInstall + "/code/server/server.pro" )
 	compile_( linuxInstall + "/modules/denoiser/denoiser.pro" )
 

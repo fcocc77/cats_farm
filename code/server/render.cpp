@@ -381,7 +381,15 @@ bool render::fusion( int ins ){
 		log_file = replace( log_file, "/", "\\" );
 	}
 
-	string args = " " + project[ ins ] + " --verbose --render --start " + to_string( first_frame[ ins ] ) + " --end " + to_string( last_frame[ ins ] ) + " /log " + log_file;
+	// replmaza rutas internas del .comp
+	string inside_project = fread( project[ ins ] );
+	if ( _linux ) inside_project = replace( inside_project, "\\\\", "/");
+	inside_project = replace( inside_project, src_path[ ins ], dst_path[ ins ] );
+	string new_project = path() + "/etc/fusion_render_" + to_string( ins ) + ".comp";
+	fwrite( new_project, inside_project );
+	//------------------------------------------------------------------------
+
+	string args = " " + new_project + " --verbose --render --start " + to_string( first_frame[ ins ] ) + " --end " + to_string( last_frame[ ins ] ) + " -log " + log_file;
 
 	//Obtiene el excecutable que existe en este sistema
 	string exe;
@@ -391,8 +399,12 @@ bool render::fusion( int ins ){
 	}
 	//-----------------------------------------------
 
-	string cmd = '"' + exe + '"' + args;
-
+	string cmd;
+	if ( _win32 ) cmd = '"' + exe + '"' + args;
+	if ( _linux ) {
+		os::sh( "chmod 777 -R " + path() + "/log" ); // al renderear en user no tiene los permisos de root en el log asi le da permisos
+		cmd = "runuser -l " + os::user() + " -c \"" + exe + args + "\""; // se ejecuta en usuario por que nececita X11 DISPLAY
+	}
 	// rendering ...
 	// ----------------------------------
 	qprocess( cmd, ins );
