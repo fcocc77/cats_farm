@@ -78,6 +78,10 @@ json server::recieveManager( json recv, int input ){
 			os::kill( _render->pid[i] );
 		}
 
+		// kill noice
+		if ( _linux ) _render->qprocess( "pkill noice" );
+		else  _render->qprocess( "taskkill -im -f noice.exe" );
+		//---------------------------
 	}
 
 	if ( input == 4 ){

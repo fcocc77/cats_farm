@@ -102,6 +102,18 @@ void ui_submit::ui(){
 
 			vboxNoice->addWidget(widget10_1);
 
+			QHBoxLayout *hbox10_2 = new QHBoxLayout();
+			hbox10_2->setContentsMargins(0,0,0,0);
+				QLabel *passes_label = new QLabel("AOV:");
+				hbox10_2->addWidget(passes_label);
+				hbox10_2->addWidget(aov);
+
+			QWidget *widget10_2 = new QWidget();
+			widget10_2->setLayout(hbox10_2);	
+			widget10_2->setObjectName("style2");
+
+			vboxNoice->addWidget(widget10_2);
+
 		widgetNoice->setLayout(vboxNoice);	
 		widgetNoice->setObjectName("style1");
 
@@ -504,6 +516,7 @@ void ui_submit::submitPanelOpen(){
 		searchRadius->setText( QString::fromStdString( panel["searchRadius"]) );	
 		variance->setText( QString::fromStdString( panel["variance"]) );	
 		temporalRange->setText( QString::fromStdString( panel["temporalRange"]) );
+		aov->setText( QString::fromStdString( panel["aov"]) );
 
 		jobName->setText( QString::fromStdString( panel["jobName"]) );	
 		firstFrame->setText( QString::fromStdString( panel["firstFrame"]) );	
@@ -529,6 +542,7 @@ void ui_submit::submitPanelSave(){
 				    { "searchRadius", searchRadius->text().toStdString() },
 				    { "variance", variance->text().toStdString() },
 				    { "temporalRange", temporalRange->text().toStdString() },
+				    { "aov", aov->text().toStdString() },
 
 				    { "jobName", jobName->text().toStdString() },
 				    { "firstFrame", firstFrame->text().toStdString() },
@@ -557,7 +571,8 @@ void ui_submit::submitAction( QString software ){
 		dirProject = " -pr " + patchRadius->text() + 
 					" -sr " + searchRadius->text() + 
 					" -v " + variance->text() + 
-					" -tr " + temporalRange->text();
+					" -tr " + temporalRange->text() +
+					" -aov " + aov->text();
 
 	string system;
 	if ( _linux ){ system = "Linux"; }

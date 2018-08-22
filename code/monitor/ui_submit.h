@@ -109,6 +109,7 @@ public:
 	QLineEdit *searchRadius = new QLineEdit();
 	QLineEdit *variance = new QLineEdit();
 	QLineEdit *temporalRange = new QLineEdit();
+	QLineEdit *aov = new QLineEdit();
 	//------------------------------------
 
 public slots:

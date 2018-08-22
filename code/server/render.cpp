@@ -419,6 +419,7 @@ bool render::fusion( int ins ){
 
 bool render::noice( int ins ){
 	project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
+	string input = project[ ins ];
 
 	//Obtiene el excecutable que existe en este sistema
 	string exe;
@@ -428,23 +429,97 @@ bool render::noice( int ins ){
 	}
 	//-----------------------------------------------
 
+	// conversion de extra a parametros de noice
 	string pr = split( split( extra[ ins ], "-pr ")[1], " -sr " )[0];
 	string sr = split( split( extra[ ins ], "-sr ")[1], " -v " )[0];
 	string vr = split( split( extra[ ins ], "-v ")[1], " -tr " )[0];
-	string tr = split( extra[ ins ], "-tr ")[1];
+	int tr = stoi( split( split( extra[ ins ], "-tr ")[1], " -aov " )[0] );
+	string aov = split( extra[ ins ], "-aov ")[1];
+	//------------------------------------------------
 
-	string denoiser;
-	if ( _linux ) denoiser = path() + "/bin/linux/denoiser";
-	else if ( _win32 ) denoiser = path() + "/bin/win/denoiser.exe";
-	else denoiser = path() + "/bin/mac/denoiser";
+	// get aov
+	string layers = "";
+	for ( string l : split( aov, "," ) ) 
+		layers += " -l " + l;
+	//-------------------------------------
 
-	string cmd = denoiser + " \"" + project[ ins ] + "\" \"" + exe + "\" " + pr + " " + sr + " " + 
-					vr + " " + tr + " " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
+	for ( int frame = first_frame[ ins ]; frame <= last_frame[ ins ]; ++frame ){
 
-	// rendering ...
-	// ----------------------------------
-	qprocess( cmd, ins );
-	// ----------------------------------
+		auto getFrame = []( string _path, int frame_ ){
+
+			string dirname = os::dirname(_path);
+			string basename = os::basename(_path);
+
+			string ext = split( basename, "." ).back();
+			string pad_ext = split( basename, "_" ).back();
+			string basename_without = replace( basename, pad_ext, "");
+
+			string cero = "";
+			string _frame;
+			for (int i = 0; i < 10; ++i){
+
+				_frame = dirname + "/" + basename_without + cero + to_string(frame_) + "." + ext;
+				cero += "0";
+
+				if ( os::isfile(_frame) ) return _frame;
+
+			}
+
+			return _frame;
+		};	
+
+		int _fr = tr;
+		vector <string> inputs;
+
+		// agrega los frames anteriores
+		int _frame = frame ;
+		for (int i = 0; i < tr; ++i){
+			_frame = _frame -1;
+
+			string frame_path = getFrame( input, _frame );
+			if ( frame_path == "none" ) _fr += 1;
+			else inputs.push_back( frame_path );
+		}
+		reverse( inputs.begin(), inputs.end() ); 
+		//-----------------------------------------
+
+		// agrega los frames posteriores
+		int _frame2 = frame ;
+		for (int i = 0; i < _fr; ++i){
+			_frame2 = _frame2 + 1;
+
+			string frame_path = getFrame( input, _frame2 );
+			if ( not ( frame_path == "none" ) ) 
+				inputs.push_back( frame_path );
+		}
+		//------------------------------------------
+
+		string inputs_list;
+		for ( auto i : inputs ) inputs_list += " -i \"" + i + "\"";
+		//---------------------------------------------------
+
+		string _first_frame = getFrame( input, frame );
+
+		// tranform input to output
+		string dirname = os::dirname(_first_frame);
+		string basename = os::basename(_first_frame);
+		string ext = split( basename, "." ).back();
+		string pad_ext = split( basename, "_" ).back();
+		string basename_without = replace( basename, pad_ext, "" );
+		//-------------------------
+		string output = dirname + "/" + basename_without + "noice_" + pad_ext;
+		//-------------------------------------------------------
+
+		//-------------------------------------------------------
+		string parameter = layers + " -pr " + pr + " -sr " + sr + " -v " + vr;
+
+		string cmd = "\"" + exe + "\"" + parameter +" -i \"" + _first_frame + "\"" + inputs_list + " -o \"" + output + "\"";
+
+		// rendering ...
+		// ----------------------------------
+		qprocess( cmd, ins );
+		// ----------------------------------
+	}
 
 	return true;
 }
