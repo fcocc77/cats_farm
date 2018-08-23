@@ -438,11 +438,16 @@ bool render::noice( int ins ){
 	//------------------------------------------------
 
 	// get aov
-	string layers = "";
-	for ( string l : split( aov, "," ) ) 
-		layers += " -l " + l;
+	string layers;
+	if ( not aov.empty() )
+		for ( string l : split( aov, "," ) ) 
+			layers += " -l " + l;
 	//-------------------------------------
 
+	string log_file = path() + "/log/render_log_" + to_string( ins );
+	string log;
+	int frames_ok = 0; 
+	
 	for ( int frame = first_frame[ ins ]; frame <= last_frame[ ins ]; ++frame ){
 
 		auto getFrame = []( string _path, int frame_ ){
@@ -466,7 +471,7 @@ bool render::noice( int ins ){
 			}
 
 			return _frame;
-		};	
+		};
 
 		int _fr = tr;
 		vector <string> inputs;
@@ -509,19 +514,25 @@ bool render::noice( int ins ){
 		//-------------------------
 		string output = dirname + "/" + basename_without + "noice_" + pad_ext;
 		//-------------------------------------------------------
-
-		//-------------------------------------------------------
 		string parameter = layers + " -pr " + pr + " -sr " + sr + " -v " + vr;
-
 		string cmd = "\"" + exe + "\"" + parameter +" -i \"" + _first_frame + "\"" + inputs_list + " -o \"" + output + "\"";
-
 		// rendering ...
 		// ----------------------------------
-		qprocess( cmd, ins );
+		string _log = qprocess( cmd, ins );
 		// ----------------------------------
+
+		if ( in_string( "Finished denoising", _log ) ) frames_ok++;
+		else break;
+
+		log += "Frame: " + to_string( frame ) + "\n" + _log;
 	}
 
-	return true;
+	fwrite( log_file, log );
+
+	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;	
+	
+	if ( frames_ok == total_frame ) return true;
+	else return false;
 }
 
 bool render::ffmpeg( int ins ){
