@@ -261,7 +261,6 @@ def windows_install():
 	compile_( windowsInstall + "/code/monitor/monitor.pro" )
 	compile_( windowsInstall + "/code/manager/manager.pro" )
 	compile_( windowsInstall + "/code/submit/submit.pro" )
-	compile_( windowsInstall + "/modules/denoiser/denoiser.pro" )
 
 	copyfile( windowsInstall + "/os/win/link/CatsFarm Monitor.lnk" , "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
 
@@ -288,7 +287,6 @@ def windows_install():
 			break
 		if x > 0: print "Wrong password..."
 	#-----------------------------------------
-
 	if server_start: sh( "sc start \"CatsFarm Server\"")
 	else: 
 		sh( "sc stop \"CatsFarm Server\"")
