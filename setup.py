@@ -196,7 +196,6 @@ def linux_install():
 
 	if manager_start: compile_( linuxInstall + "/code/manager/manager.pro" )
 	compile_( linuxInstall + "/code/server/server.pro" )
-	compile_( linuxInstall + "/modules/denoiser/denoiser.pro" )
 
 	copyfile( path + "/os/linux/link/CatsFarm.desktop" , "/usr/share/applications")
 
