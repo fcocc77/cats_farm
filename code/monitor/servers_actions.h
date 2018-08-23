@@ -64,8 +64,6 @@ public:
 	QAction *serverSshAction = new QAction("SSH");
 	QAction *serverShowLog = new QAction("Show Log");
 	QAction *serverVncAction = new QAction("VNC");
-	QAction *serverStartVmAction = new QAction("Start VirtualMachine");
-	QAction *serverStopVmAction = new QAction("Stop VirtualMachine");
 	QAction *deleteAction = new QAction("Delete Server");
 
 	//------------------------------------------------

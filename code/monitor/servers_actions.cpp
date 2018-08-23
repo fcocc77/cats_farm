@@ -39,12 +39,6 @@ void servers_actions::actions(){
 	connect( serverShowLog, &QAction::triggered, this, &servers_actions::serverLog );
 	serverShowLog->setShortcut( QString( "Ctrl+L"));
 	connect( serverVncAction, &QAction::triggered, this, &servers_actions::serverVNC );
-	connect( serverStartVmAction, &QAction::triggered, this, [this](){
-		sendToServer("vmstart","none");
-	});
-	connect( serverStopVmAction, &QAction::triggered, this, [this](){
-		sendToServer("vmstop","none");
-	});
 	//--------------------------------------------------------
 }
 
@@ -138,9 +132,6 @@ void servers_actions::server_popup(){
 		*/
 		//menu->addMenu( submenu );
 		menu->addAction( serverFreeramAction );
-		menu->addSeparator();
-		menu->addAction( serverStartVmAction );
-		menu->addAction( serverStopVmAction );
 		menu->addSeparator();
 		menu->addAction( serverSshAction );
 		menu->addAction( serverVncAction );
