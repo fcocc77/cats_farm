@@ -199,15 +199,15 @@ int os::cpuTemp(){
 					string tempRead = split( fread( f ), "\n" ).end()[-1] ;
 
 					auto core = split( split( tempRead, ",,," )[0], "," );
-
+					int cpu_count = core.size() - 1;
 					int cores = 0;
-					if ( core.size() == 5 ){
-						for ( int i = 1; i < 5; ++i ){
-							try{ cores += stoi( core[i] ); } // puede dar error si no es numero
-							catch(...){}
-						}
+					
+					for ( int i = 1; i < cpu_count + 1; ++i ){
+						try{ cores += stoi( core[i] ); } // puede dar error si no es numero
+						catch(...){}
 					}
-					if ( cores ) temp = cores/4;
+					
+					if ( cores ) temp = cores/cpu_count;
 				}
 
 				if ( csv_delete > 10 ){
