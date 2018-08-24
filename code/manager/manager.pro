@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = "CatsFarm Manager"
 RC_ICONS = ../../icons/manager.ico
 
-CONFIG += console c++11
+CONFIG += console c++14
 
 QT += core gui multimedia widgets
 

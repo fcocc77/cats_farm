@@ -63,9 +63,11 @@ def fwrite( path, info ):
 def compile_ ( project ):
 	if platform == "linux2":
 		qmake = "/opt/Qt5.7.1/5.7/gcc_64/bin/qmake"
-	else: 
+	elif platform == "win32":
 		qmake = "C:/Qt/Qt5.7.1/5.7/mingw53_32/bin/qmake.exe"
 		make = "C:/Qt/Qt5.7.1/Tools/mingw530_32/bin/mingw32-make.exe"
+	else:
+		qmake = "/usr/local/Qt5.11.1/5.11.1/clang_64/bin/qmake"
 
 	basename = fread( project ).split( "TARGET" )[1].split("\n")[0].strip().strip("=").strip().strip("\"")
 
@@ -89,7 +91,7 @@ def compile_ ( project ):
 
 		shutil.move( exe, windowsInstall + "/bin/win/" + basename + ".exe" )
 
-	else:
+	elif platform == "linux2":
 		if debug: name = basename + "_debug"
 		else: name = basename
 
@@ -106,6 +108,19 @@ def compile_ ( project ):
 		sh( "cd \"" + temp + "\" && source /opt/rh/devtoolset-7/enable && make" )
 
 		shutil.move( exe, linuxInstall + "/bin/linux/" + basename )
+
+	else:
+		temp = "/tmp/" + basename
+		if not os.path.isdir( temp ): os.makedirs( temp );
+
+		exe = temp + "/" + basename + ".app/Contents/MacOS/" + basename
+
+		if os.path.isfile(exe): os.remove(exe)
+
+		sh( "cd \"" + temp +"\" && " + qmake + " " + project )
+		sh( "cd \"" + temp + "\" && make" )
+
+		shutil.move( exe, macInstall + "/bin/mac/" + basename )
 
 	print "The " + basename + " compilation finishes."
 	print "---------------------------------------------"
@@ -131,6 +146,14 @@ def compiler_install():
 			rpms +=  path + "/qt/linux/libs/" + rpm + " "
 		sh( "yum -y install " + rpms )
 		#----------------------
+
+	if platform == "darwin":
+		if not os.path.isdir( "/usr/local/Qt5.11.1" ):
+			print "Installing Qt5.11.1..."
+			sh( "unzip -o " + path + "/qt/mac/Qt5.11.1.zip -d /usr/local")
+			print "Installing Command Line Tools..."
+			sh( "installer -pkg \"" + path + "/qt/mac/Command Line Tools.pkg\" -target /" )
+			print "---------------------------------"
 
 def nuke_module(install):
 	pluginsSys=["/usr/local/nuke/plugins","C:/Program Files/nuke/plugins","/Applications/nuke/nuke.app/Contents/MacOS/plugins"]
@@ -202,9 +225,7 @@ def linux_install():
 	shutil.copy( linuxInstall + "/os/linux/init/cserver", "/etc/init.d/cserver")
 	shutil.copy( linuxInstall + "/os/linux/init/cmanager", "/etc/init.d/cmanager")
 
-	f = open( linuxInstall + "/etc/manager_host" , "w" )
-	f.write( ip )
-	f.close()
+	fwrite( linuxInstall + "/etc/manager_host", ip )
 
 	if debug:dbug="true"
 	else:dbug="false"
@@ -355,6 +376,71 @@ def windows_uninstall():
 		return False
 	else: return True
 
+def mac_install():
+	if not os.path.isdir( macInstall ):
+		os.mkdir( macInstall )
+
+	# copia el contenido necesario
+	copydir( path + "/bin/mac", macInstall + "/bin/mac" )
+	copydir( path + "/code", macInstall + "/code" )
+	copydir( path + "/etc", macInstall + "/etc" )
+	copydir( path + "/icons", macInstall + "/icons" )
+	copydir( path + "/log", macInstall + "/log" )
+	copydir( path + "/os/mac", macInstall + "/os/mac" )
+	copydir( path + "/sound", macInstall + "/sound" )
+	copydir( path + "/modules", macInstall + "/modules" )
+	copydir( path + "/theme", macInstall + "/theme" )
+	#-----------------------------------------------------
+	sh( "chmod -R 777 " + macInstall )
+
+	compile_( macInstall + "/code/server/server.pro" )
+
+	fwrite( macInstall + "/etc/manager_host", ip )
+
+	# los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
+	sh( "sed -i -e 's/\r//g' " + macInstall + "/os/mac/init/server.sh")
+	#--------------------------------------------------------------------------------
+
+	# server service
+	init_src = macInstall + "/os/mac/init/com.catsfarm.server.plist"
+	init_dst = "/Library/LaunchDaemons/com.catsfarm.server.plist"
+
+	shutil.copy( init_src, init_dst )
+	sh( "chown root " + init_dst )
+	sh( "chmod 755 " + init_dst )
+
+	if server_start:
+		sh( "launchctl load -w " + init_dst )
+	#-----------------------------------------------
+
+	# connet server service
+	init_src = macInstall + "/os/mac/init/com.catsfarm.connect.plist"
+	init_dst = "/Library/LaunchDaemons/com.catsfarm.connect.plist"
+
+	shutil.copy( init_src, init_dst )
+	sh( "chmod 755 " + init_dst )
+	sh( "chown root "+ init_dst )
+	sh( "launchctl load -w " + init_dst )
+	#---------------------------------------------
+
+def mac_uninstall():
+	if os.path.isdir( macInstall ): shutil.rmtree( macInstall )
+
+	catsfarm_server="/Library/LaunchDaemons/com.catsfarm.server.plist"
+	sh("launchctl unload -w "+catsfarm_server)
+	if os.path.isfile(catsfarm_server):
+		os.remove(catsfarm_server)
+
+	server_connect="/Library/LaunchDaemons/com.catsfarm.connect.plist"
+	sh("launchctl unload -w "+server_connect)
+	if os.path.isfile(server_connect):
+		os.remove(server_connect)
+
+	pfd="/Library/LaunchDaemons/com.catsfarm.pfd.plist"
+	sh("launchctl unload -w "+pfd)
+	if os.path.isfile(pfd):
+		os.remove(pfd)
+
 compiler_install()
 
 if platform == "win32":
@@ -371,3 +457,6 @@ elif platform == "linux2":
 	else:
 		linux_uninstall()
 
+else:
+	mac_uninstall()
+	mac_install()

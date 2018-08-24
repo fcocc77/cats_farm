@@ -164,3 +164,5 @@ qt/linux/libs/libgfortran4-7.1.1-2.4.1.el6_9.x86_64.rpm
 qt/linux/libs/libgcc-4.4.7-18.el6_9.2.x86_64.rpm
 qt/linux/libs/libcgroup-0.40.rc1-24.el6_9.x86_64.rpm
 qt/linux/libs/devtoolset-7-libquadmath-devel-7.3.1-5.4.el6.x86_64.rpm
+qt/mac/Qt5.11.1.zip
+qt/mac/Command Line Tools.pkg

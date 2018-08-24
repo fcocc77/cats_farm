@@ -5,7 +5,7 @@
 		<key>Label</key>
 		<string>com.catsfarm.server</string>
 		<key>Program</key>
-		<string>/usr/local/CatsFarm/os/mac/init/server.sh</string>
+		<string>/usr/local/cats_farm/os/mac/init/server.sh</string>
 		<key>RunAtLoad</key>
 		<true/>
 	</dict>
