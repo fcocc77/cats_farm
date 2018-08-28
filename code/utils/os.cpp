@@ -156,7 +156,7 @@ namespace os {
 	}
 
 	int cpuTemp(){
-		static int temp = 0;
+		static int temp;
 		if ( _linux ){
 
 			try{
@@ -203,12 +203,12 @@ namespace os {
 						auto core = split( split( tempRead, ",,," )[0], "," );
 						int cpu_count = core.size() - 1;
 						int cores = 0;
-						
+
 						for ( int i = 1; i < cpu_count + 1; ++i ){
 							try{ cores += stoi( core[i] ); } // puede dar error si no es numero
 							catch(...){}
 						}
-						
+
 						if ( cores ) temp = cores/cpu_count;
 					}
 
@@ -218,6 +218,26 @@ namespace os {
 					}
 				}
 			}
+		}
+
+		if ( _darwin ){
+			static int times;
+			
+			if ( times == 0 ){ 
+				string cmd = path() + "/os/mac/sensor/tempmonitor -l -a";
+				string temp_out = os::sh( cmd );
+
+				try{ 
+					temp = stoi( between( temp_out, "SMC CPU A HEAT SINK: ", "C") );
+				}
+				catch(...){
+					try{ temp = stoi( between( temp_out, "SMC CPU A PROXIMITY: ", "C") ); }
+					catch(...){}
+				}
+			}
+			
+			times++;
+			if ( times == 15 ) times = 0; 
 		}
 
 		return temp;
