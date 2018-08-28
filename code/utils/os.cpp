@@ -59,8 +59,8 @@ namespace os {
 		}
 
 		else{
-			string p = os::sh( "ps -A -o %cpu | awk '{s+=$1} END {print s }'p" );
-			try{ usage = stoi(p);}
+			string p = os::sh( "ps -aeo pcpu | awk '{s+=$1} END {print s }'p" );
+			try{ usage = stoi(p) / cpuCount();}
 			catch(...){}
 
 		}
@@ -107,8 +107,8 @@ namespace os {
 		}
 
 		else {
-			percent = 50;
-
+			string mem = os::sh( "memory_pressure" );
+			percent = 100 - stoi( between( mem, "percentage:", "%") );
 		}
 
 		return percent;
