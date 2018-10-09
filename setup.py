@@ -113,7 +113,7 @@ def compile_ ( project ):
 		temp = "/tmp/" + basename
 		if not os.path.isdir( temp ): os.makedirs( temp );
 
-		exe = temp + "/" + basename + ".app/Contents/MacOS/" + basename
+		exe = temp + "/" + basename
 
 		if os.path.isfile(exe): os.remove(exe)
 

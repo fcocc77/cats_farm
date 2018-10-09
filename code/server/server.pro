@@ -6,7 +6,8 @@ RC_ICONS = ../../icons/server.ico
 TEMPLATE = app
 TARGET = "CatsFarm Server"
 
-CONFIG += console c++11
+CONFIG += c++11 
+CONFIG -= app_bundle
 
 QT += core gui multimedia widgets
 
