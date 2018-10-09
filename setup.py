@@ -236,8 +236,12 @@ def linux_install():
 	sh( "sed -i -e 's/\r//g' /etc/init.d/cserver")
 	sh( "sed -i -e 's/\r//g' /etc/init.d/cmanager")  
 	#--------------------------------------------------------------------------------
-	if server_start: os.system( "service cserver start" )
-	if manager_start: os.system( "service cmanager start " )
+	if server_start: 
+		os.system( "service cserver start" )
+		os.system( "chkconfig cserver on" )
+	if manager_start: 
+		os.system( "service cmanager start " )
+		os.system( "chkconfig cmanager on" )
 
 	nuke_module(1)
 
