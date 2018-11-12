@@ -5,9 +5,16 @@
 #include <QDebug>
 #include <QString>
 #include <QObject>
+#include <QJsonObject>
 
 int main(){
 
-	json result =  tcpClient("192.168.10.45", 7001, {}, 10 );
+	QJsonObject array = {{ "casa","hola" }};
 
+	array["casa"] = "test";
+	array["ki"] = "lala";
+
+
+	qDebug() <<  array["ki"].toString();
+ 
 }
