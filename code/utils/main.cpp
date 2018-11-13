@@ -6,6 +6,7 @@
 #include <QString>
 #include <QObject>
 #include <QJsonObject>
+#include <QJsonDocument>
 
 int main(){
 
@@ -15,6 +16,12 @@ int main(){
 	array["ki"] = "lala";
 
 
-	qDebug() <<  array["ki"].toString();
+
+	QJsonDocument doc;
+	doc.setObject(array);
+
+	QString strJson(doc.toJson(QJsonDocument::Compact));
+	
+	qDebug() <<  strJson;
  
 }
