@@ -10,18 +10,16 @@
 
 int main(){
 
-	QJsonObject array = {{ "casa","hola" }};
-
-	array["casa"] = "test";
-	array["ki"] = "lala";
+	QJsonObject info;
+	info[ "jobs" ];
 
 
+	info[ "jobs" ] = QJsonObject({{"Casa",7}, {"tet",8} });
 
-	QJsonDocument doc;
-	doc.setObject(array);
+	info["jobs"].toObject()["Casa"] = 10;
+	qDebug() << info;
 
-	QString strJson(doc.toJson(QJsonDocument::Compact));
-	
-	qDebug() <<  strJson;
+	qDebug() << info["jobs"].toObject()["Casa"].toInt();
+
  
 }

@@ -315,11 +315,10 @@ void manager::json_to_struct( json info ){
 	}
 }
 
-json manager::struct_to_json(){
-	debug("manager::struct_to_json.");
+QJsonObject manager::struct_to_json(){
 
 	// combierte todas las estructuras de Jobs y las combierte a JSON para poder enviarlas y guardarlas
-	json info;
+	QJsonObject info;
 	info[ "jobs" ];
 
 	for ( auto job : jobs ){	
