@@ -11,15 +11,11 @@
 int main(){
 
 	QJsonObject info;
-	info[ "jobs" ];
 
 
-	info[ "jobs" ] = QJsonObject({{"Casa",7}, {"tet",8} });
+	info = {{"casa",10},{"otro","20"}};
 
-	info["jobs"].toObject()["Casa"] = 10;
-	qDebug() << info;
-
-	qDebug() << info["jobs"].toObject()["Casa"].toInt();
-
+	for (auto aa : info )
+		qDebug() << aa.toInt();
  
 }

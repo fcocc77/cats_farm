@@ -24,19 +24,18 @@ void manager::container_save(){
 	}
 }
 
-json manager::update_server_thread( json recv ){
-	debug("manager::update_server_thread: update.");
+QJsonObject manager::update_server_thread( QJsonObject recv ){
 
 	if ( not recv.empty() ){  
 		string name = recv[0];
 		string host = recv[1];
-		int cpu = recv[2];
-		int ram = recv[3];
-		int temp = recv[4];
+		int cpu = recv[2].toInt();
+		int ram = recv[3].toInt();
+		int temp = recv[4].toInt();
 		string system = recv[5];
-		bool vbox = recv[6];
+		bool vbox = recv[6].toBool();
 		int ram_total = recv[7];
-		float ram_used = recv[8];
+		float ram_used = recv[8].toDouble();
 		int cpu_cores = recv[9];
 		string log = recv[10];
 		string sshUser = recv[11];

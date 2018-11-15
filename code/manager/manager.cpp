@@ -19,7 +19,7 @@ void manager::init(){
 	threading( &manager::render_job, this );
 }
 
-json manager::server_tcp( json pks, int input ){
+QJsonObject manager::server_tcp( QJsonObject pks, int input ){
 
 	if ( input == 0 ) return make_job( pks );
 	if ( input == 1 ) return update_server_thread( pks );
@@ -59,10 +59,9 @@ void manager::reactive_all(){
 	//-------------------------------------------------------------
 }
 
-json manager::make_job( json recv ){
-	debug("manager::make_job.");
+QJsonObject manager::make_job( QJsonObject recv ){
 
-	string _job_name = recv[0]; 
+	string _job_name = recv[0].toString(); 
 	//------------------------------
 	vector <string> _server;
 	if ( recv[1] != "None" ) _server.push_back( recv[1] );
@@ -70,18 +69,18 @@ json manager::make_job( json recv ){
 	vector <string> _server_group;
 	if ( recv[2] != "None" ) _server_group.push_back( recv[2] );
 	//------------------------------
-	int _first_frame = recv[3]; 
-	int _last_frame = recv[4]; 
-	int _task_size = recv[5]; 
-	int _priority = recv[6]; 
-	bool _suspend = recv[7]; 
-	string _comment = recv[8];
-	string _software = recv[9];
-	string _project = recv[10]; 
-	string _extra = recv[11]; 
-	string _system = recv[12];  
-	int _instances = recv[13]; 
-	string _render = recv[14];
+	int _first_frame = recv[3].toInt(); 
+	int _last_frame = recv[4].toInt(); 
+	int _task_size = recv[5].toInt(); 
+	int _priority = recv[6].toInt(); 
+	bool _suspend = recv[7].toBool(); 
+	string _comment = recv[8].toString();
+	string _software = recv[9].toString();
+	string _project = recv[10].toString(); 
+	string _extra = recv[11].toString(); 
+	string _system = recv[12].toString();  
+	int _instances = recv[13].toInt(); 
+	string _render = recv[14].toString();
 
 	string status, submit_start;
 
@@ -206,13 +205,13 @@ QJsonObject manager::sendToMonitor_thread( QJsonObject recv ){
 	return struct_to_json();
 } //-----------------------------------------
 
-void manager::json_to_struct( json info ){
-	debug("manager::json_to_struct.");
-	for ( auto job : info[ "jobs" ] ){
+void manager::json_to_struct( QJsonObject info ){
+
+	for ( auto job : info[ "jobs" ].toObject() ){
 		job_struct *_jobs = new job_struct;
-		_jobs->name = job[ "name" ];
+		_jobs->name = job[ "name" ].toString();
 		_jobs->status = job[ "status" ];
-		_jobs->priority = job[ "priority" ];
+		_jobs->priority = job[ "priority" ].toInt();
 		for ( string _server : job[ "server" ] ) _jobs->server.push_back( _server );
 		for ( string _group : job[ "server_group" ] ) _jobs->server_group.push_back( _group );
 		_jobs->instances = job[ "instances" ];
