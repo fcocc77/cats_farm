@@ -202,7 +202,7 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 }
 
 // Envia  informacion de jobs al monitor
-json manager::sendToMonitor_thread( json recv ){
+QJsonObject manager::sendToMonitor_thread( QJsonObject recv ){
 	return struct_to_json();
 } //-----------------------------------------
 
@@ -244,7 +244,7 @@ void manager::json_to_struct( json info ){
 		_jobs->task_size = job[ "task_size" ];
 		_jobs->first_frame = job[ "first_frame" ];
 		_jobs->last_frame = job[ "last_frame" ];
-		
+
 		for ( auto t : job[ "task" ] ){
 			task_struct *_tasks = new task_struct; 
 			_tasks->name = t[ "name" ];  
@@ -319,44 +319,54 @@ QJsonObject manager::struct_to_json(){
 
 	// combierte todas las estructuras de Jobs y las combierte a JSON para poder enviarlas y guardarlas
 	QJsonObject info;
-	info[ "jobs" ];
 
+	QJsonObject _jobs;
 	for ( auto job : jobs ){	
-		auto& i = info[ "jobs" ][ job->name ];
+		QJsonObject j;
 
-		i[ "name" ] = job->name;
-		i[ "status" ] = job->status;
-		i[ "priority" ] = job->priority;
-		for ( string _server : job->server ) i[ "server" ].push_back( _server );
-		for ( string _group : job->server_group ) i[ "server_group" ].push_back( _group );
-		i[ "instances" ] = job->instances;
-		i[ "comment" ] = job->comment;
-		i[ "submit_start" ] = job->submit_start;
-		i[ "submit_finish" ] = job->submit_finish;
-		i[ "timer" ] = job->timer;
-		i[ "timer2" ] = job->timer2;
-		i[ "total_render_time" ] = job->total_render_time;
-		i[ "estimated_time" ] = job->estimated_time;
-		i[ "timer_last_active" ] = job->timer_last_active;
-		i[ "software" ] = job->software;
-		i[ "project" ] = job->project;
-		i[ "system" ] = job->system;
-		i[ "extra" ] = job->extra;
-		i[ "vetoed_servers" ] = job->vetoed_servers;
-		i[ "render" ] = job->render;
-		i[ "progres" ] = job->progres;
-		i[ "old_p" ] = job->old_p;
-		i[ "waiting_task" ] = job->waiting_task;
-		i[ "tasks" ] = job->tasks;
-		i[ "suspended_task" ] = job->suspended_task;
-		i[ "failed_task" ] = job->failed_task;
-		i[ "active_task" ] = job->active_task;
-		i[ "task_size" ] = job->task_size;
-		i[ "first_frame" ] = job->first_frame;
-		i[ "last_frame" ] = job->last_frame;
-		
+		j[ "name" ] = job->name;
+		j[ "status" ] = job->status;
+		j[ "priority" ] = job->priority;
+		// --------------------------------
+		QJsonArray serverList;
+		for ( string _server : job->server ) 
+			serverList.push_back( _server );
+		j[ "server" ] = serverList;
+		// --------------------------------
+		QJsonArray serverGroup;
+		for ( string _group : job->server_group )
+			serverGroup.push_back( _group );
+		j[ "server_group" ] = serverGroup;
+		// --------------------------------
+		j[ "instances" ] = job->instances;
+		j[ "comment" ] = job->comment;
+		j[ "submit_start" ] = job->submit_start;
+		j[ "submit_finish" ] = job->submit_finish;
+		j[ "timer" ] = job->timer;
+		j[ "timer2" ] = job->timer2;
+		j[ "total_render_time" ] = job->total_render_time;
+		j[ "estimated_time" ] = job->estimated_time;
+		j[ "timer_last_active" ] = job->timer_last_active;
+		j[ "software" ] = job->software;
+		j[ "project" ] = job->project;
+		j[ "system" ] = job->system;
+		j[ "extra" ] = job->extra;
+		j[ "vetoed_servers" ] = job->vetoed_servers;
+		j[ "render" ] = job->render;
+		j[ "progres" ] = job->progres;
+		j[ "old_p" ] = job->old_p;
+		j[ "waiting_task" ] = job->waiting_task;
+		j[ "tasks" ] = job->tasks;
+		j[ "suspended_task" ] = job->suspended_task;
+		j[ "failed_task" ] = job->failed_task;
+		j[ "active_task" ] = job->active_task;
+		j[ "task_size" ] = job->task_size;
+		j[ "first_frame" ] = job->first_frame;
+		j[ "last_frame" ] = job->last_frame;
+
+		QJsonArray _tasks;
 		for ( auto task : job->task ){
-			json t;
+			QJsonObject t;
 			t[ "name" ] = task->name ;  
 			t[ "status" ] = task->status ;  
 			t[ "first_frame" ] = task->first_frame ;  
@@ -364,15 +374,20 @@ QJsonObject manager::struct_to_json(){
 			t[ "server" ] = task->server ;  
 			t[ "time" ] = task->time ;
 
-		    i[ "task" ].push_back(t);
-
+		    _tasks.push_back( t );
 		}
+		j[ "task" ] = _tasks;
+
+		_jobs[ job->name ] = j;
+
 	}
+
+	info[ "jobs" ] = _jobs;
 	//------------------------------------------------------------------------------
 
-	info[ "servers" ];
+	QJsonObject _servers;
 	for ( auto server : servers ){
-		auto& s = info[ "servers" ][ server->name ];
+		QJsonObject s;
 		s[ "name" ] = server->name;
 		s[ "status" ] = server->status;
 		s[ "host" ] = server->host;
@@ -385,9 +400,13 @@ QJsonObject manager::struct_to_json(){
 		s[ "temp" ] = server->temp;
 		s[ "vbox" ] = server->vbox;
 		s[ "response_time" ] = server->response_time;
+		// --------------------------------
+		QJsonArray _instances;
 		for ( auto instance : server->instances ){
-			s[ "instances" ].push_back( { instance->index, instance->status, instance->reset, instance->job_task } );  
+			_instances.push_back( { instance->index, instance->status, instance->reset, instance->job_task } );  
 		}
+		s[ "instances" ] = _instances;
+		// --------------------------------
 		s[ "max_instances" ] = server->max_instances;
 		s[ "sshUser" ] = server->sshUser;
 		s[ "sshPass" ] = server->sshPass;
@@ -397,19 +416,31 @@ QJsonObject manager::struct_to_json(){
 		s[ "schedule_state_1" ] = server->schedule_state_1;
 		s[ "log" ] = server->log;
 
+		_servers[ server->name ] = s;
+
 	}
 
-	info[ "groups" ];
+	info[ "servers" ] = _servers;
+	//------------------------------------------------------------------------------
+
+	QJsonObject _groups;
+
 	for ( auto group : groups ){
-		auto& g = info[ "groups" ][ group->name ];
+		QJsonObject g;
 		g[ "name" ] = group->name;
 		g[ "status" ] = group->status;
 		g[ "totaMachine" ] = group->totaMachine;
 		g[ "activeMachine" ] = group->activeMachine;
+		QJsonArray serverList;
 		for ( auto server : group->server ){
-            g[ "server" ].push_back( { server->name, server->status } );
+            serverList.push_back( { server->name, server->status } );
 		}
+		g[ "server" ] = serverList;
+
+		_groups[ group->name ] = g;
 	}
+
+	info[ "groups" ] = _groups;
 
 	return info;
 }
