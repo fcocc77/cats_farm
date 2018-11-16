@@ -4,7 +4,7 @@
 //------------------------
 
 //funcion para remplazar una palabra por otra
-string replace( string frase, string src, string dst ){
+QString replace( QString frase, QString src, QString dst ){
     if ( not src.empty() ){ 
         int pos = frase.find(src);
         while (pos != -1){
@@ -16,7 +16,7 @@ string replace( string frase, string src, string dst ){
     return frase;
 }//-----------------------------------------------
 
-string between( string frase, string before, string after ){
+QString between( QString frase, QString before, QString after ){
     int pos = frase.find(before);
     frase=frase.erase(0,pos+before.size());
 
@@ -27,12 +27,12 @@ string between( string frase, string before, string after ){
     return frase;
 }
 
-string fread( string path ){
-    string output;
+QString fread( QString path ){
+    QString output;
 
     ifstream input(path);
 
-    for(string line; getline( input, line ); ){
+    for(QString line; getline( input, line ); ){
         output+=line+"\n";
     }
 
@@ -40,20 +40,20 @@ string fread( string path ){
     return output;
 }
 
-void fwrite( string path, string data ){
+void fwrite( QString path, QString data ){
     os::remove( path );
     ofstream myfile( path );
     myfile << data;
     myfile.close();
 }
 
-void awrite( string path, string data ){
+void awrite( QString path, QString data ){
     ofstream myfile( path, ios::app );
     myfile << data;
     myfile.close();
 }
 
-json jread( string path ){
+json jread( QString path ){
     // cuando la estructura de json esta mal da error Runtime, intenta para evitarlo
     try { return json::parse( fread( path ) ); }
     catch( exception& e ){
@@ -65,7 +65,7 @@ json jread( string path ){
     //-----------------------------------
 }
 
-void jwrite( string path, json data ){
+void jwrite( QString path, json data ){
     fwrite( path + ".tmp", data.dump(4) );
     os::remove( path + ".old" );
     os::rename( path, path + ".old" );
@@ -73,7 +73,7 @@ void jwrite( string path, json data ){
     os::remove( path + ".tmp" );
 }
 
-string timeStruct(float t){
+QString timeStruct(float t){
     float _h, _m;
     int h, m ,s;
 
@@ -85,7 +85,7 @@ string timeStruct(float t){
 
     s = (_m - m)*60;
 
-    string hour = "0" + to_string(h),
+    QString hour = "0" + to_string(h),
             minute = "0" + to_string(m), 
             second = "0" + to_string(s);
 
@@ -94,9 +94,9 @@ string timeStruct(float t){
            +second.substr(second.length()-2);
 }
 
-vector <string> split( string frase, string separator ){
+vector <QString> split( QString frase, QString separator ){
 
-    vector <string> list;
+    vector <QString> list;
 
     int pos = frase.find(separator);
     int start = 0;
@@ -113,21 +113,21 @@ vector <string> split( string frase, string separator ){
     return list;
 }
 
-void sorted( vector <string>& _vector ){
+void sorted( vector <QString>& _vector ){
     sort( _vector.begin(), _vector.end() );
 }
 
-bool in_vector( string word, vector <string> _vector ){ 
+bool in_vector( QString word, vector <QString> _vector ){ 
     if ( find(_vector.begin(), _vector.end(), word) == _vector.end() ){ return false; }
     else { return true; }
 }
 
-bool in_string( string word, string _string ){  
-    if ( not ( _string.find( word ) == string::npos ) ) { return true; }
+bool in_string( QString word, QString _string ){  
+    if ( not ( _string.find( word ) == QString::npos ) ) { return true; }
     else{ return false; }   
 }
 
-const string currentDateTime( int num ) {
+const QString currentDateTime( int num ) {
     time_t     now = time(0);
     struct tm  tstruct;
     char       buf[80];
@@ -146,13 +146,13 @@ const string currentDateTime( int num ) {
     return buf;
 }
 
-const string secToTime( float sec ){
+const QString secToTime( float sec ){
     float f_day = 0, f_hour = 0, f_min = 0;
     int i_day, i_hour, i_min, i_sec;
-    string s_day, s_hour, s_min, s_sec;
+    QString s_day, s_hour, s_min, s_sec;
 
     //si es que la estructura tieme mas de un dijito, se suma un cero antes
-    auto to_two = []( string& dig ){ if ( dig.size() == 1 ){ dig = "0" + dig; } };
+    auto to_two = []( QString& dig ){ if ( dig.size() == 1 ){ dig = "0" + dig; } };
     //---------------------------------------------------------------------
 
     f_day = ( ( sec / 60 ) / 60 ) / 24;
@@ -173,7 +173,7 @@ const string secToTime( float sec ){
     s_sec = to_string( i_sec );
     to_two( s_sec );
 
-    string _time; 
+    QString _time; 
     if ( i_day ){
         if ( i_day > 1 ){ _time = s_day + " days, "+ s_hour + ":" + s_min + ":" + s_sec; }
         else{ _time = s_day + " day, "+ s_hour + ":" + s_min + ":" + s_sec; }
@@ -200,11 +200,11 @@ void debug( QString bug ){
     //qDebug() << bug;
 }
 
-void print( string input ){ 
+void print( QString input ){ 
     qDebug().nospace().noquote() << QString::fromStdString(input);
 }
 
-string path(){
+QString path(){
 
     json paths = jread( "../../etc/paths.json" );
 

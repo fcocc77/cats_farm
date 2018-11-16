@@ -34,27 +34,27 @@ void tasks_actions::task_popup(){
 void tasks_actions::taskRestart(){
 	QString ask = "Are you Sure you want to restart the task?";
 	QString tile = "Task Restart";
-	string action = "resume";
+	QString action = "resume";
 
 	taskMessage( action, ask, tile );
 }
 
 void tasks_actions::taskRenderServer(){
 	auto selected = taskList->selectedItems();
-	string _server =  selected[0]->text( 3 ).toStdString();
+	QString _server =  selected[0]->text( 3 ).toStdString();
 	_server = split( _server, ":" )[0];
 
 	for (int i = 0; i <  taskList->topLevelItemCount(); ++i){
 		auto item = taskList->topLevelItem(i);
 
-		string server =  item->text( 3 ).toStdString();
+		QString server =  item->text( 3 ).toStdString();
 		server = split( server, ":" )[0];
 		if ( _server == server ) item->setSelected(true);
 	}
 
 }
 
-void tasks_actions::taskMessage( string action, QString ask, QString tile ){
+void tasks_actions::taskMessage( QString action, QString ask, QString tile ){
 
 	auto selected = taskList->selectedItems();
 	if ( not selected.empty() ){
@@ -68,14 +68,14 @@ void tasks_actions::taskMessage( string action, QString ask, QString tile ){
 	}
 }
 
-void tasks_actions::taskAction( string action ){
+void tasks_actions::taskAction( QString action ){
 
 	json pks;
 	for ( auto item_job : jobsList->selectedItems() ){
-		string job_name = item_job->text(0).toStdString();
+		QString job_name = item_job->text(0).toStdString();
 
 		for ( auto item_task : taskList->selectedItems() ){ 
-			string task_name = item_task->text(0).toStdString();
+			QString task_name = item_task->text(0).toStdString();
 			pks.push_back( { job_name, task_name, action } );
 		}
 	}

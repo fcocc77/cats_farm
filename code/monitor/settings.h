@@ -4,10 +4,8 @@
 #include <iostream>
 using namespace std;
 #include "../utils/util.h"
-#include "../utils/json.h"
 #include "../utils/tcp.h"
 #include "../utils/threading.h"
-using namespace nlohmann;
 
 //inclide QT5
 #include <QVBoxLayout>
@@ -46,7 +44,7 @@ public:
 private:
 
     //QWidgets Generales
-	const string managerHost = fread( "../../etc/manager_host" );
+	const QString managerHost = fread( "../../etc/manager_host" );
 	QLineEdit *manager_ip = new QLineEdit( QString::fromStdString( managerHost ));
 	QTabWidget *tab_widget = new QTabWidget();
 	QPlainTextEdit *system_edit = new QPlainTextEdit();

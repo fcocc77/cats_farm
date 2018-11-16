@@ -26,11 +26,11 @@ using namespace std;
 
 namespace os {
 	
-	void mkdir( string path );
-	void copy( string src, string dst );
-	void move( string src, string dst );	
-	void remove( string _file );
-	void system( string cmd );
+	void mkdir( QString path );
+	void copy( QString src, QString dst );
+	void move( QString src, QString dst );	
+	void remove( QString _file );
+	void system( QString cmd );
 	int cpuUsed();
 	int ramPercent();
 	int ramTotal();
@@ -39,20 +39,20 @@ namespace os {
 	int cpuCount();
 	vector <int> getStat();
 	vector <float> ram();
-	string dirname (string file);
-	string basename(string file);
-	bool isfile( string file );
-	bool isdir( string dir );
+	QString dirname (QString file);
+	QString basename(QString file);
+	bool isfile( QString file );
+	bool isdir( QString dir );
 	void kill( int pid );
-	vector <string> listdir( string folder, bool onlyname = 0 );
-	string sh(string cmd);
-	const string hostName();
-	const string ip();
-	const string user();
-	void back( string cmd );
-	void rename( string src, string dst );
-	string qp( string cmd );
-	void copymove( string src, string dst, bool copy );
+	vector <QString> listdir( QString folder, bool onlyname = 0 );
+	QString sh(QString cmd);
+	const QString hostName();
+	const QString ip();
+	const QString user();
+	void back( QString cmd );
+	void rename( QString src, QString dst );
+	QString qp( QString cmd );
+	void copymove( QString src, QString dst, bool copy );
 }
 
 //define el systema operativo

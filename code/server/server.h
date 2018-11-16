@@ -7,9 +7,6 @@ using namespace std;
 #include <thread>
 
 #include "../utils/util.h"
-#include "../utils/json.h"
-
-using namespace nlohmann;
 #include "../utils/tcp.h"
 
 #include <QApplication>
@@ -28,7 +25,7 @@ public:
 	json send_resources( json recv );
 	json recieveManager( json data, int input );
 
-	const string managerHost = fread( "../../etc/manager_host" );
+	const QString managerHost = fread( "../../etc/manager_host" );
 
 };
 

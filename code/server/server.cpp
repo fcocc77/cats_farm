@@ -12,15 +12,15 @@ json server::send_resources( json recv ){
 		jwrite( "../../etc/preferences_s.json", _render->preferences );
 	}
 
-	string system;
+	QString system;
 	if ( _linux ){ system="Linux"; }
 	else if ( _win32 ) system="Windows";
 	else { system="Mac"; }
 
 	//get ssh user
 	bool usr = false;
-	static string username;
-	static string userpass;
+	static QString username;
+	static QString userpass;
 
 	if ( not usr ){ 
 		if ( _win32 ){ 
@@ -55,7 +55,7 @@ json server::send_resources( json recv ){
 json server::recieveManager( json recv, int input ){
 
 	debug("server::recieveManager.");
-	string send;
+	QString send;
 
 	if ( input == 0 ) send = _render->render_task( recv );
 
@@ -70,7 +70,7 @@ json server::recieveManager( json recv, int input ){
 		for ( int i : recv ){
 			// kill cinema 4d que esta dentro de la maquina virtual
 			if ( _render->VMCinemaActive ) {
-				string VMCinemaKill = _render->VMSH + "\"taskkill\" \"-im\" \"Cinema 4D.exe\" \"-f\"";
+				QString VMCinemaKill = _render->VMSH + "\"taskkill\" \"-im\" \"Cinema 4D.exe\" \"-f\"";
 				_render->qprocess( VMCinemaKill );
 			} //-------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ json server::recieveManager( json recv, int input ){
 		}
 
 		if ( action == "vmstart" ){ 
-			string vm;
+			QString vm;
 			if ( _linux ){
 				vm = "'VBoxManage startvm win2016 --type headless'";
 				vm = "runuser -l " + os::user() +" -c " + vm;
@@ -109,7 +109,7 @@ json server::recieveManager( json recv, int input ){
 
 		if ( action == "vmstop" ){
 
-			string vm;
+			QString vm;
 			if ( _linux ){
 				vm = "'VBoxManage controlvm win2016 savestate'";
 				vm = "runuser -l " + os::user() + " -c " + vm;

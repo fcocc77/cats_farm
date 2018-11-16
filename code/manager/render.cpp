@@ -20,7 +20,7 @@ void manager::render_job(){
 		for ( auto job : jobs ){
 			debug("manager::render_job: for job");
 			// hace una lista con los servidores listos para renderear
-			vector <string> machinesList;
+			vector <QString> machinesList;
 			for ( auto sg : job->server_group ){
 				if ( not groups.empty() ){ 
 					auto group = find_struct( groups, sg );
@@ -111,7 +111,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 	auto project = job->project;
 
 	bool Completed = false;
-	string result = "";
+	QString result = "";
 
 	// renderea las tareas por cada trabajo, solo si status es igual a waiting
 	for ( auto task : job->task ){
@@ -140,12 +140,12 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 			//------------------------------
 			job->status = "Rendering...";
 
-			string total_frame = to_string( last_frame - first_frame + 1 );
+			QString total_frame = to_string( last_frame - first_frame + 1 );
 
 			// Envia a renderar la tarea al servidor que le corresponde
-			json pks = { project, software, instance->index, first_frame, last_frame, jobSystem, extra, render };
+			QJsonObject pks = { project, software, instance->index, first_frame, last_frame, jobSystem, extra, render };
 
-			json result =  tcpClient( server->host, 7001, pks, 0 );
+			QJsonObject result =  tcpClient( server->host, 7001, pks, 0 );
 
 			if ( not ( result == "ok" ) ){
 				if ( result == "kill" ){
@@ -231,27 +231,26 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 	}
 
 	if ( Completed ){
-		debug("manager::render_task: Completed");
 		if ( software == "Nuke" ){
 
-			string ext = extra.substr( extra.length() - 3 );
+			QString ext = extra.substr( extra.length() - 3 );
 
 			if ( ext == "mov" ){
 				job->status = "Concatenate";
 
 				// obtiene nombre de carpeta de renders
-				string _dirname = os::dirname(extra);
-				string _basename = os::basename(extra);
+				QString _dirname = os::dirname(extra);
+				QString _basename = os::basename(extra);
 				_basename = replace( _basename, ".mov", "" );
 				//-----------------------------------------------------
 
-				json system_path = preferences["paths"]["system"];
+				QJsonObject system_path = preferences["paths"].toObject()["system"].toObject();
 
 				//obtiene ruta correcta
-				string src_path, dst_path, extra;
+				QString src_path, dst_path, extra;
 
-				for ( string p1 : system_path ){
-					for ( string p2 : system_path){
+				for ( QString p1 : system_path ){
+					for ( QString p2 : system_path){
 						extra = replace( project, p1, p2 );
 
 						if ( os::isfile( extra ) ){
@@ -277,7 +276,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 		}
 		//------------------------------------------------------------
 
-		string submit_finish = "tiempo";// time.strftime("%Y-%m-%d   %H:%M:%S")
+		QString submit_finish = "tiempo";// time.strftime("%Y-%m-%d   %H:%M:%S")
 
 		job->submit_finish = submit_finish; 
 		job->status = "Completed";

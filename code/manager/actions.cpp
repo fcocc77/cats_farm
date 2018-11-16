@@ -35,7 +35,7 @@ QJsonObject manager::recieve_monitor_thread( QJsonObject recv ){
 void manager::kill_tasks( job_struct *job, bool _delete ){
 
 	//desactica servers que estaban activos por este job
-	json active_server;
+	QJsonArray active_server;
 
 	for ( auto task : job->task ){
 		if ( not ( task->server == "...") ){
@@ -51,7 +51,7 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	}
 
 	for ( auto server : servers ){
-		json ins = active_server[ server->name ];
+		QJsonArray ins = active_server[ server->name ];
 
 		if ( not ins.empty() ){
 			tcpClient( server->host, 7001, ins, 3 );			
@@ -120,7 +120,7 @@ void manager::jobAction( QJsonObject pks ){
 
 QJsonObject manager::jobOptions( QJsonObject pks ){
 	int num = 0;
-	string _name;
+	QString _name;
 	for ( auto _job : pks.toArray() ){
 
 		QString job_name = _job[0].toString();
@@ -144,7 +144,7 @@ QJsonObject manager::jobOptions( QJsonObject pks ){
 			int _task_size = options[7];
 
 			// el nombre se repite se pone un numero al final del nombre 
-			string name = options[8];
+			QString name = options[8];
 			if ( not num  ) job->name = name;
 			else job->name = name + "_" + to_string(num);
 			num++;
@@ -205,10 +205,10 @@ QJsonObject manager::jobOptions( QJsonObject pks ){
 
 		if ( action == "read" ){ 
 			QJsonObject _server;
-			for ( string s : job->server ) _server.push_back(s);
+			for ( QString s : job->server ) _server.push_back(s);
 			//----------------------------------------------------
 			QJsonObject _server_group;
-			for ( string sg : job->server_group ) _server_group.push_back(sg);
+			for ( QString sg : job->server_group ) _server_group.push_back(sg);
 			//----------------------------------------------------
 			return { _server, _server_group, job->priority, job->comment, job->instances, 
 					job->task_size, job->name, job->first_frame, job->last_frame };
@@ -320,7 +320,7 @@ void manager::groupAction( QJsonObject pks ){
 			for ( auto server : serverList ){
 				if ( not is_struct( group->server, server.toString() ) ){
 
-				string status = find_struct( servers, server.toString() )->status;
+				QString status = find_struct( servers, server.toString() )->status;
 				bool _status = true;
 
 				if ( status == "absent" ){ _status = false; }

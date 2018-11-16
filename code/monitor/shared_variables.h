@@ -3,13 +3,13 @@
 
 #include <vector>
 using namespace std;
-#include "../utils/json.h"
-using namespace nlohmann;
+#include <QJsonArray>
+
 
 struct shared_variables{
-    json server_display;
-    json jobs;
-    json servers;
+    QJsonArray server_display;
+    QJsonArray jobs;
+    QJsonArray servers;
     bool stopUpdate;
 
 };

@@ -9,7 +9,7 @@ void ui_servers_tree::actions(){
 	shared->server_display = { { "mac", true }, { "linux", true }, { "window", true }, { "on", true }, 
 								 { "off", true }, { "show", true }, { "hide", true } };
 
-	auto displayAction = [this] ( string action ){		
+	auto displayAction = [this] ( QString action ){		
 		if ( shared->server_display[ action ] ){
 			shared->server_display[ action ] = false;
 		}

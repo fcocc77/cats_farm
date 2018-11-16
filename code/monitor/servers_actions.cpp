@@ -17,7 +17,7 @@ void servers_actions::actions(){
 	connect( deleteAction, &QAction::triggered, this, [this](){
 		QString ask = "Are you sure to want delete this server?";
 		QString tile = "Server Delete";
-		string action = "delete";
+		QString action = "delete";
 
 		serverMessage( &servers_actions::serverAction, action, ask, tile, "None", this );
 	});
@@ -25,7 +25,7 @@ void servers_actions::actions(){
 	connect( serverInactiveAction, &QAction::triggered, this, [this](){
 		QString ask = "The task will kill, Sure you want to disable this server?";
 		QString tile = "Server Disabling";
-		string action = "inactive";
+		QString action = "inactive";
 		serverMessage( &servers_actions::serverAction, action, ask, tile, "None", this );
 	});
 	connect( serverReactiveAction, &QAction::triggered, this, [this](){
@@ -59,7 +59,7 @@ void servers_actions::serverOptions(){
 		json recv = tcpClient( managerHost, 7000, pks, 3 );
 		//vmSoftware, schedule = recv
 
-		string schedule = recv;
+		QString schedule = recv;
 
 		auto range = split( schedule, "-" );
 
@@ -71,14 +71,14 @@ void servers_actions::serverOptions(){
 
 void servers_actions::serverOptionsSend(){
 
-	string schedule = uiServerOptions->schedule_start->currentIndex() + "-" + uiServerOptions->schedule_end->currentIndex();
+	QString schedule = uiServerOptions->schedule_start->currentIndex() + "-" + uiServerOptions->schedule_end->currentIndex();
 
 	json pks;
 	auto selected = serverList->selectedItems();
 	selected.push_back( firstServerItem );
 
 	for ( auto item : selected ){
-		string server = item->text(0).toStdString();
+		QString server = item->text(0).toStdString();
 		pks.push_back( { server, schedule, "write" } );
 	}
 
@@ -162,9 +162,9 @@ void servers_actions::serverLog(){
 
 	auto selected = serverList->selectedItems();
 	if ( not selected.empty() ){ 
-		string host = ( selected[0]->text(7) ).toStdString();
+		QString host = ( selected[0]->text(7) ).toStdString();
 
-		string result;
+		QString result;
 		result = tcpClient( host, 7001, true, 1 );
 
 		log_text->setPlainText( QString::fromStdString(result));
@@ -180,13 +180,13 @@ void servers_actions::serverSSH(){
 
 	json recv = serverAction("ssh","None");
 
-	string sshUser = recv[0], 
+	QString sshUser = recv[0], 
 	sshPass = recv[1], 
 	ip = recv[2];
 
-	string disable_ask = " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
-	string cmd;
-	string ssh = "\"C:/Program Files/OpenSSH/bin/ssh.exe\"";
+	QString disable_ask = " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
+	QString cmd;
+	QString ssh = "\"C:/Program Files/OpenSSH/bin/ssh.exe\"";
 	if ( _win32 ) cmd = "cmd /C " + ssh + disable_ask + sshUser + "@" + ip;
 	else cmd = "gnome-terminal -e 'sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip + "'";
 
@@ -195,20 +195,20 @@ void servers_actions::serverSSH(){
 
 void servers_actions::serverVNC(){
 
-	string tigervnc;
+	QString tigervnc;
 	if ( _linux ){ tigervnc = "vncviewer"; }
 	else if ( _win32 ){ tigervnc = path() + "/os/win/vnc/vncviewer.exe"; }
 	else{ tigervnc = path() + "/os/mac/vnc/vncviewer"; }
 
 	for ( auto item : serverList->selectedItems() ){
-		string ip = item->text(7).toStdString();
-		string arg = "\"" + tigervnc + "\" " + ip + ":1"; 
+		QString ip = item->text(7).toStdString();
+		QString arg = "\"" + tigervnc + "\" " + ip + ":1"; 
 		os::back( arg );
 	}
 }
 
-void servers_actions::serverMessage( json ( servers_actions::*funtion )( string, string ), string action, 
-								QString ask, QString tile, string info, servers_actions *_class ){
+void servers_actions::serverMessage( json ( servers_actions::*funtion )( QString, QString ), QString action, 
+								QString ask, QString tile, QString info, servers_actions *_class ){
 
 	auto selected = serverList->selectedItems();
 	if ( not selected.empty() ){
@@ -225,12 +225,12 @@ void servers_actions::serverMessage( json ( servers_actions::*funtion )( string,
 void servers_actions::serverActionMessage(){
 }
 
-json servers_actions::serverAction( string action, string info ){
+json servers_actions::serverAction( QString action, QString info ){
 
 	json pks;
 	auto selected = serverList->selectedItems();
 	for ( auto item : selected ){
-		string server_name = item->text(0).toStdString();
+		QString server_name = item->text(0).toStdString();
 		if ( not item->parent() ){
 			pks.push_back( {server_name, action, info } );
 		}
@@ -243,12 +243,12 @@ json servers_actions::serverAction( string action, string info ){
 	return recv;
 }
 
-void servers_actions::sendToServer( string action, string info ){
+void servers_actions::sendToServer( QString action, QString info ){
 
 	QList <QTreeWidgetItem*> selected = serverList->selectedItems();
 
 	for ( auto item : selected ){
-		string host = item->text(7).toStdString();
+		QString host = item->text(7).toStdString();
 		tcpClient( host, 7001, { action, info }, 4);
 	}
 	//-------------------------------------

@@ -187,7 +187,7 @@ QTreeWidgetItem *group_actions::groupMake( QString group_name, int totaMachine, 
 
 void group_actions::groupMakeServer( QTreeWidgetItem *item, vector <QString> machines ){
 
-	// lambda  si exisite el string en el vector
+	// lambda  si exisite el QString en el vector
 	auto in = [this] ( QString word, vector <QString> _vector){
 		bool _in = false;
 		for ( auto i : _vector ){ 
@@ -277,9 +277,9 @@ void group_actions::groupAddMachine(){
 	shared->stopUpdate = true;
 
 	// Obtiene server seleccionados
-	vector <string> server_list;
+	vector <QString> server_list;
 	for ( auto item : serverList->selectedItems() ){
-		string server_name = item->text(0).toStdString();
+		QString server_name = item->text(0).toStdString();
 		server_list.push_back( server_name );
 	}
 
@@ -287,13 +287,13 @@ void group_actions::groupAddMachine(){
 
 	json group_machine;
 	for ( auto item : groupList->selectedItems() ){  
-		string group_name = item->text(2).toStdString();
+		QString group_name = item->text(2).toStdString();
 
 		// crea lista de los childItem antiguos
-		vector <string> oldChild;
+		vector <QString> oldChild;
 		for (int i = 0; i < item->childCount(); ++i){
 			auto childItem = item->child(i);
-			string childName = childItem->text(0).toStdString();
+			QString childName = childItem->text(0).toStdString();
 			oldChild.push_back( childName );
 		}
 		//-------------------------------------------------
@@ -339,8 +339,8 @@ void group_actions::groupDelete(){
 			for ( auto item : groupList->selectedItems() ){
 
 				if (  item->parent() ){
-					string group_name = item->parent()->text(2).toStdString();
-					string server_name = item->text(0).toStdString();
+					QString group_name = item->parent()->text(2).toStdString();
+					QString server_name = item->text(0).toStdString();
 
 					group_machine.push_back( { group_name, server_name } );
 
@@ -348,7 +348,7 @@ void group_actions::groupDelete(){
 
 				}
 				else {
-					string group_name = item->text(2).toStdString();
+					QString group_name = item->text(2).toStdString();
 					group_list.push_back( group_name );
 
 					root->removeChild(item);

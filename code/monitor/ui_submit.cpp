@@ -363,7 +363,7 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		outputFile->setText("...");
 		widgetNoice->setVisible(false);
 
-		string file_name = ( fileLine->text() ).toStdString();
+		QString file_name = ( fileLine->text() ).toStdString();
 
 		for ( int i=0; i<10; i++ ){
 			file_name = os::dirname( file_name );
@@ -445,11 +445,11 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 }
 
 void ui_submit::submitSetPanel( QString file_name ){
-	string file = file_name.toStdString();
+	QString file = file_name.toStdString();
 
 	file = replace( file, "\\", "/" );
-	string ext = split( file, "." ).back();
-	string name = replace( os::basename( file ), "."+ext, "" );
+	QString ext = split( file, "." ).back();
+	QString name = replace( os::basename( file ), "."+ext, "" );
 
 	if ( ( ext == "mb" ) or ( ext == "ma" ) ) softwareBox->setCurrentIndex(1);
 	if ( ext == "nk" ) softwareBox->setCurrentIndex(0);
@@ -574,7 +574,7 @@ void ui_submit::submitAction( QString software ){
 					" -tr " + temporalRange->text() +
 					" -aov " + aov->text();
 
-	string system;
+	QString system;
 	if ( _linux ){ system = "Linux"; }
 	else if ( _win32 ){ system = "Windows"; }
 	else { system = "Mac"; }
@@ -611,7 +611,7 @@ void ui_submit::submitAction( QString software ){
 
 	if ( ok ){
 		submitPanelSave();
-        const string managerHost = fread( "../../etc/manager_host" );
+        const QString managerHost = fread( "../../etc/manager_host" );
 
 		tcpClient( managerHost, 7000, info, 0 );
 		msg->setText("The " + jobName->text() + " job has sended." );

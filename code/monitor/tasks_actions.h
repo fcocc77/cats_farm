@@ -21,7 +21,7 @@ public:
 	ui_tasks_tree *taskList;
     QMainWindow *monitor;
 
-    const string managerHost = fread( "../../etc/manager_host" );
+    const QString managerHost = fread( "../../etc/manager_host" );
 
     template < class T >
     tasks_actions( T *_monitor ){
@@ -43,8 +43,8 @@ public:
 	void task_popup();
 	void taskRestart();
 	void taskRenderServer();
-	void taskMessage( string action, QString ask, QString tile );
-	void taskAction( string action );
+	void taskMessage( QString action, QString ask, QString tile );
+	void taskAction( QString action );
     void acionts();
 
 	//-----------------

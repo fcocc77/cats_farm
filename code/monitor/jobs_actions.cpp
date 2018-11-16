@@ -23,14 +23,14 @@ void jobs_actions::actions(){
 	connect( jobSuspendAction, &QAction::triggered, this,[this](){
 		QString ask = "Sure you want to suspend the job?";
 		QString tile = "Job Suspend";
-		string action = "suspend";
+		QString action = "suspend";
 		jobMessage( &jobs_actions::jobAction, action, ask,  tile, this );
 	});
 
 	connect( jobRestartAction, &QAction::triggered, this,[this](){
 		QString ask = "Sure you want to restart the job?";
 		QString tile = "Job Restart";
-		string action = "restart";
+		QString action = "restart";
 		jobMessage( &jobs_actions::jobAction, action, ask,  tile, this );
 	});
 
@@ -88,7 +88,7 @@ void jobs_actions::jobShowLog(){
 	auto selected = jobsList->selectedItems();
 	if ( not selected.empty() ){
 
-		string job_name = selected[0]->text(0).toStdString();
+		QString job_name = selected[0]->text(0).toStdString();
 
 		// encuentra job seleccionado en la jobs recividos
 		json job;
@@ -101,17 +101,17 @@ void jobs_actions::jobShowLog(){
 
 			if ( not ( log_server == "...") ){
 
-				vector <string> vetoed_host;
-				vector <string> vetoed_name;
-				vector <string> all_host;
-				vector <string> all_name;
+				vector <QString> vetoed_host;
+				vector <QString> vetoed_name;
+				vector <QString> all_host;
+				vector <QString> all_name;
 
 				for (int i = 0; i < serverList->topLevelItemCount(); ++i) {
 					auto item = serverList->topLevelItem(i);
-					string name = item->text(0).toStdString();
-					string _host = item->text(7).toStdString();
+					QString name = item->text(0).toStdString();
+					QString _host = item->text(7).toStdString();
 
-					for ( string vs : job["vetoed_servers"] ){ 
+					for ( QString vs : job["vetoed_servers"] ){ 
 						if ( name == vs ) {
 							vetoed_host.push_back( _host );
 							vetoed_name.push_back( name );
@@ -123,8 +123,8 @@ void jobs_actions::jobShowLog(){
 					}
 				}
 
-				string _name;
-				string _host;
+				QString _name;
+				QString _host;
 				json failed;
 				if ( not all_host.empty() ) {
 					_host = all_host[0];
@@ -137,7 +137,7 @@ void jobs_actions::jobShowLog(){
 					failed = true;
 				}
 
-				string result = tcpClient( _host, 7001, failed, 1 );
+				QString result = tcpClient( _host, 7001, failed, 1 );
 
 				log_text->setPlainText( QString::fromStdString( _name + " Log:\n\n" + result) );
 				break;
@@ -161,7 +161,7 @@ void jobs_actions::jobModify(){
 
 	if ( not selected.empty() ){
 
-		string job_name = selected.takeLast()->text(0).toStdString();
+		QString job_name = selected.takeLast()->text(0).toStdString();
 
 		json pks = {{ job_name, "options", "read" }};
 		pks = { pks, "jobOptions" };
@@ -169,17 +169,17 @@ void jobs_actions::jobModify(){
 
 		//-----------------------------------------
 
-		vector <string> serverExist; 
+		vector <QString> serverExist; 
 		for ( auto s : pks[0] ) serverExist.push_back(s);
 
-		vector <string> serverGroupExist; 
+		vector <QString> serverGroupExist; 
 		for ( auto sg : pks[1] ) serverGroupExist.push_back(sg);
 
 		int priority = pks[2]; 
-		string comment = pks[3];
+		QString comment = pks[3];
 		int instances = pks[4];
 		int task_size = pks[5];
-		string _job_name = pks[6];
+		QString _job_name = pks[6];
 		int first_frame = pks[7];
 		int last_frame = pks[8];
 
@@ -191,7 +191,7 @@ void jobs_actions::jobModify(){
 		uiJobOptions->comment->setText( QString::fromStdString( comment ) );
 		uiJobOptions->instances->setText( QString::number( instances ) );
 
-		string jobServerAsignName = job_name;
+		QString jobServerAsignName = job_name;
 
 		uiJobOptions->serverAsign->setSelectionMode( QAbstractItemView::ExtendedSelection ); 
 		uiJobOptions->serverAsign->setIndentation(0);     
@@ -247,7 +247,7 @@ void jobs_actions::jobOptionsOk(){
 	json machines;
 	for (int i = 0; i < uiJobOptions->serverAsign->topLevelItemCount(); ++i){
 		auto item = uiJobOptions->serverAsign->topLevelItem(i); 
-		string name = item->text(0).toStdString();
+		QString name = item->text(0).toStdString();
 
 		if ( item->checkState(0) ){
 			machines.push_back(name);
@@ -259,7 +259,7 @@ void jobs_actions::jobOptionsOk(){
 	json group;
 	for (int i = 0; i < uiJobOptions->serverGroupAsign->topLevelItemCount(); ++i){
 		auto item = uiJobOptions->serverGroupAsign->topLevelItem(i); 
-		string name = item->text(0).toStdString();
+		QString name = item->text(0).toStdString();
 
 		if ( item->checkState(0) ){
 			group.push_back(name);
@@ -271,8 +271,8 @@ void jobs_actions::jobOptionsOk(){
 	int first_frame = uiJobOptions->firstFrame->text().toInt();
 	int last_frame = uiJobOptions->lastFrame->text().toInt();
 	int task_size = uiJobOptions->taskSize->text().toInt();
-	string comment = uiJobOptions->comment->text().toStdString();
-	string _job_name = uiJobOptions->jobName->text().toStdString();
+	QString comment = uiJobOptions->comment->text().toStdString();
+	QString _job_name = uiJobOptions->jobName->text().toStdString();
 
 	int instances = uiJobOptions->instances->text().toInt();
 	if ( instances > 16 ){
@@ -283,9 +283,9 @@ void jobs_actions::jobOptionsOk(){
 	auto selected = jobsList->selectedItems();
 	selected.push_front( firstJobItem );
 
-	vector <string> repeatItem;
+	vector <QString> repeatItem;
 	for ( auto item : selected ){
-		string job_name = item->text(0).toStdString();
+		QString job_name = item->text(0).toStdString();
 		json options = { machines, group, priority, comment, instances, first_frame, last_frame, task_size, _job_name };
 		// el primer item se repite asi que si esta 2 veces no lo agrega otra vez
 		if ( not in_vector( job_name, repeatItem ) )
@@ -305,7 +305,7 @@ void jobs_actions::jobOptionsOk(){
 	}
 }
 
-void jobs_actions::jobMessage( void ( jobs_actions::*funtion )( string ), string action, 
+void jobs_actions::jobMessage( void ( jobs_actions::*funtion )( QString ), QString action, 
 						 QString ask, QString tile, jobs_actions *_class ){
 
 	auto selected = jobsList->selectedItems();
@@ -321,7 +321,7 @@ void jobs_actions::jobMessage( void ( jobs_actions::*funtion )( string ), string
 	}
 }
 
-void jobs_actions::jobDeleteStart( string action ){
+void jobs_actions::jobDeleteStart( QString action ){
 	debug("jobs_actions::jobDeleteStart.");
 
 	auto root = jobsList->invisibleRootItem();
@@ -331,7 +331,7 @@ void jobs_actions::jobDeleteStart( string action ){
 
 	for ( auto item : selected ){
 
-		string job_name = item->text(0).toStdString();
+		QString job_name = item->text(0).toStdString();
 		os::remove( "../../log/trayIcon/" + job_name );
 
 		pks.push_back( { job_name, action } );
@@ -345,14 +345,14 @@ void jobs_actions::jobDeleteStart( string action ){
 	tcpClient( managerHost, 7000, pks, 3 );
 }
 
-void jobs_actions::jobAction( string action ){
+void jobs_actions::jobAction( QString action ){
 	shared->stopUpdate = true;
 
 	auto selected = jobsList->selectedItems();
 
 	json pks;
 	for ( auto item : selected ){
-		string job_name = item->text(0).toStdString();
+		QString job_name = item->text(0).toStdString();
 		pks.push_back( { job_name, action } ); 
 	}
 	pks = { pks, "jobAction" };
@@ -366,6 +366,6 @@ void jobs_actions::itemDelete(){
 
 	QString ask = "Sure you want to delete the job?";
 	QString tile = "Job Delete";
-	string action = "delete";
+	QString action = "delete";
 	jobMessage( &jobs_actions::jobDeleteStart, action, ask,  tile, this );
 }

@@ -41,7 +41,7 @@ public:
 		qsocket = new QTcpSocket();
 		if ( !qsocket->setSocketDescriptor( socketDescriptor )) return;
 
-		string send;
+		QString send;
 		QString recv;
 		json _recv = {};
 		QJsonObject _pks = {};
@@ -235,7 +235,7 @@ public:
 	bool recv_ready = true;
 	// Constructor client loop
 	template < class T >
-	tcp_client( string _host, int _port,  T *_class, int _input ){
+	tcp_client( QString _host, int _port,  T *_class, int _input ){
 		host = QString::fromStdString( _host );
 		port = _port;
 		input = _input;
@@ -246,7 +246,7 @@ public:
 	} //-----------------------------
 
 	// Costructor para packete unico
-	tcp_client( string _host, int _port, json _pks, int _input ){
+	tcp_client( QString _host, int _port, json _pks, int _input ){
 		host = QString::fromStdString( _host );
 		port = _port;
 		input = _input;
@@ -262,7 +262,7 @@ public:
 
 		QTcpSocket *socket = new QTcpSocket();
 		int wait = -1;
-		string send = pks.dump();
+		QString send = pks.dump();
 		QString recv;
 		json _recv = {};
 
@@ -361,7 +361,7 @@ void tcpServer(  int _port, QJsonObject ( T::*_func )( QJsonObject, int ), T *_c
 }
 
 template < class T >
-void tcpClient(  string _host, int _port, QJsonObject ( T::*_func )( QJsonObject ), T *_class, int _input, bool widget = false ){
+void tcpClient(  QString _host, int _port, QJsonObject ( T::*_func )( QJsonObject ), T *_class, int _input, bool widget = false ){
 	// inicia thread de tcp socket
 	tcp_client *_client = new tcp_client( _host, _port, _class, _input ); 
 	_client->exit();

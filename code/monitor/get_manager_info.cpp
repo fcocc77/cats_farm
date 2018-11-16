@@ -6,16 +6,16 @@ void get_manager_info::actions(){
 
 void get_manager_info::managerRecieve(){
 
-    string host = fread( "../../etc/manager_host" );
+    QString host = fread( "../../etc/manager_host" );
 
     // actualiza una ves antes del loop.
-	json recv =  tcpClient( host, 7000, {}, 2 );
+	QJsonObject recv =  tcpClient( host, 7000, {}, 2 );
     managerRecieveUpdate( recv );
     //--------------------------------------
     tcpClient( host, 7000, &get_manager_info::managerRecieveUpdate, this, 2, true );
 }
 
-json get_manager_info::managerRecieveUpdate( json recv ){
+QJsonObject get_manager_info::managerRecieveUpdate( QJsonObject recv ){
 
 	static int timelapse;
 	if ( not recv.empty() ){ 
@@ -40,26 +40,25 @@ json get_manager_info::managerRecieveUpdate( json recv ){
 	return {};
 }
 
-void get_manager_info::updateJob( json recv ){
-	debug("get_manager_info::updateJob: loop");
+void get_manager_info::updateJob( QJsonObject recv ){
 
 	// Chekear lista de jobs que hay en la lista
-	vector <string> job_list;
+	vector <QString> job_list;
 
-	struct _job_item{ string name; QTreeWidgetItem *item; };
+	struct _job_item{ QString name; QTreeWidgetItem *item; };
 	vector <_job_item> job_item;
 
 	for (int i = 0; i < jobsList->topLevelItemCount(); ++i){
 
 		auto item = jobsList->topLevelItem(i); 
-		string name = item->text(0).toStdString();
+		QString name = item->text(0).toStdString();
 		job_list.push_back( name );
 		job_item.push_back( { name, item } );
 
 	}
 	//-----------------------------
 
-	vector <string> job_name_list;
+	vector <QString> job_name_list;
 
 	for ( auto job : recv ){
 		QString job_name = QString::fromStdString( job["name"] );
@@ -238,28 +237,28 @@ void get_manager_info::updateJob( json recv ){
 	}
 }
 
-void get_manager_info::updateServer( json recv ){
+void get_manager_info::updateServer( QJsonObject recv ){
 	debug("get_manager_info::updateServer: loop");
 	// Chekear lista de server que hay en la lista
-	vector <string> server_list;
-	struct _server_item{ string name; QTreeWidgetItem *item; };
+	vector <QString> server_list;
+	struct _server_item{ QString name; QTreeWidgetItem *item; };
 	vector <_server_item> server_item;
 
 	for (int i = 0; i < serverList->topLevelItemCount(); ++i){
 		auto item = serverList->topLevelItem(i); 
-		string name = item->text(0).toStdString();
+		QString name = item->text(0).toStdString();
 		server_list.push_back( name );
 		server_item.push_back( { name, item } );
     }
 	//--------------------------------------------------
 
 	// crea lista de los server que no estan filtrados
-	vector <string> displayServer;
+	vector <QString> displayServer;
 	for ( auto server : recv ){
 
-		string server_name = server["name"];
-		string status = server["status"];
-		string system = server["system"];
+		QString server_name = server["name"];
+		QString status = server["status"];
+		QString system = server["system"];
 
 		bool display = false;
 		if ( status == "absent" ){
@@ -297,11 +296,11 @@ void get_manager_info::updateServer( json recv ){
 	}
 	//------------------------------------------------------
 	//*
-	vector <string> server_name_list;
+	vector <QString> server_name_list;
 
 	for ( auto server : recv ){ 
         QString server_name = QString::fromStdString( server["name"] );
-		string _server_name = server["name"];
+		QString _server_name = server["name"];
 		int max_instances = server["max_instances"];
 		QString status = QString::fromStdString( server["status"] );
 		QString host = QString::fromStdString( server["host"] );
@@ -508,21 +507,21 @@ void get_manager_info::updateServer( json recv ){
 	//*/
 }
 
-void get_manager_info::updateGroup( json recv ){
+void get_manager_info::updateGroup( QJsonObject recv ){
 	debug("get_manager_info::updateGroup: loop");
 
 	if ( not recv.empty() ){
 		awrite("../../log/bugs.txt","1\n");
 		// agrega los grupos a la lista
 
-		vector <string> group_list;
+		vector <QString> group_list;
 
-	    struct _group_item{ string name; QTreeWidgetItem *item; };
+	    struct _group_item{ QString name; QTreeWidgetItem *item; };
 	    vector <_group_item> group_item;
 	   awrite("../../log/bugs.txt","2\n");
 		for (int i = 0; i < groupList->topLevelItemCount(); ++i){
 			auto item = groupList->topLevelItem(i); 
-			string name = item->text(2).toStdString();
+			QString name = item->text(2).toStdString();
 
 			group_list.push_back( name );
 			group_item.push_back( { name, item } );
@@ -530,11 +529,11 @@ void get_manager_info::updateGroup( json recv ){
 
         awrite("../../log/bugs.txt","3\n");
 
-		vector <string> group_name_list;
+		vector <QString> group_name_list;
 		for ( auto group : recv ){
 
             QString group_name = QString::fromStdString( group["name"] );
-			string _group_name =  group["name"];
+			QString _group_name =  group["name"];
 			bool group_status = group["status"];
 			int totaMachine = group["totaMachine"];
 			int activeMachine = group["activeMachine"];
@@ -641,7 +640,7 @@ void get_manager_info::updateTask(){
     auto selected = jobsList->selectedItems();
 	if ( not selected.empty() ){
 		auto _item = selected[0];
-		string job_item_name = _item->text(0).toStdString();
+		QString job_item_name = _item->text(0).toStdString();
 		vector < vector <QString > > tasks;
 
 		// encuentra en los paketes recibidos el job seleccionado

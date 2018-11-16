@@ -59,7 +59,7 @@ void general::style_ui(){
 	QIcon icon("../../icons/monitor.png"); 
 	monitor->setWindowIcon( icon );
 
-	string style = fread( "../../theme/style.css" );
+	QString style = fread( "../../theme/style.css" );
 
 	monitor->setStyleSheet( style.c_str() );
 }
@@ -99,7 +99,7 @@ void general::notifyIcon(){
 			QString status = item->text( 4 );
 			QString name = item->text( 0 );
 
-			string notifyJob = "../../log/trayIcon/" + name.toStdString();
+			QString notifyJob = "../../log/trayIcon/" + name.toStdString();
 
 			if ( status == "Queue" or status == "Rendering..." ){
 				if ( os::isfile( notifyJob ) ){

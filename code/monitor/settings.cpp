@@ -21,7 +21,7 @@ void settings::ui(){
     connect( ap, &QPushButton::clicked, this, [this](){ pathSusWrite(); });
     connect( ok, &QPushButton::clicked, this, [this](){
 
-		string _manager_ip = manager_ip->text().toStdString();
+		QString _manager_ip = manager_ip->text().toStdString();
 		fwrite( "../../etc/manager_host", _manager_ip);
 
 		pathSusWrite();
@@ -63,7 +63,7 @@ void settings::style(){
     //---------------------------------------------------
 
 	resize(700, 400);
-	string _style = fread( "../../theme/style.css" );
+	QString _style = fread( "../../theme/style.css" );
 	setStyleSheet( _style.c_str() );
 	setWindowTitle( "CatsFarm Setting" );
 

@@ -24,8 +24,7 @@ using namespace std;
 #include "../utils/util.h"
 #include "../utils/os.h"
 #include "../manager/structs.h"
-#include "../utils/json.h"
-using namespace nlohmann;
+#include "../utils/QJsonObject.h"
 
 // monitor moduless
 #include "ui_jobs_tree.h"
@@ -64,17 +63,17 @@ public:
     }
 
     bool task_first_add;
-    vector <string> deleteList;
+    vector <QString> deleteList;
     QThread *getTask_thread = new QThread();
 
     // revice desde manager
 
-    json managerRecieveUpdate( json recv );
+    QJsonObject managerRecieveUpdate( QJsonObject recv );
     void actions();
     void managerRecieve();
-    void updateJob( json recv );
-    void updateServer( json recv );
-    void updateGroup( json recv );
+    void updateJob( QJsonObject recv );
+    void updateServer( QJsonObject recv );
+    void updateGroup( QJsonObject recv );
     void updateTask();
     void getTask();
     //-----------------------------

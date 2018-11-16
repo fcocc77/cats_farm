@@ -21,8 +21,7 @@
 
 #include "../utils/tcp.h"
 #include "../utils/util.h"
-#include "../utils/json.h"
-using namespace nlohmann;
+
 
 #include <vector>
 using namespace std;
@@ -53,7 +52,7 @@ public:
     }
 
     // variables Generales
-    const string managerHost = fread( "../../etc/manager_host" );
+    const QString managerHost = fread( "../../etc/manager_host" );
     //--------------------------------------
 
     // Group Action

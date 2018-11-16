@@ -16,8 +16,6 @@
 
 #include "../utils/util.h"
 #include "../utils/tcp.h"
-#include "../utils/json.h"
-using namespace nlohmann;
 #include <iostream>
 using namespace std;
 
@@ -54,7 +52,7 @@ public:
 
 	QTreeWidgetItem *firstServerItem;
 
-    const string managerHost = fread( "../../etc/manager_host" );
+    const QString managerHost = fread( "../../etc/manager_host" );
 
 	// Server Action
 	QAction *serverInactiveAction = new QAction("Disable");
@@ -79,11 +77,11 @@ public:
 	void serverMaxInstances( int ins );
 	void serverSSH();
 	void serverVNC();
-	void serverMessage( json ( servers_actions::*funtion )( string, string ), string action, 
-								QString ask, QString tile, string info, servers_actions *_class );	
+	void serverMessage( json ( servers_actions::*funtion )( QString, QString ), QString action, 
+								QString ask, QString tile, QString info, servers_actions *_class );	
 	void serverActionMessage();
-	json serverAction( string action, string info );
-	void sendToServer( string action, string info );
+	json serverAction( QString action, QString info );
+	void sendToServer( QString action, QString info );
 
 	//----------------
 

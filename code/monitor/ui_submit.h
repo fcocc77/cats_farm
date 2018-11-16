@@ -21,11 +21,8 @@
 // Utils Library
 #include "../utils/os.h"
 #include "../utils/tcp.h"
-#include "../utils/json.h"
 #include "ui_servers_tree.h"
 #include "ui_groups_tree.h"
-
-using namespace nlohmann;
 //----------
 
 class combobox : public QComboBox{

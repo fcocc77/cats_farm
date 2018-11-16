@@ -3,7 +3,7 @@
 void manager::init(){
     // Carga la informacion guardada de Jobs, Servers y Groups
 
-    json info = jread( "../../etc/info.json" );
+    QJsonObject info = jread( "../../etc/info.json" );
     if ( not info.empty() ){
         json_to_struct( info );
     }
@@ -61,12 +61,12 @@ void manager::reactive_all(){
 
 QJsonObject manager::make_job( QJsonObject recv ){
 
-	string _job_name = recv[0].toString(); 
+	QString _job_name = recv[0].toString(); 
 	//------------------------------
-	vector <string> _server;
+	vector <QString> _server;
 	if ( recv[1].toString() != "None" ) _server.push_back( recv[1].toString().toStdString() );
 	//------------------------------
-	vector <string> _server_group;
+	vector <QString> _server_group;
 	if ( recv[2].toString() != "None" ) _server_group.push_back( recv[2].toString().toStdString() );
 	//------------------------------
 	int _first_frame = recv[3].toInt(); 
@@ -74,15 +74,15 @@ QJsonObject manager::make_job( QJsonObject recv ){
 	int _task_size = recv[5].toInt(); 
 	int _priority = recv[6].toInt(); 
 	bool _suspend = recv[7].toBool(); 
-	string _comment = recv[8].toString();
-	string _software = recv[9].toString();
-	string _project = recv[10].toString(); 
-	string _extra = recv[11].toString(); 
-	string _system = recv[12].toString();  
+	QString _comment = recv[8].toString();
+	QString _software = recv[9].toString();
+	QString _project = recv[10].toString(); 
+	QString _extra = recv[11].toString(); 
+	QString _system = recv[12].toString();  
 	int _instances = recv[13].toInt(); 
-	string _render = recv[14].toString();
+	QString _render = recv[14].toString();
 
-	string status, submit_start;
+	QString status, submit_start;
 
 	if ( _suspend ){ status = "Suspended"; }
 	else { status = "Queue"; }
@@ -90,7 +90,7 @@ QJsonObject manager::make_job( QJsonObject recv ){
 	submit_start = currentDateTime(0);
 
 	// checkea si el nombre esta en la lista, si esta le pone un padding
-	string job_name = _job_name;
+	QString job_name = _job_name;
 
     for (int i = 0; i < 100; ++i){
 		bool inside = false;
@@ -176,7 +176,7 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 	vector <task_struct*> tasks;
 
 	int num=0;
-	string task_name;
+	QString task_name;
 	for ( auto i : tasks_range ){
 		num++;
 
@@ -212,9 +212,9 @@ void manager::json_to_struct( QJsonObject info ){
 		_jobs->name = job[ "name" ].toString();
 		_jobs->status = job[ "status" ].toString();
 		_jobs->priority = job[ "priority" ].toInt();
-		for ( string _server : job[ "server" ].toArray() ) 
+		for ( QString _server : job[ "server" ].toArray() ) 
 			_jobs->server.push_back( _server.toString() );
-		for ( string _group : job[ "server_group" ].toArray() ) 
+		for ( QString _group : job[ "server_group" ].toArray() ) 
 			_jobs->server_group.push_back( _group.toString() );
 		_jobs->instances = job[ "instances" ].toInt();
 		_jobs->comment = job[ "comment" ].toString();
@@ -330,12 +330,12 @@ QJsonObject manager::struct_to_json(){
 		j[ "priority" ] = job->priority;
 		// --------------------------------
 		QJsonArray serverList;
-		for ( string _server : job->server ) 
+		for ( QString _server : job->server ) 
 			serverList.push_back( _server );
 		j[ "server" ] = serverList;
 		// --------------------------------
 		QJsonArray serverGroup;
-		for ( string _group : job->server_group )
+		for ( QString _group : job->server_group )
 			serverGroup.push_back( _group );
 		j[ "server_group" ] = serverGroup;
 		// --------------------------------

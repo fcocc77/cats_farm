@@ -2,21 +2,19 @@
 #define RENDER_H
 
 #include "../utils/util.h"
-#include "../utils/json.h"
 #include "../utils/threading.h"
-using namespace nlohmann;
 
 class render : public QObject{
 public:
 
-	json preferences;
+	QJsonObject preferences;
 	vector <int> first_frame, last_frame, pid;
-	vector <string> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
+	vector <QString> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
 	vector <bool> taskKill, renderInstance;
 	bool VMCinemaActive;
 	bool VMCinemaTurn;
 	int VMCinemaRunningTimes;
-	string VMSH;
+	QString VMSH;
 	
 	render(){
 		// inicializar instancias 16 veces
@@ -40,8 +38,8 @@ public:
 		threading( &render::suspend_vbox, this );
 	}
 
-	string render_task( json recv );
-	string qprocess( string cmd, int ins = -1 );
+	QString render_task( QJsonObject recv );
+	QString qprocess( QString cmd, int ins = -1 );
 	void vbox_turn( bool turn );
 	bool vbox_working();	
 	void suspend_vbox();

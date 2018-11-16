@@ -186,10 +186,10 @@ bool manager::iTime( QString schedule ){
 
 void manager::update_group(){
 	// Obtiene todos los grupos que estan activos
-	vector <string> groups_used;
+	vector <QString> groups_used;
 	for ( auto job : jobs ){
 		if ( job->active_task ){
-			for ( string sg : job->server_group ){
+			for ( QString sg : job->server_group ){
 				groups_used.push_back(sg);
 			}
 	    }

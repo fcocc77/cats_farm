@@ -6,7 +6,7 @@ ui_groups_tree::ui_groups_tree(){
 
 void ui_groups_tree::ui(){
 
-	string stylesheet = 
+	QString stylesheet = 
 		R"(
 		QTreeWidget::item:!has-children,
 		QTreeWidget::branch::!has-children{

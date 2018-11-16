@@ -6,7 +6,7 @@ namespace os {
 
 	vector <int> getStat(){
 		vector <int> cpu;
-		string s = fread("/proc/stat");
+		QString s = fread("/proc/stat");
 
 		auto stat = split(s , " ");
 
@@ -23,7 +23,7 @@ namespace os {
 	int cpuUsed(){
 
 		static int usage;
-		string result;
+		QString result;
 		if ( _win32 ){
 			result = sh("wmic cpu get loadpercentage");
 			result = replace(result, "LoadPercentage", "");
@@ -59,7 +59,7 @@ namespace os {
 		}
 
 		else{
-			string p = os::sh( "ps -aeo pcpu | awk '{s+=$1} END {print s }'p" );
+			QString p = os::sh( "ps -aeo pcpu | awk '{s+=$1} END {print s }'p" );
 			try{ usage = stoi(p) / cpuCount();}
 			catch(...){}
 
@@ -92,7 +92,7 @@ namespace os {
 		int total, free, buffers, cached, used, percent;
 
 		if ( _linux ){
-			string mem=fread("/proc/meminfo");
+			QString mem=fread("/proc/meminfo");
 			total=stoi(between(mem, "MemTotal:", "kB"));
 			free=stoi(between(mem, "MemFree:", "kB"));
 			buffers=stoi(between(mem, "Buffers:", "kB"));
@@ -107,14 +107,14 @@ namespace os {
 		}
 
 		else {
-			string mem = os::sh( "memory_pressure" );
+			QString mem = os::sh( "memory_pressure" );
 			percent = 100 - stoi( between( mem, "percentage:", "%") );
 		}
 
 		return percent;
 	}
 
-	void system( string cmd ){
+	void system( QString cmd ){
 
 		if ( _win32 ) cmd = "\"" + cmd + "\"";
 
@@ -127,7 +127,7 @@ namespace os {
 
 		if ( not total_ram ){
 			if ( _linux ){
-				string mem=fread("/proc/meminfo");
+				QString mem=fread("/proc/meminfo");
 				long long _total = stoll(between(mem, "MemTotal:", "kB"));
 				total_ram = ( _total * 1024 * 1024 ) / 1000000000000;
 
@@ -137,7 +137,7 @@ namespace os {
 			}
 
 			else{
-				string _ram = os::sh( "sysctl hw.memsize");
+				QString _ram = os::sh( "sysctl hw.memsize");
 				_ram = split(_ram, "hw.memsize:")[1];
 
 				try{ total_ram = stoll(_ram) / 1024 / 1024 / 1024;}
@@ -160,7 +160,7 @@ namespace os {
 		if ( _linux ){
 
 			try{
-				string t = sh("sensors");
+				QString t = sh("sensors");
 				int pos, core0, core1, core2, core3;
 				//core0
 				pos = t.find("Core 0:");  t.erase(0,pos+7); 
@@ -190,15 +190,15 @@ namespace os {
 			static int csv_delete;
 			csv_delete++;
 			// Obtiene la temperatura a partir de un sensor con interface core temp, no es lo mas optimo hasta el momento
-			string core_temp_dir = path() + "/os/win/core_temp";
+			QString core_temp_dir = path() + "/os/win/core_temp";
 
-			for ( string f : os::listdir( core_temp_dir ) ){
-				string ext = f.substr( f.length() - 3 );
+			for ( QString f : os::listdir( core_temp_dir ) ){
+				QString ext = f.substr( f.length() - 3 );
 				if ( ext == "csv" ){
-					string _file = fread( f );
+					QString _file = fread( f );
 					if ( not _file.empty() ){
 
-						string tempRead = split( fread( f ), "\n" ).end()[-1] ;
+						QString tempRead = split( fread( f ), "\n" ).end()[-1] ;
 
 						auto core = split( split( tempRead, ",,," )[0], "," );
 						int cpu_count = core.size() - 1;
@@ -224,8 +224,8 @@ namespace os {
 			static int times;
 			
 			if ( times == 0 ){ 
-				string cmd = path() + "/os/mac/sensor/tempmonitor -l -a";
-				string temp_out = os::sh( cmd );
+				QString cmd = path() + "/os/mac/sensor/tempmonitor -l -a";
+				QString temp_out = os::sh( cmd );
 
 				try{ 
 					temp = stoi( between( temp_out, "SMC CPU A HEAT SINK: ", "C") );
@@ -259,7 +259,7 @@ namespace os {
 			}
 
 			else {
-				string _cores = os::sh( "sysctl hw.ncpu" );
+				QString _cores = os::sh( "sysctl hw.ncpu" );
 				_cores = split( _cores, "hw.ncpu:" )[1];
 
 				try{ cores = stoi(_cores);}
@@ -270,18 +270,18 @@ namespace os {
 		return cores;
 	}
 
-	void copy( string src, string dst ){
+	void copy( QString src, QString dst ){
 		copymove( src, dst, true );
 	}
 
-	void move( string src, string dst ){
+	void move( QString src, QString dst ){
 		copymove( src, dst, false );
 	}
 
-	void copymove( string src, string dst, bool copy ){
+	void copymove( QString src, QString dst, bool copy ){
 
-		string cmd;
-		string cp;
+		QString cmd;
+		QString cp;
 		bool execute = true;
 
 		if ( _win32 ){
@@ -327,40 +327,40 @@ namespace os {
 		}
 	}
 
-	void mkdir ( string path ){
-		string cmd = "mkdir \"" + path + '"';
+	void mkdir ( QString path ){
+		QString cmd = "mkdir \"" + path + '"';
 		if ( _win32 ) cmd = replace( cmd, "/", "\\" );
 		std::system( cmd.c_str() );
 	}
 
-	void remove( string _file ){
+	void remove( QString _file ){
 		QFile file ( QString::fromStdString(_file) );
 		file.remove();
 		QDir dir( QString::fromStdString(_file) );
 		dir.removeRecursively();	
 	}
 
-	void rename( string src, string dst ){
+	void rename( QString src, QString dst ){
 		std::rename( src.c_str(), dst.c_str() );
 	}
 
-	string dirname( string file ){
+	QString dirname( QString file ){
 		size_t found;
 		found=file.find_last_of("/\\");
 		return file.substr(0,found);
 	}
 
-	string basename( string file ){
+	QString basename( QString file ){
 		size_t found;
 		found=file.find_last_of("/\\");
 		return file.substr(found+1);
 	}
 
-	bool isfile( string file ){
+	bool isfile( QString file ){
 		return QFile( QString::fromStdString( file ) ).exists();
 	}
 
-	bool isdir( string dir ){
+	bool isdir( QString dir ){
 		return QDir( QString::fromStdString( dir ) ).exists();
 	}
 
@@ -403,9 +403,9 @@ namespace os {
 			while (1){
 				//------------------------------
 				for ( auto child : childs ){
-					string result = sh( "ps --ppid " + to_string(child));
+					QString result = sh( "ps --ppid " + to_string(child));
 					istringstream read( result );  
-					string line; 
+					QString line; 
 					childs = {};
 					while ( getline( read, line )){
 						try { childs.push_back( stoi( line ) ); }
@@ -433,14 +433,14 @@ namespace os {
 		#endif
 	}
 
-	vector <string> listdir( string folder, bool onlyname ){
-		vector <string> list_dir;
+	vector <QString> listdir( QString folder, bool onlyname ){
+		vector <QString> list_dir;
 		QDir ruta = QString::fromStdString(folder);
 		QDirIterator it(ruta);
 
 		while (it.hasNext()){ 
-			string file = it.next().toStdString();
-			string name = basename( file );
+			QString file = it.next().toStdString();
+			QString name = basename( file );
 			if ( onlyname ) file = name;
 			if ( ( name != "." ) and ( name != ".." ) ) list_dir.push_back( file );
 		}
@@ -448,9 +448,9 @@ namespace os {
 		return list_dir;
 	}
 
-	string sh(string cmd) {
+	QString sh(QString cmd) {
 
-		string data;
+		QString data;
 		FILE * stream;
 		const int max_buffer = 256;
 		char buffer[max_buffer];
@@ -466,40 +466,40 @@ namespace os {
 		return data;
 	}
 
-	const string hostName(){
+	const QString hostName(){
 		return QHostInfo::localHostName().toStdString();
 	}
 
-	const string ip(){
-		string _ip;
+	const QString ip(){
+		QString _ip;
 		int i = 0;
 		for ( auto ip : QNetworkInterface::allAddresses() ){
 			_ip = ip.toString().toStdString();
-			string first = split( _ip, "." )[0];
+			QString first = split( _ip, "." )[0];
 			if ( first == "192" ) return _ip ;
 			i++;
 		}
 		return "";
 	}
 
-	void back( string cmd ){
+	void back( QString cmd ){
 		QProcess pro;
 		pro.startDetached(QString::fromStdString(cmd) );
 		pro.waitForStarted();
 	}
 
-	const string user(){
+	const QString user(){
 
 		if ( _linux ){
 			//get user
-			string get_user = "grep '/bin/bash' /etc/passwd | cut -d':' -f1";                
+			QString get_user = "grep '/bin/bash' /etc/passwd | cut -d':' -f1";                
 			return split( os::sh(get_user) , "\n" )[1];
 			//------------------------------------------------------
 		}
 		else { return ""; };
 	}
 
-	string qp( string cmd ){
+	QString qp( QString cmd ){
 		QProcess proc;
 		proc.start( QString::fromStdString(cmd) );
 		proc.waitForFinished(-1);

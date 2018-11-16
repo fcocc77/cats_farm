@@ -26,8 +26,6 @@ using namespace std;
 #include "../utils/threading.h"
 #include "../utils/util.h"
 #include "../utils/tcp.h"
-#include "../utils/json.h"
-using namespace nlohmann;
 
 // monitor modules
 #include "ui_jobs_tree.h"
@@ -51,7 +49,7 @@ public:
 
 	QPlainTextEdit *log_text;
 	QDockWidget *log_dock;
-	string log_server;
+	QString log_server;
 	shared_variables *shared;
 
 	template < class T >
@@ -72,7 +70,7 @@ public:
 	QTreeWidgetItem *firstJobItem;
 
 	// variables Generales
-	const string managerHost = fread( "../../etc/manager_host" );
+	const QString managerHost = fread( "../../etc/manager_host" );
 	//--------------------------------------
 
 	// Job Acciones
@@ -94,10 +92,10 @@ public:
 	void jobModify();
 	void jobOptionsOk();
 
-	void jobDeleteStart( string action );   
-	void jobAction( string action );
+	void jobDeleteStart( QString action );   
+	void jobAction( QString action );
 
-	void jobMessage( void ( jobs_actions::*funtion )( string ), string action, 
+	void jobMessage( void ( jobs_actions::*funtion )( QString ), QString action, 
 							QString ask, QString tile, jobs_actions *_class );
 
 	void itemDelete();

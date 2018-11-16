@@ -2,7 +2,7 @@
 
 void submit::init( int argc, char const *argv[] ){
 
-	string arg, jobName, server, serverGroup, firstFrame, lastFrame, taskSize, priority, 
+	QString arg, jobName, server, serverGroup, firstFrame, lastFrame, taskSize, priority, 
 						suspend, comment, software, project, extra, system, instances, render;
 
 	for ( int i=1; i < argc; i++){
@@ -28,7 +28,7 @@ void submit::init( int argc, char const *argv[] ){
 	bool _suspend = false;
 	if ( suspend == "1" ) _suspend = true;
 
-	auto toInt = [=]( string str ){
+	auto toInt = [=]( QString str ){
 		try{ return stoi(str); }
 		catch( exception& e ){ return 0; }
 	};
@@ -36,8 +36,8 @@ void submit::init( int argc, char const *argv[] ){
 	json info = { jobName, server, serverGroup, toInt(firstFrame), toInt(lastFrame), toInt(taskSize), toInt(priority), 
 					_suspend, comment, software, project, extra, system, toInt(instances), render };
 
-	string path = os::dirname(os::dirname(os::dirname(argv[0])));
-	string managerHost = fread( path + "/etc/manager_host" );
+	QString path = os::dirname(os::dirname(os::dirname(argv[0])));
+	QString managerHost = fread( path + "/etc/manager_host" );
 
 	if ( argc > 2 )
 		tcpClient( managerHost, 7000, info, 0 );

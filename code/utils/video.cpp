@@ -25,7 +25,7 @@ void concat( QString folder ){
 	auto dir_list = os::listdir(folder);
 	sort( dir_list.begin(), dir_list.end() );
 	for (auto i : dir_list){
-		string ext = split( i, "." ).back(); 		
+		QString ext = split( i, "." ).back(); 		
 		if ( ext == "mov" )		
 			movie_list+="file '"+i+"'\n";
 	}
