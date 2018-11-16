@@ -3,6 +3,6 @@
 
 #include <algorithm> //sort
 
-void concat(string folder);
+void concat(QString folder);
 
 #endif //VIDEO_H

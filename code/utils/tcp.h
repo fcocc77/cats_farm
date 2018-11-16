@@ -3,8 +3,6 @@
 
 #include <iostream>
 using namespace std;
-#include "json.h"
-using namespace nlohmann;
 #include "util.h"
 
 // QT5 Library
@@ -16,6 +14,9 @@ using namespace nlohmann;
 #include <QString>
 #include <QThread>
 #include <QTimer>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 //----------------------
 
 template < class T >
@@ -24,12 +25,12 @@ public:
 
 	int port; 
 	T *_class; 
-	json ( T::*func )( json, int );
+	QJsonObject ( T::*func )( QJsonObject, int );
 
 	QTcpSocket *qsocket;    
 	int socketDescriptor;
 
-	tcp_socket( int _socketDescriptor, int _port, json ( T::*_func )( json, int ), T *__class ){
+	tcp_socket( int _socketDescriptor, int _port, QJsonObject ( T::*_func )( QJsonObject, int ), T *__class ){
 		port = _port;
 		func = _func;
 		_class = __class;
@@ -43,7 +44,7 @@ public:
 		string send;
 		QString recv;
 		json _recv = {};
-		json _pks = {};
+		QJsonObject _pks = {};
 		int _input = 0;
 		int wait = -1; // en -1 significa que no tiene timeout para los waitForBytesWritten y waitForReadyRead
 		// waitForConnected: espera que un cliente se conecte a este socket
@@ -354,13 +355,13 @@ public:
 };
 
 template < class T >
-void tcpServer(  int _port, json ( T::*_func )( json, int ), T *_class ){
+void tcpServer(  int _port, QJsonObject ( T::*_func )( QJsonObject, int ), T *_class ){
 	tcp_server< T > *_server = new tcp_server< T >( _port, _func, _class ); 
 	_server->init();
 }
 
 template < class T >
-void tcpClient(  string _host, int _port, json ( T::*_func )( json ), T *_class, int _input, bool widget = false ){
+void tcpClient(  string _host, int _port, QJsonObject ( T::*_func )( QJsonObject ), T *_class, int _input, bool widget = false ){
 	// inicia thread de tcp socket
 	tcp_client *_client = new tcp_client( _host, _port, _class, _input ); 
 	_client->exit();
@@ -376,7 +377,7 @@ void tcpClient(  string _host, int _port, json ( T::*_func )( json ), T *_class,
 }
 
 template < class T >
-json tcpClient( T _host, int _port, json _pks, int _input ){
+QJsonObject tcpClient( T _host, int _port, QJsonObject _pks, int _input ){
 	tcp_client *_client = new tcp_client( _host, _port, _pks, _input ); 
 	_client->exit();
 	return _client->client();

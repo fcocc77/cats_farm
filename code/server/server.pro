@@ -14,7 +14,6 @@ QT += core gui multimedia widgets
 HEADERS += 	./server.h \
 			./render.h \
 			../manager/structs.h \
-			../utils/json.h \
 			../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \

@@ -12,9 +12,9 @@ void manager::resetAllServer(){
 	//--------------------------------------------------
 }
 
-json manager::recieve_monitor_thread( json recv ){
+QJsonObject manager::recieve_monitor_thread( QJsonObject recv ){
 
-	auto pks = recv[0], id = recv[1];
+	auto pks = recv[0].toString(), id = recv[1].toString();
 
 	if ( not pks.empty() ){
 		if ( id =="jobAction" ){ jobAction( pks ); }
@@ -59,12 +59,12 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	}
 }
 
-void manager::jobAction( json pks ){
+void manager::jobAction( QJsonObject pks ){
 
-	for ( auto _job : pks ){
+	for ( auto _job : pks.toArray() ){
 
-        string job_name = _job[0]; 
-        string job_action = _job[1];
+        QString job_name = _job[0].toString(); 
+        QString job_action = _job[1].toString();
 
 		auto job = find_struct( jobs, job_name );
 
@@ -118,15 +118,14 @@ void manager::jobAction( json pks ){
     }
 }
 
-json manager::jobOptions( json pks ){
-	vector <string> names;
+QJsonObject manager::jobOptions( QJsonObject pks ){
 	int num = 0;
 	string _name;
-	for ( auto _job : pks ){
+	for ( auto _job : pks.toArray() ){
 
-		json job_name = _job[0];
-		json options = _job[1]; 
-		json action = _job[2];
+		QString job_name = _job[0].toString();
+		QJsonArray options = _job[1].toArray(); 
+		QString action = _job[2].toString();
 
 		auto job = find_struct( jobs, job_name );
 
@@ -205,10 +204,10 @@ json manager::jobOptions( json pks ){
 		}
 
 		if ( action == "read" ){ 
-			json _server;
+			QJsonObject _server;
 			for ( string s : job->server ) _server.push_back(s);
 			//----------------------------------------------------
-			json _server_group;
+			QJsonObject _server_group;
 			for ( string sg : job->server_group ) _server_group.push_back(sg);
 			//----------------------------------------------------
 			return { _server, _server_group, job->priority, job->comment, job->instances, 
@@ -220,11 +219,13 @@ json manager::jobOptions( json pks ){
 	return {};
 }
 
-json manager::serverAction( json pks ){
+QJsonObject manager::serverAction( QJsonObject pks ){
 
-	for ( auto _server : pks ){
+	for ( auto _server : pks.toArray() ){
 
-        auto name = _server[0], server_action = _server[1], info =  _server[2];
+        QString name = _server[0].toString();
+        QString server_action = _server[1].toString();
+        int info =  _server[2].toInt();
 		auto server = find_struct( servers, name );
 
 		if ( server_action == "max_instances" ){
@@ -266,7 +267,7 @@ void manager::serverSetState( server_struct *server, bool state ){
     }
 
 	else{
-		json kill_ins;
+		QJsonObject kill_ins;
 
         for (int i = 0; i < server->max_instances; ++i){
             auto ins = server->instances[i];
@@ -280,11 +281,13 @@ void manager::serverSetState( server_struct *server, bool state ){
     }
 }
 
-json manager::serverOptions( json pks ){
+QJsonObject manager::serverOptions( QJsonObject pks ){
 
-	for ( auto _server : pks ){
+	for ( auto _server : pks.toArray() ){
 
-        auto name = _server[0], recv = _server[1], action =  _server[2];
+        QString name = _server[0].toString();
+        QJsonArray recv = _server[1].toArray();
+        QString action =  _server[2].toString();
 
 		auto server = find_struct( servers, name );
 
@@ -293,35 +296,37 @@ json manager::serverOptions( json pks ){
         }
 
 		if ( action == "write" ){
-			server->schedule = recv[0];
+			server->schedule = recv[0].toString();
         }
     }
 
 	return {};
 }
 
-void manager::groupAction( json pks ){
+void manager::groupAction( QJsonObject pks ){
 
-	json group_list = pks[0], group_machine = pks[1], group_action = pks[2];
+	QJsonObject group_list = pks[0].toObject(); 
+	QJsonObject group_machine = pks[1].toObject();
+	QString group_action = pks[2].toString();
 
 	if ( group_action == "addMachine" ){
 
-		for ( json _group : group_machine ){
-			string name = _group[0]; 
-			json serverList = _group[1];
+		for ( QJsonArray _group : group_machine ){
+			QString name = _group[0].toString(); 
+			QJsonArray serverList = _group[1].toArray();
 
 			auto group = find_struct( groups, name );
 
 			for ( auto server : serverList ){
-				if ( not is_struct( group->server, server ) ){
+				if ( not is_struct( group->server, server.toString() ) ){
 
-				string status = find_struct( servers, server )->status;
+				string status = find_struct( servers, server.toString() )->status;
 				bool _status = true;
 
 				if ( status == "absent" ){ _status = false; }
 
 					serverFromGroupStruct *sg = new serverFromGroupStruct;
-					sg->name = server;
+					sg->name = server.toString();
 					sg->status = _status;
 
 					group->server.push_back( sg );
@@ -337,8 +342,8 @@ void manager::groupAction( json pks ){
 		// elimina servers del grupo
 
 		for ( auto _group : group_machine ){
-            auto name = _group[0], 
-            server = _group[1];
+            QString name = _group[0].toString();
+            QString server = _group[1].toString();
 
             auto group = find_struct( groups, name);
 
@@ -347,16 +352,19 @@ void manager::groupAction( json pks ){
 		}
 
 		for ( auto group : group_list ){
-			erase_by_name( groups, group );
+			erase_by_name( groups, group.toString() );
 		}
 		//------------------------------------------
     }
 }
 
-void manager::taskAction( json pks ){
+void manager::taskAction( QJsonObject pks ){
 
-	for ( auto _task : pks ){
-        string job_name = _task[0], task_name = _task[1], task_action = _task[2];
+	for ( auto _task : pks.toArray() ){
+        QString job_name = _task[0].toString();
+        QString task_name = _task[1].toString();
+        QString task_action = _task[2].toString();
+        
         auto job = find_struct( jobs, job_name );
         auto task = find_struct( job->task, task_name );
 
@@ -392,14 +400,14 @@ void manager::taskAction( json pks ){
     }
 }
 
-void manager::groupCreate( json pks ){
+void manager::groupCreate( QJsonObject pks ){
 
-	string group_name_in = pks[0]; 
-	int totaMachine = pks[1]; 
-	int activeMachine = pks[2]; 
-	json server = pks[3];
+	QString group_name_in = pks[0].toString(); 
+	int totaMachine = pks[1].toInt(); 
+	int activeMachine = pks[2].toInt(); 
+	QJsonArray server = pks[3].toArray();
 
-	string group_name = group_name_in;
+	QString group_name = group_name_in;
 
 	int pad = 0;
 	while (1){
@@ -421,7 +429,7 @@ void manager::groupCreate( json pks ){
 	vector <serverFromGroupStruct*> _server;
     for ( auto name : server ){
 		serverFromGroupStruct *sg = new serverFromGroupStruct;
-		sg->name = name ;
+		sg->name = name.toString() ;
 		sg->status = 0;
 		_server.push_back( sg );
 	}
@@ -431,25 +439,25 @@ void manager::groupCreate( json pks ){
     groups.push_back( group );
 }
 
-json manager::preferencesAction( json pks ){
+QJsonObject manager::preferencesAction( QJsonObject pks ){
 
-	if ( pks == "read" ){
+	if ( pks.toString() == "read" ){
 		return  jread( "../../etc/preferences.json" );
 
 	}
 	else{
-		preferences[ "paths" ] = pks;
+		preferences[ "paths" ] = pks.toString();
 		jwrite( "../../etc/preferences.json", preferences );
 	}
 
 	return {};
 }
 
-json manager::jobLogAction( json pks ){
+QJsonObject manager::jobLogAction( QJsonObject pks ){
 
-	string server_name = pks;
+	QString server_name = pks.toString();
 	auto server = find_struct( servers, server_name );
-	string result = server->log;
+	QString result = server->log;
 
 	return result;
 }

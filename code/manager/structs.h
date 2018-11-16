@@ -2,36 +2,36 @@
 #define STRUCT_H
 
 struct task_struct{
-	string name;
-	string status;
+	QString name;
+	QString status;
 	int first_frame;
 	int last_frame;
-	string server;
-	string time;
+	QString server;
+	QString time;
 };
 
 struct job_struct{
-	string name;
-	string status;
+	QString name;
+	QString status;
 	int priority;
-	vector <string> server;
-	vector <string> server_group;
+	vector <QString> server;
+	vector <QString> server_group;
 	int instances;
-	string comment;
-	string submit_start;
-	string submit_finish;
-	string timer;
-	string timer2;
-	string total_render_time;
-	string estimated_time;
+	QString comment;
+	QString submit_start;
+	QString submit_finish;
+	QString timer;
+	QString timer2;
+	QString total_render_time;
+	QString estimated_time;
 	float estimated_time_second;
 	bool timer_last_active;	
-	string software;
-	string project;
-	string system;
-	string extra;
-	string render;
-	vector <string> vetoed_servers;
+	QString software;
+	QString project;
+	QString system;
+	QString extra;
+	QString render;
+	vector <QString> vetoed_servers;
 	int progres;
 	int old_p;
 	int waiting_task;
@@ -49,14 +49,14 @@ struct inst_struct{
 	int index;
 	int status;
 	bool reset;
-	string job_task;
+	QString job_task;
 };
 
 struct server_struct{
-	string name;
-	string status;
-	string host;
-	string system;
+	QString name;
+	QString status;
+	QString host;
+	QString system;
 	int cpu;
 	int cpu_cores;
 	int ram;
@@ -67,22 +67,22 @@ struct server_struct{
 	int response_time;
 	vector <inst_struct*> instances;
 	int max_instances;
-	string sshUser;
-	string sshPass;
-	string vmSoftware;
-	string schedule;
+	QString sshUser;
+	QString sshPass;
+	QString vmSoftware;
+	QString schedule;
 	bool schedule_state_0;
 	bool schedule_state_1;
-	string log;
+	QString log;
 };
 
 struct serverFromGroupStruct{
-	string name;
+	QString name;
 	bool status;
 };
 
 struct group_struct {
-	string name;
+	QString name;
 	bool status;
 	int totaMachine;
 	int activeMachine;
@@ -90,21 +90,21 @@ struct group_struct {
 };
 
 struct makejob_struct{
-		string job_name; 
-		string server; 
-		string server_group; 
+		QString job_name; 
+		QString server; 
+		QString server_group; 
 		int first_frame; 
 		int last_frame; 
 		int task_size; 
 		int priority; 
 		bool suspend; 
-		string comment; 
-		string software; 
-		string project; 
-		string extra; 
-		string system; 
+		QString comment; 
+		QString software; 
+		QString project; 
+		QString extra; 
+		QString system; 
 		int instances;
-		string render;
+		QString render;
 };
 
 #endif //STRUCT_H

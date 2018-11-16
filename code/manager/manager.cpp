@@ -64,10 +64,10 @@ QJsonObject manager::make_job( QJsonObject recv ){
 	string _job_name = recv[0].toString(); 
 	//------------------------------
 	vector <string> _server;
-	if ( recv[1] != "None" ) _server.push_back( recv[1] );
+	if ( recv[1].toString() != "None" ) _server.push_back( recv[1].toString().toStdString() );
 	//------------------------------
 	vector <string> _server_group;
-	if ( recv[2] != "None" ) _server_group.push_back( recv[2] );
+	if ( recv[2].toString() != "None" ) _server_group.push_back( recv[2].toString().toStdString() );
 	//------------------------------
 	int _first_frame = recv[3].toInt(); 
 	int _last_frame = recv[4].toInt(); 
@@ -210,48 +210,50 @@ void manager::json_to_struct( QJsonObject info ){
 	for ( auto job : info[ "jobs" ].toObject() ){
 		job_struct *_jobs = new job_struct;
 		_jobs->name = job[ "name" ].toString();
-		_jobs->status = job[ "status" ];
+		_jobs->status = job[ "status" ].toString();
 		_jobs->priority = job[ "priority" ].toInt();
-		for ( string _server : job[ "server" ] ) _jobs->server.push_back( _server );
-		for ( string _group : job[ "server_group" ] ) _jobs->server_group.push_back( _group );
-		_jobs->instances = job[ "instances" ];
-		_jobs->comment = job[ "comment" ];
-		_jobs->submit_start = job[ "submit_start" ];
-		_jobs->submit_finish = job[ "submit_finish" ];
-		_jobs->timer = job[ "timer" ];
-		_jobs->timer2 = job[ "timer2" ];
-		_jobs->total_render_time = job[ "total_render_time" ];
-		_jobs->estimated_time = job[ "estimated_time" ];
-		_jobs->timer_last_active = job[ "timer_last_active" ];
-		_jobs->software = job[ "software" ];
-		_jobs->project = job[ "project" ];
-		_jobs->system = job[ "system" ];
-		_jobs->extra = job[ "extra" ];
-		_jobs->render = job[ "render" ];
+		for ( string _server : job[ "server" ].toArray() ) 
+			_jobs->server.push_back( _server.toString() );
+		for ( string _group : job[ "server_group" ].toArray() ) 
+			_jobs->server_group.push_back( _group.toString() );
+		_jobs->instances = job[ "instances" ].toInt();
+		_jobs->comment = job[ "comment" ].toString();
+		_jobs->submit_start = job[ "submit_start" ].toString();
+		_jobs->submit_finish = job[ "submit_finish" ].toString();
+		_jobs->timer = job[ "timer" ].toString();
+		_jobs->timer2 = job[ "timer2" ].toString();
+		_jobs->total_render_time = job[ "total_render_time" ].toString();
+		_jobs->estimated_time = job[ "estimated_time" ].toString();
+		_jobs->timer_last_active = job[ "timer_last_active" ].toBool();
+		_jobs->software = job[ "software" ].toString();
+		_jobs->project = job[ "project" ].toString();
+		_jobs->system = job[ "system" ].toString();
+		_jobs->extra = job[ "extra" ].toString();
+		_jobs->render = job[ "render" ].toString();
 
-		for ( auto vs : job[ "vetoed_servers" ] ){
-			_jobs->vetoed_servers.push_back( vs );
+		for ( auto vs : job[ "vetoed_servers" ].toArray() ){
+			_jobs->vetoed_servers.push_back( vs.toString() );
 		}
 
-		_jobs->progres = job[ "progres" ];
-		_jobs->old_p = job[ "old_p" ];
-		_jobs->waiting_task = job[ "waiting_task" ];
-		_jobs->tasks = job[ "tasks" ];
-		_jobs->suspended_task = job[ "suspended_task" ];
-		_jobs->failed_task = job[ "failed_task" ];
-		_jobs->active_task = job[ "active_task" ];
-		_jobs->task_size = job[ "task_size" ];
-		_jobs->first_frame = job[ "first_frame" ];
-		_jobs->last_frame = job[ "last_frame" ];
+		_jobs->progres = job[ "progres" ].toInt();
+		_jobs->old_p = job[ "old_p" ].toInt();
+		_jobs->waiting_task = job[ "waiting_task" ].toInt();
+		_jobs->tasks = job[ "tasks" ].toInt();
+		_jobs->suspended_task = job[ "suspended_task" ].toInt();
+		_jobs->failed_task = job[ "failed_task" ].toInt();
+		_jobs->active_task = job[ "active_task" ].toInt();
+		_jobs->task_size = job[ "task_size" ].toInt();
+		_jobs->first_frame = job[ "first_frame" ].toInt();
+		_jobs->last_frame = job[ "last_frame" ].toInt();
 
-		for ( auto t : job[ "task" ] ){
+		for ( auto t : job[ "task" ].toArray ){
 			task_struct *_tasks = new task_struct; 
-			_tasks->name = t[ "name" ];  
-			_tasks->status = t[ "status" ];  
-			_tasks->first_frame = t[ "first_frame" ];  
-			_tasks->last_frame = t[ "last_frame" ];  
-			_tasks->server = t[ "server" ];  
-			_tasks->time = t[ "time" ];  
+			_tasks->name = t[ "name" ].toString();  
+			_tasks->status = t[ "status" ].toString();  
+			_tasks->first_frame = t[ "first_frame" ].toInt();  
+			_tasks->last_frame = t[ "last_frame" ].toInt();  
+			_tasks->server = t[ "server" ].toString();  
+			_tasks->time = t[ "time" ].toString();  
 			_jobs->task.push_back( _tasks );
 		}
 
@@ -259,53 +261,53 @@ void manager::json_to_struct( QJsonObject info ){
 
 	}
 
-	for ( auto server : info[ "servers" ] ){
+	for ( auto server : info[ "servers" ].toObject() ){
 		server_struct *_server = new server_struct;
-		_server->name = server["name"];
-		_server->status = server["status"];
-		_server->host = server["host"];
-		_server->system = server["system"];
-		_server->cpu = server["cpu"];
-		_server->cpu_cores = server["cpu_cores"];
-		_server->ram = server["ram"];
-		_server->ram_used = server["ram_used"];
-		_server->ram_total = server["ram_total"];
-		_server->temp = server["temp"];
-		_server->vbox = server["vbox"];
-		_server->response_time = server["response_time"];
+		_server->name = server["name"].toString();
+		_server->status = server["status"].toString();
+		_server->host = server["host"].toString();
+		_server->system = server["system"].toString();
+		_server->cpu = server["cpu"].toInt();
+		_server->cpu_cores = server["cpu_cores"].toInt();
+		_server->ram = server["ram"].toInt();
+		_server->ram_used = server["ram_used"].toDoble();
+		_server->ram_total = server["ram_total"].toInt();
+		_server->temp = server["temp"].toInt();
+		_server->vbox = server["vbox"].toBool();
+		_server->response_time = server["response_time"].toInt();
 
-		for ( auto ins : server["instances"] ){
+		for ( auto ins : server["instances"].toArray() ){
 			inst_struct *_ins = new inst_struct;
-			_ins->index = ins[0];
-			_ins->status = ins[1];
-			_ins->reset = ins[2];
-			_ins->job_task = ins[3];
+			_ins->index = ins[0].toInt();
+			_ins->status = ins[1].toInt();
+			_ins->reset = ins[2].toBool();
+			_ins->job_task = ins[3].toString();
 
 			_server->instances.push_back( _ins ); 
 		}
 
-		_server->max_instances = server["max_instances"];
-		_server->sshUser = server["sshUser"];
-		_server->sshPass = server["sshPass"];
-		_server->vmSoftware = server["vmSoftware"];
-		_server->schedule = server["schedule"];
-		_server->schedule_state_0 = server["schedule_state_0"];
-		_server->schedule_state_1 = server["schedule_state_1"];
+		_server->max_instances = server["max_instances"].toInt();
+		_server->sshUser = server["sshUser"].toString();
+		_server->sshPass = server["sshPass"].toString();
+		_server->vmSoftware = server["vmSoftware"].toString();
+		_server->schedule = server["schedule"].toString();
+		_server->schedule_state_0 = server["schedule_state_0"].toBool();
+		_server->schedule_state_1 = server["schedule_state_1"].toBool();
 
 		servers.push_back( _server );
 	}
 
-	for ( auto group : info[ "groups" ] ){
+	for ( auto group : info[ "groups" ].toObject() ){
 		group_struct *_group = new group_struct;
-		_group->name = group[ "name" ];
-		_group->status = group[ "status" ];
-		_group->totaMachine = group[ "totaMachine" ];
-		_group->activeMachine = group[ "activeMachine" ];
+		_group->name = group[ "name" ].toString();
+		_group->status = group[ "status" ].toBool();
+		_group->totaMachine = group[ "totaMachine" ].toInt();
+		_group->activeMachine = group[ "activeMachine" ].toInt();
 
-		for ( auto server : group["server"] ){
+		for ( auto server : group["server"].toArray() ){
 			serverFromGroupStruct *_server = new serverFromGroupStruct;
-			_server->name = server[0];
-			_server->status = server[1];
+			_server->name = server[0].toString();
+			_server->status = server[1].toBool();
 			_group->server.push_back( _server );
 		}
 

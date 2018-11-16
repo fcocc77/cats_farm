@@ -27,19 +27,19 @@ void manager::container_save(){
 QJsonObject manager::update_server_thread( QJsonObject recv ){
 
 	if ( not recv.empty() ){  
-		string name = recv[0];
-		string host = recv[1];
+		QString name = recv[0].toString();
+		QString host = recv[1].toString();
 		int cpu = recv[2].toInt();
 		int ram = recv[3].toInt();
 		int temp = recv[4].toInt();
-		string system = recv[5];
+		QString system = recv[5];
 		bool vbox = recv[6].toBool();
-		int ram_total = recv[7];
+		int ram_total = recv[7].toInt();
 		float ram_used = recv[8].toDouble();
-		int cpu_cores = recv[9];
-		string log = recv[10];
-		string sshUser = recv[11];
-		string sshPass = recv[12];
+		int cpu_cores = recv[9].toInt();
+		QString log = recv[10].toString();
+		QString sshUser = recv[11].toString();
+		QString sshPass = recv[12].toString();
 
 		int response_time = time(0);
 
@@ -102,11 +102,9 @@ QJsonObject manager::update_server_thread( QJsonObject recv ){
 }
 
 void manager::update_server(){
-	debug("manager::update_server: update.");
-
 	int t1 = time(0);
 
-	json serverList;
+	QJsonArray serverList;
 
 	for ( auto server : servers ){
 		serverList.push_back( server->name );
@@ -163,7 +161,7 @@ void manager::update_server(){
 	preferences["servers"] = serverList;
 }
 
-bool manager::iTime( string schedule ){
+bool manager::iTime( QString schedule ){
 
     int start = 0, end = 0;
 	try{
@@ -187,7 +185,6 @@ bool manager::iTime( string schedule ){
 }
 
 void manager::update_group(){
-	debug("manager::update_group: update.");
 	// Obtiene todos los grupos que estan activos
 	vector <string> groups_used;
 	for ( auto job : jobs ){
@@ -198,7 +195,7 @@ void manager::update_group(){
 	    }
 	}
 	//------------------------------------------------
-	json grouplist;
+	QJsonArray grouplist;
 
     for ( auto group : groups ){
 		grouplist.push_back( group->name );
@@ -234,7 +231,6 @@ void manager::update_group(){
 }
 
 void manager::update_jobs(){
-	debug("manager::update_jobs: update.");
 
 	for ( auto job : jobs ){
 

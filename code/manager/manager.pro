@@ -10,8 +10,7 @@ CONFIG += console c++14
 
 QT += core gui multimedia widgets
 
-HEADERS += 	../utils/json.h \
-			../utils/os.h \
+HEADERS +=  ../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \ 
 			../utils/util.h \

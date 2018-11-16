@@ -4,9 +4,9 @@ using namespace std;
 
 #include "util.h"
 #include "os.h"
-void concat(string folder){
+void concat( QString folder ){
 
-	string ffmpeg, logMetod, dirMovie, list, safe, concat, movie, movie_list, name, cmd, null;
+	QString ffmpeg, logMetod, dirMovie, list, safe, concat, movie, movie_list, name, cmd, null;
 
 	if ( _win32 ){
 		ffmpeg = "C:/CatsFarm/os/win/ffmpeg/ffmpeg.exe";
@@ -16,9 +16,9 @@ void concat(string folder){
 		ffmpeg = "ffmpeg";
 		logMetod = " &> ";
 	}
-	name=os::basename(folder);
-	dirMovie=os::dirname(folder);
-	list=dirMovie+"/list_"+name;
+	name = os::basename(folder);
+	dirMovie = os::dirname(folder);
+	list = dirMovie+"/list_"+name;
 
 	//listado de movies en la carpeta
 	movie_list="";

@@ -27,7 +27,6 @@ HEADERS += 	./general.h \
 			./ui_submit.h \
 			./ui_denoiser.h \
 			./ui_tasks_tree.h \
-			../utils/json.h \
 			../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \

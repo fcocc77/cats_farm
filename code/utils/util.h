@@ -8,29 +8,30 @@
 #include <typeinfo>
 #include "os.h"
 #include <ctime> // time_t
-#include "json.h"
 #include <QDebug>
 #include <QString>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
 
 using namespace std;
-using namespace nlohmann;
 
-string replace(string frase, string src, string dst);
-string between(string frase, string before, string after);
-string fread(string path);
-void fwrite(string path, string data);
-void awrite( string path, string data );
-string timeStruct(float t);
-vector <string> split( string frase, string separator );
-void sorted( vector <string>& _vector );
-bool in_vector( string word, vector <string> _vector );
-bool in_string( string word, string _string );
-const string currentDateTime( int num );
-const string secToTime( float sec );
-json jread( string path );
-void jwrite( string path, json data );
+QString replace(QString frase, QString src, QString dst);
+QString between(QString frase, QString before, QString after);
+QString fread(QString path);
+void fwrite(QString path, QString data);
+void awrite( QString path, QString data );
+QString timeStruct(float t);
+vector <QString> split( QString frase, QString separator );
+void sorted( vector <QString>& _vector );
+bool in_vector( QString word, vector <QString> _vector );
+bool in_string( QString word, QString _string );
+const QString currentDateTime( int num );
+const QString secToTime( float sec );
+QJsonObject jread( QString path );
+void jwrite( QString path, QJsonObject data );
 void debug( QString bug );
-void print( string input );
-string path();
+void print( QString input );
+QString path();
 
 #endif //UTIL_h

@@ -14,7 +14,6 @@ HEADERS += 	./submit.h \
 			../utils/tcp.h \
 			../utils/util.h \
 			../utils/os.h \
-			../utils/json.h \
 
 SOURCES += 	./main.cpp \
 			./submit.cpp \
