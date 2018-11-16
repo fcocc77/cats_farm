@@ -13,11 +13,12 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QFile>
+#include <QMessageBox>
 
 using namespace std;
 
-QString replace(QString frase, QString src, QString dst);
-QString between(QString frase, QString before, QString after);
+
 QString fread(QString path);
 void fwrite(QString path, QString data);
 void awrite( QString path, QString data );

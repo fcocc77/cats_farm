@@ -1,21 +1,28 @@
-#include "../utils/os.h"
-#include "../utils/util.h"
-#include "../utils/tcp.h"
+// #include "../utils/util.h"
 
 #include <QDebug>
 #include <QString>
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QFile>
+#include <QMessageBox>
+
+
+void fwrite( QString path, QString data ){
+	const QString qPath( path );
+	QFile qFile(qPath);
+	if (qFile.open(QIODevice::WriteOnly)) {
+		QTextStream out(&qFile); out << data;
+		qFile.close();
+	}
+}
+
+
 
 int main(){
 
-	QJsonObject info;
+	QString _file = "C:/Users/jumpcats-01/Desktop/log.cpp";
 
-
-	info = {{"casa",10},{"otro","20"}};
-
-	for (auto aa : info )
-		qDebug() << aa.toInt();
- 
+	fwrite( _file, "holas \ntest\n asdasdiasdi");
 }
