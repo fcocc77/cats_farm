@@ -33,7 +33,7 @@ void submit::init( int argc, char const *argv[] ){
 		catch( exception& e ){ return 0; }
 	};
 
-	json info = { jobName, server, serverGroup, toInt(firstFrame), toInt(lastFrame), toInt(taskSize), toInt(priority), 
+	QJsonArray info = { jobName, server, serverGroup, toInt(firstFrame), toInt(lastFrame), toInt(taskSize), toInt(priority), 
 					_suspend, comment, software, project, extra, system, toInt(instances), render };
 
 	QString path = os::dirname(os::dirname(os::dirname(argv[0])));

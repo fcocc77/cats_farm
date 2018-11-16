@@ -88,11 +88,13 @@ void jobs_actions::jobShowLog(){
 	auto selected = jobsList->selectedItems();
 	if ( not selected.empty() ){
 
-		QString job_name = selected[0]->text(0).toStdString();
+		QString job_name = selected[0]->text(0);
 
 		// encuentra job seleccionado en la jobs recividos
-		json job;
-		for ( auto _job : shared->jobs ) if ( _job["name"] == job_name ) job = _job;
+		QJsonObject job;
+		for ( auto _job : shared->jobs ) 
+			if ( _job["name"].toString() == job_name ) 
+				job = _job.toObject();
 		//--------------------------------------
 
 		for ( auto task : job["task"] ){
@@ -108,8 +110,8 @@ void jobs_actions::jobShowLog(){
 
 				for (int i = 0; i < serverList->topLevelItemCount(); ++i) {
 					auto item = serverList->topLevelItem(i);
-					QString name = item->text(0).toStdString();
-					QString _host = item->text(7).toStdString();
+					QString name = item->text(0);
+					QString _host = item->text(7);
 
 					for ( QString vs : job["vetoed_servers"] ){ 
 						if ( name == vs ) {
@@ -125,7 +127,7 @@ void jobs_actions::jobShowLog(){
 
 				QString _name;
 				QString _host;
-				json failed;
+				QJsonObject failed;
 				if ( not all_host.empty() ) {
 					_host = all_host[0];
 					_name = all_name[0];
@@ -151,8 +153,6 @@ void jobs_actions::jobShowLog(){
 }
 
 void jobs_actions::jobModify(){
-	debug("jobs_actions::jobModify.");
-
 	uiJobOptions->show();
 
 	// Recive los servers del jobs que estan en el manager
@@ -161,9 +161,9 @@ void jobs_actions::jobModify(){
 
 	if ( not selected.empty() ){
 
-		QString job_name = selected.takeLast()->text(0).toStdString();
+		QString job_name = selected.takeLast()->text(0);
 
-		json pks = {{ job_name, "options", "read" }};
+		QJsonArray pks = {{ job_name, "options", "read" }};
 		pks = { pks, "jobOptions" };
 		pks = tcpClient( managerHost, 7000, pks, 3 );
 
@@ -215,7 +215,7 @@ void jobs_actions::jobModify(){
 
 			item->setCheckState( 0, Qt::Unchecked );
 
-			if ( in_vector( name.toStdString(), serverExist ) ){
+			if ( in_vector( name, serverExist ) ){
 				item->setCheckState(0, Qt::Checked );
 			}
 
@@ -233,7 +233,7 @@ void jobs_actions::jobModify(){
 			item->setText(0,name);
 
 			item->setCheckState( 0, Qt::Unchecked );
-			if ( in_vector( name.toStdString(), serverGroupExist ) ){
+			if ( in_vector( name, serverGroupExist ) ){
 				item->setCheckState(0, Qt::Checked );
 			}
 			uiJobOptions->serverGroupAsign->addTopLevelItem( item );
@@ -244,10 +244,10 @@ void jobs_actions::jobModify(){
 void jobs_actions::jobOptionsOk(){
 
 	//Obtiene servideros chekeados para el job seleccionado
-	json machines;
+	QJsonArray machines;
 	for (int i = 0; i < uiJobOptions->serverAsign->topLevelItemCount(); ++i){
 		auto item = uiJobOptions->serverAsign->topLevelItem(i); 
-		QString name = item->text(0).toStdString();
+		QString name = item->text(0);
 
 		if ( item->checkState(0) ){
 			machines.push_back(name);
@@ -256,10 +256,10 @@ void jobs_actions::jobOptionsOk(){
 	//--------------------------------------------
 
 	//Obtiene grupos chekeados para el job seleccionado
-	json group;
+	QJsonArray group;
 	for (int i = 0; i < uiJobOptions->serverGroupAsign->topLevelItemCount(); ++i){
 		auto item = uiJobOptions->serverGroupAsign->topLevelItem(i); 
-		QString name = item->text(0).toStdString();
+		QString name = item->text(0);
 
 		if ( item->checkState(0) ){
 			group.push_back(name);
@@ -271,22 +271,22 @@ void jobs_actions::jobOptionsOk(){
 	int first_frame = uiJobOptions->firstFrame->text().toInt();
 	int last_frame = uiJobOptions->lastFrame->text().toInt();
 	int task_size = uiJobOptions->taskSize->text().toInt();
-	QString comment = uiJobOptions->comment->text().toStdString();
-	QString _job_name = uiJobOptions->jobName->text().toStdString();
+	QString comment = uiJobOptions->comment->text();
+	QString _job_name = uiJobOptions->jobName->text();
 
 	int instances = uiJobOptions->instances->text().toInt();
 	if ( instances > 16 ){
 		instances = 16;
 	}
 
-	json pks;
+	QJsonArray pks;
 	auto selected = jobsList->selectedItems();
 	selected.push_front( firstJobItem );
 
 	vector <QString> repeatItem;
 	for ( auto item : selected ){
-		QString job_name = item->text(0).toStdString();
-		json options = { machines, group, priority, comment, instances, first_frame, last_frame, task_size, _job_name };
+		QString job_name = item->text(0);
+		QJsonArray options = { machines, group, priority, comment, instances, first_frame, last_frame, task_size, _job_name };
 		// el primer item se repite asi que si esta 2 veces no lo agrega otra vez
 		if ( not in_vector( job_name, repeatItem ) )
 			pks.push_back( { job_name, options, "write" } );
@@ -327,11 +327,11 @@ void jobs_actions::jobDeleteStart( QString action ){
 	auto root = jobsList->invisibleRootItem();
 	auto selected = jobsList->selectedItems();
 
-	json pks;
+	QJsonArray pks;
 
 	for ( auto item : selected ){
 
-		QString job_name = item->text(0).toStdString();
+		QString job_name = item->text(0);
 		os::remove( "../../log/trayIcon/" + job_name );
 
 		pks.push_back( { job_name, action } );
@@ -350,9 +350,9 @@ void jobs_actions::jobAction( QString action ){
 
 	auto selected = jobsList->selectedItems();
 
-	json pks;
+	QJsonArray pks;
 	for ( auto item : selected ){
-		QString job_name = item->text(0).toStdString();
+		QString job_name = item->text(0);
 		pks.push_back( { job_name, action } ); 
 	}
 	pks = { pks, "jobAction" };

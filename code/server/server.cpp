@@ -5,7 +5,7 @@ void server::init(){
 	tcpServer( 7001, &server::recieveManager, this );
 }
 
-json server::send_resources( json recv ){
+QJsonObject server::send_resources( QJsonObject recv ){
 
 	if ( not recv.empty() ){
 		_render->preferences = recv;
@@ -52,7 +52,7 @@ json server::send_resources( json recv ){
 	return server_info;
 }
 
-json server::recieveManager( json recv, int input ){
+QJsonObject server::recieveManager( QJsonObject recv, int input ){
 
 	debug("server::recieveManager.");
 	QString send;

@@ -502,57 +502,57 @@ void ui_submit::submitUpdateBox( int action ){
 
 void ui_submit::submitPanelOpen(){
 
-	json panel = jread( "../../etc/panel.json" );
+	QJsonObject panel = jread( "../../etc/panel.json" );
 
 	if ( not panel.empty() ){
-		projectLine->setText( QString::fromStdString( panel["projectLine"] ) );
+		projectLine->setText( panel["projectLine"].toString() );
 
-		fileLine->setText( QString::fromStdString(panel["fileLine"]) );	
-		outputLine->setText( QString::fromStdString(panel["outputLine"]) );
-		renderLine->setText( QString::fromStdString(panel["renderLine"]) );
-		softwareBox->setCurrentIndex( panel["softwareBox"] );
+		fileLine->setText( panel["fileLine"].toString() );	
+		outputLine->setText( panel["outputLine"].toString() );
+		renderLine->setText( panel["renderLine"].toString() );
+		softwareBox->setCurrentIndex( panel["softwareBox"].toInt() );
 
-		patchRadius->setText( QString::fromStdString( panel["patchRadius"]) );
-		searchRadius->setText( QString::fromStdString( panel["searchRadius"]) );	
-		variance->setText( QString::fromStdString( panel["variance"]) );	
-		temporalRange->setText( QString::fromStdString( panel["temporalRange"]) );
-		aov->setText( QString::fromStdString( panel["aov"]) );
+		patchRadius->setText( panel["patchRadius"].toString() );
+		searchRadius->setText( panel["searchRadius"].toString() );	
+		variance->setText( panel["variance"].toString() );	
+		temporalRange->setText( panel["temporalRange"].toString() );
+		aov->setText( panel["aov"].toString() );
 
-		jobName->setText( QString::fromStdString( panel["jobName"]) );	
-		firstFrame->setText( QString::fromStdString( panel["firstFrame"]) );	
-		lastFrame->setText( QString::fromStdString( panel["lastFrame"]) );
-		taskSize->setText( QString::fromStdString( panel["taskSize"]) );	
-		priority->setCurrentIndex( int( panel["priority"] ) );	
-		serverBox->setCurrentIndex( int( panel["serverBox"] ) );
-		serverGroupBox->setCurrentIndex( int( panel["serverGroupBox"] ) );
-		commentLine->setText( QString::fromStdString( panel["commentLine"]) );
-		suspendBox->setChecked( panel["suspendBox"] );
+		jobName->setText( panel["jobName"].toString() );	
+		firstFrame->setText( panel["firstFrame"].toString() );	
+		lastFrame->setText( panel["lastFrame"].toString() );
+		taskSize->setText( panel["taskSize"].toString() );	
+		priority->setCurrentIndex( panel["priority"].toInt() );	
+		serverBox->setCurrentIndex( panel["serverBox"].toInt() );
+		serverGroupBox->setCurrentIndex( panel["serverGroupBox"].toInt() );
+		commentLine->setText( panel["commentLine"].toString() );
+		suspendBox->setChecked( panel["suspendBox"].toInt() );
 
     }	
 }
 
 void ui_submit::submitPanelSave(){
 
-	json panel = {  { "projectLine", projectLine->text().toStdString() },
-				    { "fileLine", fileLine->text().toStdString() },
-				    { "outputLine", outputLine->text().toStdString() },
-				    { "renderLine", renderLine->text().toStdString() },
+	QJsonObject panel = {  { "projectLine", projectLine->text() },
+				    { "fileLine", fileLine->text() },
+				    { "outputLine", outputLine->text() },
+				    { "renderLine", renderLine->text() },
 
-				    { "patchRadius", patchRadius->text().toStdString() },
-				    { "searchRadius", searchRadius->text().toStdString() },
-				    { "variance", variance->text().toStdString() },
-				    { "temporalRange", temporalRange->text().toStdString() },
-				    { "aov", aov->text().toStdString() },
+				    { "patchRadius", patchRadius->text() },
+				    { "searchRadius", searchRadius->text() },
+				    { "variance", variance->text() },
+				    { "temporalRange", temporalRange->text() },
+				    { "aov", aov->text() },
 
-				    { "jobName", jobName->text().toStdString() },
-				    { "firstFrame", firstFrame->text().toStdString() },
-				    { "lastFrame", lastFrame->text().toStdString() },
-				    { "taskSize", taskSize->text().toStdString()  },
+				    { "jobName", jobName->text() },
+				    { "firstFrame", firstFrame->text() },
+				    { "lastFrame", lastFrame->text() },
+				    { "taskSize", taskSize->text()  },
 				    { "priority", priority->currentIndex() },
 				    { "serverBox",  serverBox->currentIndex() },
 				    { "serverGroupBox", serverGroupBox->currentIndex() },
 				    { "softwareBox", softwareBox->currentIndex() },
-				    { "commentLine", commentLine->text().toStdString() },
+				    { "commentLine", commentLine->text() },
 				    { "suspendBox", suspendBox->isChecked() }, 
 				};
 
@@ -580,21 +580,21 @@ void ui_submit::submitAction( QString software ){
 	else { system = "Mac"; }
 
 	// crea lista de texto facil para poder enviar por tcp.
-	json info = {   jobName->text().toStdString(),
-		            serverBox->currentText().toStdString(),
-		            serverGroupBox->currentText().toStdString(),
+	QJsonObject info = {   jobName->text(),
+		            serverBox->currentText(),
+		            serverGroupBox->currentText(),
 		            firstFrame->text().toInt(),
 		            lastFrame->text().toInt(),
 		            taskSize->text().toInt(),
 		            priority->currentIndex(),
 		            suspend,
-		            commentLine->text().toStdString(),
-		            software.toStdString(),
-		            fileLine->text().toStdString(),
-		            dirProject.toStdString(),
+		            commentLine->text(),
+		            software,
+		            fileLine->text(),
+		            dirProject,
 		            system,
 		            1,
-		            renderLine->text().toStdString()
+		            renderLine->text()
 		        };
 	//------------------------------------------------------
 

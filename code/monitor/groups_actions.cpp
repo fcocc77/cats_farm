@@ -42,16 +42,16 @@ void group_actions::groupCreateWindow(){
 		shared->stopUpdate = true;
 		auto selected = serverList->selectedItems();
 
-		json machines_send;
+		QJsonArray machines_send;
 		vector <QString> machines;
 
 		for ( auto item : selected ){
-			machines_send.push_back( item->text(0).toStdString() );
+			machines_send.push_back( item->text(0) );
 			machines.push_back( item->text(0) );		
 		}
 
-		json group = { group_name.toStdString(), machines_send.size() , 0, machines_send };
-		json pks = { group, "groupCreate" };
+		QJsonArray group = { group_name, machines_send.size() , 0, machines_send };
+		QJsonArray pks = { group, "groupCreate" };
 
 		tcpClient( managerHost, 7000, pks, 3 );
 
@@ -279,21 +279,21 @@ void group_actions::groupAddMachine(){
 	// Obtiene server seleccionados
 	vector <QString> server_list;
 	for ( auto item : serverList->selectedItems() ){
-		QString server_name = item->text(0).toStdString();
+		QString server_name = item->text(0);
 		server_list.push_back( server_name );
 	}
 
 	//-----------------------------------------------
 
-	json group_machine;
+	QJsonArray group_machine;
 	for ( auto item : groupList->selectedItems() ){  
-		QString group_name = item->text(2).toStdString();
+		QString group_name = item->text(2);
 
 		// crea lista de los childItem antiguos
 		vector <QString> oldChild;
 		for (int i = 0; i < item->childCount(); ++i){
 			auto childItem = item->child(i);
-			QString childName = childItem->text(0).toStdString();
+			QString childName = childItem->text(0);
 			oldChild.push_back( childName );
 		}
 		//-------------------------------------------------
@@ -312,8 +312,8 @@ void group_actions::groupAddMachine(){
 		group_machine.push_back( { group_name, server_list } );
 	}
 
-	json groups = { "group_list", group_machine, "addMachine" };
-	json pks = { groups,"groupAction" };
+	QJsonArray groups = { "group_list", group_machine, "addMachine" };
+	QJsonArray pks = { groups,"groupAction" };
 
 	tcpClient( managerHost, 7000, pks, 3 );
 }
@@ -334,13 +334,13 @@ void group_actions::groupDelete(){
 
 			auto root = groupList->invisibleRootItem();
 
-			json group_machine, group_list;
+			QJsonArray group_machine, group_list;
 
 			for ( auto item : groupList->selectedItems() ){
 
 				if (  item->parent() ){
-					QString group_name = item->parent()->text(2).toStdString();
-					QString server_name = item->text(0).toStdString();
+					QString group_name = item->parent()->text(2);
+					QString server_name = item->text(0);
 
 					group_machine.push_back( { group_name, server_name } );
 
@@ -348,7 +348,7 @@ void group_actions::groupDelete(){
 
 				}
 				else {
-					QString group_name = item->text(2).toStdString();
+					QString group_name = item->text(2);
 					group_list.push_back( group_name );
 
 					root->removeChild(item);
@@ -356,9 +356,9 @@ void group_actions::groupDelete(){
 
 			}
 
-			json groups = { group_list, group_machine, "delete" };
+			QJsonArray groups = { group_list, group_machine, "delete" };
 
-			json pks = { groups, "groupAction" };
+			QJsonArray pks = { groups, "groupAction" };
 			tcpClient( managerHost, 7000, pks, 3 );
 		}
 

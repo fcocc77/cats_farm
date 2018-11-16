@@ -51,7 +51,7 @@ void get_manager_info::updateJob( QJsonObject recv ){
 	for (int i = 0; i < jobsList->topLevelItemCount(); ++i){
 
 		auto item = jobsList->topLevelItem(i); 
-		QString name = item->text(0).toStdString();
+		QString name = item->text(0);
 		job_list.push_back( name );
 		job_item.push_back( { name, item } );
 
@@ -246,7 +246,7 @@ void get_manager_info::updateServer( QJsonObject recv ){
 
 	for (int i = 0; i < serverList->topLevelItemCount(); ++i){
 		auto item = serverList->topLevelItem(i); 
-		QString name = item->text(0).toStdString();
+		QString name = item->text(0);
 		server_list.push_back( name );
 		server_item.push_back( { name, item } );
     }
@@ -521,7 +521,7 @@ void get_manager_info::updateGroup( QJsonObject recv ){
 	   awrite("../../log/bugs.txt","2\n");
 		for (int i = 0; i < groupList->topLevelItemCount(); ++i){
 			auto item = groupList->topLevelItem(i); 
-			QString name = item->text(2).toStdString();
+			QString name = item->text(2);
 
 			group_list.push_back( name );
 			group_item.push_back( { name, item } );
@@ -636,17 +636,16 @@ void get_manager_info::getTask(){
 }
 
 void get_manager_info::updateTask(){
-	debug("get_manager_info::updateTask: loop");
     auto selected = jobsList->selectedItems();
 	if ( not selected.empty() ){
 		auto _item = selected[0];
-		QString job_item_name = _item->text(0).toStdString();
+		QString job_item_name = _item->text(0);
 		vector < vector <QString > > tasks;
 
 		// encuentra en los paketes recibidos el job seleccionado
-		json job;
+		QJsonObject job;
 		for ( auto _job : shared->jobs ){
-			if ( _job["name"] ==  job_item_name ){ 
+			if ( _job["name"].toString() ==  job_item_name ){ 
 				job = _job;
 				break;
 			}

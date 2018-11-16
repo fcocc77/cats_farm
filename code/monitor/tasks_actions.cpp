@@ -41,13 +41,13 @@ void tasks_actions::taskRestart(){
 
 void tasks_actions::taskRenderServer(){
 	auto selected = taskList->selectedItems();
-	QString _server =  selected[0]->text( 3 ).toStdString();
+	QString _server =  selected[0]->text( 3 );
 	_server = split( _server, ":" )[0];
 
 	for (int i = 0; i <  taskList->topLevelItemCount(); ++i){
 		auto item = taskList->topLevelItem(i);
 
-		QString server =  item->text( 3 ).toStdString();
+		QString server =  item->text( 3 );
 		server = split( server, ":" )[0];
 		if ( _server == server ) item->setSelected(true);
 	}
@@ -70,12 +70,12 @@ void tasks_actions::taskMessage( QString action, QString ask, QString tile ){
 
 void tasks_actions::taskAction( QString action ){
 
-	json pks;
+	QJsonArray pks;
 	for ( auto item_job : jobsList->selectedItems() ){
-		QString job_name = item_job->text(0).toStdString();
+		QString job_name = item_job->text(0);
 
 		for ( auto item_task : taskList->selectedItems() ){ 
-			QString task_name = item_task->text(0).toStdString();
+			QString task_name = item_task->text(0);
 			pks.push_back( { job_name, task_name, action } );
 		}
 	}

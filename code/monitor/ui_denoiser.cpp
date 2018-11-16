@@ -451,43 +451,43 @@ void ui_denoiser::submitUpdateBox( int action ){
 
 void ui_denoiser::submitPanelOpen(){
 
-	json panel = jread( "../../etc/panel.json" );
+	QJsonObject panel = jread( "../../etc/panel.json" );
 
 	if ( not panel.empty() ){
-		projectLine->setText( QString::fromStdString( panel["projectLine"] ) );
+		projectLine->setText( panel["projectLine"].toString() );
 
-		fileLine->setText( QString::fromStdString(panel["fileLine"]) );	
-		outputLine->setText( QString::fromStdString(panel["outputLine"]) );
-		renderLine->setText( QString::fromStdString(panel["renderLine"]) );
-		softwareBox->setCurrentIndex( panel["softwareBox"] );
-		jobName->setText( QString::fromStdString( panel["jobName"]) );	
-		firstFrame->setText( QString::fromStdString( panel["firstFrame"]) );	
-		lastFrame->setText( QString::fromStdString( panel["lastFrame"]) );
-		taskSize->setText( QString::fromStdString( panel["taskSize"]) );	
-		priority->setText( QString::fromStdString( panel["priority"]) );	
-		serverBox->setCurrentIndex( int( panel["serverBox"] ) );
-		serverGroupBox->setCurrentIndex( int( panel["serverGroupBox"] ) );
-		commentLine->setText( QString::fromStdString( panel["commentLine"]) );
-		suspendBox->setChecked( panel["suspendBox"] );
+		fileLine->setText( panel["fileLine"].toString() );	
+		outputLine->setText( panel["outputLine"].toString() );
+		renderLine->setText( panel["renderLine"].toString() );
+		softwareBox->setCurrentIndex( panel["softwareBox"].toInt() );
+		jobName->setText( panel["jobName"].toString() );	
+		firstFrame->setText( panel["firstFrame"].toString() );	
+		lastFrame->setText( panel["lastFrame"].toString() );
+		taskSize->setText( panel["taskSize"].toString() );	
+		priority->setText( panel["priority"].toString() );	
+		serverBox->setCurrentIndex( panel["serverBox"].toInt() );
+		serverGroupBox->setCurrentIndex( panel["serverGroupBox"].toInt() );
+		commentLine->setText( panel["commentLine"].toString() );
+		suspendBox->setChecked( panel["suspendBox"].toInt() );
 
     }	
 }
 
 void ui_denoiser::submitPanelSave(){
 
-	json panel = {  { "projectLine", projectLine->text().toStdString() },
-				    { "fileLine", fileLine->text().toStdString() },
-				    { "outputLine", outputLine->text().toStdString() },
-				    { "renderLine", renderLine->text().toStdString() },
-				    { "jobName", jobName->text().toStdString() },
-				    { "firstFrame", firstFrame->text().toStdString() },
-				    { "lastFrame", lastFrame->text().toStdString() },
-				    { "taskSize", taskSize->text().toStdString()  },
-				    { "priority", priority->text().toStdString() },
+	QJsonObject panel = {  { "projectLine", projectLine->text() },
+				    { "fileLine", fileLine->text() },
+				    { "outputLine", outputLine->text() },
+				    { "renderLine", renderLine->text() },
+				    { "jobName", jobName->text() },
+				    { "firstFrame", firstFrame->text() },
+				    { "lastFrame", lastFrame->text() },
+				    { "taskSize", taskSize->text()  },
+				    { "priority", priority->text() },
 				    { "serverBox",  serverBox->currentIndex() },
 				    { "serverGroupBox", serverGroupBox->currentIndex() },
 				    { "softwareBox", softwareBox->currentIndex() },
-				    { "commentLine", commentLine->text().toStdString() },
+				    { "commentLine", commentLine->text() },
 				    { "suspendBox", suspendBox->isChecked() }, 
 				};
 

@@ -53,7 +53,7 @@ void awrite( QString path, QString data ){
     myfile.close();
 }
 
-json jread( QString path ){
+QJsonObject jread( QString path ){
     // cuando la estructura de json esta mal da error Runtime, intenta para evitarlo
     try { return json::parse( fread( path ) ); }
     catch( exception& e ){
@@ -65,7 +65,7 @@ json jread( QString path ){
     //-----------------------------------
 }
 
-void jwrite( QString path, json data ){
+void jwrite( QString path, QJsonObject data ){
     fwrite( path + ".tmp", data.dump(4) );
     os::remove( path + ".old" );
     os::rename( path, path + ".old" );
@@ -206,9 +206,9 @@ void print( QString input ){
 
 QString path(){
 
-    json paths = jread( "../../etc/paths.json" );
+    QJsonObject paths = jread( "../../etc/paths.json" );
 
-    if ( _win32 ) return paths["win"];
-    else if ( _darwin ) return paths["mac"];
-    else return paths["linux"];
+    if ( _win32 ) return paths["win"].toString();
+    else if ( _darwin ) return paths["mac"].toString();
+    else return paths["linux"].toString();
 }
