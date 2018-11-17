@@ -118,7 +118,7 @@ namespace os {
 
 		if ( _win32 ) cmd = "\"" + cmd + "\"";
 
-		std::system( cmd.c_str() );
+		std::system( cmd.toStdString().c_str() );
 	}
 
 	int ramTotal(){
@@ -127,7 +127,7 @@ namespace os {
 
 		if ( not total_ram ){
 			if ( _linux ){
-				QString mem=fread("/proc/meminfo");
+				QString mem = fread("/proc/meminfo");
 				long long _total = stoll(between(mem, "MemTotal:", "kB"));
 				total_ram = ( _total * 1024 * 1024 ) / 1000000000000;
 
@@ -271,7 +271,11 @@ namespace os {
 	}
 
 	void copy( QString src, QString dst ){
-		copymove( src, dst, true );
+		if ( QFile::exists( dst ) )
+		    QFile::remove( dst );
+		
+		QFile::copy( src, dst );
+
 	}
 
 	void move( QString src, QString dst ){
