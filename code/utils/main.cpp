@@ -1,5 +1,8 @@
 #include "../utils/util.h"
 #include "../utils/os.h"
+#include "../utils/tcp.h"
+#include "../utils/video.h"
+
 
 
 #include <QDebug>

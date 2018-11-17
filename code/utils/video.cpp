@@ -22,12 +22,12 @@ void concat( QString folder ){
 
 	//listado de movies en la carpeta
 	movie_list="";
-	auto dir_list = os::listdir(folder);
+	QStringList dir_list = os::listdir(folder);
 	sort( dir_list.begin(), dir_list.end() );
 	for (auto i : dir_list){
-		QString ext = split( i, "." ).back(); 		
+		QString ext = i.split(".").last(); 		
 		if ( ext == "mov" )		
-			movie_list+="file '"+i+"'\n";
+			movie_list += "file '" + i + "'\n";
 	}
 	//-------------------------
 
@@ -36,15 +36,15 @@ void concat( QString folder ){
 	//----------------------------------
 
 	// crea ruta del exportacion
-	movie=dirMovie+"/"+name+".mov";
+	movie = dirMovie + "/" + name + ".mov";
 	//-----------------------------------------
 
 	if ( _win32 ){ safe = "-safe 0"; }
 	else{ safe = ""; }
 
-	concat = ffmpeg+" -y -f concat "+safe+" -i "+'"'+list+'"'+" -c copy "+'"'+movie+'"';
-	null=dirMovie+"/null";
-	cmd = concat+logMetod+'"'+null+'"';
+	concat = ffmpeg + " -y -f concat " + safe + " -i " + '"' + list + '"' + " -c copy " + '"' + movie + '"';
+	null = dirMovie + "/null";
+	cmd = concat + logMetod + '"' + null + '"';
 	os::sh(cmd);
 
 	//------------------------------------------

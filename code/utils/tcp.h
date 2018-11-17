@@ -43,7 +43,7 @@ public:
 
 		QString send;
 		QString recv;
-		json _recv = {};
+		QJsonArray _recv = {};
 		QJsonObject _pks = {};
 		int _input = 0;
 		int wait = -1; // en -1 significa que no tiene timeout para los waitForBytesWritten y waitForReadyRead
@@ -76,29 +76,29 @@ public:
 			paquete, y el json al hacer parse da un error, por eso try except.*/
 			bool recv_ok = false;
 			try{ 
-				_recv = json::parse( recv.toStdString() ); 
-				_pks = _recv[0];
-				_input = _recv[1];
+				_recv = QJsonDocument::fromJson( recv.toUtf8() ).array();
+				_pks = _recv[0].toObject();
+				_input = _recv[1].toInt();
 				recv_ok = true;
 			}
 			catch( exception& e ){}
 
 			if ( recv_ok ){
 				try{
-					// Al hacer dump al json puede crashar asi que se pone intentar
-					send =  ( ( _class->*func )( _pks, _input ) ).dump();
-					//----------------------------------------------------
+					QJsonDocument _doc( ( _class->*func )( _pks, _input ) );
+					send = _doc.toJson( QJsonDocument::Compact );
+
 				}
 				catch(...){
-					send = {};
+					send = "";
 				}
 			}
-			else send = {};
+			else send = "";
 			//-----------------------------------------------------------
 
 			// 7 - envia tamanio de paquete
 			// cuando el cliente de desconecta da un error, si no da el error, espera los byte escritos
-			qsocket->write( to_string( send.size()).c_str() );
+			qsocket->write( QString::number( send.size()).toStdString().c_str() );
 			qsocket->waitForBytesWritten(wait);
 			//-------------------------------------------------
 
@@ -108,7 +108,7 @@ public:
 			//--------------------------------------------
 			//print(send);
 			// 11 envia paquete
-			qsocket->write(send.c_str());
+			qsocket->write(send.toStdString().c_str());
 			qsocket->waitForBytesWritten(wait);
 			//-------------------------------------
 
@@ -127,11 +127,11 @@ class tcp_server : public QTcpServer{
 public:
 	int port; 
 	T *_class; 
-	json ( T::*func )( json, int );
+	QJsonObject ( T::*func )( QJsonObject, int );
 	QTcpServer *qserver;
 
 	// Constructor para servidor ( siempre esta en loop y con qthread ) 
-	tcp_server( int _port, json ( T::*_func )( json, int ), T *__class ) : QTcpServer(__class){        
+	tcp_server( int _port, QJsonObject ( T::*_func )( QJsonObject, int ), T *__class ) : QTcpServer(__class){        
 		port = _port;
 		func = _func;
 		_class = __class;
@@ -159,17 +159,17 @@ template < class T >
 class tcp_client_widget : public QThread{
 public:
 	T *_class; 
-	json ( T::*func )( json );
+	QJsonObject ( T::*func )( QJsonObject );
 	QTimer *qtimer;
 	bool widget;
 
-	json *update_send;
-	json *update_recv;
+	QJsonObject *update_send;
+	QJsonObject *update_recv;
 	bool *send_ready;
 	bool *recv_ready;
 
 	// Constructor client loop
-	tcp_client_widget( json ( T::*_func )( json ), T *__class, json *_update_send, json *_update_recv, 
+	tcp_client_widget( QJsonObject ( T::*_func )( QJsonObject ), T *__class, QJsonObject *_update_send, QJsonObject *_update_recv, 
 									bool *_send_ready, bool *_recv_ready, bool _widget ) : QThread(__class) {
 		_class = __class;
 		func = _func;
@@ -213,7 +213,7 @@ public:
 		*recv_ready = false;
 
 		if ( *send_ready ){ 
-			json _send = *update_send;
+			QJsonObject _send = *update_send;
 			*update_recv = ( _class->*func )( _send );
 		}
 
@@ -226,17 +226,17 @@ public:
 	QString host;
 	int port; 
 	bool loop; 
-	json pks;
+	QJsonArray pks;
 	int input;
 
-	json update_send;
-	json update_recv;
+	QJsonObject update_send;
+	QJsonObject update_recv;
 	bool send_ready; // para que json no de error cuando se intercambian las variable entre client y client_widget
 	bool recv_ready = true;
 	// Constructor client loop
 	template < class T >
 	tcp_client( QString _host, int _port,  T *_class, int _input ){
-		host = QString::fromStdString( _host );
+		host = _host;
 		port = _port;
 		input = _input;
 		loop = true;
@@ -246,8 +246,8 @@ public:
 	} //-----------------------------
 
 	// Costructor para packete unico
-	tcp_client( QString _host, int _port, json _pks, int _input ){
-		host = QString::fromStdString( _host );
+	tcp_client( QString _host, int _port, QJsonObject _pks, int _input ){
+		host = _host;
 		port = _port;
 		input = _input;
 		pks = { _pks , _input };
@@ -258,13 +258,14 @@ public:
 		client();
 	}
 
-	json client(){
+	QJsonObject client(){
 
 		QTcpSocket *socket = new QTcpSocket();
 		int wait = -1;
-		QString send = pks.dump();
+		QJsonDocument doc(pks);
+		QString send = doc.toJson( QJsonDocument::Compact );
 		QString recv;
-		json _recv = {};
+		QJsonObject _recv = {};
 
 		while (1){ 
 			socket->connectToHost( host, port );
@@ -276,7 +277,7 @@ public:
 					cuando se intercambian las variable entre client y client_widget */
 					send_ready = false;
 
-					json _send;
+					QJsonArray _send;
 					if ( recv_ready ) {
 						update_send = _recv;
 						_send = { update_recv, input };
@@ -293,7 +294,10 @@ public:
 
 					send_ready = true;
 
-					try{ send = _send.dump(); }
+					try{ 
+						QJsonDocument _doc(_send);
+						send = _doc.toJson( QJsonDocument::Compact );
+					}
 					catch( exception& e ){ send = ""; }
 
 				}
@@ -308,7 +312,7 @@ public:
 				socket->readAll();
 
 				// 5 envia paquete
-				socket->write(send.c_str());
+				socket->write(send.toStdString().c_str());
 				socket->waitForBytesWritten(wait);
 				//-------------------------------------
 
@@ -337,7 +341,9 @@ public:
 
 				/* Si se desconecta el servidor, no termina la transferencia de los
 				paquete, y el json al hacer parse da un error, por eso try except.*/
-				try{ _recv = json::parse( recv.toStdString() ); }
+				try{ 
+					_recv = QJsonDocument::fromJson( recv.toUtf8() ).object();
+				}
 				catch( exception& e ){}
 				//-----------------------------------------------------------
 
