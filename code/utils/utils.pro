@@ -4,6 +4,6 @@ CONFIG += console c++11
 
 QT += core gui multimedia widgets
 
-HEADERS += 	util.h 
+HEADERS += 	util.h os.h
 
-SOURCES += 	main.cpp util.cpp
+SOURCES += 	main.cpp util.cpp os.cpp

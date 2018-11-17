@@ -44,14 +44,13 @@ namespace os {
 	bool isfile( QString file );
 	bool isdir( QString dir );
 	void kill( int pid );
-	vector <QString> listdir( QString folder, bool onlyname = 0 );
+	QStringList listdir( QString folder, bool onlyname = 0 );
 	QString sh(QString cmd);
 	const QString hostName();
 	const QString ip();
 	const QString user();
 	void back( QString cmd );
 	void rename( QString src, QString dst );
-	QString qp( QString cmd );
 	void copymove( QString src, QString dst, bool copy );
 }
 

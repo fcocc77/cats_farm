@@ -3,8 +3,8 @@
 #include "util.h"
 //------------------------
 
-QString fread( QString path ){
-	QFile file( path );
+QString fread( QString _path ){
+	QFile file( _path );
 	file.open(QIODevice::ReadOnly);
 
 	QTextStream in(&file);
@@ -15,8 +15,8 @@ QString fread( QString path ){
 	return info;
 }
 
-void fwrite( QString path, QString data ){
-	const QString qPath( path );
+void fwrite( QString _path, QString data ){
+	const QString qPath( _path );
 	QFile qFile(qPath);
 	if (qFile.open(QIODevice::WriteOnly)) {
 		QTextStream out(&qFile); 
@@ -25,22 +25,24 @@ void fwrite( QString path, QString data ){
 	}
 }
 
-void awrite( QString path, QString data ){
- 	fwrite( path, fread( path ) + data );
+void awrite( QString _path, QString data ){
+ 	fwrite( _path, fread( _path ) + data );
 }
 
-QJsonObject jread( QString path ){
-	QJsonDocument _json = QJsonDocument::fromJson( fread(path).toUtf8() );
+QJsonObject jread( QString _path ){
+	QJsonDocument _json = QJsonDocument::fromJson( fread(_path).toUtf8() );
 	return _json.object();
 }
 
-// void jwrite( QString path, QJsonObject data ){
-// 	fwrite( path + ".tmp", data.dump(4) );
-// 	os::remove( path + ".old" );
-// 	os::rename( path, path + ".old" );
-// 	os::rename( path + ".tmp", path );
-// 	os::remove( path + ".tmp" );
-// }
+void jwrite( QString _path, QJsonObject data ){
+	QJsonDocument doc(data);
+	fwrite( _path, doc.toJson( QJsonDocument::Compact ) );
+
+	// os::remove( _path + ".old" );
+	// os::rename( _path, _path + ".old" );
+	// os::rename( _path + ".tmp", _path );
+	// os::remove( _path + ".tmp" );
+}
 
 QString timeStruct(float t){
 	float _h, _m;
@@ -121,7 +123,7 @@ void print( QString input ){
 	qDebug().nospace().noquote() << input;
 }
 
-QString path(){
+QString getPath(){
 
 	QJsonObject paths = jread( "../../etc/paths.json" );
 

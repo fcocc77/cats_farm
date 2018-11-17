@@ -30,6 +30,9 @@ const QString secToTime( float sec );
 QJsonObject jread( QString path );
 void jwrite( QString path, QJsonObject data );
 void print( QString input );
-QString path();
+QString getPath();
+
+
+const QString path = getPath();
 
 #endif //UTIL_h

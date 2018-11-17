@@ -6,16 +6,12 @@ namespace os {
 
 	vector <int> getStat(){
 		vector <int> cpu;
+
 		QString s = fread("/proc/stat");
+		QStringList stat = s.split(" ");
 
-		auto stat = split(s , " ");
-
-		for ( int i=2; i<10; i++){
-
-			try{ cpu.push_back( stoi( stat[i] ) );}
-			catch( exception &e ){}
-
-		}
+		for ( int i=2; i<10; i++)
+			cpu.push_back( stat[i].toInt() );
 
 		return cpu;
 	}
@@ -26,10 +22,9 @@ namespace os {
 		QString result;
 		if ( _win32 ){
 			result = sh("wmic cpu get loadpercentage");
-			result = replace(result, "LoadPercentage", "");
+			result = result.replace( "LoadPercentage", "" );
 
-			try { usage = stoi(result); }
-			catch( exception &e ){}
+			usage = result.toInt();
 		}
 
 		else if ( _linux ){
@@ -60,9 +55,7 @@ namespace os {
 
 		else{
 			QString p = os::sh( "ps -aeo pcpu | awk '{s+=$1} END {print s }'p" );
-			try{ usage = stoi(p) / cpuCount();}
-			catch(...){}
-
+			usage = p.toInt() / cpuCount();
 		}
 
 		return usage;
@@ -92,13 +85,13 @@ namespace os {
 		int total, free, buffers, cached, used, percent;
 
 		if ( _linux ){
-			QString mem=fread("/proc/meminfo");
-			total=stoi(between(mem, "MemTotal:", "kB"));
-			free=stoi(between(mem, "MemFree:", "kB"));
-			buffers=stoi(between(mem, "Buffers:", "kB"));
-			cached=stoi(between(mem, "Cached:", "kB"));
-			used=(total-free)-(buffers+cached);
-			percent=(used*100)/total;
+			QString mem = fread("/proc/meminfo");
+			total = mem.split( "MemTotal:")[1].split("kB")[0].toInt();
+			free = mem.split( "MemFree:")[1].split("kB")[0].toInt();
+			buffers = mem.split( "Buffers:")[1].split("kB")[0].toInt();
+			cached = mem.split( "Cached:")[1].split("kB")[0].toInt();
+			used = ( total-free ) - ( buffers + cached );
+			percent = ( used * 100 ) / total;
 		}
 
 		else if ( _win32 ){
@@ -108,7 +101,7 @@ namespace os {
 
 		else {
 			QString mem = os::sh( "memory_pressure" );
-			percent = 100 - stoi( between( mem, "percentage:", "%") );
+			percent = 100 - mem.split( "percentage:")[1].split("%")[0].toInt();
 		}
 
 		return percent;
@@ -128,7 +121,7 @@ namespace os {
 		if ( not total_ram ){
 			if ( _linux ){
 				QString mem = fread("/proc/meminfo");
-				long long _total = stoll(between(mem, "MemTotal:", "kB"));
+				long long _total = mem.split( "MemTotal:")[1].split("kB")[0].toLongLong();
 				total_ram = ( _total * 1024 * 1024 ) / 1000000000000;
 
 			}
@@ -138,10 +131,9 @@ namespace os {
 
 			else{
 				QString _ram = os::sh( "sysctl hw.memsize");
-				_ram = split(_ram, "hw.memsize:")[1];
+				_ram = _ram.split("hw.memsize:")[1];
 
-				try{ total_ram = stoll(_ram) / 1024 / 1024 / 1024;}
-				catch(...){}
+				total_ram = _ram.toLongLong() / 1024 / 1024 / 1024;
 
 			}
 
@@ -160,27 +152,27 @@ namespace os {
 		if ( _linux ){
 
 			try{
-				QString t = sh("sensors");
-				int pos, core0, core1, core2, core3;
-				//core0
-				pos = t.find("Core 0:");  t.erase(0,pos+7); 
-				pos = t.find("+"); t.erase(0,pos+1);
-				pos = t.find("°C"); core0=stoi(t.substr(0,pos+2));
-				//core1
-				pos = t.find("Core 1:");  t.erase(0,pos+7); 
-				pos = t.find("+"); t.erase(0,pos+1);
-				pos = t.find("°C"); core1=stoi(t.substr(0,pos+2));
-				//core2
-				pos = t.find("Core 2:");  t.erase(0,pos+7); 
-				pos = t.find("+"); t.erase(0,pos+1);
-				pos = t.find("°C"); core2=stoi(t.substr(0,pos+2));
-				//core3
-				pos = t.find("Core 3:");  t.erase(0,pos+7); 
-				pos = t.find("+"); t.erase(0,pos+1);
-				pos = t.find("°C"); core3=stoi(t.substr(0,pos+2));
-				//------------------------------------------
+				// QString t = sh("sensors");
+				// int pos, core0, core1, core2, core3;
+				// //core0
+				// pos = t.find("Core 0:");  t.erase(0,pos+7); 
+				// pos = t.find("+"); t.erase(0,pos+1);
+				// pos = t.find("°C"); core0=stoi(t.substr(0,pos+2));
+				// //core1
+				// pos = t.find("Core 1:");  t.erase(0,pos+7); 
+				// pos = t.find("+"); t.erase(0,pos+1);
+				// pos = t.find("°C"); core1=stoi(t.substr(0,pos+2));
+				// //core2
+				// pos = t.find("Core 2:");  t.erase(0,pos+7); 
+				// pos = t.find("+"); t.erase(0,pos+1);
+				// pos = t.find("°C"); core2=stoi(t.substr(0,pos+2));
+				// //core3
+				// pos = t.find("Core 3:");  t.erase(0,pos+7); 
+				// pos = t.find("+"); t.erase(0,pos+1);
+				// pos = t.find("°C"); core3=stoi(t.substr(0,pos+2));
+				// //------------------------------------------
 
-				temp = (core0+core1+core2+core3)/4;
+				// temp = (core0+core1+core2+core3)/4;
 			}
 			catch (exception& e){
 			}
@@ -190,26 +182,24 @@ namespace os {
 			static int csv_delete;
 			csv_delete++;
 			// Obtiene la temperatura a partir de un sensor con interface core temp, no es lo mas optimo hasta el momento
-			QString core_temp_dir = path() + "/os/win/core_temp";
+			QString core_temp_dir = path + "/os/win/core_temp";
 
 			for ( QString f : os::listdir( core_temp_dir ) ){
-				QString ext = f.substr( f.length() - 3 );
+				QString ext = f.split(".").last();
 				if ( ext == "csv" ){
 					QString _file = fread( f );
-					if ( not _file.empty() ){
+					if ( not _file.isEmpty() ){
 
-						QString tempRead = split( fread( f ), "\n" ).end()[-1] ;
+						QString tempRead = fread( f ).split("\n").last();
 
-						auto core = split( split( tempRead, ",,," )[0], "," );
+						QStringList core = tempRead.split(",,,")[0].split(",");
 						int cpu_count = core.size() - 1;
 						int cores = 0;
 
-						for ( int i = 1; i < cpu_count + 1; ++i ){
-							try{ cores += stoi( core[i] ); } // puede dar error si no es numero
-							catch(...){}
-						}
+						for ( int i = 1; i < cpu_count + 1; ++i )
+							cores += core[i].toInt();
 
-						if ( cores ) temp = cores/cpu_count;
+						if ( cores ) temp = cores / cpu_count;
 					}
 
 					if ( csv_delete > 10 ){
@@ -221,23 +211,23 @@ namespace os {
 		}
 
 		if ( _darwin ){
-			static int times;
-			
-			if ( times == 0 ){ 
-				QString cmd = path() + "/os/mac/sensor/tempmonitor -l -a";
-				QString temp_out = os::sh( cmd );
+			// static int times;
 
-				try{ 
-					temp = stoi( between( temp_out, "SMC CPU A HEAT SINK: ", "C") );
-				}
-				catch(...){
-					try{ temp = stoi( between( temp_out, "SMC CPU A PROXIMITY: ", "C") ); }
-					catch(...){}
-				}
-			}
-			
-			times++;
-			if ( times == 15 ) times = 0; 
+			// if ( times == 0 ){ 
+			// 	QString cmd = path + "/os/mac/sensor/tempmonitor -l -a";
+			// 	QString temp_out = os::sh( cmd );
+
+			// 	try{ 
+			// 		temp = stoi( between( temp_out, "SMC CPU A HEAT SINK: ", "C") );
+			// 	}
+			// 	catch(...){
+			// 		try{ temp = stoi( between( temp_out, "SMC CPU A PROXIMITY: ", "C") ); }
+			// 		catch(...){}
+			// 	}
+			// }
+
+			// times++;
+			// if ( times == 15 ) times = 0; 
 		}
 
 		return temp;
@@ -247,23 +237,17 @@ namespace os {
 		static int cores;
 
 		if ( not cores ){
-			if ( _win32 ){
-				try { cores = stoi( sh( "echo %NUMBER_OF_PROCESSORS%" ) ); }
-				catch( exception &e){}
-			}
+			if ( _win32 )
+				cores = sh( "echo %NUMBER_OF_PROCESSORS%" ).toInt();
 
-			else if ( _linux ){
-				try{ cores = stoi( os::sh("nproc") );}
-				catch(...){}
-
-			}
+			else if ( _linux )
+				cores = os::sh("nproc").toInt();
 
 			else {
 				QString _cores = os::sh( "sysctl hw.ncpu" );
-				_cores = split( _cores, "hw.ncpu:" )[1];
+				_cores = _cores.split( "hw.ncpu:" )[1];
 
-				try{ cores = stoi(_cores);}
-				catch(...){}
+				cores = _cores.toInt();
 			}
 		}
 
@@ -273,9 +257,8 @@ namespace os {
 	void copy( QString src, QString dst ){
 		if ( QFile::exists( dst ) )
 		    QFile::remove( dst );
-		
-		QFile::copy( src, dst );
 
+		QFile::copy( src, dst );
 	}
 
 	void move( QString src, QString dst ){
@@ -289,8 +272,8 @@ namespace os {
 		bool execute = true;
 
 		if ( _win32 ){
-			src = replace( src, "/", "\\" );
-			dst = replace( dst, "/", "\\" );
+			src = src.replace( "/", "\\" );
+			dst = dst.replace( "/", "\\" );
 
 			if( os::isfile( src ) ){
 				if ( copy ) cp = "copy";
@@ -333,39 +316,36 @@ namespace os {
 
 	void mkdir ( QString path ){
 		QString cmd = "mkdir \"" + path + '"';
-		if ( _win32 ) cmd = replace( cmd, "/", "\\" );
-		std::system( cmd.c_str() );
+		if ( _win32 ) cmd = cmd.replace( "/", "\\" );
+		std::system( cmd.toStdString().c_str() );
 	}
 
 	void remove( QString _file ){
-		QFile file ( QString::fromStdString(_file) );
+		QFile file ( _file );
 		file.remove();
-		QDir dir( QString::fromStdString(_file) );
+		QDir dir( _file );
 		dir.removeRecursively();	
 	}
 
 	void rename( QString src, QString dst ){
-		std::rename( src.c_str(), dst.c_str() );
+		std::rename( src.toStdString().c_str(), dst.toStdString().c_str() );
 	}
 
 	QString dirname( QString file ){
-		size_t found;
-		found=file.find_last_of("/\\");
-		return file.substr(0,found);
+		QDir _file ( file );
+		return _file.dirName();
 	}
 
 	QString basename( QString file ){
-		size_t found;
-		found=file.find_last_of("/\\");
-		return file.substr(found+1);
+		return file.split("/").last();
 	}
 
 	bool isfile( QString file ){
-		return QFile( QString::fromStdString( file ) ).exists();
+		return QFile( file ).exists();
 	}
 
 	bool isdir( QString dir ){
-		return QDir( QString::fromStdString( dir ) ).exists();
+		return QDir( dir ).exists();
 	}
 
 	#ifdef _WIN32
@@ -407,9 +387,9 @@ namespace os {
 			while (1){
 				//------------------------------
 				for ( auto child : childs ){
-					QString result = sh( "ps --ppid " + to_string(child));
+					string result = sh( "ps --ppid " + QString::number(child)).toStdString();
 					istringstream read( result );  
-					QString line; 
+					string line; 
 					childs = {};
 					while ( getline( read, line )){
 						try { childs.push_back( stoi( line ) ); }
@@ -428,7 +408,7 @@ namespace os {
 			}
 
 			for ( auto p : pids ){
-				sh( "kill " + to_string(p) );
+				sh( "kill " + QString::number(p) );
 			}
 		}
 
@@ -437,13 +417,13 @@ namespace os {
 		#endif
 	}
 
-	vector <QString> listdir( QString folder, bool onlyname ){
-		vector <QString> list_dir;
-		QDir ruta = QString::fromStdString(folder);
+	QStringList listdir( QString folder, bool onlyname ){
+		QStringList list_dir;
+		QDir ruta = folder;
 		QDirIterator it(ruta);
 
 		while (it.hasNext()){ 
-			QString file = it.next().toStdString();
+			QString file = it.next();
 			QString name = basename( file );
 			if ( onlyname ) file = name;
 			if ( ( name != "." ) and ( name != ".." ) ) list_dir.push_back( file );
@@ -452,34 +432,26 @@ namespace os {
 		return list_dir;
 	}
 
-	QString sh(QString cmd) {
+	QString sh( QString cmd ) {
+		QProcess proc;
+		proc.start( cmd );
+		proc.waitForFinished(-1);
+		QString output = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
+		proc.close();
 
-		QString data;
-		FILE * stream;
-		const int max_buffer = 256;
-		char buffer[max_buffer];
-		cmd.append(" 2>&1");
-
-		if ( _win32 ) cmd = "\"" + cmd + "\"";
-		stream = popen(cmd.c_str(), "r");
-		if (stream) {
-			while (!feof(stream))
-		if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
-			pclose(stream);
-		}
-		return data;
+		return output;
 	}
 
 	const QString hostName(){
-		return QHostInfo::localHostName().toStdString();
+		return QHostInfo::localHostName();
 	}
 
 	const QString ip(){
 		QString _ip;
 		int i = 0;
 		for ( auto ip : QNetworkInterface::allAddresses() ){
-			_ip = ip.toString().toStdString();
-			QString first = split( _ip, "." )[0];
+			_ip = ip.toString();
+			QString first = _ip.split( "." )[0];
 			if ( first == "192" ) return _ip ;
 			i++;
 		}
@@ -488,7 +460,7 @@ namespace os {
 
 	void back( QString cmd ){
 		QProcess pro;
-		pro.startDetached(QString::fromStdString(cmd) );
+		pro.startDetached( cmd );
 		pro.waitForStarted();
 	}
 
@@ -497,19 +469,10 @@ namespace os {
 		if ( _linux ){
 			//get user
 			QString get_user = "grep '/bin/bash' /etc/passwd | cut -d':' -f1";                
-			return split( os::sh(get_user) , "\n" )[1];
+			return os::sh( get_user ).split( "\n" )[1];
 			//------------------------------------------------------
 		}
 		else { return ""; };
 	}
 
-	QString qp( QString cmd ){
-		QProcess proc;
-		proc.start( QString::fromStdString(cmd) );
-		proc.waitForFinished(-1);
-		QString output = proc.readAllStandardOutput();
-		proc.close();
-
-		return output.toStdString();
-	}
 }

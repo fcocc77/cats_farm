@@ -1,4 +1,6 @@
 #include "../utils/util.h"
+#include "../utils/os.h"
+
 
 #include <QDebug>
 #include <QString>
@@ -14,10 +16,9 @@
 
 
 int main(){
-	QString _file = "C:/Users/VisualFX/Desktop/info.json";
 
 
+	qDebug() << "ok";
 
 
-	qDebug() << currentDateTime(0);
 }
