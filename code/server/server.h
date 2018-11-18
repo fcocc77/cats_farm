@@ -13,9 +13,6 @@ using namespace std;
 #include <QProcess>
 #include <QObject>
 #include <QFileInfo>
-#include <QJsonObject>
-#include <QJsonArray>
-
 
 #include "render.h"
 
@@ -25,8 +22,8 @@ public:
 	render *_render = new render();
 
 	void init();
-	QJsonArray send_resources( QJsonArray recv );
-	QJsonArray recieveManager( QJsonArray data, int input );
+	json send_resources( json recv );
+	json recieveManager( json data, int input );
 
 	const QString managerHost = fread( "../../etc/manager_host" );
 

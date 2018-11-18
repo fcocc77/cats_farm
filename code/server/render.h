@@ -38,7 +38,7 @@ public:
 		threading( &render::suspend_vbox, this );
 	}
 
-	QString render_task( QJsonArray recv );
+	QString render_task( QJsonObject recv );
 	QString qprocess( QString cmd, int ins = -1 );
 	void vbox_turn( bool turn );
 	bool vbox_working();	
@@ -48,6 +48,7 @@ public:
 	bool houdini( int ins );
 	bool cinema( int ins );
 	bool fusion( int ins );
+	bool noice( int ins );
 	bool ffmpeg( int ins );
 
 };

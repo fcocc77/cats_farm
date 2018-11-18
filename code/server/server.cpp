@@ -5,10 +5,10 @@ void server::init(){
 	tcpServer( 7001, &server::recieveManager, this );
 }
 
-QJsonArray server::send_resources( QJsonArray recv ){
+QJsonObject server::send_resources( QJsonObject recv ){
 
 	if ( not recv.empty() ){
-		_render->preferences = recv[0].toObject();
+		_render->preferences = recv;
 		jwrite( "../../etc/preferences_s.json", _render->preferences );
 	}
 
@@ -24,7 +24,7 @@ QJsonArray server::send_resources( QJsonArray recv ){
 
 	if ( not usr ){ 
 		if ( _win32 ){ 
-			username = os::sh("echo %username%").split(" ")[0];
+			username = split( os::sh("echo %username%"), " " )[0];
 			userpass = fread( "C:/ProgramData/cats_farm/user" );
 		}
 		else{
@@ -34,7 +34,7 @@ QJsonArray server::send_resources( QJsonArray recv ){
 		usr = true;
 	} //------------------------------------------
 
-	QJsonArray server_info = { os::hostName(),
+	json server_info = { os::hostName(),
 						 os::ip(),
 						 os::cpuUsed(),
 						 os::ramPercent(),
@@ -49,35 +49,33 @@ QJsonArray server::send_resources( QJsonArray recv ){
 						 userpass
 						};
 
-
-					
-
 	return server_info;
 }
 
-QJsonArray server::recieveManager( QJsonArray recv, int input ){
+QJsonObject server::recieveManager( QJsonObject recv, int input ){
 
+	debug("server::recieveManager.");
 	QString send;
 
 	if ( input == 0 ) send = _render->render_task( recv );
 
 	if ( input == 1 ) {
-		bool failed = recv[0].toBool();
+		bool failed = recv;
 		if ( failed ) send = fread( "../../log/render_log" );
 		else send = fread( "../../log/render_log_0" );
 	}
 
 	if ( input == 3 ){
 
-		for ( auto i : recv ){
+		for ( int i : recv ){
 			// kill cinema 4d que esta dentro de la maquina virtual
 			if ( _render->VMCinemaActive ) {
 				QString VMCinemaKill = _render->VMSH + "\"taskkill\" \"-im\" \"Cinema 4D.exe\" \"-f\"";
 				_render->qprocess( VMCinemaKill );
 			} //-------------------------------------------------------------------------
 
-			_render->taskKill[i.toInt()] = true;
-			os::kill( _render->pid[i.toInt()] );
+			_render->taskKill[i] = true;
+			os::kill( _render->pid[i] );
 		}
 
 		// kill noice
@@ -88,8 +86,7 @@ QJsonArray server::recieveManager( QJsonArray recv, int input ){
 
 	if ( input == 4 ){
 
-		QString action = recv[0].toString(); 
-		QString info = recv[1].toString();
+		json action = recv[0]; json info = recv[1];
 
 		if ( action == "freeram" ){
 			if ( _linux ){
@@ -131,7 +128,9 @@ QJsonArray server::recieveManager( QJsonArray recv, int input ){
 		}
 	}
 
+	json _send;
+	_send = send;
 
-	return {};
+	return _send;
 }
 

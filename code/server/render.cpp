@@ -1,6 +1,6 @@
 #include "render.h"
 
-QString render::render_task( QJsonArray recv ){
+QString render::render_task( QJsonObject recv ){
 
 	// comvierte lista de json en variables usables
 	QString status;
@@ -33,9 +33,9 @@ QString render::render_task( QJsonArray recv ){
 		//obtiene ruta correcta
 		QString proj;
 
-		for ( auto p1 : system_path ){
-			for ( auto p2 : system_path){
-				proj = project[ ins ].replace( p1.toString(), p2.toString() );
+		for ( QString p1 : system_path ){
+			for ( QString p2 : system_path){
+				proj = replace( project[ ins ], p1.toString(), p2.toString() );
 
 				if ( os::isfile( proj ) ){
 					src_path[ ins ] = p1.toString();
@@ -57,10 +57,11 @@ QString render::render_task( QJsonArray recv ){
 		if ( software == "Maya" ) renderOK = maya( ins );
 		if ( software == "Fusion" ) renderOK = fusion( ins );
 		if ( software == "Cinema4D" ) renderOK = cinema( ins );
+		if ( software == "Noice" ) renderOK = noice( ins );		
 		if ( software == "Ffmpeg" ) renderOK = ffmpeg( ins );
 		// -------------------------------------------------
 
-		QString log_file = path + "/log/render_log_" + QString::number( ins );
+		QString log_file = path() + "/log/render_log_" + QString::number( ins );
 
 		if ( taskKill[ins] ){
 			taskKill[ins] = false;
@@ -86,30 +87,30 @@ QString render::render_task( QJsonArray recv ){
 
 QString render::qprocess( QString cmd, int ins ){
 	QProcess proc;
-	proc.start( cmd );
+	proc.start( QString::fromStdString(cmd) );
 	if ( ins > -1 ) pid[ins] = proc.processId();
 	proc.waitForFinished(-1);
 	QString output = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
 	proc.close();
 
-	return output;
+	return output.toStdString();
 }
 
 bool render::nuke( int ins ){
 
 	// crea la carpeta donde se renderearan los archivos
-	QString dirFile = extra[ ins ].replace( src_path[ ins ], dst_path[ ins ] );
+	QString dirFile = replace( extra[ ins ], src_path[ ins ], dst_path[ ins ] );
 
 	QString dirRender = os::dirname( dirFile );
 	QString fileRender = os::basename( dirFile );
 
-	QString ext = fileRender.split(".").last();
-	fileRender = fileRender.split(".")[0];
-	QString pad = fileRender.split("_").last();
+	QString ext = fileRender.substr( fileRender.length() - 3 );
+	fileRender = fileRender.erase( fileRender.length() - 4 );
+	QString pad = split( fileRender, "_" ).back();
 
 	QString folder;
 	if ( ext == "mov" ){ folder = fileRender; }
-	else{ folder = fileRender.replace( "_" + pad, "" ); }
+	else{ folder = replace( fileRender, "_" + pad, "" ); }
 
 	QString folderRender = dirRender + "/" + folder;
 
@@ -119,25 +120,25 @@ bool render::nuke( int ins ){
 	}
 	//---------------------------------------------------
 
-	QString args = "-f -X " + renderNode[ ins ] + " \"" + project[ ins ] + "\" " + QString::number( first_frame[ ins ] ) + "-" + QString::number( last_frame[ ins ] );
+	QString args = "-f -X " + renderNode[ ins ] + " \"" + project[ ins ] + "\" " + to_string( first_frame[ ins ] ) + "-" + to_string( last_frame[ ins ] );
 
 	// remapeo rutas de Nuke
 	QString nukeRemap = " -remap \"" + src_path[ ins ] + "," + dst_path[ ins ] + "\" ";
-	args = args.replace( src_path[ ins ], dst_path[ ins ] );
+	args = replace( args, src_path[ ins ], dst_path[ ins ] );
 	args = nukeRemap + args;
 	//------------------------------------------------
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["nuke"].toObject()){
-		 exe = e.toString(); 
+	for ( auto e : preferences["paths"]["nuke"]){
+		 exe = e; //e.rstrip()
 		 if ( os::isfile( exe ) ){ break; }
 	}
 	//-----------------------------------------------
 
 	QString cmd = '"' + exe + '"' + args;
 
-	QString log_file = path + "/log/render_log_" + QString::number( ins );
+	QString log_file = path() + "/log/render_log_" + to_string( ins );
 
 	// rendering ...
 	// ----------------------------------
@@ -145,7 +146,7 @@ bool render::nuke( int ins ){
 	fwrite( log_file, log );
 	// ----------------------------------
 
-	QStringList frame_split = log.split( "Frame " );
+	auto frame_split = split( log, "Frame " );
 	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;
 	if ( int( frame_split.size() - 1 ) == total_frame ) return true;
 	else return false;
@@ -153,21 +154,21 @@ bool render::nuke( int ins ){
 
 bool render::maya( int ins ){
 
-	QString log_file = path + "/log/render_log_" + QString::number( ins );
+	QString log_file = path() + "/log/render_log_" + to_string( ins );
 	os::remove( log_file );
 
-	QString args = " -r file -s " + QString::number( first_frame[ ins ] ) + " -e " + QString::number( last_frame[ ins ] ) + 
+	QString args = " -r file -s " + to_string( first_frame[ ins ] ) + " -e " + to_string( last_frame[ ins ] ) + 
 				" -proj \"" + extra[ ins ] + "\" \"" + project[ ins ] + '"' + " -log \"" + log_file + "\"";
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
 
-	for ( auto e : preferences["paths"].toObject()["maya"].toObject() ){
-		 exe = e.toString();
+	for ( auto e : preferences["paths"]["maya"] ){
+		 exe = e;
 		 if ( os::isfile( exe ) ){ break; }
 		}
 		//-----------------------------------------------
-	args = args.replace( src_path[ ins ], dst_path[ ins ] );
+	args = replace( args, src_path[ ins ], dst_path[ ins ] );
 
 	QString cmd = '"' + exe + "\" " + args;
 
@@ -178,7 +179,7 @@ bool render::maya( int ins ){
 
 	// post render 
 	QString log = fread( log_file );
-	if ( log.contains( "completed.") ) return true;
+	if ( in_string( "completed.", log ) ) return true;
 	else return false;
 	// --------------------------
 }
@@ -187,20 +188,20 @@ bool render::houdini( int ins ){
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["houdini"].toObject() ){
-		 exe = e.toString();
+	for ( auto e : preferences["paths"]["houdini"] ){
+		 exe = e;
 		 if ( os::isfile( exe ) ){ break; }
 		}
 		//-----------------------------------------------
 
-	QString hipFile = project[ ins ].replace( src_path[ ins ], dst_path[ ins ] );
+	QString hipFile = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
 
-	QString render_file = path + "/modules/houdiniCatsFarm.py " + 
-						hipFile + " " + renderNode[ ins ] + " " + QString::number( first_frame[ ins ] ) + " " + QString::number( last_frame[ ins ] );
+	QString render_file = path() + "/modules/houdiniCatsFarm.py " + 
+						hipFile + " " + renderNode[ ins ] + " " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
 
 	QString cmd = '"' + exe + "\" " + render_file;
 
-	QString log_file = path + "/log/render_log_" + QString::number( ins );
+	QString log_file = path() + "/log/render_log_" + to_string( ins );
 
 	// rendering ...
 	// ----------------------------------
@@ -212,11 +213,11 @@ bool render::houdini( int ins ){
 	QString _frame = " frame ";
 
 	int _frames = 0;
-	// int pos = log.find(_frame);
-	// while (pos != -1){
-	//     pos = log.find(_frame, pos + 7 );
-	// 	_frames++;
-	// }
+	int pos = log.find(_frame);
+	while (pos != -1){
+	    pos = log.find(_frame, pos + 7 );
+		_frames++;
+	}
 
 	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;
 	if ( _frames == total_frame ) return true;
@@ -239,7 +240,7 @@ void render::vbox_turn( bool turn ){
 
 		os::back( vm );
 
-		fwrite( path + "/log/vbox", "0" );
+		fwrite( path() + "/log/vbox", "0" );
 	}
 }
 
@@ -251,7 +252,7 @@ bool render::vbox_working(){
 
 	if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
 
-	QString running = os::sh(vm).split( " " )[0];
+	QString running = split( os::sh(vm), " " )[0];
 
 	if ( running == "\"win2016\"" ){ return true; }
 	else { return false; }
@@ -279,22 +280,22 @@ void render::suspend_vbox(){
 
 bool render::cinema( int ins ){
 
-	QString log_file = path + "/log/render_log_" + QString::number( ins );
+	QString log_file = path() + "/log/render_log_" + to_string( ins );
 	QString log, cmd;
 
 	if ( _linux ){ // en linux se usa una maquina virtual
 		VMCinemaActive = true;
 		//Obtiene el excecutable de cinema de windows
 		QString exe_windows;
-		for ( auto e : preferences["paths"].toObject()["cinema"].toObject() ){
-			exe_windows = e.toString(); 
-			if ( exe_windows.contains( "C:/") ) break;
+		for ( auto e : preferences["paths"]["cinema"] ){
+			exe_windows = e; 
+			if ( in_string( "C:/", exe_windows ) ) break;
 		}
 		//-----------------------------------------------
 
 		// replaza las rutas para virtualbox
-		for ( auto s :  preferences["paths"].toObject()["system"].toObject() )
-			project[ ins ] = project[ ins ].replace( s.toString(), "//VBOXSVR/server_01" );
+		for ( auto s :  preferences["paths"]["system"] )
+			project[ ins ] = replace( project[ ins ], s, "//VBOXSVR/server_01" );
 		//-------------------------------------------------------------------------
 
 		// con este commando se puede enviar comandos a la maquina virtual y te regresa un resultado
@@ -302,7 +303,7 @@ bool render::cinema( int ins ){
 		VMSH = guestcontrol + "C:\\\\Windows\\\\system32\\\\cmd.exe -- C:\\\\Windows\\\\SysWOW64\\\\cmd.exe \"/c\" ";
 		// --------------------------------------------------------------
 
-		QString args = "\"-frame\" \"" + QString::number( first_frame[ ins ] ) + "\" \"" +  QString::number( last_frame[ ins ] ) + "\" \"-nogui\" \"-render\" \"" + project[ ins ] + "\"";
+		QString args = "\"-frame\" \"" + to_string( first_frame[ ins ] ) + "\" \"" +  to_string( last_frame[ ins ] ) + "\" \"-nogui\" \"-render\" \"" + project[ ins ] + "\"";
 		cmd = guestcontrol + "\"" + exe_windows + "\" -- 0 " + args; // 0 es el primer argumento que seria el excecutable que esta en -exe
 
 		// inicia virtual machine
@@ -316,7 +317,7 @@ bool render::cinema( int ins ){
 
 		int i = 0;		
 		bool problem = false;
-		while( not qprocess( check ).contains( "vm_is_ready") ){ // espera que la maquina este lista
+		while( not in_string( "vm_is_ready", qprocess( check ) ) ){ // espera que la maquina este lista
 			sleep(1);
 			if ( i > 200 ) {
 				problem = true;
@@ -340,15 +341,15 @@ bool render::cinema( int ins ){
 
 	else{
 
-		project[ ins ] = project[ ins ].replace( src_path[ ins ], dst_path[ ins ] );
+		project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
 
 		QString args = " -nogui -render \"" + project[ ins ] + "\" g_logfile=\"" + log_file + "\"" +
-					 " -frame " + QString::number( first_frame[ ins ] ) + " " + QString::number( last_frame[ ins ] );
+					 " -frame " + to_string( first_frame[ ins ] ) + " " + to_string( last_frame[ ins ] );
 
 		//Obtiene el excecutable que existe en este sistema
 		QString exe;
-		for ( auto e : preferences["paths"].toObject()["cinema"].toObject() ){
-			 exe = e.toString(); 
+		for ( auto e : preferences["paths"]["cinema"] ){
+			 exe = e; 
 			 if ( os::isfile( exe ) ){ break; }
 			}
 			//-----------------------------------------------
@@ -363,37 +364,37 @@ bool render::cinema( int ins ){
 	}
 
 	// post render
-	if ( log.contains( "Rendering successful: " ) ) return true;
+	if ( in_string( "Rendering successful: ", log ) ) return true;
 	else return false;
 	//---------------------------
 }
 
 bool render::fusion( int ins ){
 
-	QString log_file = path + "/log/render_log_" + QString::number( ins );
+	QString log_file = path() + "/log/render_log_" + to_string( ins );
 	os::remove( log_file );
 
-	project[ ins ] = project[ ins ].replace( src_path[ ins ], dst_path[ ins ] );
+	project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
 
 	if ( _win32 ){
-		project[ ins ] = project[ ins ].replace( "/", "\\" );
-		log_file = log_file.replace( "/", "\\" );
+		project[ ins ] = replace( project[ ins ], "/", "\\" );
+		log_file = replace( log_file, "/", "\\" );
 	}
 
 	// replmaza rutas internas del .comp
 	QString inside_project = fread( project[ ins ] );
-	if ( _linux ) inside_project = inside_project.replace( "\\\\", "/");
-	inside_project = inside_project.replace( src_path[ ins ], dst_path[ ins ] );
-	QString new_project = path + "/etc/fusion_render_" + QString::number( ins ) + ".comp";
+	if ( _linux ) inside_project = replace( inside_project, "\\\\", "/");
+	inside_project = replace( inside_project, src_path[ ins ], dst_path[ ins ] );
+	QString new_project = path() + "/etc/fusion_render_" + to_string( ins ) + ".comp";
 	fwrite( new_project, inside_project );
 	//------------------------------------------------------------------------
 
-	QString args = " " + new_project + " --verbose --render --start " + QString::number( first_frame[ ins ] ) + " --end " + QString::number( last_frame[ ins ] ) + " -log " + log_file;
+	QString args = " " + new_project + " --verbose --render --start " + to_string( first_frame[ ins ] ) + " --end " + to_string( last_frame[ ins ] ) + " -log " + log_file;
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["fusion"].toObject() ){
-		 exe = e.toString();
+	for ( auto e : preferences["paths"]["fusion"] ){
+		 exe = e;
 		 if ( os::isfile( exe ) ){ break; }
 	}
 	//-----------------------------------------------
@@ -401,7 +402,7 @@ bool render::fusion( int ins ){
 	QString cmd;
 	if ( _win32 ) cmd = '"' + exe + '"' + args;
 	if ( _linux ) {
-		os::sh( "chmod 777 -R " + path + "/log" ); // al renderear en user no tiene los permisos de root en el log asi le da permisos
+		os::sh( "chmod 777 -R " + path() + "/log" ); // al renderear en user no tiene los permisos de root en el log asi le da permisos
 		cmd = "runuser -l " + os::user() + " -c \"" + exe + args + "\""; // se ejecuta en usuario por que nececita X11 DISPLAY
 	}
 	// rendering ...
@@ -411,12 +412,128 @@ bool render::fusion( int ins ){
 
 	// post render
 	QString log = fread( log_file );
-	if ( log.contains( "Render completed successfully" ) ) return true;
+	if ( in_string( "Render completed successfully", log ) ) return true;
 	else return false;
 	//-----------------------------------------------
 }
 
+bool render::noice( int ins ){
+	project[ ins ] = replace( project[ ins ], src_path[ ins ], dst_path[ ins ] );
+	QString input = project[ ins ];
 
+	//Obtiene el excecutable que existe en este sistema
+	QString exe;
+	for ( auto e : preferences["paths"]["noice"] ){
+		 exe = e;
+		 if ( os::isfile( exe ) ){ break; }
+	}
+	//-----------------------------------------------
+
+	// conversion de extra a parametros de noice
+	QString pr = split( split( extra[ ins ], "-pr ")[1], " -sr " )[0];
+	QString sr = split( split( extra[ ins ], "-sr ")[1], " -v " )[0];
+	QString vr = split( split( extra[ ins ], "-v ")[1], " -tr " )[0];
+	int tr = stoi( split( split( extra[ ins ], "-tr ")[1], " -aov " )[0] );
+	QString aov = split( extra[ ins ], "-aov ")[1];
+	//------------------------------------------------
+
+	// get aov
+	QString layers;
+	if ( not aov.empty() )
+		for ( QString l : split( aov, "," ) ) 
+			layers += " -l " + l;
+	//-------------------------------------
+
+	QString log_file = path() + "/log/render_log_" + to_string( ins );
+	QString log;
+	int frames_ok = 0; 
+	
+	for ( int frame = first_frame[ ins ]; frame <= last_frame[ ins ]; ++frame ){
+
+		auto getFrame = []( QString _path, int frame_ ){
+
+			QString dirname = os::dirname(_path);
+			QString basename = os::basename(_path);
+
+			QString ext = split( basename, "." ).back();
+			QString pad_ext = split( basename, "_" ).back();
+			QString basename_without = replace( basename, pad_ext, "");
+
+			QString cero = "";
+			QString _frame;
+			for (int i = 0; i < 10; ++i){
+
+				_frame = dirname + "/" + basename_without + cero + to_string(frame_) + "." + ext;
+				cero += "0";
+
+				if ( os::isfile(_frame) ) return _frame;
+
+			}
+
+			return _frame;
+		};
+
+		int _fr = tr;
+		vector <QString> inputs;
+
+		// agrega los frames anteriores
+		int _frame = frame ;
+		for (int i = 0; i < tr; ++i){
+			_frame = _frame -1;
+
+			QString frame_path = getFrame( input, _frame );
+			if ( frame_path == "none" ) _fr += 1;
+			else inputs.push_back( frame_path );
+		}
+		reverse( inputs.begin(), inputs.end() ); 
+		//-----------------------------------------
+
+		// agrega los frames posteriores
+		int _frame2 = frame ;
+		for (int i = 0; i < _fr; ++i){
+			_frame2 = _frame2 + 1;
+
+			QString frame_path = getFrame( input, _frame2 );
+			if ( not ( frame_path == "none" ) ) 
+				inputs.push_back( frame_path );
+		}
+		//------------------------------------------
+
+		QString inputs_list;
+		for ( auto i : inputs ) inputs_list += " -i \"" + i + "\"";
+		//---------------------------------------------------
+
+		QString _first_frame = getFrame( input, frame );
+
+		// tranform input to output
+		QString dirname = os::dirname(_first_frame);
+		QString basename = os::basename(_first_frame);
+		QString ext = split( basename, "." ).back();
+		QString pad_ext = split( basename, "_" ).back();
+		QString basename_without = replace( basename, pad_ext, "" );
+		//-------------------------
+		QString output = dirname + "/" + basename_without + "noice_" + pad_ext;
+		//-------------------------------------------------------
+		QString parameter = layers + " -pr " + pr + " -sr " + sr + " -v " + vr;
+		QString cmd = "\"" + exe + "\"" + parameter +" -i \"" + _first_frame + "\"" + inputs_list + " -o \"" + output + "\"";
+		// rendering ...
+		// ----------------------------------
+		QString _log = qprocess( cmd, ins );
+		// ----------------------------------
+
+		if ( in_string( "Finished denoising", _log ) ) frames_ok++;
+		else break;
+
+		log += "Frame: " + to_string( frame ) + "\n" + _log;
+	}
+
+	fwrite( log_file, log );
+
+	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;	
+	
+	if ( frames_ok == total_frame ) return true;
+	else return false;
+}
 
 bool render::ffmpeg( int ins ){
 	return false;

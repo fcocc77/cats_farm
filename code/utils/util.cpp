@@ -38,10 +38,10 @@ void jwrite( QString _path, QJsonObject data ){
 	QJsonDocument doc(data);
 	fwrite( _path, doc.toJson( QJsonDocument::Compact ) );
 
-	os::remove( _path + ".old" );
-	os::rename( _path, _path + ".old" );
-	os::rename( _path + ".tmp", _path );
-	os::remove( _path + ".tmp" );
+	// os::remove( _path + ".old" );
+	// os::rename( _path, _path + ".old" );
+	// os::rename( _path + ".tmp", _path );
+	// os::remove( _path + ".tmp" );
 }
 
 QString timeStruct(float t){
