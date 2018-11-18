@@ -12,6 +12,8 @@
 #include <QJsonDocument>
 #include <QFile>
 #include <QMessageBox>
+#include <QJsonArray>
+
 
 
 
@@ -20,8 +22,11 @@
 
 int main(){
 
+	QJsonArray test = {10,20,49};
 
-	qDebug() << "ok";
 
+	for ( auto i : test ){
+		qDebug() << i;
+	}
 
 }
