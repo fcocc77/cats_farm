@@ -25,12 +25,12 @@ public:
 
 	int port; 
 	T *_class; 
-	QJsonArray ( T::*func )( QJsonArray, int );
+	QString ( T::*func )( QString, int );
 
 	QTcpSocket *qsocket;    
 	int socketDescriptor;
 
-	tcp_socket( int _socketDescriptor, int _port, QJsonArray ( T::*_func )( QJsonArray, int ), T *__class ){
+	tcp_socket( int _socketDescriptor, int _port, QString ( T::*_func )( QString, int ), T *__class ){
 		port = _port;
 		func = _func;
 		_class = __class;
@@ -43,9 +43,6 @@ public:
 
 		QString send;
 		QString recv;
-		QJsonArray _recv = {};
-		QJsonArray _pks = {};
-		int _input = 0;
 		int wait = -1; // en -1 significa que no tiene timeout para los waitForBytesWritten y waitForReadyRead
 		// waitForConnected: espera que un cliente se conecte a este socket
 		while ( qsocket->waitForConnected(5000) ){
@@ -76,18 +73,13 @@ public:
 			paquete, y el json al hacer parse da un error, por eso try except.*/
 			bool recv_ok = false;
 			try{ 
-				_recv = QJsonDocument::fromJson( recv.toUtf8() ).array();
-				_pks = _recv[0].toArray();
-				_input = _recv[1].toInt();
 				recv_ok = true;
 			}
 			catch( exception& e ){}
 
 			if ( recv_ok ){
 				try{
-					QJsonDocument _doc( ( _class->*func )( _pks, _input ) );
-					send = _doc.toJson( QJsonDocument::Compact );
-
+					send = ( _class->*func )( recv );
 				}
 				catch(...){
 					send = "";
@@ -127,11 +119,11 @@ class tcp_server : public QTcpServer{
 public:
 	int port; 
 	T *_class; 
-	QJsonArray ( T::*func )( QJsonArray, int );
+	QString ( T::*func )( QString, int );
 	QTcpServer *qserver;
 
 	// Constructor para servidor ( siempre esta en loop y con qthread ) 
-	tcp_server( int _port, QJsonArray ( T::*_func )( QJsonArray, int ), T *__class ) : QTcpServer(__class){        
+	tcp_server( int _port, QString ( T::*_func )( QString, int ), T *__class ) : QTcpServer(__class){        
 		port = _port;
 		func = _func;
 		_class = __class;
@@ -159,17 +151,17 @@ template < class T >
 class tcp_client_widget : public QThread{
 public:
 	T *_class; 
-	QJsonArray ( T::*func )( QJsonArray );
+	QString ( T::*func )( QString );
 	QTimer *qtimer;
 	bool widget;
 
-	QJsonArray *update_send;
-	QJsonArray *update_recv;
+	QString *update_send;
+	QString *update_recv;
 	bool *send_ready;
 	bool *recv_ready;
 
 	// Constructor client loop
-	tcp_client_widget( QJsonArray ( T::*_func )( QJsonArray ), T *__class, QJsonArray *_update_send, QJsonArray *_update_recv, 
+	tcp_client_widget( QString ( T::*_func )( QString ), T *__class, QString *_update_send, QString *_update_recv, 
 									bool *_send_ready, bool *_recv_ready, bool _widget ) : QThread(__class) {
 		_class = __class;
 		func = _func;
@@ -213,7 +205,7 @@ public:
 		*recv_ready = false;
 
 		if ( *send_ready ){ 
-			QJsonArray _send = *update_send;
+			QString _send = *update_send;
 			*update_recv = ( _class->*func )( _send );
 		}
 
@@ -226,31 +218,26 @@ public:
 	QString host;
 	int port; 
 	bool loop; 
-	QJsonArray pks;
-	int input;
+	QString pks;
 
-	QJsonArray update_send;
-	QJsonArray update_recv;
+	QString update_send;
+	QString update_recv;
 	bool send_ready; // para que json no de error cuando se intercambian las variable entre client y client_widget
 	bool recv_ready = true;
 	// Constructor client loop
 	template < class T >
-	tcp_client( QString _host, int _port,  T *_class, int _input ){
+	tcp_client( QString _host, int _port,  T *_class ){
 		host = _host;
 		port = _port;
-		input = _input;
 		loop = true;
-		update_send = {};
-		update_recv = {};
 
 	} //-----------------------------
 
 	// Costructor para packete unico
-	tcp_client( QString _host, int _port, QJsonArray _pks, int _input ){
+	tcp_client( QString _host, int _port, QString _pks ){
 		host = _host;
 		port = _port;
-		input = _input;
-		pks = { _pks , _input };
+		pks = _pks;
 		loop = false;
 	} //-----------------------------
 
@@ -258,14 +245,13 @@ public:
 		client();
 	}
 
-	QJsonArray client(){
+	QString client(){
 
 		QTcpSocket *socket = new QTcpSocket();
 		int wait = -1;
-		QJsonDocument doc(pks);
-		QString send = doc.toJson( QJsonDocument::Compact );
+		QString send = pks;
 		QString recv;
-		QJsonArray _recv = {};
+		QString _recv;
 
 		while (1){ 
 			socket->connectToHost( host, port );
@@ -277,10 +263,9 @@ public:
 					cuando se intercambian las variable entre client y client_widget */
 					send_ready = false;
 
-					QJsonArray _send;
 					if ( recv_ready ) {
 						update_send = _recv;
-						_send = { update_recv, input };
+						send = update_recv;
 
 					}
 					else {
@@ -293,13 +278,7 @@ public:
 					}
 
 					send_ready = true;
-
-					try{ 
-						QJsonDocument _doc(_send);
-						send = _doc.toJson( QJsonDocument::Compact );
-					}
-					catch( exception& e ){ send = ""; }
-
+					
 				}
 
 				// 1 - envia tamanio de paquete
@@ -339,13 +318,7 @@ public:
 				}
 				//----------------------------------------------------
 
-				/* Si se desconecta el servidor, no termina la transferencia de los
-				paquete, y el json al hacer parse da un error, por eso try except.*/
-				try{ 
-					_recv = QJsonDocument::fromJson( recv.toUtf8() ).array();
-				}
-				catch( exception& e ){}
-				//-----------------------------------------------------------
+				_recv = recv;
 
 				if ( loop ){ sleep(1); }
 				else{ break; }
@@ -361,15 +334,15 @@ public:
 };
 
 template < class T >
-void tcpServer(  int _port, QJsonArray ( T::*_func )( QJsonArray, int ), T *_class ){
+void tcpServer(  int _port, QString ( T::*_func )( QString, int ), T *_class ){
 	tcp_server< T > *_server = new tcp_server< T >( _port, _func, _class ); 
 	_server->init();
 }
 
 template < class T >
-void tcpClient(  QString _host, int _port, QJsonArray ( T::*_func )( QJsonArray ), T *_class, int _input, bool widget = false ){
+void tcpClient(  QString _host, int _port, QString ( T::*_func )( QString ), T *_class, bool widget = false ){
 	// inicia thread de tcp socket
-	tcp_client *_client = new tcp_client( _host, _port, _class, _input ); 
+	tcp_client *_client = new tcp_client( _host, _port, _class ); 
 	_client->exit();
 	_client->start();
 	//-------------------------------------
@@ -383,8 +356,8 @@ void tcpClient(  QString _host, int _port, QJsonArray ( T::*_func )( QJsonArray 
 }
 
 template < class T >
-QJsonArray tcpClient( T _host, int _port, QJsonArray _pks, int _input ){
-	tcp_client *_client = new tcp_client( _host, _port, _pks, _input ); 
+QString tcpClient( T _host, int _port, QString _pks ){
+	tcp_client *_client = new tcp_client( _host, _port, _pks ); 
 	_client->exit();
 	return _client->client();
 }

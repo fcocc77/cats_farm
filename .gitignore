@@ -184,3 +184,11 @@ code/server/CatsFarm Server_resource.rc
 code/manager/CatsFarm Manager_resource.rc
 code/server/CatsFarm Server_resource.rc
 code/server/release/CatsFarm Server.exe
+code/server/release/video.o
+code/server/release/util.o
+code/server/release/server.o
+code/server/release/render.o
+code/server/release/os.o
+code/server/release/CatsFarm Server_resource_res.o
+code/server/release/CatsFarm Server.exe
+code/server/CatsFarm Server_resource.rc

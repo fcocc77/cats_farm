@@ -44,6 +44,25 @@ void jwrite( QString _path, QJsonObject data ){
 	os::remove( _path + ".tmp" );
 }
 
+QString jats( QJsonArray data ){  // jats =  json array to string
+	QJsonDocument doc(data);
+	return doc.toJson( QJsonDocument::Compact );
+}
+
+QString jots(  QJsonObject data ){ // jots =  json object to string
+	QJsonDocument doc(data);
+	return doc.toJson( QJsonDocument::Compact );
+}
+
+QJsonObject jofs( QString data ){ // jofs =  json object from string
+	return QJsonDocument::fromJson( data.toUtf8() ).object();
+}
+QJsonArray jafs( QString data ){ // jafs =  json array from string
+	return QJsonDocument::fromJson( data.toUtf8() ).array();
+}
+
+
+
 QString timeStruct(float t){
 	float _h, _m;
 	int h, m ,s;

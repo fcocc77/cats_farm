@@ -22,11 +22,6 @@
 
 int main(){
 
-	QJsonArray test = {10,20,49};
 
-
-	for ( auto i : test ){
-		qDebug() << i;
-	}
 
 }

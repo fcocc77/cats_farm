@@ -5,7 +5,9 @@ void server::init(){
 	tcpServer( 7001, &server::recieveManager, this );
 }
 
-QJsonArray server::send_resources( QJsonArray recv ){
+QString server::send_resources( QString _recv ){
+	QJsonArray recv = jafs( _recv );
+
 
 	if ( not recv.empty() ){
 		_render->preferences = recv[0].toObject();
@@ -52,10 +54,15 @@ QJsonArray server::send_resources( QJsonArray recv ){
 
 					
 
-	return server_info;
+	return jats( server_info );
 }
 
-QJsonArray server::recieveManager( QJsonArray recv, int input ){
+QString server::recieveManager( QString _recv ){
+
+	QJsonArray json = jafs( _recv );
+	QJsonArray recv = json[0].toArray();
+	int input = json[1].toInt();
+
 
 	QString send;
 

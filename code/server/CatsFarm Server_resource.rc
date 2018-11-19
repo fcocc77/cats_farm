@@ -4,7 +4,7 @@
 #  include <windows.h>
 # endif
 
-IDI_ICON1	ICON	DISCARDABLE	"C:/Users/VisualFX/Google Drive/develop/cats_farm/icons/server.ico"
+IDI_ICON1	ICON	DISCARDABLE	"//192.168.10.46/server_01/linux/develop/cats_farm/icons/server.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0
