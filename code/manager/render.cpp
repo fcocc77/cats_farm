@@ -233,7 +233,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 	if ( Completed ){
 		if ( software == "Nuke" ){
 
-			QString ext = extra.substr( extra.length() - 3 );
+			QString ext = extra.split(".").last();
 
 			if ( ext == "mov" ){
 				job->status = "Concatenate";
@@ -241,7 +241,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 				// obtiene nombre de carpeta de renders
 				QString _dirname = os::dirname(extra);
 				QString _basename = os::basename(extra);
-				_basename = replace( _basename, ".mov", "" );
+				_basename = _basename.replace( ".mov", "" );
 				//-----------------------------------------------------
 
 				QJsonObject system_path = preferences["paths"].toObject()["system"].toObject();
@@ -251,7 +251,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 
 				for ( QString p1 : system_path ){
 					for ( QString p2 : system_path){
-						extra = replace( project, p1, p2 );
+						extra = project.replace( p1, p2 );
 
 						if ( os::isfile( extra ) ){
 							src_path = p1;
@@ -267,7 +267,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 				}
 				//--------------------------------------
 
-				_dirname = replace( _dirname, src_path, dst_path );
+				_dirname = _dirname.replace( src_path, dst_path );
 				if ( os::isdir( _dirname ) ){
 					concat( _dirname + "/" + _basename );
 				}

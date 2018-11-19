@@ -99,7 +99,7 @@ void jobs_actions::jobShowLog(){
 
 		for ( auto task : job["task"] ){
 			log_server = task["server"];
-			log_server = split( log_server, ":" )[0];
+			log_server = log_server.split( ":" )[0];
 
 			if ( not ( log_server == "...") ){
 

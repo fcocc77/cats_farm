@@ -28,16 +28,12 @@ void submit::init( int argc, char const *argv[] ){
 	bool _suspend = false;
 	if ( suspend == "1" ) _suspend = true;
 
-	auto toInt = [=]( QString str ){
-		try{ return stoi(str); }
-		catch( exception& e ){ return 0; }
-	};
 
-	QJsonArray info = { jobName, server, serverGroup, toInt(firstFrame), toInt(lastFrame), toInt(taskSize), toInt(priority), 
-					_suspend, comment, software, project, extra, system, toInt(instances), render };
+	QJsonArray info = { jobName, server, serverGroup, firstFrame.toInt(), lastFrame.toInt(), taskSize.toInt(), priority.toInt(), 
+					_suspend, comment, software, project, extra, system, instances.toInt(), render };
 
-	QString path = os::dirname(os::dirname(os::dirname(argv[0])));
-	QString managerHost = fread( path + "/etc/manager_host" );
+	QString _path = os::dirname(os::dirname(os::dirname(argv[0])));
+	QString managerHost = fread( _path + "/etc/manager_host" );
 
 	if ( argc > 2 )
 		tcpClient( managerHost, 7000, info, 0 );

@@ -166,3 +166,21 @@ qt/linux/libs/libcgroup-0.40.rc1-24.el6_9.x86_64.rpm
 qt/linux/libs/devtoolset-7-libquadmath-devel-7.3.1-5.4.el6.x86_64.rpm
 qt/mac/Qt5.11.1.zip
 qt/mac/Command Line Tools.pkg
+code/server/release/CatsFarm Server.exe
+code/server/CatsFarm Server_resource.rc
+code/submit/.qmake.stash
+code/submit/Makefile
+code/submit/Makefile.Debug
+code/submit/Makefile.Release
+code/submit/release/main.o
+code/submit/release/os.o
+code/submit/release/submit.exe
+code/submit/release/submit.o
+code/submit/release/submit_resource_res.o
+code/submit/release/util.o
+code/submit/submit_resource.rc
+code/server/release/CatsFarm Server.exe
+code/server/CatsFarm Server_resource.rc
+code/manager/CatsFarm Manager_resource.rc
+code/server/CatsFarm Server_resource.rc
+code/server/release/CatsFarm Server.exe

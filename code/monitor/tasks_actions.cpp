@@ -42,13 +42,13 @@ void tasks_actions::taskRestart(){
 void tasks_actions::taskRenderServer(){
 	auto selected = taskList->selectedItems();
 	QString _server =  selected[0]->text( 3 );
-	_server = split( _server, ":" )[0];
+	_server = _server.split( ":" )[0];
 
 	for (int i = 0; i <  taskList->topLevelItemCount(); ++i){
 		auto item = taskList->topLevelItem(i);
 
 		QString server =  item->text( 3 );
-		server = split( server, ":" )[0];
+		server = server.split( ":" )[0];
 		if ( _server == server ) item->setSelected(true);
 	}
 

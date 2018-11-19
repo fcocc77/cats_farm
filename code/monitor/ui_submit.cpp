@@ -445,11 +445,11 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 }
 
 void ui_submit::submitSetPanel( QString file_name ){
-	QString file = file_name.toStdString();
+	QString file = file_name;
 
-	file = replace( file, "\\", "/" );
-	QString ext = split( file, "." ).back();
-	QString name = replace( os::basename( file ), "."+ext, "" );
+	file = file.replace( "\\", "/" );
+	QString ext = file.split( "." ).last();
+	QString name = os::basename( file ).replace( "." + ext, "" );
 
 	if ( ( ext == "mb" ) or ( ext == "ma" ) ) softwareBox->setCurrentIndex(1);
 	if ( ext == "nk" ) softwareBox->setCurrentIndex(0);

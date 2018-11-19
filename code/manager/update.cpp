@@ -24,7 +24,7 @@ void manager::container_save(){
 	}
 }
 
-QJsonObject manager::update_server_thread( QJsonObject recv ){
+QJsonArray manager::update_server_thread( QJsonArray recv ){
 
 	if ( not recv.empty() ){  
 		QString name = recv[0].toString();
@@ -165,14 +165,14 @@ bool manager::iTime( QString schedule ){
 
     int start = 0, end = 0;
 	try{
-		auto range = split( schedule, "-" );
-        start = stoi( range[0] );
-        end = stoi( range[1] ) - 1;
+		auto range = schedule.split( "-" );
+        start = range[0].toInt();
+        end = range[1].toInt() - 1;
 	}
 	catch(exception& e){}
 
 	// si no esta en el rango de tiempo inTime es 0
-	int hora =  stoi( currentDateTime(6) );
+	int hora =  currentDateTime(6).toInt();
 	if ( start > end ){
 		if ( ( hora >= start ) or ( hora <=end ) ){ return true; }
 		else{ return false; }

@@ -386,9 +386,9 @@ void ui_denoiser::submitSoftwareBox( int index = 0 ){
 void ui_denoiser::submitSetPanel( QString file_name ){
 	QString file = file_name.toStdString();
 
-	file = replace( file, "\\", "/" );
+	file = file.replace( "\\", "/" );
 	QString ext = split( file, "." ).back();
-	QString name = replace( os::basename( file ), "."+ext, "" );
+	QString name = os::basename( file ).replace( "." + ext, "" );
 
 	if ( ( ext == "mb" ) or ( ext == "ma" ) ){
 		softwareBox->setCurrentIndex(1);

@@ -63,8 +63,8 @@ void servers_actions::serverOptions(){
 
 		auto range = split( schedule, "-" );
 
-		uiServerOptions->schedule_start->setCurrentIndex( stoi( range[0] ) );
-		uiServerOptions->schedule_end->setCurrentIndex( stoi( range[1] ) );
+		uiServerOptions->schedule_start->setCurrentIndex( range[0].toInt() );
+		uiServerOptions->schedule_end->setCurrentIndex( range[1].toInt() );
 
 	}
 }

@@ -61,7 +61,7 @@ void general::style_ui(){
 
 	QString style = fread( "../../theme/style.css" );
 
-	monitor->setStyleSheet( style.c_str() );
+	monitor->setStyleSheet( style.toStdString().c_str() );
 }
 
 void general::show_splash(){

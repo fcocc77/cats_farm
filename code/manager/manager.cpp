@@ -19,7 +19,7 @@ void manager::init(){
 	threading( &manager::render_job, this );
 }
 
-QJsonObject manager::server_tcp( QJsonObject pks, int input ){
+QJsonArray manager::server_tcp( QJsonArray pks, int input ){
 
 	if ( input == 0 ) return make_job( pks );
 	if ( input == 1 ) return update_server_thread( pks );
@@ -59,7 +59,7 @@ void manager::reactive_all(){
 	//-------------------------------------------------------------
 }
 
-QJsonObject manager::make_job( QJsonObject recv ){
+QJsonArray manager::make_job( QJsonArray recv ){
 
 	QString _job_name = recv[0].toString(); 
 	//------------------------------
@@ -201,11 +201,11 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 }
 
 // Envia  informacion de jobs al monitor
-QJsonObject manager::sendToMonitor_thread( QJsonObject recv ){
+QJsonArray manager::sendToMonitor_thread( QJsonArray recv ){
 	return struct_to_json();
 } //-----------------------------------------
 
-void manager::json_to_struct( QJsonObject info ){
+void manager::json_to_struct( QJsonArray info ){
 
 	for ( auto job : info[ "jobs" ].toObject() ){
 		job_struct *_jobs = new job_struct;
@@ -316,7 +316,7 @@ void manager::json_to_struct( QJsonObject info ){
 	}
 }
 
-QJsonObject manager::struct_to_json(){
+QJsonArray manager::struct_to_json(){
 
 	// combierte todas las estructuras de Jobs y las combierte a JSON para poder enviarlas y guardarlas
 	QJsonObject info;

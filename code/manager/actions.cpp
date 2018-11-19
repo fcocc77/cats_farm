@@ -12,7 +12,7 @@ void manager::resetAllServer(){
 	//--------------------------------------------------
 }
 
-QJsonObject manager::recieve_monitor_thread( QJsonObject recv ){
+QJsonArray manager::recieve_monitor_thread( QJsonArray recv ){
 
 	auto pks = recv[0].toString(), id = recv[1].toString();
 
@@ -40,8 +40,8 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	for ( auto task : job->task ){
 		if ( not ( task->server == "...") ){
 			if ( task->status == "active" ){
-				auto s = split( task->server, ":" );	
-				active_server[s[0]].push_back( stoi(s[1]) );				
+				auto s = task->server.split( ":" );	
+				active_server[s[0]].push_back( s[1].toInt() );				
 			}
 		}
 	}
@@ -59,9 +59,9 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	}
 }
 
-void manager::jobAction( QJsonObject pks ){
+void manager::jobAction( QJsonArray pks ){
 
-	for ( auto _job : pks.toArray() ){
+	for ( auto _job : pks){
 
         QString job_name = _job[0].toString(); 
         QString job_action = _job[1].toString();
@@ -118,10 +118,10 @@ void manager::jobAction( QJsonObject pks ){
     }
 }
 
-QJsonObject manager::jobOptions( QJsonObject pks ){
+QJsonArray manager::jobOptions( QJsonArray pks ){
 	int num = 0;
 	QString _name;
-	for ( auto _job : pks.toArray() ){
+	for ( auto _job : pks ){
 
 		QString job_name = _job[0].toString();
 		QJsonArray options = _job[1].toArray(); 
@@ -204,10 +204,10 @@ QJsonObject manager::jobOptions( QJsonObject pks ){
 		}
 
 		if ( action == "read" ){ 
-			QJsonObject _server;
+			QJsonArray _server;
 			for ( QString s : job->server ) _server.push_back(s);
 			//----------------------------------------------------
-			QJsonObject _server_group;
+			QJsonArray _server_group;
 			for ( QString sg : job->server_group ) _server_group.push_back(sg);
 			//----------------------------------------------------
 			return { _server, _server_group, job->priority, job->comment, job->instances, 
@@ -219,9 +219,9 @@ QJsonObject manager::jobOptions( QJsonObject pks ){
 	return {};
 }
 
-QJsonObject manager::serverAction( QJsonObject pks ){
+QJsonArray manager::serverAction( QJsonArray pks ){
 
-	for ( auto _server : pks.toArray() ){
+	for ( auto _server : pks ){
 
         QString name = _server[0].toString();
         QString server_action = _server[1].toString();
@@ -267,7 +267,7 @@ void manager::serverSetState( server_struct *server, bool state ){
     }
 
 	else{
-		QJsonObject kill_ins;
+		QJsonArray kill_ins;
 
         for (int i = 0; i < server->max_instances; ++i){
             auto ins = server->instances[i];
@@ -281,7 +281,7 @@ void manager::serverSetState( server_struct *server, bool state ){
     }
 }
 
-QJsonObject manager::serverOptions( QJsonObject pks ){
+QJsonArray manager::serverOptions( QJsonArray pks ){
 
 	for ( auto _server : pks.toArray() ){
 
@@ -303,10 +303,10 @@ QJsonObject manager::serverOptions( QJsonObject pks ){
 	return {};
 }
 
-void manager::groupAction( QJsonObject pks ){
+void manager::groupAction( QJsonArray pks ){
 
-	QJsonObject group_list = pks[0].toObject(); 
-	QJsonObject group_machine = pks[1].toObject();
+	QJsonArray group_list = pks[0].toObject(); 
+	QJsonArray group_machine = pks[1].toObject();
 	QString group_action = pks[2].toString();
 
 	if ( group_action == "addMachine" ){
@@ -358,7 +358,7 @@ void manager::groupAction( QJsonObject pks ){
     }
 }
 
-void manager::taskAction( QJsonObject pks ){
+void manager::taskAction( QJsonArray pks ){
 
 	for ( auto _task : pks.toArray() ){
         QString job_name = _task[0].toString();
@@ -400,7 +400,7 @@ void manager::taskAction( QJsonObject pks ){
     }
 }
 
-void manager::groupCreate( QJsonObject pks ){
+void manager::groupCreate( QJsonArray pks ){
 
 	QString group_name_in = pks[0].toString(); 
 	int totaMachine = pks[1].toInt(); 
@@ -439,7 +439,7 @@ void manager::groupCreate( QJsonObject pks ){
     groups.push_back( group );
 }
 
-QJsonObject manager::preferencesAction( QJsonObject pks ){
+QJsonArray manager::preferencesAction( QJsonArray pks ){
 
 	if ( pks.toString() == "read" ){
 		return  jread( "../../etc/preferences.json" );
@@ -453,7 +453,7 @@ QJsonObject manager::preferencesAction( QJsonObject pks ){
 	return {};
 }
 
-QJsonObject manager::jobLogAction( QJsonObject pks ){
+QJsonArray manager::jobLogAction( QJsonArray pks ){
 
 	QString server_name = pks.toString();
 	auto server = find_struct( servers, server_name );
