@@ -1,7 +1,7 @@
 #include "server.h"
 
 void server::init(){
-    tcpClient( managerHost, 7000, &server::send_resources, this, 1 );
+    tcpClient( managerHost, 7000, &server::send_resources, this );
 	tcpServer( 7001, &server::recieveManager, this );
 }
 
@@ -60,8 +60,8 @@ QString server::send_resources( QString _recv ){
 QString server::recieveManager( QString _recv ){
 
 	QJsonArray json = jafs( _recv );
-	QJsonArray recv = json[0].toArray();
-	int input = json[1].toInt();
+	int input = json[0].toInt();
+	QJsonArray recv = json[1].toArray();
 
 
 	QString send;
@@ -139,6 +139,6 @@ QString server::recieveManager( QString _recv ){
 	}
 
 
-	return {};
+	return "";
 }
 

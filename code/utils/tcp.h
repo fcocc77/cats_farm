@@ -25,12 +25,12 @@ public:
 
 	int port; 
 	T *_class; 
-	QString ( T::*func )( QString, int );
+	QString ( T::*func )( QString );
 
 	QTcpSocket *qsocket;    
 	int socketDescriptor;
 
-	tcp_socket( int _socketDescriptor, int _port, QString ( T::*_func )( QString, int ), T *__class ){
+	tcp_socket( int _socketDescriptor, int _port, QString ( T::*_func )( QString ), T *__class ){
 		port = _port;
 		func = _func;
 		_class = __class;
@@ -119,11 +119,11 @@ class tcp_server : public QTcpServer{
 public:
 	int port; 
 	T *_class; 
-	QString ( T::*func )( QString, int );
+	QString ( T::*func )( QString );
 	QTcpServer *qserver;
 
 	// Constructor para servidor ( siempre esta en loop y con qthread ) 
-	tcp_server( int _port, QString ( T::*_func )( QString, int ), T *__class ) : QTcpServer(__class){        
+	tcp_server( int _port, QString ( T::*_func )( QString ), T *__class ) : QTcpServer(__class){        
 		port = _port;
 		func = _func;
 		_class = __class;
@@ -334,7 +334,7 @@ public:
 };
 
 template < class T >
-void tcpServer(  int _port, QString ( T::*_func )( QString, int ), T *_class ){
+void tcpServer(  int _port, QString ( T::*_func )( QString ), T *_class ){
 	tcp_server< T > *_server = new tcp_server< T >( _port, _func, _class ); 
 	_server->init();
 }

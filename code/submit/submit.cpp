@@ -35,7 +35,9 @@ void submit::init( int argc, char const *argv[] ){
 	QString _path = os::dirname(os::dirname(os::dirname(argv[0])));
 	QString managerHost = fread( _path + "/etc/manager_host" );
 
+
+
 	if ( argc > 2 )
-		tcpClient( managerHost, 7000, info, 0 );
+		tcpClient( managerHost, 7000, jats({ 0, info }) );
 }
 

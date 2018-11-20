@@ -98,7 +98,6 @@ void manager::render_job(){
 }
 
 void manager::render_task( server_struct *server, inst_struct *instance, job_struct *job ){
-	debug("manager::render_task.");
 	instance->reset = 0;
 
 	auto software = job->software;

@@ -19,14 +19,19 @@ void manager::init(){
 	threading( &manager::render_job, this );
 }
 
-QJsonArray manager::server_tcp( QJsonArray pks, int input ){
+QString manager::server_tcp( QString _recv ){
+
+	QJsonArray recv = jafs( _recv );
+	int input = recv[0].toInt();
+	QJsonArray pks = recv[1].toArray();
+
 
 	if ( input == 0 ) return make_job( pks );
 	if ( input == 1 ) return update_server_thread( pks );
-	if ( input == 2 ) return sendToMonitor_thread( pks );
+	if ( input == 2 ) return sendToMonitor_thread();
 	if ( input == 3 ) return recieve_monitor_thread( pks );
 
-	return {};
+	return "";
 }
 
 void manager::reactive_all(){
@@ -59,15 +64,15 @@ void manager::reactive_all(){
 	//-------------------------------------------------------------
 }
 
-QJsonArray manager::make_job( QJsonArray recv ){
+QString manager::make_job( QJsonArray recv ){
 
 	QString _job_name = recv[0].toString(); 
 	//------------------------------
 	vector <QString> _server;
-	if ( recv[1].toString() != "None" ) _server.push_back( recv[1].toString().toStdString() );
+	if ( recv[1].toString() != "None" ) _server.push_back( recv[1].toString() );
 	//------------------------------
 	vector <QString> _server_group;
-	if ( recv[2].toString() != "None" ) _server_group.push_back( recv[2].toString().toStdString() );
+	if ( recv[2].toString() != "None" ) _server_group.push_back( recv[2].toString() );
 	//------------------------------
 	int _first_frame = recv[3].toInt(); 
 	int _last_frame = recv[4].toInt(); 
@@ -100,7 +105,7 @@ QJsonArray manager::make_job( QJsonArray recv ){
 			}
 		}
 		if ( inside ){
-			job_name = _job_name + "_" + to_string(i);
+			job_name = _job_name + "_" + QString::number(i);
 		}
 		else { break; }
 	}
@@ -144,7 +149,7 @@ QJsonArray manager::make_job( QJsonArray recv ){
 
 	jobs.push_back(_job);
 
-	return {};
+	return "";
 }
 
 vector <task_struct*> manager::make_task( int first_frame, int last_frame, int task_size ){
@@ -180,9 +185,9 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 	for ( auto i : tasks_range ){
 		num++;
 
-		if ( num < 10 ) task_name = "Task_00" + to_string(num);
-		else if ( num > 99 ) task_name = "Task_" + to_string(num);
-		else task_name = "Task_0" + to_string(num);
+		if ( num < 10 ) task_name = "Task_00" + QString::number(num);
+		else if ( num > 99 ) task_name = "Task_" + QString::number(num);
+		else task_name = "Task_0" + QString::number(num);
 
 		task_struct *_tasks = new task_struct;
 
@@ -201,20 +206,21 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 }
 
 // Envia  informacion de jobs al monitor
-QJsonArray manager::sendToMonitor_thread( QJsonArray recv ){
-	return struct_to_json();
+QString manager::sendToMonitor_thread(){
+	return jots( struct_to_json() );
 } //-----------------------------------------
 
-void manager::json_to_struct( QJsonArray info ){
+void manager::json_to_struct( QJsonObject info ){
 
-	for ( auto job : info[ "jobs" ].toObject() ){
+	for ( auto j : info[ "jobs" ].toObject() ){
 		job_struct *_jobs = new job_struct;
+		QJsonObject job = j.toObject();
 		_jobs->name = job[ "name" ].toString();
 		_jobs->status = job[ "status" ].toString();
 		_jobs->priority = job[ "priority" ].toInt();
-		for ( QString _server : job[ "server" ].toArray() ) 
+		for ( QJsonValue _server : job[ "server" ].toArray() ) 
 			_jobs->server.push_back( _server.toString() );
-		for ( QString _group : job[ "server_group" ].toArray() ) 
+		for ( QJsonValue _group : job[ "server_group" ].toArray() ) 
 			_jobs->server_group.push_back( _group.toString() );
 		_jobs->instances = job[ "instances" ].toInt();
 		_jobs->comment = job[ "comment" ].toString();
@@ -231,7 +237,7 @@ void manager::json_to_struct( QJsonArray info ){
 		_jobs->extra = job[ "extra" ].toString();
 		_jobs->render = job[ "render" ].toString();
 
-		for ( auto vs : job[ "vetoed_servers" ].toArray() ){
+		for ( QJsonValue vs : job[ "vetoed_servers" ].toArray() ){
 			_jobs->vetoed_servers.push_back( vs.toString() );
 		}
 
@@ -246,8 +252,9 @@ void manager::json_to_struct( QJsonArray info ){
 		_jobs->first_frame = job[ "first_frame" ].toInt();
 		_jobs->last_frame = job[ "last_frame" ].toInt();
 
-		for ( auto t : job[ "task" ].toArray ){
+		for ( QJsonValue _t : job[ "task" ].toArray() ){
 			task_struct *_tasks = new task_struct; 
+			QJsonObject t = _t.toObject();
 			_tasks->name = t[ "name" ].toString();  
 			_tasks->status = t[ "status" ].toString();  
 			_tasks->first_frame = t[ "first_frame" ].toInt();  
@@ -261,7 +268,8 @@ void manager::json_to_struct( QJsonArray info ){
 
 	}
 
-	for ( auto server : info[ "servers" ].toObject() ){
+	for ( QJsonValue s : info[ "servers" ].toObject() ){
+		QJsonObject server = s.toObject();
 		server_struct *_server = new server_struct;
 		_server->name = server["name"].toString();
 		_server->status = server["status"].toString();
@@ -270,13 +278,14 @@ void manager::json_to_struct( QJsonArray info ){
 		_server->cpu = server["cpu"].toInt();
 		_server->cpu_cores = server["cpu_cores"].toInt();
 		_server->ram = server["ram"].toInt();
-		_server->ram_used = server["ram_used"].toDoble();
+		_server->ram_used = server["ram_used"].toDouble();
 		_server->ram_total = server["ram_total"].toInt();
 		_server->temp = server["temp"].toInt();
 		_server->vbox = server["vbox"].toBool();
 		_server->response_time = server["response_time"].toInt();
 
-		for ( auto ins : server["instances"].toArray() ){
+		for ( QJsonValue i : server["instances"].toArray() ){
+			QJsonArray ins = i.toArray();
 			inst_struct *_ins = new inst_struct;
 			_ins->index = ins[0].toInt();
 			_ins->status = ins[1].toInt();
@@ -297,14 +306,16 @@ void manager::json_to_struct( QJsonArray info ){
 		servers.push_back( _server );
 	}
 
-	for ( auto group : info[ "groups" ].toObject() ){
+	for ( QJsonValue g : info[ "groups" ].toObject() ){
+		QJsonObject group = g.toObject();
 		group_struct *_group = new group_struct;
 		_group->name = group[ "name" ].toString();
 		_group->status = group[ "status" ].toBool();
 		_group->totaMachine = group[ "totaMachine" ].toInt();
 		_group->activeMachine = group[ "activeMachine" ].toInt();
 
-		for ( auto server : group["server"].toArray() ){
+		for ( QJsonValue s : group["server"].toArray() ){
+			QJsonArray server = s.toArray();
 			serverFromGroupStruct *_server = new serverFromGroupStruct;
 			_server->name = server[0].toString();
 			_server->status = server[1].toBool();
@@ -316,7 +327,7 @@ void manager::json_to_struct( QJsonArray info ){
 	}
 }
 
-QJsonArray manager::struct_to_json(){
+QJsonObject manager::struct_to_json(){
 
 	// combierte todas las estructuras de Jobs y las combierte a JSON para poder enviarlas y guardarlas
 	QJsonObject info;

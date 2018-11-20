@@ -24,7 +24,7 @@ void manager::container_save(){
 	}
 }
 
-QJsonArray manager::update_server_thread( QJsonArray recv ){
+QString manager::update_server_thread( QJsonArray recv ){
 
 	if ( not recv.empty() ){  
 		QString name = recv[0].toString();
@@ -98,7 +98,7 @@ QJsonArray manager::update_server_thread( QJsonArray recv ){
 
 	}
 
-	return preferences;
+	return jots( preferences );
 }
 
 void manager::update_server(){

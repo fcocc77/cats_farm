@@ -12,9 +12,10 @@ void manager::resetAllServer(){
 	//--------------------------------------------------
 }
 
-QJsonArray manager::recieve_monitor_thread( QJsonArray recv ){
+QString manager::recieve_monitor_thread( QJsonArray recv ){
 
-	auto pks = recv[0].toString(), id = recv[1].toString();
+	auto pks = recv[0].toString();
+	QString id = recv[1].toString();
 
 	if ( not pks.empty() ){
 		if ( id =="jobAction" ){ jobAction( pks ); }
@@ -29,7 +30,7 @@ QJsonArray manager::recieve_monitor_thread( QJsonArray recv ){
 
 	}
 
-	return {};
+	return "";
 }
 
 void manager::kill_tasks( job_struct *job, bool _delete ){
@@ -54,7 +55,7 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 		QJsonArray ins = active_server[ server->name ];
 
 		if ( not ins.empty() ){
-			tcpClient( server->host, 7001, ins, 3 );			
+			tcpClient( server->host, 7001, jats({ 3, ins }) );			
 		}
 	}
 }
@@ -276,7 +277,7 @@ void manager::serverSetState( server_struct *server, bool state ){
 			kill_ins.push_back(i);
         }
 
-        tcpClient( server->host, 7001, kill_ins, 3 );
+        tcpClient( server->host, 7001, jats({ 3, kill_ins }));
 
     }
 }
