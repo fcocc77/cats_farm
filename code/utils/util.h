@@ -15,6 +15,8 @@
 #include <QJsonArray>
 #include <QFile>
 #include <QMessageBox>
+#include <QList>
+
 
 using namespace std;
 

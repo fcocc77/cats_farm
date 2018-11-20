@@ -14,8 +14,8 @@ struct job_struct{
 	QString name;
 	QString status;
 	int priority;
-	vector <QString> server;
-	vector <QString> server_group;
+	QStringList server;
+	QStringList server_group;
 	int instances;
 	QString comment;
 	QString submit_start;
@@ -31,7 +31,7 @@ struct job_struct{
 	QString system;
 	QString extra;
 	QString render;
-	vector <QString> vetoed_servers;
+	QStringList vetoed_servers;
 	int progres;
 	int old_p;
 	int waiting_task;
@@ -42,7 +42,7 @@ struct job_struct{
 	int task_size;
 	int first_frame;
 	int last_frame;
-	vector <task_struct*> task;
+	QList <task_struct*> task;
 };
 
 struct inst_struct{
@@ -65,7 +65,7 @@ struct server_struct{
 	int temp;
 	bool vbox;
 	int response_time;
-	vector <inst_struct*> instances;
+	QList <inst_struct*> instances;
 	int max_instances;
 	QString sshUser;
 	QString sshPass;
@@ -86,7 +86,7 @@ struct group_struct {
 	bool status;
 	int totaMachine;
 	int activeMachine;
-	vector <serverFromGroupStruct*> server;
+	QList <serverFromGroupStruct*> server;
 };
 
 struct makejob_struct{

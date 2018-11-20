@@ -8,9 +8,9 @@ class render : public QObject{
 public:
 
 	QJsonObject preferences;
-	vector <int> first_frame, last_frame, pid;
-	vector <QString> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
-	vector <bool> taskKill, renderInstance;
+	QList <int> first_frame, last_frame, pid;
+	QList <QString> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
+	QList <bool> taskKill, renderInstance;
 	bool VMCinemaActive;
 	bool VMCinemaTurn;
 	int VMCinemaRunningTimes;

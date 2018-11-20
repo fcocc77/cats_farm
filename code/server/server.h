@@ -3,7 +3,6 @@
 
 #include <iostream>
 using namespace std;
-#include <vector>
 #include <thread>
 
 #include "../utils/util.h"

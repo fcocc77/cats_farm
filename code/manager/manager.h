@@ -3,7 +3,6 @@
 
 #include <iostream>
 using namespace std;
-#include <vector>
 #include <ctime> // time_t
 #include <algorithm> //sort
 #include <unistd.h>// sleep usleep
@@ -24,15 +23,15 @@ using namespace std;
 
 class manager : public QObject{
 public:
-	vector <job_struct*> jobs;
-	vector <server_struct*> servers;
-	vector <group_struct*> groups;
+	QList <job_struct*> jobs;
+	QList <server_struct*> servers;
+	QList <group_struct*> groups;
 	QJsonObject preferences = jread( "../../etc/preferences.json" );
 	bool reset_render;
 
 	void init();
 	QString make_job( QJsonArray recv );
-	vector <task_struct*> make_task( int first_frame, int last_frame, int task_size );
+	QList <task_struct*> make_task( int first_frame, int last_frame, int task_size );
 	void resetAllServer();
 	void kill_tasks( job_struct *job, bool _delete );
 	void render_job();
@@ -42,15 +41,15 @@ public:
 	void json_to_struct( QJsonObject info );
     void reactive_all();
 	QString recieve_monitor_thread( QJsonArray recv );
-	void jobAction( QString pks );
-	QString jobOptions( QString pks );
-	QString serverAction( QString pks );
-	QString serverOptions( QString pks );
-	void groupAction( QString pks );
-	void taskAction( QString pks );
-	void groupCreate( QString pks );
-	QString preferencesAction( QString pks );
-	QString jobLogAction( QString pks );
+	void jobAction( QJsonArray pks );
+	QString jobOptions( QJsonArray pks );
+	QString serverAction( QJsonArray pks );
+	QString serverOptions( QJsonArray pks );
+	void groupAction( QJsonArray pks );
+	void taskAction( QJsonArray pks );
+	void groupCreate( QJsonArray pks );
+	QString preferencesAction( QJsonArray pks );
+	QString jobLogAction( QJsonArray pks );
     void serverSetState( server_struct *server, bool state );
 	QString server_tcp( QString recv );
 

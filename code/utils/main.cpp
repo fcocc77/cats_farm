@@ -13,6 +13,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QJsonArray>
+#include <QList>
 
 
 
@@ -21,7 +22,9 @@
 
 
 int main(){
+	QList hola = {10,20,"test"};
 
 
-
+	qDebug() << hola[2];
+ 
 }

@@ -14,7 +14,7 @@ void manager::resetAllServer(){
 
 QString manager::recieve_monitor_thread( QJsonArray recv ){
 
-	auto pks = recv[0].toString();
+	QJsonArray pks = recv[0].toArray();
 	QString id = recv[1].toString();
 
 	if ( not pks.empty() ){
@@ -36,13 +36,14 @@ QString manager::recieve_monitor_thread( QJsonArray recv ){
 void manager::kill_tasks( job_struct *job, bool _delete ){
 
 	//desactica servers que estaban activos por este job
-	QJsonArray active_server;
+	QStringList active_server;
 
 	for ( auto task : job->task ){
 		if ( not ( task->server == "...") ){
 			if ( task->status == "active" ){
-				auto s = task->server.split( ":" );	
-				active_server[s[0]].push_back( s[1].toInt() );				
+				QStringList s = task->server.split( ":" );
+				active_server[ s[0] ].push_back( s[1].toInt() );
+
 			}
 		}
 	}
@@ -52,7 +53,7 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	}
 
 	for ( auto server : servers ){
-		QJsonArray ins = active_server[ server->name ];
+		QJsonArray ins = active_server[ server->name ].toInt();
 
 		if ( not ins.empty() ){
 			tcpClient( server->host, 7001, jats({ 3, ins }) );			
@@ -119,7 +120,7 @@ void manager::jobAction( QJsonArray pks ){
     }
 }
 
-QJsonArray manager::jobOptions( QJsonArray pks ){
+QString manager::jobOptions( QJsonArray pks ){
 	int num = 0;
 	QString _name;
 	for ( auto _job : pks ){
@@ -160,8 +161,8 @@ QJsonArray manager::jobOptions( QJsonArray pks ){
 				job->task_size = _task_size;
 
 				// obtiene los frames segun el estado
-				vector <int> finished;
-				vector <int> suspended;
+				QList <int> finished;
+				QList <int> suspended;
 				for ( auto task : job->task ){
 					if ( ( task->status == "suspended" ) )
 						for (int i = task->first_frame; i <= task->last_frame; ++i)
@@ -220,7 +221,7 @@ QJsonArray manager::jobOptions( QJsonArray pks ){
 	return {};
 }
 
-QJsonArray manager::serverAction( QJsonArray pks ){
+QString manager::serverAction( QJsonArray pks ){
 
 	for ( auto _server : pks ){
 
@@ -282,7 +283,7 @@ void manager::serverSetState( server_struct *server, bool state ){
     }
 }
 
-QJsonArray manager::serverOptions( QJsonArray pks ){
+QString manager::serverOptions( QJsonArray pks ){
 
 	for ( auto _server : pks.toArray() ){
 
@@ -440,7 +441,7 @@ void manager::groupCreate( QJsonArray pks ){
     groups.push_back( group );
 }
 
-QJsonArray manager::preferencesAction( QJsonArray pks ){
+QString manager::preferencesAction( QJsonArray pks ){
 
 	if ( pks.toString() == "read" ){
 		return  jread( "../../etc/preferences.json" );
@@ -454,7 +455,7 @@ QJsonArray manager::preferencesAction( QJsonArray pks ){
 	return {};
 }
 
-QJsonArray manager::jobLogAction( QJsonArray pks ){
+QString manager::jobLogAction( QJsonArray pks ){
 
 	QString server_name = pks.toString();
 	auto server = find_struct( servers, server_name );

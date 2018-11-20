@@ -68,10 +68,10 @@ QString manager::make_job( QJsonArray recv ){
 
 	QString _job_name = recv[0].toString(); 
 	//------------------------------
-	vector <QString> _server;
+	QStringList _server;
 	if ( recv[1].toString() != "None" ) _server.push_back( recv[1].toString() );
 	//------------------------------
-	vector <QString> _server_group;
+	QStringList _server_group;
 	if ( recv[2].toString() != "None" ) _server_group.push_back( recv[2].toString() );
 	//------------------------------
 	int _first_frame = recv[3].toInt(); 
@@ -134,7 +134,6 @@ QString manager::make_job( QJsonArray recv ){
 	_job->system = _system;
 	_job->extra = _extra;
 	_job->render = _render;
-	_job->vetoed_servers = {};
 	_job->progres = 0;
 	_job->old_p = 0;
 	_job->waiting_task = tasks.size();
@@ -363,7 +362,12 @@ QJsonObject manager::struct_to_json(){
 		j[ "project" ] = job->project;
 		j[ "system" ] = job->system;
 		j[ "extra" ] = job->extra;
-		j[ "vetoed_servers" ] = job->vetoed_servers;
+		// --------------------------------
+		QJsonArray vetoed_servers;
+		for ( QString s : job->vetoed_servers )
+			vetoed_servers.push_back( s );
+		j[ "vetoed_servers" ] = vetoed_servers;
+		// --------------------------------
 		j[ "render" ] = job->render;
 		j[ "progres" ] = job->progres;
 		j[ "old_p" ] = job->old_p;
@@ -415,7 +419,7 @@ QJsonObject manager::struct_to_json(){
 		// --------------------------------
 		QJsonArray _instances;
 		for ( auto instance : server->instances ){
-			_instances.push_back( { instance->index, instance->status, instance->reset, instance->job_task } );  
+			_instances.push_back( {{ instance->index, instance->status, instance->reset, instance->job_task }} );  
 		}
 		s[ "instances" ] = _instances;
 		// --------------------------------
@@ -445,7 +449,7 @@ QJsonObject manager::struct_to_json(){
 		g[ "activeMachine" ] = group->activeMachine;
 		QJsonArray serverList;
 		for ( auto server : group->server ){
-            serverList.push_back( { server->name, server->status } );
+            serverList.push_back( {{ server->name, server->status }} );
 		}
 		g[ "server" ] = serverList;
 
