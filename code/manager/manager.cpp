@@ -151,11 +151,11 @@ QString manager::make_job( QJsonArray recv ){
 	return "";
 }
 
-vector <task_struct*> manager::make_task( int first_frame, int last_frame, int task_size ){
+QList <task_struct*> manager::make_task( int first_frame, int last_frame, int task_size ){
 
 	//Crea una lista de tareas con el frame de inicio y final
-	vector <int> range;
-	vector <vector <int>> tasks_range;
+	QList <int> range;
+	QList <QList <int>> tasks_range;
 
 	int t = task_size - 1;
 	int f = first_frame - task_size;
@@ -177,7 +177,7 @@ vector <task_struct*> manager::make_task( int first_frame, int last_frame, int t
 	//--------------------------------------------------------
 
 	// create tasks
-	vector <task_struct*> tasks;
+	QList <task_struct*> tasks;
 
 	int num=0;
 	QString task_name;

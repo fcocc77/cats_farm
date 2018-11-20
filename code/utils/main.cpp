@@ -22,9 +22,9 @@
 
 
 int main(){
-	QList hola = {10,20,"test"};
+
+	QStringList tt = { "hola","casa","test"};
+	qDebug() << tt;
 
 
-	qDebug() << hola[2];
- 
 }

@@ -41,9 +41,9 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	for ( auto task : job->task ){
 		if ( not ( task->server == "...") ){
 			if ( task->status == "active" ){
-				QStringList s = task->server.split( ":" );
-				active_server[ s[0] ].push_back( s[1].toInt() );
-
+				QString name = task->server.split( ":" )[0];
+				if ( not active_server.contains( name ) )
+					active_server.push_back( name );
 			}
 		}
 	}
@@ -53,18 +53,16 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 	}
 
 	for ( auto server : servers ){
-		QJsonArray ins = active_server[ server->name ].toInt();
-
-		if ( not ins.empty() ){
-			tcpClient( server->host, 7001, jats({ 3, ins }) );			
-		}
+		if ( active_server.contains( server->name ) )
+			tcpClient( server->host, 7001, jats({ 3, 0 }) );			
+		
 	}
 }
 
 void manager::jobAction( QJsonArray pks ){
 
-	for ( auto _job : pks){
-
+	for ( QJsonValue j : pks ){
+		QJsonArray _job = j.toArray();
         QString job_name = _job[0].toString(); 
         QString job_action = _job[1].toString();
 
@@ -82,7 +80,7 @@ void manager::jobAction( QJsonArray pks ){
         }
 
 		if ( job_action == "unlock" ){
-			job->vetoed_servers = {};
+			job->vetoed_servers.clear();
 		}
 
 		if ( job_action == "resume" ){
@@ -103,7 +101,7 @@ void manager::jobAction( QJsonArray pks ){
 			job->timer2 = "...";
 			job->submit_finish = "...";
 			job->total_render_time = "...";
-			job->vetoed_servers = {};
+			job->vetoed_servers.clear();
 
 			// reset tasks
 			for ( auto task : job->task ){
@@ -123,8 +121,8 @@ void manager::jobAction( QJsonArray pks ){
 QString manager::jobOptions( QJsonArray pks ){
 	int num = 0;
 	QString _name;
-	for ( auto _job : pks ){
-
+	for ( QJsonValue j : pks ){
+		QJsonArray _job = j.toArray();
 		QString job_name = _job[0].toString();
 		QJsonArray options = _job[1].toArray(); 
 		QString action = _job[2].toString();
@@ -132,23 +130,25 @@ QString manager::jobOptions( QJsonArray pks ){
 		auto job = find_struct( jobs, job_name );
 
 		if ( action == "write" ){
-			job->server = {};
-			for( auto s :  options[0] ) job->server.push_back(s);
+			job->server.clear();
+			for( QJsonValue s :  options[0].toArray() ) 
+				job->server.push_back( s.toString() );
 			//------------------------
-			job->server_group = {};
-			for( auto sg :  options[1] ) job->server_group.push_back(sg);
+			job->server_group.clear();
+			for( QJsonValue sg :  options[1].toArray() ) 
+				job->server_group.push_back( sg.toString() );
 			//------------------------			
-			job->priority = options[2];
-			job->comment = options[3];
-			job->instances = options[4];
-			int _first_frame = options[5];
-			int _last_frame = options[6];
-			int _task_size = options[7];
+			job->priority = options[2].toInt();
+			job->comment = options[3].toString();
+			job->instances = options[4].toInt();
+			int _first_frame = options[5].toInt();
+			int _last_frame = options[6].toInt();
+			int _task_size = options[7].toInt();
 
 			// el nombre se repite se pone un numero al final del nombre 
-			QString name = options[8];
+			QString name = options[8].toString();
 			if ( not num  ) job->name = name;
-			else job->name = name + "_" + to_string(num);
+			else job->name = name + "_" + QString::number(num);
 			num++;
 			//------------------------------------------------
 
@@ -212,19 +212,19 @@ QString manager::jobOptions( QJsonArray pks ){
 			QJsonArray _server_group;
 			for ( QString sg : job->server_group ) _server_group.push_back(sg);
 			//----------------------------------------------------
-			return { _server, _server_group, job->priority, job->comment, job->instances, 
-					job->task_size, job->name, job->first_frame, job->last_frame };
+			return jats( { _server, _server_group, job->priority, job->comment, job->instances, 
+					job->task_size, job->name, job->first_frame, job->last_frame } );
 		}
 
 	}
 
-	return {};
+	return "";
 }
 
 QString manager::serverAction( QJsonArray pks ){
 
-	for ( auto _server : pks ){
-
+	for ( QJsonValue s : pks ){
+		QJsonArray _server = s.toArray();
         QString name = _server[0].toString();
         QString server_action = _server[1].toString();
         int info =  _server[2].toInt();
@@ -249,11 +249,11 @@ QString manager::serverAction( QJsonArray pks ){
         }
 
 		if ( server_action == "ssh" ){
-			return { server->sshUser, server->sshPass, server->host };
+			return jats({ server->sshUser, server->sshPass, server->host });
         }
     }
 
-	return {};
+	return "{}";
 }
 
 void manager::serverSetState( server_struct *server, bool state ){
@@ -285,8 +285,9 @@ void manager::serverSetState( server_struct *server, bool state ){
 
 QString manager::serverOptions( QJsonArray pks ){
 
-	for ( auto _server : pks.toArray() ){
-
+	for ( QJsonValue s : pks ){
+		QJsonArray _server = s.toArray();
+       
         QString name = _server[0].toString();
         QJsonArray recv = _server[1].toArray();
         QString action =  _server[2].toString();
@@ -302,30 +303,32 @@ QString manager::serverOptions( QJsonArray pks ){
         }
     }
 
-	return {};
+	return "";
 }
 
 void manager::groupAction( QJsonArray pks ){
 
-	QJsonArray group_list = pks[0].toObject(); 
-	QJsonArray group_machine = pks[1].toObject();
+	QJsonArray group_list = pks[0].toArray(); 
+	QJsonArray group_machine = pks[1].toArray();
 	QString group_action = pks[2].toString();
 
 	if ( group_action == "addMachine" ){
 
-		for ( QJsonArray _group : group_machine ){
+		for ( QJsonValue g : group_machine ){
+			QJsonArray _group = g.toArray();
 			QString name = _group[0].toString(); 
 			QJsonArray serverList = _group[1].toArray();
 
 			auto group = find_struct( groups, name );
 
-			for ( auto server : serverList ){
+			for ( QJsonValue s : serverList ){
+				QJsonArray server = s.toArray();
 				if ( not is_struct( group->server, server.toString() ) ){
 
-				QString status = find_struct( servers, server.toString() )->status;
-				bool _status = true;
+					QString status = find_struct( servers, server.toString() )->status;
+					bool _status = true;
 
-				if ( status == "absent" ){ _status = false; }
+					if ( status == "absent" ){ _status = false; }
 
 					serverFromGroupStruct *sg = new serverFromGroupStruct;
 					sg->name = server.toString();
