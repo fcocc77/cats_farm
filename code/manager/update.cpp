@@ -32,7 +32,7 @@ QString manager::update_server_thread( QJsonArray recv ){
 		int cpu = recv[2].toInt();
 		int ram = recv[3].toInt();
 		int temp = recv[4].toInt();
-		QString system = recv[5];
+		QString system = recv[5].toString();
 		bool vbox = recv[6].toBool();
 		int ram_total = recv[7].toInt();
 		float ram_used = recv[8].toDouble();
@@ -45,7 +45,7 @@ QString manager::update_server_thread( QJsonArray recv ){
 
 		if ( not is_struct( servers, name ) ){
 
-			vector <inst_struct*> instances;
+			QList <inst_struct*> instances;
 
 			for (int i = 0; i < 16; ++i){
 			    inst_struct *ins = new inst_struct;
@@ -260,24 +260,24 @@ void manager::update_jobs(){
 			// si es que en la vuelta anterior del proceso fue active entonces suma el tiempo
 			float timer1, timer2;
 			if ( last_active ){
-				timer1 = stof( job->timer );
+				timer1 = job->timer.toDouble();
 				if ( job->timer == "..." ){
 					timer1 = time(0);
 				}
-				job->timer = to_string( time(0) );
+				job->timer = QString::number( time(0) );
 			}
 			else{
 				timer1 = time(0);
-				job->timer = to_string( time(0) );
+				job->timer = QString::number( time(0) );
             }
 
 			timer1 = time(0) - timer1;
 
 			if ( job->timer2 == "..." ) timer2 = 0;
-			else timer2 = stof( job->timer2 );
+			else timer2 = job->timer2.toDouble();
 
 			timer2 = timer1 + timer2;
-			job->timer2 = to_string( timer2 );
+			job->timer2 = QString::number( timer2 );
 			//--------------------------------------
 			float progres = job->progres;
 			//-----------------------------------------------------				

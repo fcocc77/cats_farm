@@ -18,7 +18,6 @@ void manager::render_job(){
 
 		//si el trabajo esta en cola se manda a render
 		for ( auto job : jobs ){
-			debug("manager::render_job: for job");
 			// hace una lista con los servidores listos para renderear
 			vector <QString> machinesList;
 			for ( auto sg : job->server_group ){
@@ -36,7 +35,6 @@ void manager::render_job(){
 			//------------------------------------------------------
 
 			for ( auto server : servers ){
-				debug("manager::render_job: for server");
 				bool serverOK = 0;
 				if ( in_vector( server->name, machinesList ) ){
 					serverOK = 1;
@@ -134,17 +132,17 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 			//pone en activo la tarea
 			task->status = "active";
 			job->active_task++;
-			task->server = server->name + ":" + to_string( instance->index );
+			task->server = server->name + ":" + QString::number( instance->index );
 			int time1 = time(0);
 			//------------------------------
 			job->status = "Rendering...";
 
-			QString total_frame = to_string( last_frame - first_frame + 1 );
+			QString total_frame = QString::number( last_frame - first_frame + 1 );
 
 			// Envia a renderar la tarea al servidor que le corresponde
-			QJsonObject pks = { project, software, instance->index, first_frame, last_frame, jobSystem, extra, render };
+			QJsonArray pks = { project, software, instance->index, first_frame, last_frame, jobSystem, extra, render };
 
-			QJsonObject result =  tcpClient( server->host, 7001, pks, 0 );
+			QString result = tcpClient( server->host, 7001, jats({ 0, pks }) );
 
 			if ( not ( result == "ok" ) ){
 				if ( result == "kill" ){
@@ -243,18 +241,18 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 				_basename = _basename.replace( ".mov", "" );
 				//-----------------------------------------------------
 
-				QJsonObject system_path = preferences["paths"].toObject()["system"].toObject();
+				QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 
 				//obtiene ruta correcta
 				QString src_path, dst_path, extra;
 
-				for ( QString p1 : system_path ){
-					for ( QString p2 : system_path){
-						extra = project.replace( p1, p2 );
+				for ( QJsonValue p1 : system_path ){
+					for ( QJsonValue p2 : system_path){
+						extra = project.replace( p1.toString(), p2.toString() );
 
 						if ( os::isfile( extra ) ){
-							src_path = p1;
-							dst_path = p2;
+							src_path = p1.toString();
+							dst_path = p2.toString();
 							break;
 						}
 

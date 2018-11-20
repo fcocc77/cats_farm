@@ -49,7 +49,7 @@ public:
 	void taskAction( QJsonArray pks );
 	void groupCreate( QJsonArray pks );
 	QString preferencesAction( QJsonArray pks );
-	QString jobLogAction( QJsonArray pks );
+	QString jobLogAction( QString pks );
     void serverSetState( server_struct *server, bool state );
 	QString server_tcp( QString recv );
 
