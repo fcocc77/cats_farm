@@ -47,7 +47,7 @@ public:
     //---------------------------
 
     ~monitor(){
-        QString openMonitor = path() + "/etc/openMonitor";
+        QString openMonitor = path + "/etc/openMonitor";
         fwrite( openMonitor, "0" ); // escrebe que el monitor ya esta cerrado
     }
 

@@ -24,7 +24,6 @@ using namespace std;
 #include "../utils/util.h"
 #include "../utils/os.h"
 #include "../manager/structs.h"
-#include "../utils/QJsonObject.h"
 
 // monitor moduless
 #include "ui_jobs_tree.h"
@@ -68,7 +67,7 @@ public:
 
     // revice desde manager
 
-    QJsonObject managerRecieveUpdate( QJsonObject recv );
+    QString managerRecieveUpdate( QString recv );
     void actions();
     void managerRecieve();
     void updateJob( QJsonObject recv );

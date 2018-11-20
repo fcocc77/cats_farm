@@ -1,13 +1,13 @@
 #include "main_window.h"
 
 int main( int argc, char *argv[] ){
-	QString showMonitor = path() + "/etc/showMonitor";
+	QString showMonitor = path + "/etc/showMonitor";
 	
 	// si el monitor esta abierto no lo abre
 	int count = 0;
 	if  ( _win32 ){ 
-		auto lista = split( os::qp( "tasklist -fi \"IMAGENAME eq CatsFarm Monitor.exe\"" ), "\n" );
-		for ( QString l : lista ) if ( in_string( "CatsFarm Monitor.exe", l ) ) count++;
+		QStringList lista = os::sh( "tasklist -fi \"IMAGENAME eq CatsFarm Monitor.exe\"" ).split( "\n" );
+		for ( QString l : lista ) if ( l.contains( "CatsFarm Monitor.exe" ) ) count++;
 	}
 	else count = 1;
 	//------------------------------------------

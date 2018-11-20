@@ -99,7 +99,7 @@ void general::notifyIcon(){
 			QString status = item->text( 4 );
 			QString name = item->text( 0 );
 
-			QString notifyJob = "../../log/trayIcon/" + name.toStdString();
+			QString notifyJob = "../../log/trayIcon/" + name;
 
 			if ( status == "Queue" or status == "Rendering..." ){
 				if ( os::isfile( notifyJob ) ){

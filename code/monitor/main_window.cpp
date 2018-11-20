@@ -40,7 +40,7 @@ void monitor::init(){
 
 void monitor::update(){
 	// si el archivo esta en 1 muestra el monitor
-	static QString showMonitor = path() + "/etc/showMonitor";
+	static QString showMonitor = path + "/etc/showMonitor";
 	if ( not ( fread( showMonitor ) == "0" ) ){
 		this->show();
 		fwrite( showMonitor, "0" );

@@ -9,21 +9,23 @@ void get_manager_info::managerRecieve(){
     QString host = fread( "../../etc/manager_host" );
 
     // actualiza una ves antes del loop.
-	QJsonObject recv =  tcpClient( host, 7000, {}, 2 );
+	QString recv =  tcpClient( host, 7000, jats({ 2,"none" }) );
     managerRecieveUpdate( recv );
     //--------------------------------------
-    tcpClient( host, 7000, &get_manager_info::managerRecieveUpdate, this, 2, true );
+    tcpClient( host, 7000, &get_manager_info::managerRecieveUpdate, this, true );
 }
 
-QJsonObject get_manager_info::managerRecieveUpdate( QJsonObject recv ){
+QString get_manager_info::managerRecieveUpdate( QString _recv ){
+	QJsonObject recv = jofs( _recv );
+
 
 	static int timelapse;
 	if ( not recv.empty() ){ 
 		if ( not shared->stopUpdate ){ 
-			shared->jobs = recv["jobs"]; // para las tasks
-			updateJob(  recv["jobs"] );
-			updateServer( recv["servers"] );
-			updateGroup( recv["groups"] );
+			shared->jobs = recv["jobs"].toObject(); // para las tasks
+			updateJob(  recv["jobs"].toObject() );
+			updateServer( recv["servers"].toObject() );
+			updateGroup( recv["groups"].toObject() );
 		}
 
 		else{ 
@@ -37,16 +39,16 @@ QJsonObject get_manager_info::managerRecieveUpdate( QJsonObject recv ){
 		}
 	}
 	
-	return {};
+	return jats({2});
 }
 
 void get_manager_info::updateJob( QJsonObject recv ){
 
 	// Chekear lista de jobs que hay en la lista
-	vector <QString> job_list;
+	QStringList job_list;
 
 	struct _job_item{ QString name; QTreeWidgetItem *item; };
-	vector <_job_item> job_item;
+	QList <_job_item> job_item;
 
 	for (int i = 0; i < jobsList->topLevelItemCount(); ++i){
 
@@ -58,26 +60,27 @@ void get_manager_info::updateJob( QJsonObject recv ){
 	}
 	//-----------------------------
 
-	vector <QString> job_name_list;
+	QStringList job_name_list;
 
-	for ( auto job : recv ){
-		QString job_name = QString::fromStdString( job["name"] );
-		QString status = QString::fromStdString( job["status"] );
-		QString comment = QString::fromStdString( job["comment"] );
-		QString submit_start = QString::fromStdString( job["submit_start"] );
-		QString submit_finish = QString::fromStdString( job["submit_finish"] );
-		QString total_render_time = QString::fromStdString( job["total_render_time"] );
-		QString estimated_time = QString::fromStdString( job["estimated_time"] );
-		QString software = QString::fromStdString( job["software"] );
-		int tasks = ( job["tasks"] );
-		int progres = ( job["progres"] );
+	for ( QJsonValue j : recv ){
+		QJsonObject job = j.toObject();
+		QString job_name = job["name"].toString();
+		QString status = job["status"].toString();
+		QString comment = job["comment"].toString();
+		QString submit_start = job["submit_start"].toString();
+		QString submit_finish = job["submit_finish"].toString();
+		QString total_render_time = job["total_render_time"].toString();
+		QString estimated_time = job["estimated_time"].toString();
+		QString software = job["software"].toString();
+		int tasks = job["tasks"].toInt();
+		int progres = job["progres"].toInt();
 
 		int porcent = ( progres * 100 ) / tasks;
 
 		// priority text
 		QString priority;
 
-		int p = job["priority"];
+		int p = job["priority"].toInt();;
 
 		if ( p == 0 ) priority = "Very High";
 		else if ( p == 1 ) priority = "High";
@@ -88,21 +91,21 @@ void get_manager_info::updateJob( QJsonObject recv ){
 
 		// si el jobs se borro recientemente no se agrega ni actualiza
 		bool _delete = false;
-		for ( auto d : deleteList ){
-			if ( d == job["name"] ){
+		for ( QString d : deleteList ){
+			if ( d == job_name ){
 				_delete = true; 
 			}
 		}
 		//---------------------------------
 
 		// agrega a la lista para saber que jobs ya no estan
-		job_name_list.push_back( job["name"] );
+		job_name_list.push_back( job_name );
 		//------------------------------------
 
 		if ( not _delete ){
 
 			// Si el nombre no esta en la lista de la interface, agrega el nuevo job.
-			if ( not  in_vector( job["name"],  job_list) ){
+			if ( not job_list.contains( job_name ) ){
 
 				QTreeWidgetItem *item = new QTreeWidgetItem();
 
@@ -228,7 +231,7 @@ void get_manager_info::updateJob( QJsonObject recv ){
 	// si el job ya no existe, borra el item
 
 	for ( _job_item ji : job_item  ){
-		if ( not in_vector( ji.name, job_name_list ) ){
+		if ( not job_name_list.contains( ji.name ) ){
 			auto root = jobsList->invisibleRootItem();
 			root->removeChild( ji.item );
 
@@ -238,11 +241,10 @@ void get_manager_info::updateJob( QJsonObject recv ){
 }
 
 void get_manager_info::updateServer( QJsonObject recv ){
-	debug("get_manager_info::updateServer: loop");
 	// Chekear lista de server que hay en la lista
-	vector <QString> server_list;
+	QStringList server_list;
 	struct _server_item{ QString name; QTreeWidgetItem *item; };
-	vector <_server_item> server_item;
+	QList <_server_item> server_item;
 
 	for (int i = 0; i < serverList->topLevelItemCount(); ++i){
 		auto item = serverList->topLevelItem(i); 
@@ -253,41 +255,41 @@ void get_manager_info::updateServer( QJsonObject recv ){
 	//--------------------------------------------------
 
 	// crea lista de los server que no estan filtrados
-	vector <QString> displayServer;
-	for ( auto server : recv ){
-
-		QString server_name = server["name"];
-		QString status = server["status"];
-		QString system = server["system"];
+	QStringList displayServer;
+	for ( QJsonValue s : recv ){
+		QJsonObject server = s.toObject();
+		QString server_name = server["name"].toString();
+		QString status = server["status"].toString();
+		QString system = server["system"].toString();
 
 		bool display = false;
 		if ( status == "absent" ){
-			if ( shared->server_display["off"] ){ //OFF
+			if ( shared->server_display["off"].toBool() ){ //OFF
 				display = true;
 			}
 		}
 
 		else{
-			if ( shared->server_display["on"] ){ //ON
+			if ( shared->server_display["on"].toBool() ){ //ON
 				display = true;
 			}
 		}
 
 		if ( display ){ 
 			if ( system == "Windows" ){
-				if ( shared->server_display["window"] ){ //Windows
+				if ( shared->server_display["window"].toBool() ){ //Windows
 					displayServer.push_back( server_name );
 				}
 			}
 
 			if ( system == "Linux" ){
-				if ( shared->server_display["linux"] ){ //Linux
+				if ( shared->server_display["linux"].toBool() ){ //Linux
 					displayServer.push_back( server_name ); 
 				}
 			}
 
 			if ( system == "Mac" ){
-				if ( shared->server_display["mac"] ){ //Mac	
+				if ( shared->server_display["mac"].toBool() ){ //Mac	
 					displayServer.push_back( server_name );
 				}
 			}
@@ -296,33 +298,34 @@ void get_manager_info::updateServer( QJsonObject recv ){
 	}
 	//------------------------------------------------------
 	//*
-	vector <QString> server_name_list;
+	QStringList server_name_list;
 
-	for ( auto server : recv ){ 
-        QString server_name = QString::fromStdString( server["name"] );
-		QString _server_name = server["name"];
-		int max_instances = server["max_instances"];
-		QString status = QString::fromStdString( server["status"] );
-		QString host = QString::fromStdString( server["host"] );
-		QString system = QString::fromStdString( server["system"] );
-		int cpu = server["cpu"];
-		int ram = server["ram"];
-		int temp = server["temp"];
-		bool vbox_status = server["vbox"];
-		int ram_total = server["ram_total"];
-		float ram_used = server["ram_used"];
-		int cpu_cores = server["cpu_cores"];
+	for ( QJsonValue s : recv ){ 
+        QJsonObject server = s.toObject();
+        QString server_name = server["name"].toString();
+		int max_instances = server["max_instances"].toInt();
+		QString status = server["status"].toString();
+		QString host = server["host"].toString();
+		QString system = server["system"].toString();
+		int cpu = server["cpu"].toInt();
+		int ram = server["ram"].toInt();
+		int temp = server["temp"].toInt();
+		bool vbox_status = server["vbox"].toBool();
+		int ram_total = server["ram_total"].toInt();
+		float ram_used = server["ram_used"].toDouble();
+		int cpu_cores = server["cpu_cores"].toInt();
 
-        vector <inst_struct*> instances;
-        for ( auto ins : server["instances"] ){
+        QList <inst_struct*> instances;
+        for ( QJsonValue i : server["instances"].toArray() ){
+        	QJsonArray ins = i.toArray();
         	inst_struct *_ins = new inst_struct;
-        	*_ins = { ins[0], ins[1], ins[2], ins[3] };
+        	*_ins = { ins[0].toInt(), ins[1].toInt(), ins[2].toBool(), ins[3].toString() };
         	instances.push_back( _ins );
         }
 
 		// crea lista con el nombre de la instancia y el status
 		QString instance_job;
-		vector <bool> general_status = { 0,0,0,0 };
+		QList <bool> general_status = { 0,0,0,0 };
 
 		if ( status == "absent" ){
 			instance_job = "...";
@@ -331,7 +334,7 @@ void get_manager_info::updateServer( QJsonObject recv ){
 			for (int i = 0; i < max_instances; ++i){
 				auto ins = instances[i];
 				general_status[ ins->status ] = true;
-				instance_job += "   " + QString::fromStdString( ins->job_task );
+				instance_job += "   " + ins->job_task;
             }
 
 			if ( general_status[3] ){ status = "failed"; }
@@ -344,7 +347,7 @@ void get_manager_info::updateServer( QJsonObject recv ){
 		// si el jobs se borro recientemente no se agrega ni actualiza
 		bool _delete = false;
 		for ( auto d : deleteList ){
-			if ( d == _server_name ){
+			if ( d == server_name ){
 				_delete = true;
 			}
 		}
@@ -354,14 +357,14 @@ void get_manager_info::updateServer( QJsonObject recv ){
 			// a veces cuando lee el archivo de server en el manager, no hay info y queda como None
 			// si el server name no igual a None crea el item
 
-			if ( in_vector( _server_name, displayServer) ){
+			if ( displayServer.contains( server_name ) ){
 
 				// agrega a la lista para saber que server ya no estan
-				server_name_list.push_back( server["name"] );
+				server_name_list.push_back( server_name );
 				//------------------------------------
 
 				// Si el nombre no esta en la lista de la interface, agrega el nuevo job.
-				if ( not in_vector( _server_name, server_list ) ){
+				if ( not server_list.contains( server_name ) ){
 
 					QProgressBar *cpuBar = new QProgressBar();
 					QVBoxLayout *cpuVbox = new QVBoxLayout(); cpuVbox->addWidget(cpuBar);
@@ -497,7 +500,7 @@ void get_manager_info::updateServer( QJsonObject recv ){
 
 	// si el server ya no existe, o esta oculto borra el item 
 	for ( auto si : server_item ){
-		if ( not  in_vector( si.name, server_name_list )){
+		if ( not  server_name_list.contains( si.name )){
 			auto root = serverList->invisibleRootItem();
 			root->removeChild( si.item );
 
@@ -508,17 +511,12 @@ void get_manager_info::updateServer( QJsonObject recv ){
 }
 
 void get_manager_info::updateGroup( QJsonObject recv ){
-	debug("get_manager_info::updateGroup: loop");
 
 	if ( not recv.empty() ){
-		awrite("../../log/bugs.txt","1\n");
-		// agrega los grupos a la lista
-
-		vector <QString> group_list;
+		QStringList group_list;
 
 	    struct _group_item{ QString name; QTreeWidgetItem *item; };
 	    vector <_group_item> group_item;
-	   awrite("../../log/bugs.txt","2\n");
 		for (int i = 0; i < groupList->topLevelItemCount(); ++i){
 			auto item = groupList->topLevelItem(i); 
 			QString name = item->text(2);
@@ -527,29 +525,27 @@ void get_manager_info::updateGroup( QJsonObject recv ){
 			group_item.push_back( { name, item } );
         }
 
-        awrite("../../log/bugs.txt","3\n");
 
-		vector <QString> group_name_list;
-		for ( auto group : recv ){
-
-            QString group_name = QString::fromStdString( group["name"] );
-			QString _group_name =  group["name"];
-			bool group_status = group["status"];
-			int totaMachine = group["totaMachine"];
-			int activeMachine = group["activeMachine"];
+		QStringList group_name_list;
+		for ( QJsonValue g : recv ){
+			QJsonObject group = g.toObject();
+            QString group_name = group["name"].toString();
+			bool group_status = group["status"].toBool();
+			int totaMachine = group["totaMachine"].toInt();
+			int activeMachine = group["activeMachine"].toInt();
 			int offMachine = totaMachine - activeMachine;
-            vector <QString> machines;
+            QStringList machines;
 
-            for ( auto server : group["server"] ){
-            	machines.push_back(  QString::fromStdString( server[0] ) );
+            for ( QJsonValue server : group["server"].toArray() ){
+            	machines.push_back(  server.toArray()[0].toString() );
             }
 
 			// agrega a la lista para saber que grupo ya no estan
-			group_name_list.push_back( _group_name );
+			group_name_list.push_back( group_name );
 			//------------------------------------
 
 			// Si el nombre no esta en la lista de la interface, agrega el nuevo grupo.
-			if ( not in_vector( _group_name, group_list ) ){
+			if ( not group_list.contains( group_name ) ){
 				groupActions->groupMake( group_name, totaMachine, activeMachine, offMachine );
             }
 

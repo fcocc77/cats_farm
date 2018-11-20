@@ -192,3 +192,5 @@ code/server/release/os.o
 code/server/release/CatsFarm Server_resource_res.o
 code/server/release/CatsFarm Server.exe
 code/server/CatsFarm Server_resource.rc
+code/monitor/object_script.CatsFarm Monitor.Release
+code/monitor/object_script.CatsFarm Monitor.Debug

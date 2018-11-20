@@ -45,7 +45,7 @@ private:
 
     //QWidgets Generales
 	const QString managerHost = fread( "../../etc/manager_host" );
-	QLineEdit *manager_ip = new QLineEdit( QString::fromStdString( managerHost ));
+	QLineEdit *manager_ip = new QLineEdit( managerHost );
 	QTabWidget *tab_widget = new QTabWidget();
 	QPlainTextEdit *system_edit = new QPlainTextEdit();
 	QPlainTextEdit *maya_edit = new QPlainTextEdit();
