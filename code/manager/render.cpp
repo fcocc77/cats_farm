@@ -19,7 +19,7 @@ void manager::render_job(){
 		//si el trabajo esta en cola se manda a render
 		for ( auto job : jobs ){
 			// hace una lista con los servidores listos para renderear
-			vector <QString> machinesList;
+			QStringList machinesList;
 			for ( auto sg : job->server_group ){
 				if ( not groups.empty() ){ 
 					auto group = find_struct( groups, sg );
@@ -30,13 +30,13 @@ void manager::render_job(){
 			}
 
 			for ( auto s : job->server )
-				if ( not in_vector( s, machinesList ) ) 
+				if ( not machinesList.contains( s ) ) 
 					machinesList.push_back(s);
 			//------------------------------------------------------
 
 			for ( auto server : servers ){
 				bool serverOK = 0;
-				if ( in_vector( server->name, machinesList ) ){
+				if ( machinesList.contains( server->name ) ){
 					serverOK = 1;
 				} //----------------------------------
 

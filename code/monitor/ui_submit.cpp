@@ -291,8 +291,8 @@ void ui_submit::connections(){
 		QString project = projectLine->text() + "/scenes";
 		QString last_path;
 
-		if ( os::isfile( project.toStdString() )){ last_path = project; }
-		else{ last_path = fileLine->text(); }
+		if ( os::isfile( project ) ) last_path = project;
+		else last_path = fileLine->text();
 
 		QString file_name = QFileDialog::getOpenFileName( monitor,"File", last_path );
 		if ( not file_name.isEmpty() ){
@@ -305,8 +305,8 @@ void ui_submit::connections(){
 		QString Output = outputLine->text() + "/scenes";
 		QString last_path;
 
-		if ( os::isfile( Output.toStdString() )){ last_path = Output; }
-		else{ last_path = outputLine->text(); }
+		if ( os::isfile( Output )) last_path = Output;
+		else last_path = outputLine->text();
 
 		QString file_name = QFileDialog::getSaveFileName(monitor, "File", last_path );
 		if ( not file_name.isEmpty() ){
@@ -363,16 +363,15 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		outputFile->setText("...");
 		widgetNoice->setVisible(false);
 
-		QString file_name = ( fileLine->text() ).toStdString();
+		QString file_name = fileLine->text();
 
 		for ( int i=0; i<10; i++ ){
 			file_name = os::dirname( file_name );
-			if ( in_vector( "workspace.mel", os::listdir( file_name, true ) ) ){
+			if ( os::listdir( file_name, true ).contains( "workspace.mel" ) )
 				break;
-			}
 		}
 
-		projectLine->setText( QString::fromStdString(file_name) );
+		projectLine->setText( file_name );
 
 	}
 
@@ -458,8 +457,8 @@ void ui_submit::submitSetPanel( QString file_name ){
 	if ( ext == "comp" ) softwareBox->setCurrentIndex(4);
 	if ( ext == "exr" ) softwareBox->setCurrentIndex(5);
 
-	fileLine->setText( QString::fromStdString( file ) );
-	jobName->setText( QString::fromStdString ( name ) );
+	fileLine->setText( file );
+	jobName->setText( name );
 
 	submitSoftwareBox();	
 }
@@ -580,7 +579,7 @@ void ui_submit::submitAction( QString software ){
 	else { system = "Mac"; }
 
 	// crea lista de texto facil para poder enviar por tcp.
-	QJsonObject info = {   jobName->text(),
+	QJsonArray info = {   jobName->text(),
 		            serverBox->currentText(),
 		            serverGroupBox->currentText(),
 		            firstFrame->text().toInt(),
@@ -613,7 +612,7 @@ void ui_submit::submitAction( QString software ){
 		submitPanelSave();
         const QString managerHost = fread( "../../etc/manager_host" );
 
-		tcpClient( managerHost, 7000, info, 0 );
+		tcpClient( managerHost, 7000, jats({ 0, info }) );
 		msg->setText("The " + jobName->text() + " job has sended." );
 		msg->show();
 	}

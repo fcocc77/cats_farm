@@ -76,12 +76,12 @@ void tasks_actions::taskAction( QString action ){
 
 		for ( auto item_task : taskList->selectedItems() ){ 
 			QString task_name = item_task->text(0);
-			pks.push_back( { job_name, task_name, action } );
+			pks.push_back( {{ job_name, task_name, action }} );
 		}
 	}
 
 	pks = { pks, "taskAction" };
 
-	tcpClient( managerHost, 7000, pks, 3 );
+	tcpClient( managerHost, 7000, jats({ 3, pks }) );
 }
 

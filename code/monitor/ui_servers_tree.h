@@ -12,7 +12,6 @@
 #include <QMainWindow>
 #include <QDebug>
 //-------------
-#include <vector>
 using namespace std;
 #include <iostream>
 

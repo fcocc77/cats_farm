@@ -10,20 +10,22 @@ void ui_servers_tree::actions(){
 								 { "off", true }, { "show", true }, { "hide", true } };
 
 	auto displayAction = [this] ( QString action ){		
-		if ( shared->server_display[ action ] ){
+		if ( shared->server_display[ action ].toBool() ){
 			shared->server_display[ action ] = false;
 		}
 		else{ shared->server_display[ action ] = true;
-			//jwrite(path+"/etc/shared->server_display.json", self.shared->server_display;
 		}
 	};
 
 	auto displayAll = [this] ( bool status ){
-		for ( json& filter : shared->server_display ){
-			if ( status ){ filter = true; }
-			else{ filter = false; }
-		}
-		//jwrite(path+"/etc/shared->server_display.json", self.shared->server_display)
+		shared->server_display["mac"] = status;
+		shared->server_display["linux"] = status;
+		shared->server_display["window"] = status;
+		shared->server_display["on"] = status;
+		shared->server_display["off"] = status;
+		shared->server_display["show"] = status;
+		shared->server_display["hide"] = status;
+
 		displayWindowsAction->setChecked(status);
 		displayLinuxAction->setChecked(status);
 		displayMacAction->setChecked(status);
@@ -36,23 +38,23 @@ void ui_servers_tree::actions(){
 
 	connect( displayWindowsAction, &QAction::triggered, this, [=] (){ displayAction("window"); } );
 	displayWindowsAction->setCheckable(true);
-	displayWindowsAction->setChecked( shared->server_display["window"] );
+	displayWindowsAction->setChecked( shared->server_display["window"].toBool() );
 
 	connect( displayLinuxAction, &QAction::triggered, this, [=] (){ displayAction("linux"); } );
 	displayLinuxAction->setCheckable(true);
-	displayLinuxAction->setChecked( shared->server_display["linux"] );
+	displayLinuxAction->setChecked( shared->server_display["linux"].toBool() );
 
 	connect( displayMacAction, &QAction::triggered, this, [=] (){ displayAction("mac"); } );
 	displayMacAction->setCheckable(true);
-	displayMacAction->setChecked( shared->server_display["mac"] );
+	displayMacAction->setChecked( shared->server_display["mac"].toBool() );
 
 	connect( displayOnAction, &QAction::triggered, this, [=] (){ displayAction("on"); } );
 	displayOnAction->setCheckable(true);
-	displayOnAction->setChecked( shared->server_display["on"] );
+	displayOnAction->setChecked( shared->server_display["on"].toBool() );
 
 	connect( displayOffAction, &QAction::triggered, this, [=] (){ displayAction("off"); }  );
 	displayOffAction->setCheckable(true);
-	displayOffAction->setChecked( shared->server_display["off"] );
+	displayOffAction->setChecked( shared->server_display["off"].toBool() );
 }
 
 void ui_servers_tree::ui(){

@@ -35,7 +35,6 @@ using namespace std;
 #include "../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp"
 //--------------------------------------
 #include <QTextEdit>
-#include <vector>
 using namespace std;
 
 class monitor : public QMainWindow{

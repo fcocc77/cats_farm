@@ -47,7 +47,7 @@ void ui_groups_tree::ui(){
 
 	this->setSortingEnabled(true);
 
-	this->setStyleSheet( stylesheet.c_str() );
+	this->setStyleSheet( stylesheet.toStdString().c_str() );
 
 	QWidget *widget = new QWidget();
 	QVBoxLayout *vbox = new QVBoxLayout();

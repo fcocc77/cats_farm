@@ -186,7 +186,7 @@ bool manager::iTime( QString schedule ){
 
 void manager::update_group(){
 	// Obtiene todos los grupos que estan activos
-	vector <QString> groups_used;
+	QStringList groups_used;
 	for ( auto job : jobs ){
 		if ( job->active_task ){
 			for ( QString sg : job->server_group ){
@@ -218,8 +218,8 @@ void manager::update_group(){
 			}
         }
         bool server_status;
-		if ( in_vector( group->name, groups_used ) ){ server_status = true;}
-		else{ server_status = false; }
+		if ( groups_used.contains( group->name ) ) server_status = true;
+		else server_status = false;
 
 		group->status = server_status;
 		group->totaMachine = totaMachine;

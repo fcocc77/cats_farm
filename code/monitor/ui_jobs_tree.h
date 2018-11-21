@@ -19,7 +19,6 @@
 #include "ui_submit.h"
 #include "ui_tasks_tree.h"
 
-#include <vector>
 using namespace std;
 
 class ui_jobs_tree : public QTreeWidget {

@@ -176,7 +176,7 @@ void jobs_actions::jobModify(){
 		for ( QJsonValue s : pks[0].toArray() ) 
 			serverExist.push_back( s.toString() );
 
-		vector <QString> serverGroupExist; 
+		QStringList serverGroupExist; 
 		for ( QJsonValue sg : pks[1].toArray() ) 
 			serverGroupExist.push_back( sg.toString() );
 
@@ -238,7 +238,7 @@ void jobs_actions::jobModify(){
 			item->setText(0,name);
 
 			item->setCheckState( 0, Qt::Unchecked );
-			if ( in_vector( name, serverGroupExist ) ){
+			if ( serverGroupExist.contains( name ) ){
 				item->setCheckState(0, Qt::Checked );
 			}
 			uiJobOptions->serverGroupAsign->addTopLevelItem( item );

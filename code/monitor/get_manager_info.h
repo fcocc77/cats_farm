@@ -62,7 +62,7 @@ public:
     }
 
     bool task_first_add;
-    vector <QString> deleteList;
+    QStringList deleteList;
     QThread *getTask_thread = new QThread();
 
     // revice desde manager

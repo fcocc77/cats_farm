@@ -188,7 +188,7 @@ QTreeWidgetItem *group_actions::groupMake( QString group_name, int totaMachine, 
 void group_actions::groupMakeServer( QTreeWidgetItem *item, QStringList machines ){
 
 	// lambda  si exisite el QString en el vector
-	auto in = [this] ( QString word, vector <QString> _vector){
+	auto in = [this] ( QString word, QStringList _vector){
 		bool _in = false;
 		for ( auto i : _vector ){ 
 			if ( word == i ){ _in = true; } }
@@ -199,8 +199,8 @@ void group_actions::groupMakeServer( QTreeWidgetItem *item, QStringList machines
 	struct _name_item{ QString name; QTreeWidgetItem *item; QString status; } name_item;
 
 	// crea lista de los childItem antiguos
-	vector < _name_item > oldChild;
-	vector <QString> oldChildName;
+	QList < _name_item > oldChild;
+	QStringList oldChildName;
 
 	for (int i = 0; i < item->childCount(); ++i){
 		QTreeWidgetItem *childItem = item->child(i);
@@ -213,8 +213,8 @@ void group_actions::groupMakeServer( QTreeWidgetItem *item, QStringList machines
 	//-------------------------------------------------
 
 	// crea lista de los nuevos childItem
-	vector < _name_item > newChild;
-	vector <QString> newChildName;
+	QList < _name_item > newChild;
+	QStringList newChildName;
 
 	for ( auto server : machines ){
 		QTreeWidgetItem *childItem = new QTreeWidgetItem();

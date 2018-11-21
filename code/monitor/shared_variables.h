@@ -3,7 +3,7 @@
 
 using namespace std;
 #include <QJsonArray>
-
+#include <QJsonObject>
 
 struct shared_variables{
     QJsonObject server_display;

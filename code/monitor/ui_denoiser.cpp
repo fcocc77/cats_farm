@@ -253,8 +253,8 @@ void ui_denoiser::connections(){
 		QString project = projectLine->text() + "/scenes";
 		QString last_path;
 
-		if ( os::isfile( project.toStdString() )){ last_path = project; }
-		else{ last_path = fileLine->text(); }
+		if ( os::isfile( project )) last_path = project;
+		else last_path = fileLine->text();
 
 		QString file_name = QFileDialog::getOpenFileName( monitor,"File", last_path );
 		if ( not file_name.isEmpty() ){
@@ -267,8 +267,8 @@ void ui_denoiser::connections(){
 		QString Output = outputLine->text() + "/scenes";
 		QString last_path;
 
-		if ( os::isfile( Output.toStdString() )){ last_path = Output; }
-		else{ last_path = outputLine->text(); }
+		if ( os::isfile( Output )) last_path = Output;
+		else last_path = outputLine->text();
 
 		QString file_name = QFileDialog::getSaveFileName(monitor, "File", last_path );
 		if ( not file_name.isEmpty() ){
@@ -323,16 +323,15 @@ void ui_denoiser::submitSoftwareBox( int index = 0 ){
 		renderLine->setText("");
 		outputFile->setText("...");
 
-		QString file_name = ( fileLine->text() ).toStdString();
+		QString file_name = fileLine->text();
 
 		for ( int i=0; i<10; i++ ){
 			file_name = os::dirname( file_name );
-			if ( in_vector( "workspace.mel", os::listdir( file_name, true ) ) ){
+			if ( os::listdir( file_name, true ).contains( "workspace.mel" ) )
 				break;
-			}
 		}
 
-		projectLine->setText( QString::fromStdString(file_name) );
+		projectLine->setText( file_name );
 	}
 
 	if ( software == "Houdini" ){
@@ -383,11 +382,10 @@ void ui_denoiser::submitSoftwareBox( int index = 0 ){
 	}
 }
 
-void ui_denoiser::submitSetPanel( QString file_name ){
-	QString file = file_name.toStdString();
+void ui_denoiser::submitSetPanel( QString file ){
 
 	file = file.replace( "\\", "/" );
-	QString ext = split( file, "." ).back();
+	QString ext = file.split( "." ).last();
 	QString name = os::basename( file ).replace( "." + ext, "" );
 
 	if ( ( ext == "mb" ) or ( ext == "ma" ) ){
@@ -407,8 +405,8 @@ void ui_denoiser::submitSetPanel( QString file_name ){
 		softwareBox->setCurrentIndex(4);
 	}
 
-	fileLine->setText( QString::fromStdString( file ) );
-	jobName->setText( QString::fromStdString ( name ) );
+	fileLine->setText( file );
+	jobName->setText( name );
 
 	submitSoftwareBox();	
 }
@@ -508,22 +506,22 @@ void ui_denoiser::submitAction( QString software ){
 	else { system = "Mac"; }
 
 	// crea lista de texto facil para poder enviar por tcp.
-	json info = {   jobName->text().toStdString(),
-		            serverBox->currentText().toStdString(),
-		            serverGroupBox->currentText().toStdString(),
-		            firstFrame->text().toInt(),
-		            lastFrame->text().toInt(),
-		            taskSize->text().toInt(),
-		            priority->text().toInt(),
-		            suspend,
-		            commentLine->text().toStdString(),
-		            software.toStdString(),
-		            fileLine->text().toStdString(),
-		            dirProject.toStdString(),
-		            system,
-		            1,
-		            renderLine->text().toStdString()
-		        };
+	QJsonArray info = {   	jobName->text(),
+				            serverBox->currentText(),
+				            serverGroupBox->currentText(),
+				            firstFrame->text().toInt(),
+				            lastFrame->text().toInt(),
+				            taskSize->text().toInt(),
+				            priority->text().toInt(),
+				            suspend,
+				            commentLine->text(),
+				            software,
+				            fileLine->text(),
+				            dirProject,
+				            system,
+				            1,
+				            renderLine->text()
+		      			};
 	//------------------------------------------------------
 
 	bool ok = true;
@@ -542,7 +540,7 @@ void ui_denoiser::submitAction( QString software ){
 		submitPanelSave();
         const QString managerHost = fread( "../../etc/manager_host" );
 
-		tcpClient( managerHost, 7000, info, 0 );
+		tcpClient( managerHost, 7000, jats({ 0, info }) );
 		msg->setText("The " + jobName->text() + " job has sended." );
 		msg->show();
 	}

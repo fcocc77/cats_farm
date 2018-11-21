@@ -37,8 +37,8 @@ namespace os {
 	float ramUsed();
 	int cpuTemp();
 	int cpuCount();
-	vector <int> getStat();
-	vector <float> ram();
+	QList <int> getStat();
+	QList <float> ram();
 	QString dirname (QString file);
 	QString basename(QString file);
 	bool isfile( QString file );

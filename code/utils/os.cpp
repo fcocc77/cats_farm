@@ -4,8 +4,8 @@
 
 namespace os {
 
-	vector <int> getStat(){
-		vector <int> cpu;
+	QList <int> getStat(){
+		QList <int> cpu;
 
 		QString s = fread("/proc/stat");
 		QStringList stat = s.split(" ");
@@ -61,9 +61,9 @@ namespace os {
 		return usage;
 	}
 
-	vector <float> ram(){
+	QList <float> ram(){
 
-		vector <float> resorc;
+		QList <float> resorc;
 
 		#if _win32
 			MEMORYSTATUSEX memInfo;

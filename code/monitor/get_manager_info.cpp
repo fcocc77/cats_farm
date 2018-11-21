@@ -516,7 +516,7 @@ void get_manager_info::updateGroup( QJsonObject recv ){
 		QStringList group_list;
 
 	    struct _group_item{ QString name; QTreeWidgetItem *item; };
-	    vector <_group_item> group_item;
+	    QList <_group_item> group_item;
 		for (int i = 0; i < groupList->topLevelItemCount(); ++i){
 			auto item = groupList->topLevelItem(i); 
 			QString name = item->text(2);
