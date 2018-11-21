@@ -22,9 +22,7 @@
 
 
 int main(){
-
-	QStringList tt = { "hola","casa","test"};
-	qDebug() << tt;
+	qDebug() <<  jread( "../../etc/preferences.json" );;
 
 
 }

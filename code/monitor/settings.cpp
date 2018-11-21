@@ -210,7 +210,7 @@ void settings::path_ui(){
 
 void settings::pathSusRead(){
 
-	QString recv = tcpClient( managerHost, 7000, jats({ 3, {{ "read", "preferences" }} }) );
+	QString recv = tcpClient( managerHost, 7000, jats({ 3, {{ "preferences", {{ "read", "none" }} }} }) );
 	QJsonObject preferences = jofs( recv );
 
 	if ( not preferences.empty() ){
@@ -290,6 +290,6 @@ void settings::pathSusWrite(){
 		noice.push_back( l );
 	paths["noice"] = noice;
 
-	tcpClient( managerHost, 7000, jats({ 3, {{ paths, "preferences" }} }) );
+	tcpClient( managerHost, 7000, jats({ 3, {{ "preferences", {{ "write", paths }}  }} }) );
 }
 

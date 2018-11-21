@@ -51,7 +51,7 @@ void group_actions::groupCreateWindow(){
 		}
 
 		QJsonArray group = { group_name, machines_send.size() , 0, machines_send };
-		QJsonArray pks = { group, "groupCreate" };
+		QJsonArray pks = { "groupCreate", group };
 
 		tcpClient( managerHost, 7000, jats({ 3, pks }) );
 
@@ -312,7 +312,7 @@ void group_actions::groupAddMachine(){
 	}
 
 	QJsonArray groups = { "group_list", group_machine, "addMachine" };
-	QJsonArray pks = { groups,"groupAction" };
+	QJsonArray pks = { "groupAction", groups };
 
 	tcpClient( managerHost, 7000, jats({ 3, pks }) );
 }
@@ -357,7 +357,7 @@ void group_actions::groupDelete(){
 
 			QJsonArray groups = { group_list, group_machine, "delete" };
 
-			QJsonArray pks = { groups, "groupAction" };
+			QJsonArray pks = { "groupAction", groups };
 			tcpClient( managerHost, 7000, jats({ 3, pks }) );
 		}
 

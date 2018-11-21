@@ -80,7 +80,7 @@ void tasks_actions::taskAction( QString action ){
 		}
 	}
 
-	pks = { pks, "taskAction" };
+	pks = { "taskAction", pks };
 
 	tcpClient( managerHost, 7000, jats({ 3, pks }) );
 }

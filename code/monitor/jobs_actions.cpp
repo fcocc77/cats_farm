@@ -167,7 +167,7 @@ void jobs_actions::jobModify(){
 		QString job_name = selected.takeLast()->text(0);
 
 		QJsonArray send = {{ job_name, "options", "read" }};
-		send = { send, "jobOptions" };
+		send = { "jobOptions", send };
 		QString recv = tcpClient( managerHost, 7000, jats({ 3, send }) );
 		QJsonArray pks = jafs( recv );
 		//-----------------------------------------
@@ -298,7 +298,7 @@ void jobs_actions::jobOptionsOk(){
 		repeatItem.push_back( job_name );
 		//-------------------------------------------------------
 	}
-	pks = { pks, "jobOptions" };
+	pks = { "jobOptions", pks };
 
 	QString ask = "Sure you want to send the changes? \nSome frames will be lost due to the size of the tasks.";
 
@@ -344,7 +344,7 @@ void jobs_actions::jobDeleteStart( QString action ){
 
 	}
 
-	pks = { pks, "jobAction" };
+	pks = { "jobAction", pks };
 
 	tcpClient( managerHost, 7000, jats({ 3, pks }) );
 }
@@ -359,7 +359,7 @@ void jobs_actions::jobAction( QString action ){
 		QString job_name = item->text(0);
 		pks.push_back( {{ job_name, action }} ); 
 	}
-	pks = { pks, "jobAction" };
+	pks = { "jobAction", pks };
 
 	tcpClient( managerHost, 7000, jats({ 3, pks }) );	
 }

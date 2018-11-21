@@ -55,7 +55,7 @@ void servers_actions::serverOptions(){
 	if ( not selected.empty() ){
 
 		QJsonArray pks = { ( selected[0]->text(0) ) , "None", "read" };
-		pks = { pks, "serverOptions" };
+		pks = { "serverOptions", pks };
 		QString schedule = tcpClient( managerHost, 7000, jats({ 3, pks }) );
 
 		QStringList range = schedule.split( "-" );
@@ -79,7 +79,7 @@ void servers_actions::serverOptionsSend(){
 		pks.push_back( {{ server, schedule, "write" }} );
 	}
 
-	pks = { pks, "serverOptions"};
+	pks = { "serverOptions", pks };
 	tcpClient( managerHost, 7000, jats({ 3, pks }) );
 }
 
@@ -231,7 +231,7 @@ QString servers_actions::serverAction( QString action, QString info ){
 		}
 
 	}
-	pks = { pks, "serverAction" };
+	pks = { "serverAction", pks };
 
 	QString recv = tcpClient( managerHost, 7000, jats({ 3, pks }) );
 
