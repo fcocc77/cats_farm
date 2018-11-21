@@ -54,7 +54,7 @@ QString server::send_resources( QString _recv ){
 
 					
 
-	return jats( server_info );
+	return jats( { 1, server_info } );
 }
 
 QString server::recieveManager( QString _recv ){
