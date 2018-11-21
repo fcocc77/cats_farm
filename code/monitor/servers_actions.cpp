@@ -56,12 +56,9 @@ void servers_actions::serverOptions(){
 
 		QJsonArray pks = { ( selected[0]->text(0) ) , "None", "read" };
 		pks = { pks, "serverOptions" };
-		QJsonObject recv = tcpClient( managerHost, 7000, pks, 3 );
-		//vmSoftware, schedule = recv
+		QString schedule = tcpClient( managerHost, 7000, jats({ 3, pks }) );
 
-		QString schedule = recv;
-
-		auto range = split( schedule, "-" );
+		QStringList range = schedule.split( "-" );
 
 		uiServerOptions->schedule_start->setCurrentIndex( range[0].toInt() );
 		uiServerOptions->schedule_end->setCurrentIndex( range[1].toInt() );
@@ -79,11 +76,11 @@ void servers_actions::serverOptionsSend(){
 
 	for ( auto item : selected ){
 		QString server = item->text(0);
-		pks.push_back( { server, schedule, "write" } );
+		pks.push_back( {{ server, schedule, "write" }} );
 	}
 
 	pks = { pks, "serverOptions"};
-	tcpClient( managerHost, 7000, pks, 3 );
+	tcpClient( managerHost, 7000, jats({ 3, pks }) );
 }
 
 void servers_actions::server_popup(){
@@ -155,7 +152,7 @@ void servers_actions::server_popup(){
 }
 
 void servers_actions::serverCpuLimit( int limit ){
-	sendToServer( "cpu_limit", to_string(limit) );
+	sendToServer( "cpu_limit", QString::number(limit) );
 }
 
 void servers_actions::serverLog(){
@@ -163,22 +160,20 @@ void servers_actions::serverLog(){
 	auto selected = serverList->selectedItems();
 	if ( not selected.empty() ){ 
 		QString host = ( selected[0]->text(7) );
+		QString result = tcpClient( host, 7001, jats({ 1, true }) );
 
-		QString result;
-		result = tcpClient( host, 7001, true, 1 );
-
-		log_text->setPlainText( QString::fromStdString(result));
+		log_text->setPlainText( result );
 		log_dock->show();
 	}
 }
 
 void servers_actions::serverMaxInstances( int ins ){
-	serverAction("max_instances", to_string(ins));
+	serverAction("max_instances", QString::number(ins));
 }
 
 void servers_actions::serverSSH(){
 
-	QJsonArray recv = serverAction("ssh","None");
+	QJsonArray recv = jafs( serverAction("ssh","None") );
 
 	QString sshUser = recv[0].toString(); 
 	QString sshPass = recv[1].toString();
@@ -197,8 +192,8 @@ void servers_actions::serverVNC(){
 
 	QString tigervnc;
 	if ( _linux ){ tigervnc = "vncviewer"; }
-	else if ( _win32 ){ tigervnc = path() + "/os/win/vnc/vncviewer.exe"; }
-	else{ tigervnc = path() + "/os/mac/vnc/vncviewer"; }
+	else if ( _win32 ){ tigervnc = path + "/os/win/vnc/vncviewer.exe"; }
+	else{ tigervnc = path + "/os/mac/vnc/vncviewer"; }
 
 	for ( auto item : serverList->selectedItems() ){
 		QString ip = item->text(7);
@@ -207,7 +202,7 @@ void servers_actions::serverVNC(){
 	}
 }
 
-void servers_actions::serverMessage( QJsonObject ( servers_actions::*funtion )( QString, QString ), QString action, 
+void servers_actions::serverMessage( QString ( servers_actions::*funtion )( QString, QString ), QString action, 
 								QString ask, QString tile, QString info, servers_actions *_class ){
 
 	auto selected = serverList->selectedItems();
@@ -225,20 +220,20 @@ void servers_actions::serverMessage( QJsonObject ( servers_actions::*funtion )( 
 void servers_actions::serverActionMessage(){
 }
 
-QJsonObject servers_actions::serverAction( QString action, QString info ){
+QString servers_actions::serverAction( QString action, QString info ){
 
 	QJsonArray pks;
 	auto selected = serverList->selectedItems();
 	for ( auto item : selected ){
 		QString server_name = item->text(0);
 		if ( not item->parent() ){
-			pks.push_back( {server_name, action, info } );
+			pks.push_back( {{ server_name, action, info }} );
 		}
 
 	}
 	pks = { pks, "serverAction" };
 
-	QJsonObject recv = tcpClient( managerHost, 7000, pks, 3 );
+	QString recv = tcpClient( managerHost, 7000, jats({ 3, pks }) );
 
 	return recv;
 }
@@ -249,7 +244,7 @@ void servers_actions::sendToServer( QString action, QString info ){
 
 	for ( auto item : selected ){
 		QString host = item->text(7);
-		tcpClient( host, 7001, { action, info }, 4);
+		tcpClient( host, 7001, jats({ 4, {{ action, info }} }) );
 	}
 	//-------------------------------------
 }

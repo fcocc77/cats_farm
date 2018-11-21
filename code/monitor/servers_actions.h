@@ -77,10 +77,10 @@ public:
 	void serverMaxInstances( int ins );
 	void serverSSH();
 	void serverVNC();
-	void serverMessage( QJsonObject ( servers_actions::*funtion )( QString, QString ), QString action, 
+	void serverMessage( QString ( servers_actions::*funtion )( QString, QString ), QString action, 
 								QString ask, QString tile, QString info, servers_actions *_class );	
 	void serverActionMessage();
-	QJsonObject serverAction( QString action, QString info );
+	QString serverAction( QString action, QString info );
 	void sendToServer( QString action, QString info );
 
 	//----------------

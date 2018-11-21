@@ -67,7 +67,7 @@ public:
     void group_popup();
     void groupCreateWindow();
     QTreeWidgetItem *groupMake( QString group_name, int totaMachine, int activeMachine, int  offMachine);
-    void groupMakeServer( QTreeWidgetItem *item, vector <QString> machines );
+    void groupMakeServer( QTreeWidgetItem *item,  QStringList machines );
     void groupAddMachine();
     void groupDelete();
     //-----------------

@@ -605,7 +605,7 @@ void get_manager_info::updateGroup( QJsonObject recv ){
         awrite("../../log/bugs.txt","4\n");
 		// si el grupo ya no existe, borra el item 
 		for ( _group_item group : group_item ){				
-			if ( not in_vector( group.name, group_name_list ) ){
+			if ( not group_name_list.contains( group.name ) ){
 				//auto root = groupList.invisibleRootItem();
 				//falta esto
 				//(group.item.parent() or root).removeChild( group.item );
@@ -636,27 +636,25 @@ void get_manager_info::updateTask(){
 	if ( not selected.empty() ){
 		auto _item = selected[0];
 		QString job_item_name = _item->text(0);
-		vector < vector <QString > > tasks;
+		QList < QStringList > tasks;
 
 		// encuentra en los paketes recibidos el job seleccionado
 		QJsonObject job;
-		for ( auto _job : shared->jobs ){
-			if ( _job["name"].toString() ==  job_item_name ){ 
-				job = _job;
+		for ( QJsonValue _job : shared->jobs ){
+			if ( _job.toObject()["name"].toString() ==  job_item_name ){ 
+				job = _job.toObject();
 				break;
 			}
 		} //-------------------------------------------------
 
-        for ( auto task : job["task"] ){
+        for ( QJsonValue t : job["task"].toArray() ){
+        	QJsonObject task = t.toObject();
 
-			QString frameRange = QString::number( int( task["first_frame"] ) ) + "-" + 
-			                    QString::number( int( task["last_frame"] ) );
+			QString frameRange = QString::number( task["first_frame"].toInt() ) + "-" + 
+			                    QString::number( task["last_frame"].toInt() );
 
-			tasks.push_back( { QString::fromStdString( task["name"] ), 
-				                frameRange, 
-							    QString::fromStdString( task["status"] ),
-							    QString::fromStdString( task["server"] ),
-							    QString::fromStdString( task["time"] ) } 
+			tasks.push_back( { task["name"].toString(),  frameRange, task["status"].toString(),
+							   task["server"].toString(), task["time"].toString() } 
 			);
 
         }
@@ -708,7 +706,7 @@ void get_manager_info::updateTask(){
 
 		if ( not task_first_add ){
 
-			for ( auto task : tasks ){
+			for ( QStringList task : tasks ){
 
                 QString taskName = task[0], 
                 frameRange = task[1], 
@@ -727,7 +725,7 @@ void get_manager_info::updateTask(){
 
 		else{
 
-			for ( auto task : tasks ){
+			for ( QStringList task : tasks ){
                 QString taskName = task[0], 
                 frameRange = task[1], 
                 status = task[2], 

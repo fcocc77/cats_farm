@@ -21,7 +21,7 @@ void settings::ui(){
     connect( ap, &QPushButton::clicked, this, [this](){ pathSusWrite(); });
     connect( ok, &QPushButton::clicked, this, [this](){
 
-		QString _manager_ip = manager_ip->text().toStdString();
+		QString _manager_ip = manager_ip->text();
 		fwrite( "../../etc/manager_host", _manager_ip);
 
 		pathSusWrite();
@@ -64,7 +64,7 @@ void settings::style(){
 
 	resize(700, 400);
 	QString _style = fread( "../../theme/style.css" );
-	setStyleSheet( _style.c_str() );
+	setStyleSheet( _style.toStdString().c_str() );
 	setWindowTitle( "CatsFarm Setting" );
 
 	// Agrega el icono y titulo al panel y ventana
@@ -210,34 +210,35 @@ void settings::path_ui(){
 
 void settings::pathSusRead(){
 
-	json preferences = tcpClient( managerHost, 7000, { "read", "preferences" }, 3 );
+	QString recv = tcpClient( managerHost, 7000, jats({ 3, {{ "read", "preferences" }} }) );
+	QJsonObject preferences = jofs( recv );
 
 	if ( not preferences.empty() ){
-		json paths = preferences["paths"];
+		QJsonObject paths = preferences["paths"].toObject();
 
 		QString system, nuke, maya, houdini, cinema, fusion, noice;
 
-		for ( auto p : paths["system"] ){
-			system += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["system"].toArray() ){
+			system += p.toString() + "\n";
 		}
-		for ( auto p : paths["nuke"] ){
-			nuke += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["nuke"].toArray() ){
+			nuke += p.toString() + "\n";
 		}		
-		for ( auto p : paths["houdini"] ){
-			houdini += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["houdini"].toArray() ){
+			houdini += p.toString() + "\n";
 		}
-		for ( auto p : paths["cinema"] ){
-			cinema += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["cinema"].toArray() ){
+			cinema += p.toString() + "\n";
 		}
-		for ( auto p : paths["fusion"] ){
-			fusion += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["fusion"].toArray() ){
+			fusion += p.toString() + "\n";
 		}
-		for ( auto p : paths["maya"] ){
-			maya += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["maya"].toArray() ){
+			maya += p.toString() + "\n";
 		}
 
-		for ( auto p : paths["noice"] ){
-			noice += QString::fromStdString(p) + "\n";
+		for ( QJsonValue p : paths["noice"].toArray() ){
+			noice += p.toString() + "\n";
 		}
 
 		system_edit->setPlainText( system );
@@ -252,29 +253,43 @@ void settings::pathSusRead(){
 
 void settings::pathSusWrite(){
 
-    json paths;
-	for ( auto l : system_edit->toPlainText().split("\n") ){ 		
-		paths["system"].push_back( l.toStdString() );
-	}
-	for ( auto l : nuke_edit->toPlainText().split("\n") ){ 		
-		paths["nuke"].push_back( l.toStdString() );
-	}
-	for ( auto l : maya_edit->toPlainText().split("\n") ){ 		
-		paths["maya"].push_back( l.toStdString() );
-	}	
-	for ( auto l : houdini_edit->toPlainText().split("\n") ){ 		
-		paths["houdini"].push_back( l.toStdString() );
-	}
-	for ( auto l : cinema_edit->toPlainText().split("\n") ){ 		
-		paths["cinema"].push_back( l.toStdString() );
-	}
-	for ( auto l : fusion_edit->toPlainText().split("\n") ){ 		
-		paths["fusion"].push_back( l.toStdString() );
-	}
-	for ( auto l : noice_edit->toPlainText().split("\n") ){ 		
-		paths["noice"].push_back( l.toStdString() );
-	}
+    QJsonObject paths;
+	
+	QJsonArray system;
+	for ( auto l : system_edit->toPlainText().split("\n") )	
+		system.push_back( l );
+	paths["system"] = system;
 
-	tcpClient( managerHost, 7000, { paths, "preferences" }, 3 );
+	QJsonArray nuke;
+	for ( auto l : nuke_edit->toPlainText().split("\n") )		
+		nuke.push_back( l );
+	paths["nuke"] = nuke;
+
+	QJsonArray maya;
+	for ( auto l : maya_edit->toPlainText().split("\n") ) 		
+		maya.push_back( l );
+	paths["maya"] = maya;
+
+	QJsonArray houdini;
+	for ( auto l : houdini_edit->toPlainText().split("\n") )		
+		houdini.push_back( l );
+	paths["houdini"] = houdini;
+
+	QJsonArray cinema;
+	for ( auto l : cinema_edit->toPlainText().split("\n") )		
+		cinema.push_back( l );
+	paths["cinema"] = cinema;
+
+	QJsonArray fusion;
+	for ( auto l : fusion_edit->toPlainText().split("\n") )		
+		fusion.push_back( l );
+	paths["fusion"] = fusion;
+
+	QJsonArray noice;
+	for ( auto l : noice_edit->toPlainText().split("\n") )	
+		noice.push_back( l );
+	paths["noice"] = noice;
+
+	tcpClient( managerHost, 7000, jats({ 3, {{ paths, "preferences" }} }) );
 }
 
