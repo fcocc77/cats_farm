@@ -36,7 +36,7 @@ QJsonObject jread( QString _path ){
 
 void jwrite( QString _path, QJsonObject data ){
 	QJsonDocument doc(data);
-	fwrite( _path, doc.toJson( QJsonDocument::Compact ) );
+	fwrite( _path + ".tmp", doc.toJson( QJsonDocument::Indented ) );
 
 	os::remove( _path + ".old" );
 	os::rename( _path, _path + ".old" );
