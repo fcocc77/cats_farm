@@ -166,7 +166,7 @@ void jobs_actions::jobModify(){
 
 		QString job_name = selected.takeLast()->text(0);
 
-		QJsonArray send = {{ job_name, "options", "read" }};
+		QJsonArray send = { QJsonArray({ job_name, "options", "read" }) };
 		send = { "jobOptions", send };
 		QString recv = tcpClient( managerHost, 7000, jats({ 3, send }) );
 		QJsonArray pks = jafs( recv );
