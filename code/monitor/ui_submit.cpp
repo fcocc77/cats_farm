@@ -5,7 +5,7 @@ void ui_submit::ui(){
 	QVBoxLayout *vboxSubmit = new QVBoxLayout();
 	vboxSubmit->setContentsMargins(15,15,15,15);
 
-		QStringList items = {"Nuke","Maya","Houdini","Cinema4D","Fusion", "Noice"};
+		QStringList items = {"Nuke","Maya","Houdini","Cinema4D","Fusion", "Natron"};
 		softwareBox->addItems(items);
 		vboxSubmit->addWidget(softwareBox);
 
@@ -425,21 +425,21 @@ void ui_submit::submitSoftwareBox( int index = 0 ){
 		widgetNoice->setVisible(false);
 	}
 
-	if ( software == "Noice" ){
+	if ( software == "Natron" ){
 		projectLine->setDisabled(1);
 		projectFile->setDisabled(1);
-		renderLine->setDisabled(1);
+		renderLine->setDisabled(0);
 		outputLine->setDisabled(1);
 		outputPath->setDisabled(1);
 
-		fileFile->setText("Exr");
-		labelProject->setText("...");
-		labelFile->setText("Exr Sequence:");
-		labelRender->setText("...");
-		renderLine->setText("");
 		projectLine->setText("");
+		labelProject->setText("...");
+		labelFile->setText("Script:");
+		labelRender->setText("Write:");
+		fileFile->setText("Script");
+		renderLine->setText("Write1");
 		outputFile->setText("...");
-		widgetNoice->setVisible(true);
+		widgetNoice->setVisible(false);
 	}
 }
 
@@ -455,7 +455,7 @@ void ui_submit::submitSetPanel( QString file_name ){
 	if ( ext == "c4d" ) softwareBox->setCurrentIndex(3);
 	if ( ext == "hip" ) softwareBox->setCurrentIndex(2);
 	if ( ext == "comp" ) softwareBox->setCurrentIndex(4);
-	if ( ext == "exr" ) softwareBox->setCurrentIndex(5);
+	if ( ext == "ntp" ) softwareBox->setCurrentIndex(5);
 
 	fileLine->setText( file );
 	jobName->setText( name );
@@ -565,13 +565,6 @@ void ui_submit::submitAction( QString software ){
 
     QString dirProject = projectLine->text();
 	if ( software == "Fusion" ){ dirProject = outputLine->text(); }
-
-	if ( software == "Noice" )
-		dirProject = " -pr " + patchRadius->text() + 
-					" -sr " + searchRadius->text() + 
-					" -v " + variance->text() + 
-					" -tr " + temporalRange->text() +
-					" -aov " + aov->text();
 
 	QString system;
 	if ( _linux ){ system = "Linux"; }

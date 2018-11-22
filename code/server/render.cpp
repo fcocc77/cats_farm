@@ -57,7 +57,7 @@ QString render::render_task( QJsonArray recv ){
 		if ( software == "Maya" ) renderOK = maya( ins );
 		if ( software == "Fusion" ) renderOK = fusion( ins );
 		if ( software == "Cinema4D" ) renderOK = cinema( ins );
-		if ( software == "Ffmpeg" ) renderOK = ffmpeg( ins );
+		if ( software == "Natron" ) renderOK = natron( ins );
 		// -------------------------------------------------
 
 		QString log_file = path + "/log/render_log_" + QString::number( ins );
@@ -418,6 +418,6 @@ bool render::fusion( int ins ){
 
 
 
-bool render::ffmpeg( int ins ){
+bool render::natron( int ins ){
 	return false;
 }

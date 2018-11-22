@@ -191,20 +191,20 @@ void settings::path_ui(){
 	tab_widget->addTab( widget6, "Fusion" );
 	//--------------------------------------
 
-	// Fusion Path----------------------------
+	// Natron Path----------------------------
 	QWidget *widget7 = new QWidget();
 	QVBoxLayout *vbox7 = new QVBoxLayout();
 
-	QLabel *label7 = new QLabel( "Noice Path:");
+	QLabel *label7 = new QLabel( "Natron Path:");
 
 	vbox7->addWidget( label7 );
-	vbox7->addWidget( noice_edit );
+	vbox7->addWidget( natron_edit );
 
 	widget7->setLayout( vbox7 );		
 	widget7->setMinimumHeight( size_plain );
 
-	noice_edit->setObjectName("style1");
-	tab_widget->addTab( widget7, "Arnold Noice" );
+	natron_edit->setObjectName("style1");
+	tab_widget->addTab( widget7, "Natron" );
 	//--------------------------------------
 }
 
@@ -216,7 +216,7 @@ void settings::pathSusRead(){
 	if ( not preferences.empty() ){
 		QJsonObject paths = preferences["paths"].toObject();
 
-		QString system, nuke, maya, houdini, cinema, fusion, noice;
+		QString system, nuke, maya, houdini, cinema, fusion, natron;
 
 		for ( QJsonValue p : paths["system"].toArray() ){
 			system += p.toString() + "\n";
@@ -237,8 +237,8 @@ void settings::pathSusRead(){
 			maya += p.toString() + "\n";
 		}
 
-		for ( QJsonValue p : paths["noice"].toArray() ){
-			noice += p.toString() + "\n";
+		for ( QJsonValue p : paths["natron"].toArray() ){
+			natron += p.toString() + "\n";
 		}
 
 		system_edit->setPlainText( system );
@@ -247,7 +247,7 @@ void settings::pathSusRead(){
 		houdini_edit->setPlainText( houdini );
 		cinema_edit->setPlainText( cinema );    
 		fusion_edit->setPlainText( fusion );
-		noice_edit->setPlainText( noice );
+		natron_edit->setPlainText( natron );
     }
 }
 
@@ -285,10 +285,10 @@ void settings::pathSusWrite(){
 		fusion.push_back( l );
 	paths["fusion"] = fusion;
 
-	QJsonArray noice;
-	for ( auto l : noice_edit->toPlainText().split("\n") )	
-		noice.push_back( l );
-	paths["noice"] = noice;
+	QJsonArray natron;
+	for ( auto l : natron_edit->toPlainText().split("\n") )	
+		natron.push_back( l );
+	paths["natron"] = natron;
 
 	tcpClient( managerHost, 7000, jats({ 3, {{ "preferences", {{ "write", paths }}  }} }) );
 }

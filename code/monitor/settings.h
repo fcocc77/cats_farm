@@ -53,7 +53,7 @@ private:
 	QPlainTextEdit *houdini_edit = new QPlainTextEdit();
 	QPlainTextEdit *cinema_edit = new QPlainTextEdit();
 	QPlainTextEdit *fusion_edit = new QPlainTextEdit();
-	QPlainTextEdit *noice_edit = new QPlainTextEdit();
+	QPlainTextEdit *natron_edit = new QPlainTextEdit();
 
     //------------------------------
 
