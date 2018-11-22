@@ -612,7 +612,7 @@ void ui_submit::submitAction( QString software ){
 		submitPanelSave();
         const QString managerHost = fread( "../../etc/manager_host" );
 
-		tcpClient( managerHost, 7000, jats({ 0, info }) );
+		tcpClient( managerHost, 7000, jats({ 4, info }) );
 		msg->setText("The " + jobName->text() + " job has sended." );
 		msg->show();
 	}

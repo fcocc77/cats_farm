@@ -38,6 +38,6 @@ void submit::init( int argc, char const *argv[] ){
 
 
 	if ( argc > 2 )
-		tcpClient( managerHost, 7000, jats({ 0, info }) );
+		tcpClient( managerHost, 7000, jats({ 4, info }) );
 }
 

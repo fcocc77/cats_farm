@@ -25,11 +25,10 @@ QString manager::server_tcp( QString _recv ){
 	int input = recv[0].toInt();
 	QJsonArray pks = recv[1].toArray();
 
-
-	if ( input == 0 ) return make_job( pks );
 	if ( input == 1 ) return update_server_thread( pks );
 	if ( input == 2 ) return sendToMonitor_thread();
 	if ( input == 3 ) return recieve_monitor_thread( pks );
+	if ( input == 4 ) return make_job( pks );
 
 	return "";
 }
