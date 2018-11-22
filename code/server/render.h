@@ -48,7 +48,7 @@ public:
 	bool houdini( int ins );
 	bool cinema( int ins );
 	bool fusion( int ins );
-	bool ffmpeg( int ins );
+	bool natron( int ins );
 
 };
 

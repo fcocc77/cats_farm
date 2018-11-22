@@ -416,8 +416,29 @@ bool render::fusion( int ins ){
 	//-----------------------------------------------
 }
 
-
-
 bool render::natron( int ins ){
+
+	QString args = "-i " + renderNode[ ins ] + " " + QString::number( first_frame[ ins ] ) + "-" + QString::number( last_frame[ ins ] ) + " \"" + project[ ins ] + "\"";
+
+	args = args.replace( src_path[ ins ], dst_path[ ins ] );
+
+	//Obtiene el excecutable que existe en este sistema
+	QString exe;
+	for ( auto e : preferences["paths"].toObject()["natron"].toObject()){
+		 exe = e.toString(); 
+		 if ( os::isfile( exe ) ){ break; }
+	}
+	//-----------------------------------------------
+
+	QString cmd = '"' + exe + '"' + args;
+
+	QString log_file = path + "/log/render_log_" + QString::number( ins );
+
+	// rendering ...
+	// ----------------------------------
+	QString log = qprocess( cmd, ins );
+	fwrite( log_file, log );
+	// ----------------------------------
+
 	return false;
 }
