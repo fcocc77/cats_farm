@@ -5,12 +5,10 @@ void server::init(){
 	tcpServer( 7001, &server::recieveManager, this );
 }
 
-QString server::send_resources( QString _recv ){
-	QJsonArray recv = jafs( _recv );
+QString server::send_resources( QString recv ){
 
-
-	if ( not recv.empty() ){
-		_render->preferences = recv[0].toObject();
+	if ( not recv.isEmpty() ){
+		_render->preferences = jofs( recv );
 		jwrite( "../../etc/preferences_s.json", _render->preferences );
 	}
 
@@ -51,9 +49,6 @@ QString server::send_resources( QString _recv ){
 						 userpass
 						};
 
-
-					
-
 	return jats( { 1, server_info } );
 }
 
@@ -62,7 +57,6 @@ QString server::recieveManager( QString _recv ){
 	QJsonArray json = jafs( _recv );
 	int input = json[0].toInt();
 	QJsonArray recv = json[1].toArray();
-
 
 	QString send;
 
@@ -137,7 +131,6 @@ QString server::recieveManager( QString _recv ){
 			fwrite( "../../etc/cpu_limit", info );
 		}
 	}
-
 
 	return "";
 }

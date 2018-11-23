@@ -129,7 +129,7 @@ bool render::nuke( int ins ){
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["nuke"].toObject()){
+	for ( auto e : preferences["paths"].toObject()["nuke"].toArray()){
 		 exe = e.toString(); 
 		 if ( os::isfile( exe ) ){ break; }
 	}
@@ -162,7 +162,7 @@ bool render::maya( int ins ){
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
 
-	for ( auto e : preferences["paths"].toObject()["maya"].toObject() ){
+	for ( auto e : preferences["paths"].toObject()["maya"].toArray() ){
 		 exe = e.toString();
 		 if ( os::isfile( exe ) ){ break; }
 		}
@@ -170,8 +170,8 @@ bool render::maya( int ins ){
 	args = args.replace( src_path[ ins ], dst_path[ ins ] );
 
 	QString cmd = '"' + exe + "\" " + args;
-
 	// rendering ...
+	qDebug() << cmd;
 	// ----------------------------------
 	qprocess( cmd, ins );
 	// ----------------------------------
@@ -187,7 +187,7 @@ bool render::houdini( int ins ){
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["houdini"].toObject() ){
+	for ( auto e : preferences["paths"].toObject()["houdini"].toArray() ){
 		 exe = e.toString();
 		 if ( os::isfile( exe ) ){ break; }
 		}
@@ -286,14 +286,14 @@ bool render::cinema( int ins ){
 		VMCinemaActive = true;
 		//Obtiene el excecutable de cinema de windows
 		QString exe_windows;
-		for ( auto e : preferences["paths"].toObject()["cinema"].toObject() ){
+		for ( auto e : preferences["paths"].toObject()["cinema"].toArray() ){
 			exe_windows = e.toString(); 
 			if ( exe_windows.contains( "C:/") ) break;
 		}
 		//-----------------------------------------------
 
 		// replaza las rutas para virtualbox
-		for ( auto s :  preferences["paths"].toObject()["system"].toObject() )
+		for ( auto s :  preferences["paths"].toObject()["system"].toArray() )
 			project[ ins ] = project[ ins ].replace( s.toString(), "//VBOXSVR/server_01" );
 		//-------------------------------------------------------------------------
 
@@ -392,7 +392,7 @@ bool render::fusion( int ins ){
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["fusion"].toObject() ){
+	for ( auto e : preferences["paths"].toObject()["fusion"].toArray() ){
 		 exe = e.toString();
 		 if ( os::isfile( exe ) ){ break; }
 	}
@@ -424,7 +424,7 @@ bool render::natron( int ins ){
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for ( auto e : preferences["paths"].toObject()["natron"].toObject()){
+	for ( auto e : preferences["paths"].toObject()["natron"].toArray()){
 		 exe = e.toString(); 
 		 if ( os::isfile( exe ) ){ break; }
 	}
