@@ -7,9 +7,7 @@ QString render::render_task( QJsonArray recv ){
 
 	int ins = recv[2].toInt();
 	QString software = recv[1].toString();
-
-	project[ ins ] = recv[0].toInt();
-
+	project[ ins ] = recv[0].toString();
 	first_frame[ ins ] = recv[3].toInt();
 	last_frame[ ins ] = recv[4].toInt();
 	jobSystem[ ins ] = recv[5].toString();
