@@ -132,6 +132,6 @@ QString server::recieveManager( QString _recv ){
 		}
 	}
 
-	return "";
+	return send;
 }
 

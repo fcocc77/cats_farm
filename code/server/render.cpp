@@ -78,7 +78,7 @@ QString render::render_task( QJsonArray recv ){
 		//---------------------------------------------------------------------
 
 	}
-
+	
 	return status;
 }
 
@@ -169,7 +169,6 @@ bool render::maya( int ins ){
 
 	QString cmd = '"' + exe + "\" " + args;
 	// rendering ...
-	qDebug() << cmd;
 	// ----------------------------------
 	qprocess( cmd, ins );
 	// ----------------------------------
