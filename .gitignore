@@ -158,3 +158,5 @@ code/monitor/object_script.CatsFarm Monitor.Debug
 code/monitor/release
 code/server/release
 code/server/release/main.o
+code/monitor/CatsFarm Monitor_resource.rc
+.vscode/c_cpp_properties.json
