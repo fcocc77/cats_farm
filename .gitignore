@@ -32,3 +32,4 @@ code/utils/Makefile.Release
 etc/info.json
 etc/info.json.old
 log/bugs.txt
+code/monitor/CatsFarm Monitor.exe
