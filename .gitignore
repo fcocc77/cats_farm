@@ -1,162 +1,34 @@
-qt5/linux/libs/cpp-4.4.7-18.el6_9.2.x86_64.rpm
-qt5/linux/libs/devtoolset-7-binutils-2.28-11.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-dyninst-9.3.2-3.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-gcc-7.3.1-5.4.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-gcc-c++-7.3.1-5.4.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-gcc-gfortran-7.3.1-5.4.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-gdb-8.0.1-36.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-libstdc++-devel-7.3.1-5.4.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-oprofile-1.2.0-2.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-runtime-7.1-4.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-systemtap-client-3.1-4s.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-systemtap-devel-3.1-4s.el6.x86_64.rpm
-qt5/linux/libs/devtoolset-7-valgrind-3.13.0-11.el6.x86_64.rpm
-qt5/linux/libs/gcc-4.4.7-18.el6_9.2.x86_64.rpm
-qt5/linux/libs/kernel-debug-devel-2.6.32-696.30.1.el6.x86_64.rpm
-qt5/linux/libs/libX11-devel-1.6.4-3.el6.x86_64.rpm
-qt5/linux/libs/libxcb-devel-1.12-4.el6.x86_64.rpm
-qt5/linux/libs/ppl-0.10.2-11.el6.x86_64.rpm
-qt5/linux/Qt5.7.1.tar.gz
-qt5/mac/libs/Command_Line_Tools_macOS_10.11_for_Xcode_8.2.dmg
-qt5/win/Qt5.7.1.zip
-qt/linux/libs/cpp-4.4.7-18.el6_9.2.x86_64.rpm
-qt/linux/libs/devtoolset-7-binutils-2.28-11.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-dyninst-9.3.2-3.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gcc-7.3.1-5.4.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gcc-c++-7.3.1-5.4.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gcc-gfortran-7.3.1-5.4.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gdb-8.0.1-36.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-libstdc++-devel-7.3.1-5.4.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-oprofile-1.2.0-2.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-runtime-7.1-4.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-systemtap-client-3.1-4s.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-systemtap-devel-3.1-4s.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-valgrind-3.13.0-11.el6.x86_64.rpm
-qt/linux/libs/gcc-4.4.7-18.el6_9.2.x86_64.rpm
-qt/linux/libs/kernel-debug-devel-2.6.32-696.30.1.el6.x86_64.rpm
-qt/linux/libs/libX11-devel-1.6.4-3.el6.x86_64.rpm
-qt/linux/libs/libxcb-devel-1.12-4.el6.x86_64.rpm
-qt/linux/libs/ppl-0.10.2-11.el6.x86_64.rpm
-qt/linux/Qt5.7.1.tar.gz
-qt/mac/libs/Command_Line_Tools_macOS_10.11_for_Xcode_8.2.dmg
-qt/win/Qt5.7.1.zip
+code/monitor/release
+code/server/release
+code/manager/release
+code/submit/release
+code/utils/release
+.vscode/c_cpp_properties.json
 code/manager/.qmake.stash
+code/manager/CatsFarm Manager_resource.rc
 code/manager/Makefile
 code/manager/Makefile.Debug
 code/manager/Makefile.Release
-code/manager/manager.exe
-code/manager/manager_resource.rc
-code/manager/release
-
 code/monitor/.qmake.stash
+code/monitor/CatsFarm Monitor_resource.rc
 code/monitor/Makefile
 code/monitor/Makefile.Debug
 code/monitor/Makefile.Release
-code/monitor/monitor.exe
-code/monitor/monitor_resource.rc
-code/monitor/object_script.monitor.Debug
-code/monitor/object_script.monitor.Release
-log/bugs.txt
-etc/info.json
-etc/info.json.old
-code/utils/release
-
-code/utils/Makefile.Release
-code/utils/Makefile.Debug
-code/utils/.qmake.stash
-code/utils/release/video.o
-code/utils/release/os.o
-code/utils/Makefile
-etc/panel.json.old
-code/utils/utils.exe
-etc/panel.json
-code/utils/main.cpp
-modules/denoiser/release/util.o
-modules/denoiser/release/denoiser.exe
-modules/denoiser/Makefile.Release
-modules/denoiser/Makefile.Debug
-code/server/server.exe
-code/server/debug/video.o
-code/server/debug/util.o
-code/server/debug/os.o
-code/server/debug/main.o
-code/server/debug/denoiser.o
+code/monitor/object_script.CatsFarm Monitor.Debug
+code/monitor/object_script.CatsFarm Monitor.Release
 code/server/.qmake.stash
-modules/denoiser/release/os.o
-modules/denoiser/release/main.o
-modules/denoiser/release/denoiser.o
-modules/denoiser/Makefile
-modules/denoiser/.qmake.stash
-code/server/server_resource.rc
-code/server/debug/server_resource_res.o
-code/server/debug/server.o
-code/server/debug/renderRun.o
-code/server/Makefile.Release
-code/server/Makefile.Debug
 code/server/Makefile
-etc/panel.json.old
-etc/panel.json
-code/monitor/.monitor.pro.swp
-code/monitor/.monitor.pro.swo
-bin/win/denoiser.exe
-code/utils/.tcp.h.swp
-qt/linux/libs/python-paramiko-1.7.5-4.el6_9.noarch.rpm
-qt/linux/libs/libquadmath-7.2.1-1.2.1.el6.x86_64.rpm
-qt/linux/libs/libquadmath-7.1.1-2.4.1.el6_9.x86_64.rpm
-qt/linux/libs/libgomp-4.4.7-18.el6_9.2.x86_64.rpm
-qt/linux/libs/libgfortran4-7.2.1-1.2.1.el6.x86_64.rpm
-qt/linux/libs/libgfortran4-7.1.1-2.4.1.el6_9.x86_64.rpm
-qt/linux/libs/libgcc-4.4.7-18.el6_9.2.x86_64.rpm
-qt/linux/libs/libcgroup-0.40.rc1-26.el6.x86_64.rpm
-qt/linux/libs/libcgroup-0.40.rc1-24.el6_9.x86_64.rpm
-qt/linux/libs/kernel-debug-devel-2.6.32-754.2.1.el6.x86_64.rpm
-qt/linux/libs/gcc-4.4.7-23.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-oprofile-1.2.0-2.el6.1.x86_64.rpm
-qt/linux/libs/devtoolset-7-libstdc++-devel-7.3.1-5.10.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-libquadmath-devel-7.3.1-5.4.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-libquadmath-devel-7.3.1-5.10.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gcc-gfortran-7.3.1-5.10.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gcc-c++-7.3.1-5.10.el6.x86_64.rpm
-qt/linux/libs/devtoolset-7-gcc-7.3.1-5.10.el6.x86_64.rpm
-qt/linux/libs/cpp-4.4.7-23.el6.x86_64.rpm
-qt/linux/libs/libquadmath-7.1.1-2.4.1.el6_9.x86_64.rpm
-qt/linux/libs/libgomp-4.4.7-18.el6_9.2.x86_64.rpm
-qt/linux/libs/libgfortran4-7.1.1-2.4.1.el6_9.x86_64.rpm
-qt/linux/libs/libgcc-4.4.7-18.el6_9.2.x86_64.rpm
-qt/linux/libs/libcgroup-0.40.rc1-24.el6_9.x86_64.rpm
-qt/linux/libs/devtoolset-7-libquadmath-devel-7.3.1-5.4.el6.x86_64.rpm
-qt/mac/Qt5.11.1.zip
-qt/mac/Command Line Tools.pkg
-code/server/release/CatsFarm Server.exe
-code/server/CatsFarm Server_resource.rc
+code/server/Makefile.Debug
+code/server/Makefile.Release
 code/submit/.qmake.stash
 code/submit/Makefile
 code/submit/Makefile.Debug
 code/submit/Makefile.Release
-code/submit/release/main.o
-code/submit/release/os.o
-code/submit/release/submit.exe
-code/submit/release/submit.o
-code/submit/release/submit_resource_res.o
-code/submit/release/util.o
 code/submit/submit_resource.rc
-code/server/release/CatsFarm Server.exe
-code/server/CatsFarm Server_resource.rc
-code/manager/CatsFarm Manager_resource.rc
-code/server/CatsFarm Server_resource.rc
-code/server/release/CatsFarm Server.exe
-code/server/release/video.o
-code/server/release/util.o
-code/server/release/server.o
-code/server/release/render.o
-code/server/release/os.o
-code/server/release/CatsFarm Server_resource_res.o
-code/server/release/CatsFarm Server.exe
-code/server/CatsFarm Server_resource.rc
-code/monitor/object_script.CatsFarm Monitor.Release
-code/monitor/object_script.CatsFarm Monitor.Debug
-code/monitor/release
-code/server/release
-code/server/release/main.o
-code/monitor/CatsFarm Monitor_resource.rc
-.vscode/c_cpp_properties.json
+code/utils/.qmake.stash
+code/utils/Makefile
+code/utils/Makefile.Debug
+code/utils/Makefile.Release
+etc/info.json
+etc/info.json.old
+log/bugs.txt
