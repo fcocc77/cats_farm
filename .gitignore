@@ -3,7 +3,6 @@ code/server/release
 code/manager/release
 code/submit/release
 code/utils/release
-.vscode/c_cpp_properties.json
 code/manager/.qmake.stash
 code/manager/CatsFarm Manager_resource.rc
 code/manager/Makefile
