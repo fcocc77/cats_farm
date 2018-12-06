@@ -350,18 +350,12 @@ bool render::houdini( int ins ){
 	// ----------------------------------
 
 	// post render
-	QString _frame = " frame ";
-
-	int _frames = 0;
-	// int pos = log.find(_frame);
-	// while (pos != -1){
-	//     pos = log.find(_frame, pos + 7 );
-	// 	_frames++;
-	// }
-
 	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;
-	if ( _frames == total_frame ) return true;
-	else return false;
+	
+	if ( log.count(" frame ") == total_frame ) 
+		return true;
+	else 
+		return false;
 	// ----------------------------------
 }
 
