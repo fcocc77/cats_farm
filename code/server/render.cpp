@@ -196,10 +196,12 @@ bool render::nuke( int ins ){
 	fwrite( log_file, log );
 	// ----------------------------------
 
-	QStringList frame_split = log.split( "Frame " );
 	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;
-	if ( int( frame_split.size() - 1 ) == total_frame ) return true;
-	else return false;
+	
+	if ( log.count( "Frame " ) == total_frame ) 
+		return true;
+	else 
+		return false;
 }
 
 bool render::maya( int ins ){
