@@ -93,6 +93,59 @@ QString render::qprocess( QString cmd, int ins ){
 	return output;
 }
 
+void render::vbox_turn( bool turn ){
+
+	QString vm;
+	if ( turn ){
+		if ( _linux ) vm = "VBoxManage startvm win2016 --type headless";
+		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" startvm win2016 --type headless";
+
+		os::back( vm );
+	}
+	else{
+		if ( _linux ) vm = "VBoxManage controlvm win2016 savestate";
+		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
+
+		os::back( vm );
+
+		fwrite( path + "/log/vbox", "0" );
+	}
+}
+
+bool render::vbox_working(){
+	// Virtual Machin status
+
+	QString vm;
+	if ( _linux ) vm = "VBoxManage list runningvms";
+
+	if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
+
+	QString running = os::sh(vm).split( " " )[0];
+
+	if ( running == "\"win2016\"" ){ return true; }
+	else { return false; }
+	//------------------------------------------
+}
+
+void render::suspend_vbox(){
+
+	// checkea si el Cinama 4D esta en render y si no se apaga la maquina virtual
+	VMCinemaRunningTimes = 0;
+	while (1){
+		if ( not VMCinemaActive ) {
+			VMCinemaRunningTimes ++;
+			if ( VMCinemaRunningTimes > 10 ) { // si no se esta usando Cinema4D, al numero 10 se apaga la maquina 
+				if ( vbox_working() and VMCinemaTurn ) { // solo si esta prendida y si la prendio catsfarm
+					vbox_turn( false ); 
+					VMCinemaTurn = false;
+				}
+				VMCinemaRunningTimes = 0;
+			}
+		}
+		sleep(1);
+	} //-----------------------------------------------------------------------
+}
+
 bool render::nuke( int ins ){
 
 	// crea la carpeta donde se renderearan los archivos
@@ -178,100 +231,6 @@ bool render::maya( int ins ){
 	if ( log.contains( "completed.") ) return true;
 	else return false;
 	// --------------------------
-}
-
-bool render::houdini( int ins ){
-
-	//Obtiene el excecutable que existe en este sistema
-	QString exe;
-	for ( auto e : preferences["paths"].toObject()["houdini"].toArray() ){
-		 exe = e.toString();
-		 if ( os::isfile( exe ) ){ break; }
-		}
-		//-----------------------------------------------
-
-	QString hipFile = project[ ins ].replace( src_path[ ins ], dst_path[ ins ] );
-
-	QString render_file = path + "/modules/houdiniCatsFarm.py " + 
-						hipFile + " " + renderNode[ ins ] + " " + QString::number( first_frame[ ins ] ) + " " + QString::number( last_frame[ ins ] );
-
-	QString cmd = '"' + exe + "\" " + render_file;
-
-	QString log_file = path + "/log/render_log_" + QString::number( ins );
-
-	// rendering ...
-	// ----------------------------------
-	QString log = qprocess( cmd, ins );
-	fwrite( log_file, log );
-	// ----------------------------------
-
-	// post render
-	QString _frame = " frame ";
-
-	int _frames = 0;
-	// int pos = log.find(_frame);
-	// while (pos != -1){
-	//     pos = log.find(_frame, pos + 7 );
-	// 	_frames++;
-	// }
-
-	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;
-	if ( _frames == total_frame ) return true;
-	else return false;
-	// ----------------------------------
-}
-
-void render::vbox_turn( bool turn ){
-
-	QString vm;
-	if ( turn ){
-		if ( _linux ) vm = "VBoxManage startvm win2016 --type headless";
-		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" startvm win2016 --type headless";
-
-		os::back( vm );
-	}
-	else{
-		if ( _linux ) vm = "VBoxManage controlvm win2016 savestate";
-		if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
-
-		os::back( vm );
-
-		fwrite( path + "/log/vbox", "0" );
-	}
-}
-
-bool render::vbox_working(){
-	// Virtual Machin status
-
-	QString vm;
-	if ( _linux ) vm = "VBoxManage list runningvms";
-
-	if ( _win32 ) vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
-
-	QString running = os::sh(vm).split( " " )[0];
-
-	if ( running == "\"win2016\"" ){ return true; }
-	else { return false; }
-	//------------------------------------------
-}
-
-void render::suspend_vbox(){
-
-	// checkea si el Cinama 4D esta en render y si no se apaga la maquina virtual
-	VMCinemaRunningTimes = 0;
-	while (1){
-		if ( not VMCinemaActive ) {
-			VMCinemaRunningTimes ++;
-			if ( VMCinemaRunningTimes > 10 ) { // si no se esta usando Cinema4D, al numero 10 se apaga la maquina 
-				if ( vbox_working() and VMCinemaTurn ) { // solo si esta prendida y si la prendio catsfarm
-					vbox_turn( false ); 
-					VMCinemaTurn = false;
-				}
-				VMCinemaRunningTimes = 0;
-			}
-		}
-		sleep(1);
-	} //-----------------------------------------------------------------------
 }
 
 bool render::cinema( int ins ){
@@ -363,6 +322,47 @@ bool render::cinema( int ins ){
 	if ( log.contains( "Rendering successful: " ) ) return true;
 	else return false;
 	//---------------------------
+}
+
+bool render::houdini( int ins ){
+
+	//Obtiene el excecutable que existe en este sistema
+	QString exe;
+	for ( auto e : preferences["paths"].toObject()["houdini"].toArray() ){
+		 exe = e.toString();
+		 if ( os::isfile( exe ) ){ break; }
+		}
+		//-----------------------------------------------
+
+	QString hipFile = project[ ins ].replace( src_path[ ins ], dst_path[ ins ] );
+
+	QString render_file = path + "/modules/houdiniCatsFarm.py " + 
+						hipFile + " " + renderNode[ ins ] + " " + QString::number( first_frame[ ins ] ) + " " + QString::number( last_frame[ ins ] );
+
+	QString cmd = '"' + exe + "\" " + render_file;
+
+	QString log_file = path + "/log/render_log_" + QString::number( ins );
+
+	// rendering ...
+	// ----------------------------------
+	QString log = qprocess( cmd, ins );
+	fwrite( log_file, log );
+	// ----------------------------------
+
+	// post render
+	QString _frame = " frame ";
+
+	int _frames = 0;
+	// int pos = log.find(_frame);
+	// while (pos != -1){
+	//     pos = log.find(_frame, pos + 7 );
+	// 	_frames++;
+	// }
+
+	int total_frame = last_frame[ ins ] - first_frame[ ins ] + 1;
+	if ( _frames == total_frame ) return true;
+	else return false;
+	// ----------------------------------
 }
 
 bool render::fusion( int ins ){
