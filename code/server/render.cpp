@@ -25,22 +25,20 @@ QString render::render_task( QJsonArray recv ){
 	//-----------------------------------------------------------------
 
 	if ( renderNow ){
-
-		QJsonObject system_path = preferences["paths"].toObject()["system"].toObject();
-
+		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
+		
 		//obtiene ruta correcta
 		QString proj;
-
-		for ( auto p1 : system_path ){
-			for ( auto p2 : system_path){
-				proj = project[ ins ].replace( p1.toString(), p2.toString() );
-
+		for ( QJsonValue p1 : system_path ){
+			for ( QJsonValue p2 : system_path){
+				proj = project[ ins ];
+				proj.replace( p1.toString(), p2.toString() );
+				
 				if ( os::isfile( proj ) ){
 					src_path[ ins ] = p1.toString();
 					dst_path[ ins ] = p2.toString();
 					break;
 				}
-
 			}
 
 			if ( os::isfile( proj ) ){
