@@ -1,8 +1,8 @@
 #include "submit.h"
 
 void submit::init( int argc, char const *argv[] ){
-
-	QString arg, jobName, server, serverGroup, firstFrame, lastFrame, taskSize, priority, 
+	
+ 	QString arg, jobName, server, serverGroup, firstFrame, lastFrame, taskSize, priority, 
 						suspend, comment, software, project, extra, system, instances, render;
 
 	for ( int i=1; i < argc; i++){
@@ -28,14 +28,11 @@ void submit::init( int argc, char const *argv[] ){
 	bool _suspend = false;
 	if ( suspend == "1" ) _suspend = true;
 
-
 	QJsonArray info = { jobName, server, serverGroup, firstFrame.toInt(), lastFrame.toInt(), taskSize.toInt(), priority.toInt(), 
 					_suspend, comment, software, project, extra, system, instances.toInt(), render };
 
 	QString _path = os::dirname(os::dirname(os::dirname(argv[0])));
 	QString managerHost = fread( _path + "/etc/manager_host" );
-
-
 
 	if ( argc > 2 )
 		tcpClient( managerHost, 7000, jats({ 4, info }) );

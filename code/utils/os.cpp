@@ -332,11 +332,12 @@ namespace os {
 	}
 
 	QString dirname( QString file ){
-		QDir _file ( file );
-		return _file.dirName();
+		if ( _win32 ) file = file.replace( "\\", "/" );
+		return file.replace( "/" + basename(file), "" );
 	}
 
 	QString basename( QString file ){
+		if ( _win32 ) file = file.replace( "\\", "/" );
 		return file.split("/").last();
 	}
 
