@@ -190,8 +190,9 @@ namespace os {
 					QString _file = fread( f );
 					if ( not _file.isEmpty() ){
 
-						QString tempRead = fread( f ).split("\n").last();
-
+						QStringList tempReadList = fread( f ).split("\n");
+						QString tempRead = tempReadList[ tempReadList.size() - 2 ];
+						
 						QStringList core = tempRead.split(",,,")[0].split(",");
 						int cpu_count = core.size() - 1;
 						int cores = 0;
