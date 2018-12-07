@@ -4,14 +4,14 @@
 
 namespace os {
 
-	QList <int> getStat(){
-		QList <int> cpu;
+	QList <long> getStat(){
+		QList <long> cpu;
 
-		QString s = fread("/proc/stat");
+		QString s = os::sh("cat /proc/stat");
 		QStringList stat = s.split(" ");
 
 		for ( int i=2; i<10; i++)
-			cpu.push_back( stat[i].toInt() );
+			cpu.push_back( stat[i].toLong() );
 
 		return cpu;
 	}
@@ -29,7 +29,7 @@ namespace os {
 
 		else if ( _linux ){
 
-			int prev_idle, idle, prev_not_idle, not_idle, prev_total, total;
+			long prev_idle, idle, prev_not_idle, not_idle, prev_total, total;
 			float totald, idled;
 
 			auto prev=getStat();
@@ -85,7 +85,7 @@ namespace os {
 		int total, free, buffers, cached, used, percent;
 
 		if ( _linux ){
-			QString mem = fread("/proc/meminfo");
+			QString mem = os::sh("cat /proc/meminfo");
 			total = mem.split( "MemTotal:")[1].split("kB")[0].toInt();
 			free = mem.split( "MemFree:")[1].split("kB")[0].toInt();
 			buffers = mem.split( "Buffers:")[1].split("kB")[0].toInt();
@@ -120,7 +120,7 @@ namespace os {
 
 		if ( not total_ram ){
 			if ( _linux ){
-				QString mem = fread("/proc/meminfo");
+				QString mem = os::sh("cat /proc/meminfo");
 				long long _total = mem.split( "MemTotal:")[1].split("kB")[0].toLongLong();
 				total_ram = ( _total * 1024 * 1024 ) / 1000000000000;
 
@@ -151,10 +151,10 @@ namespace os {
 		static int temp;
 		if ( _linux ){
 			QString sensors = sh("sensors");
-			int core0 = sensors.split("Core 0:      +")[1].split(".")[0].toInt();
-			int core1 = sensors.split("Core 1:      +")[1].split(".")[0].toInt();
-			int core2 = sensors.split("Core 2:      +")[1].split(".")[0].toInt();
-			int core3 = sensors.split("Core 3:      +")[1].split(".")[0].toInt();
+			int core0 = sensors.split("Core 0:")[1].split(".")[0].replace("+","").toInt();
+			int core1 = sensors.split("Core 1:")[1].split(".")[0].replace("+","").toInt();
+			int core2 = sensors.split("Core 2:")[1].split(".")[0].replace("+","").toInt();
+			int core3 = sensors.split("Core 3:")[1].split(".")[0].replace("+","").toInt();
 
 			temp = ( core0 + core1 + core2 + core3 ) / 4;
 		}
