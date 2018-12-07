@@ -2,6 +2,7 @@
 #define VIDEO_H
 
 #include <algorithm> //sort
+#include "util.h"
 
 void concat(QString folder);
 

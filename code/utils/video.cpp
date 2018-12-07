@@ -9,7 +9,7 @@ void concat( QString folder ){
 	QString ffmpeg, logMetod, dirMovie, list, safe, concat, movie, movie_list, name, cmd, null;
 
 	if ( _win32 ){
-		ffmpeg = "C:/CatsFarm/os/win/ffmpeg/ffmpeg.exe";
+		ffmpeg = path + "/os/win/ffmpeg/ffmpeg.exe";
 		logMetod = " > ";
 	}
 	if ( _linux ){
@@ -39,17 +39,14 @@ void concat( QString folder ){
 	movie = dirMovie + "/" + name + ".mov";
 	//-----------------------------------------
 
-	if ( _win32 ){ safe = "-safe 0"; }
-	else{ safe = ""; }
+	if ( _win32 ){ 
+		safe = "-safe 0"; 
+		list = list.replace( "/", "\\" );
+	}
+	else safe = "";
 
 	concat = ffmpeg + " -y -f concat " + safe + " -i " + '"' + list + '"' + " -c copy " + '"' + movie + '"';
-	null = dirMovie + "/null";
-	cmd = concat + logMetod + '"' + null + '"';
-	os::sh(cmd);
-
-	//------------------------------------------
-	os::remove(null);
-	//-----------------------------------------------------
+	os::sh(concat);
 
 	// borra lista creada
 	os::remove(list);
@@ -59,6 +56,5 @@ void concat( QString folder ){
 	if ( os::isfile(movie) )	
 		os::remove(folder);
 	//---------------------------------------
-
 }
 
