@@ -151,8 +151,12 @@ namespace os {
 		static int temp;
 		if ( _linux ){
 			QString sensors = sh("sensors");
-			sensors = sensors.split("CPU Temperature:    +")[1].split(".")[0];
-			temp = sensors.toInt();
+			int core0 = sensors.split("Core 0:      +")[1].split(".")[0].toInt();
+			int core1 = sensors.split("Core 1:      +")[1].split(".")[0].toInt();
+			int core2 = sensors.split("Core 2:      +")[1].split(".")[0].toInt();
+			int core3 = sensors.split("Core 3:      +")[1].split(".")[0].toInt();
+
+			temp = ( core0 + core1 + core2 + core3 ) / 4;
 		}
 
 		if ( _win32 ){
