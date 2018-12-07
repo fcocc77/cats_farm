@@ -150,32 +150,9 @@ namespace os {
 	int cpuTemp(){
 		static int temp;
 		if ( _linux ){
-
-			try{
-				// QString t = sh("sensors");
-				// int pos, core0, core1, core2, core3;
-				// //core0
-				// pos = t.find("Core 0:");  t.erase(0,pos+7); 
-				// pos = t.find("+"); t.erase(0,pos+1);
-				// pos = t.find("°C"); core0=stoi(t.substr(0,pos+2));
-				// //core1
-				// pos = t.find("Core 1:");  t.erase(0,pos+7); 
-				// pos = t.find("+"); t.erase(0,pos+1);
-				// pos = t.find("°C"); core1=stoi(t.substr(0,pos+2));
-				// //core2
-				// pos = t.find("Core 2:");  t.erase(0,pos+7); 
-				// pos = t.find("+"); t.erase(0,pos+1);
-				// pos = t.find("°C"); core2=stoi(t.substr(0,pos+2));
-				// //core3
-				// pos = t.find("Core 3:");  t.erase(0,pos+7); 
-				// pos = t.find("+"); t.erase(0,pos+1);
-				// pos = t.find("°C"); core3=stoi(t.substr(0,pos+2));
-				// //------------------------------------------
-
-				// temp = (core0+core1+core2+core3)/4;
-			}
-			catch (exception& e){
-			}
+			QString sensors = sh("sensors");
+			sensors = sensors.split("CPU Temperature:    +")[1].split(".")[0];
+			temp = sensors.toInt();
 		}
 
 		if ( _win32 ){
