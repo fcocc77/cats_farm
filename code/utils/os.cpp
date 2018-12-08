@@ -220,7 +220,7 @@ namespace os {
 
 		if ( not cores ){
 			if ( _win32 )
-				cores = sh( "echo %NUMBER_OF_PROCESSORS%" ).toInt();
+				cores = sh( "wmic cpu get NumberOfLogicalProcessors" ).split("\n")[1].toInt();
 
 			else if ( _linux )
 				cores = os::sh("nproc").toInt();
@@ -228,7 +228,6 @@ namespace os {
 			else {
 				QString _cores = os::sh( "sysctl hw.ncpu" );
 				_cores = _cores.split( "hw.ncpu:" )[1];
-
 				cores = _cores.toInt();
 			}
 		}
