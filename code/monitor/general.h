@@ -25,9 +25,9 @@ using namespace std;
 #include "../utils/os.h"
 #include "../utils/threading.h"
 
-class general : public QObject{
-public:
-
+class general : public QObject
+{
+  public:
     settings *_settings;
 
     ui_submit *uiSubmit;
@@ -35,12 +35,13 @@ public:
     QDockWidget *uiServerOptions;
     QDockWidget *log_dock;
 
-    QMainWindow *monitor; 
+    QMainWindow *monitor;
     ui_jobs_tree *jobsList;
 
-    template < class T >
-    general( T *_monitor ){
-        _settings = new settings( _monitor );
+    template <class T>
+    general(T *_monitor)
+    {
+        _settings = new settings(_monitor);
         monitor = _monitor;
         uiSubmit = _monitor->uiSubmit;
         uiJobOptions = _monitor->uiJobOptions;
@@ -65,7 +66,7 @@ public:
     //------------------------------------------------
 
     // General Funcions
-    void init();   
+    void init();
     void actions();
     void notifyIcon();
     void style_ui();

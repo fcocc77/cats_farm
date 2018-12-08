@@ -5,12 +5,12 @@ using namespace std;
 #include <QJsonArray>
 #include <QJsonObject>
 
-struct shared_variables{
+struct shared_variables
+{
     QJsonObject server_display;
     QJsonObject jobs;
     QJsonArray servers;
     bool stopUpdate;
-
 };
 
 #endif //SHARED_VARIABLES_H

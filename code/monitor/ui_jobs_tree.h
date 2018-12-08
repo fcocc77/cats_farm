@@ -21,20 +21,20 @@
 
 using namespace std;
 
-class ui_jobs_tree : public QTreeWidget {
-Q_OBJECT
-public:
-
+class ui_jobs_tree : public QTreeWidget
+{
+    Q_OBJECT
+  public:
     ui_submit *uiSubmit;
     ui_tasks_tree *taskList;
 
-    template < class T >
-    ui_jobs_tree( T *_monitor ){
+    template <class T>
+    ui_jobs_tree(T *_monitor)
+    {
         uiSubmit = _monitor->uiSubmit;
         taskList = _monitor->taskList;
         ui();
-        this->setAcceptDrops( true );
-
+        this->setAcceptDrops(true);
     }
 
     void ui();
@@ -44,7 +44,6 @@ public:
     virtual void mousePressEvent(QMouseEvent *event);
 
     QWidget *widget = new QWidget();
-
 };
 
 #endif //UI_JOBS_TREE

@@ -27,32 +27,33 @@ using namespace std;
 
 //-----------------
 
-class servers_actions : public QObject{
-public:
-    QMainWindow *monitor;
-    ui_jobs_tree *jobsList;
-    ui_servers_tree *serverList;
-    ui_groups_tree *groupList;
-    ui_server_options *uiServerOptions;
-    QPlainTextEdit *log_text;
-    QDockWidget *log_dock;
+class servers_actions : public QObject
+{
+  public:
+	QMainWindow *monitor;
+	ui_jobs_tree *jobsList;
+	ui_servers_tree *serverList;
+	ui_groups_tree *groupList;
+	ui_server_options *uiServerOptions;
+	QPlainTextEdit *log_text;
+	QDockWidget *log_dock;
 
-
-    template < class T >
-    servers_actions( T *_monitor  ){
-        monitor = _monitor;
-        jobsList = _monitor->jobsList;
-        serverList = _monitor->serverList;
-        groupList = _monitor->groupList;
-        uiServerOptions = _monitor->uiServerOptions;
-        log_text = _monitor->log_text;
-        log_dock = _monitor->log_dock;
-        init();
-    }
+	template <class T>
+	servers_actions(T *_monitor)
+	{
+		monitor = _monitor;
+		jobsList = _monitor->jobsList;
+		serverList = _monitor->serverList;
+		groupList = _monitor->groupList;
+		uiServerOptions = _monitor->uiServerOptions;
+		log_text = _monitor->log_text;
+		log_dock = _monitor->log_dock;
+		init();
+	}
 
 	QTreeWidgetItem *firstServerItem;
 
-    const QString managerHost = fread( "../../etc/manager_host" );
+	const QString managerHost = fread("../../etc/manager_host");
 
 	// Server Action
 	QAction *serverInactiveAction = new QAction("Disable");
@@ -67,24 +68,23 @@ public:
 	//------------------------------------------------
 
 	// Server Funcions
-    void init();
-    void actions();
+	void init();
+	void actions();
 	void serverOptions();
 	void serverOptionsSend();
 	void server_popup();
-	void serverCpuLimit(int limit );
+	void serverCpuLimit(int limit);
 	void serverLog();
-	void serverMaxInstances( int ins );
+	void serverMaxInstances(int ins);
 	void serverSSH();
 	void serverVNC();
-	void serverMessage( QString ( servers_actions::*funtion )( QString, QString ), QString action, 
-								QString ask, QString tile, QString info, servers_actions *_class );	
+	void serverMessage(QString (servers_actions::*funtion)(QString, QString), QString action,
+					   QString ask, QString tile, QString info, servers_actions *_class);
 	void serverActionMessage();
-	QString serverAction( QString action, QString info );
-	void sendToServer( QString action, QString info );
+	QString serverAction(QString action, QString info);
+	void sendToServer(QString action, QString info);
 
 	//----------------
-
 };
 
 #endif //SERVERS_ACTIONS_H

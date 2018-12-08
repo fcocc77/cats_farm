@@ -14,14 +14,14 @@
 #include <iostream>
 using namespace std;
 
-class ui_tasks_tree : public QTreeWidget {
-public:
+class ui_tasks_tree : public QTreeWidget
+{
+  public:
     ui_tasks_tree();
 
     void ui();
 
-	QDockWidget *dock = new QDockWidget("Tasks");
-
+    QDockWidget *dock = new QDockWidget("Tasks");
 };
 
 #endif //UI_TASKS_TREE

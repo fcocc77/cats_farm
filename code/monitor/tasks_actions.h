@@ -4,7 +4,7 @@
 // QT5 Library
 #include <QAction>
 #include <QObject>
-#include <QMainWindow> 
+#include <QMainWindow>
 #include <QDebug>
 //----------
 
@@ -14,24 +14,25 @@ using namespace std;
 #include "ui_tasks_tree.h"
 #include "ui_jobs_tree.h"
 
-class tasks_actions : public QObject{
-public:
-
-    ui_jobs_tree *jobsList;
+class tasks_actions : public QObject
+{
+  public:
+	ui_jobs_tree *jobsList;
 	ui_tasks_tree *taskList;
-    QMainWindow *monitor;
+	QMainWindow *monitor;
 
-    const QString managerHost = fread( "../../etc/manager_host" );
+	const QString managerHost = fread("../../etc/manager_host");
 
-    template < class T >
-    tasks_actions( T *_monitor ){
+	template <class T>
+	tasks_actions(T *_monitor)
+	{
 
-    	monitor = _monitor;
-    	taskList = _monitor->taskList;
-        jobsList = _monitor->jobsList;
+		monitor = _monitor;
+		taskList = _monitor->taskList;
+		jobsList = _monitor->jobsList;
 
-    	acionts();
-    }
+		acionts();
+	}
 
 	// Task Action
 	QAction *taskSuspendAction = new QAction("Suspend");
@@ -43,12 +44,11 @@ public:
 	void task_popup();
 	void taskRestart();
 	void taskRenderServer();
-	void taskMessage( QString action, QString ask, QString tile );
-	void taskAction( QString action );
-    void acionts();
+	void taskMessage(QString action, QString ask, QString tile);
+	void taskAction(QString action);
+	void acionts();
 
 	//-----------------
-
 };
 
 #endif //TASKS_ACTIONS_H

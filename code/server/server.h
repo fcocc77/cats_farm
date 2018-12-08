@@ -15,20 +15,18 @@ using namespace std;
 #include <QJsonObject>
 #include <QJsonArray>
 
-
 #include "render.h"
 
-class server : public QObject{
-public:
-
+class server : public QObject
+{
+  public:
 	render *_render = new render();
 
 	void init();
-	QString send_resources( QString recv );
-	QString recieveManager( QString data );
+	QString send_resources(QString recv);
+	QString recieveManager(QString data);
 
-	const QString managerHost = fread( "../../etc/manager_host" );
-
+	const QString managerHost = fread("../../etc/manager_host");
 };
 
 #endif // SERVER_H

@@ -4,34 +4,38 @@ using namespace std;
 
 #include "util.h"
 #include "os.h"
-void concat( QString folder ){
+void concat(QString folder)
+{
 
 	QString ffmpeg, logMetod, dirMovie, list, safe, concat, movie, movie_list, name, cmd, null;
 
-	if ( _win32 ){
+	if (_win32)
+	{
 		ffmpeg = path + "/os/win/ffmpeg/ffmpeg.exe";
 		logMetod = " > ";
 	}
-	if ( _linux ){
+	if (_linux)
+	{
 		ffmpeg = "ffmpeg";
 		logMetod = " &> ";
 	}
 	name = os::basename(folder);
 	dirMovie = os::dirname(folder);
-	list = dirMovie+"/list_"+name;
+	list = dirMovie + "/list_" + name;
 
 	//listado de movies en la carpeta
-	movie_list="";
+	movie_list = "";
 	QStringList dir_list = os::listdir(folder);
-	sort( dir_list.begin(), dir_list.end() );
-	for (auto i : dir_list){
-		QString ext = i.split(".").last(); 		
-		if ( ext == "mov" )		
+	sort(dir_list.begin(), dir_list.end());
+	for (auto i : dir_list)
+	{
+		QString ext = i.split(".").last();
+		if (ext == "mov")
 			movie_list += "file '" + i + "'\n";
 	}
 	//-------------------------
 
-	//crea lista de archivos para el concat		
+	//crea lista de archivos para el concat
 	fwrite(list, movie_list);
 	//----------------------------------
 
@@ -39,11 +43,13 @@ void concat( QString folder ){
 	movie = dirMovie + "/" + name + ".mov";
 	//-----------------------------------------
 
-	if ( _win32 ){ 
-		safe = "-safe 0"; 
-		list = list.replace( "/", "\\" );
+	if (_win32)
+	{
+		safe = "-safe 0";
+		list = list.replace("/", "\\");
 	}
-	else safe = "";
+	else
+		safe = "";
 
 	concat = ffmpeg + " -y -f concat " + safe + " -i " + '"' + list + '"' + " -c copy " + '"' + movie + '"';
 	os::sh(concat);
@@ -53,8 +59,7 @@ void concat( QString folder ){
 	//----------------------
 
 	// borra carpeta de los videos separados
-	if ( os::isfile(movie) )	
+	if (os::isfile(movie))
 		os::remove(folder);
 	//---------------------------------------
 }
-

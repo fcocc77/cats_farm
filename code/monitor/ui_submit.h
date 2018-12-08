@@ -25,52 +25,56 @@
 #include "ui_groups_tree.h"
 //----------
 
-class combobox : public QComboBox{
-Q_OBJECT
-private slots:
-	void mousePressEvent(QMouseEvent* event){
+class combobox : public QComboBox
+{
+	Q_OBJECT
+  private slots:
+	void mousePressEvent(QMouseEvent *event)
+	{
 		emit clicked();
-	    QComboBox::mousePressEvent(event);
-    }
+		QComboBox::mousePressEvent(event);
+	}
 
-signals:
-    void clicked();
-
+  signals:
+	void clicked();
 };
 
-class ui_submit : public QDockWidget{
-Q_OBJECT
-public:
-    QMainWindow *monitor;
-    ui_servers_tree *serverList;
-    ui_groups_tree *groupList;
-    bool savePanel = false;
+class ui_submit : public QDockWidget
+{
+	Q_OBJECT
+  public:
+	QMainWindow *monitor;
+	ui_servers_tree *serverList;
+	ui_groups_tree *groupList;
+	bool savePanel = false;
 
-    template < class T >
-    ui_submit( T *_monitor ) : QDockWidget( _monitor ) {
-        monitor = _monitor;
-        serverList = _monitor->serverList;
-        groupList = _monitor->groupList;
+	template <class T>
+	ui_submit(T *_monitor) : QDockWidget(_monitor)
+	{
+		monitor = _monitor;
+		serverList = _monitor->serverList;
+		groupList = _monitor->groupList;
 
-        ui();
-        connections();
+		ui();
+		connections();
+	}
 
-    }
+	~ui_submit()
+	{
+		if (savePanel)
+			submitPanelSave();
+	}
 
-    ~ui_submit(){
-        if ( savePanel ) submitPanelSave();
-    }
-
-    void ui();
-    void connections();
+	void ui();
+	void connections();
 
 	// Subministration
-	void submitDrop( QString path );
-	void submitSetPanel( QString file_name );
+	void submitDrop(QString path);
+	void submitSetPanel(QString file_name);
 	void submitPanelOpen();
-	void submitAction( QString software );
+	void submitAction(QString software);
 	void submitPanelSave();
-	void submitUpdateBox( int action = 0 );
+	void submitUpdateBox(int action = 0);
 
 	//-----------------------------
 
@@ -109,9 +113,8 @@ public:
 	QLineEdit *aov = new QLineEdit();
 	//------------------------------------
 
-public slots:
-	void submitSoftwareBox( int index );
-
+  public slots:
+	void submitSoftwareBox(int index);
 };
 
 #endif //UI_SUBMIT_H

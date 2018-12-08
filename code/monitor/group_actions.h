@@ -22,7 +22,6 @@
 #include "../utils/tcp.h"
 #include "../utils/util.h"
 
-
 using namespace std;
 
 // monitor modules
@@ -32,26 +31,27 @@ using namespace std;
 
 //-----------------
 
-class group_actions : public QObject{
-public:
+class group_actions : public QObject
+{
+  public:
     QMainWindow *monitor;
     ui_servers_tree *serverList;
     ui_groups_tree *groupList;
     shared_variables *shared;
 
-    template < class T >
-    group_actions( T *_monitor ){
+    template <class T>
+    group_actions(T *_monitor)
+    {
         monitor = _monitor;
         serverList = _monitor->serverList;
         groupList = _monitor->groupList;
         shared = _monitor->shared;
 
         actions();
-
     }
 
     // variables Generales
-    const QString managerHost = fread( "../../etc/manager_host" );
+    const QString managerHost = fread("../../etc/manager_host");
     //--------------------------------------
 
     // Group Action
@@ -65,32 +65,34 @@ public:
     void actions();
     void group_popup();
     void groupCreateWindow();
-    QTreeWidgetItem *groupMake( QString group_name, int totaMachine, int activeMachine, int  offMachine);
-    void groupMakeServer( QTreeWidgetItem *item,  QStringList machines );
+    QTreeWidgetItem *groupMake(QString group_name, int totaMachine, int activeMachine, int offMachine);
+    void groupMakeServer(QTreeWidgetItem *item, QStringList machines);
     void groupAddMachine();
     void groupDelete();
     //-----------------
-
 };
 
-class ElidedLabel : public QLabel {
-public:
+class ElidedLabel : public QLabel
+{
+  public:
     QString cachedElidedText;
 
-    void paintEvent(QPaintEvent* e){
+    void paintEvent(QPaintEvent *e)
+    {
         QPainter p(this);
-        p.drawText(0, 0, geometry().width(), geometry().height(), alignment(), cachedElidedText ); 
+        p.drawText(0, 0, geometry().width(), geometry().height(), alignment(), cachedElidedText);
     }
 
-    void resizeEvent(QResizeEvent* e){
+    void resizeEvent(QResizeEvent *e)
+    {
         QLabel::resizeEvent(e);
         cacheElidedText(e->size().width());
     }
 
-    void cacheElidedText(int w){
+    void cacheElidedText(int w)
+    {
         cachedElidedText = fontMetrics().elidedText(text(), Qt::ElideRight, w, Qt::TextShowMnemonic);
     }
-
 };
 
 #endif //GROUP_ACTIONS_H

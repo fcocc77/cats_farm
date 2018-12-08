@@ -1,7 +1,8 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
-struct task_struct{
+struct task_struct
+{
 	QString name;
 	QString status;
 	int first_frame;
@@ -10,7 +11,8 @@ struct task_struct{
 	QString time;
 };
 
-struct job_struct{
+struct job_struct
+{
 	QString name;
 	QString status;
 	int priority;
@@ -25,7 +27,7 @@ struct job_struct{
 	QString total_render_time;
 	QString estimated_time;
 	float estimated_time_second;
-	bool timer_last_active;	
+	bool timer_last_active;
 	QString software;
 	QString project;
 	QString system;
@@ -42,17 +44,19 @@ struct job_struct{
 	int task_size;
 	int first_frame;
 	int last_frame;
-	QList <task_struct*> task;
+	QList<task_struct *> task;
 };
 
-struct inst_struct{
+struct inst_struct
+{
 	int index;
 	int status;
 	bool reset;
 	QString job_task;
 };
 
-struct server_struct{
+struct server_struct
+{
 	QString name;
 	QString status;
 	QString host;
@@ -65,7 +69,7 @@ struct server_struct{
 	int temp;
 	bool vbox;
 	int response_time;
-	QList <inst_struct*> instances;
+	QList<inst_struct *> instances;
 	int max_instances;
 	QString sshUser;
 	QString sshPass;
@@ -76,35 +80,38 @@ struct server_struct{
 	QString log;
 };
 
-struct serverFromGroupStruct{
+struct serverFromGroupStruct
+{
 	QString name;
 	bool status;
 };
 
-struct group_struct {
+struct group_struct
+{
 	QString name;
 	bool status;
 	int totaMachine;
 	int activeMachine;
-	QList <serverFromGroupStruct*> server;
+	QList<serverFromGroupStruct *> server;
 };
 
-struct makejob_struct{
-		QString job_name; 
-		QString server; 
-		QString server_group; 
-		int first_frame; 
-		int last_frame; 
-		int task_size; 
-		int priority; 
-		bool suspend; 
-		QString comment; 
-		QString software; 
-		QString project; 
-		QString extra; 
-		QString system; 
-		int instances;
-		QString render;
+struct makejob_struct
+{
+	QString job_name;
+	QString server;
+	QString server_group;
+	int first_frame;
+	int last_frame;
+	int task_size;
+	int priority;
+	bool suspend;
+	QString comment;
+	QString software;
+	QString project;
+	QString extra;
+	QString system;
+	int instances;
+	QString render;
 };
 
 #endif //STRUCT_H

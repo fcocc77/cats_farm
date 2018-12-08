@@ -17,14 +17,14 @@
 
 //----------
 
-class ui_job_options : public QDockWidget{
-public:
+class ui_job_options : public QDockWidget
+{
+  public:
+	ui_job_options();
 
-    ui_job_options();
+	void ui();
 
-    void ui();
-
-    //jobs
+	//jobs
 	QLineEdit *jobName = new QLineEdit();
 
 	QLineEdit *firstFrame = new QLineEdit();
@@ -39,7 +39,6 @@ public:
 	QTreeWidget *serverGroupAsign = new QTreeWidget();
 	QDialogButtonBox *dialog = new QDialogButtonBox();
 	//-----------------------------------------------
-
 };
 
 #endif //UI_JOB_OPTIONS

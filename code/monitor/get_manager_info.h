@@ -35,8 +35,9 @@ using namespace std;
 
 //-----------------
 
-class get_manager_info : public QObject{
-public:
+class get_manager_info : public QObject
+{
+  public:
     QMainWindow *monitor;
 
     ui_jobs_tree *jobsList;
@@ -46,8 +47,9 @@ public:
     group_actions *groupActions;
     shared_variables *shared;
 
-    template < class T >
-    get_manager_info( T *_monitor ){
+    template <class T>
+    get_manager_info(T *_monitor)
+    {
         monitor = _monitor;
         jobsList = _monitor->jobsList;
         serverList = _monitor->serverList;
@@ -58,7 +60,6 @@ public:
 
         actions();
         managerRecieve();
-
     }
 
     bool task_first_add;
@@ -67,16 +68,15 @@ public:
 
     // revice desde manager
 
-    QString managerRecieveUpdate( QString recv );
+    QString managerRecieveUpdate(QString recv);
     void actions();
     void managerRecieve();
-    void updateJob( QJsonObject recv );
-    void updateServer( QJsonObject recv );
-    void updateGroup( QJsonObject recv );
+    void updateJob(QJsonObject recv);
+    void updateServer(QJsonObject recv);
+    void updateGroup(QJsonObject recv);
     void updateTask();
     void getTask();
     //-----------------------------
-
 };
 
 #endif //GET_MANAGER_INFO

@@ -15,18 +15,17 @@
 
 //----------
 
-class ui_server_options : public QDockWidget{
-public:
+class ui_server_options : public QDockWidget
+{
+  public:
+	ui_server_options();
 
-    ui_server_options();
-
-    void ui();
+	void ui();
 
 	//server_option_ui
 	QComboBox *schedule_start = new QComboBox();
 	QComboBox *schedule_end = new QComboBox();
 	//------------------
-
 };
 
 #endif //UI_SERVER_OPTIONS

@@ -3,8 +3,6 @@
 #include "../utils/tcp.h"
 #include "../utils/video.h"
 
-
-
 #include <QDebug>
 #include <QString>
 #include <QObject>
@@ -15,14 +13,7 @@
 #include <QJsonArray>
 #include <QList>
 
-
-
-
-
-
-
-int main(){
-	qDebug() <<  jread( "../../etc/preferences.json" );;
-
-
+int main()
+{
+	qDebug() << os::cpuCount();
 }

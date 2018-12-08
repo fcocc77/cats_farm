@@ -1,12 +1,14 @@
 #include "ui_groups_tree.h"
 
-ui_groups_tree::ui_groups_tree(){
-    ui();
+ui_groups_tree::ui_groups_tree()
+{
+	ui();
 }
 
-void ui_groups_tree::ui(){
+void ui_groups_tree::ui()
+{
 
-	QString stylesheet = 
+	QString stylesheet =
 		R"(
 		QTreeWidget::item:!has-children,
 		QTreeWidget::branch::!has-children{
@@ -30,24 +32,24 @@ void ui_groups_tree::ui(){
 
 	// importa el this y agrega las columnas
 
-	QStringList columns = {"Group Name","Status","name"};
+	QStringList columns = {"Group Name", "Status", "name"};
 	this->setColumnCount(3);
-	this->setHeaderLabels( columns );  // pone el nombre de las columnas
-	this->setSelectionMode( QAbstractItemView::ExtendedSelection ); // multi seleccion
+	this->setHeaderLabels(columns);								  // pone el nombre de las columnas
+	this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
 
-	this->setColumnHidden(2,true);
+	this->setColumnHidden(2, true);
 
-     // ajusta el largo de las columnas
-	this->setColumnWidth(0,150);
-	this->setColumnWidth(1,70);
-	this->setColumnWidth(2,70);
+	// ajusta el largo de las columnas
+	this->setColumnWidth(0, 150);
+	this->setColumnWidth(1, 70);
+	this->setColumnWidth(2, 70);
 	//----------------------------------
 
-	this->setContextMenuPolicy( Qt::CustomContextMenu );
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	this->setSortingEnabled(true);
 
-	this->setStyleSheet( stylesheet.toStdString().c_str() );
+	this->setStyleSheet(stylesheet.toStdString().c_str());
 
 	QWidget *widget = new QWidget();
 	QVBoxLayout *vbox = new QVBoxLayout();
@@ -55,7 +57,7 @@ void ui_groups_tree::ui(){
 	widget->setLayout(vbox);
 
 	dock->setObjectName("Groups");
-	dock->setWidget( widget );
+	dock->setWidget(widget);
 
 	//---------------------------------------------------------------------------------
 }

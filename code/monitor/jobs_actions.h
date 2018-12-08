@@ -36,8 +36,9 @@ using namespace std;
 #include "shared_variables.h"
 //-----------------
 
-class jobs_actions : public QObject{
-public:
+class jobs_actions : public QObject
+{
+  public:
 	QMainWindow *monitor;
 	ui_jobs_tree *jobsList;
 	ui_servers_tree *serverList;
@@ -52,8 +53,9 @@ public:
 	QString log_server;
 	shared_variables *shared;
 
-	template < class T >
-	jobs_actions( T *_monitor  ){
+	template <class T>
+	jobs_actions(T *_monitor)
+	{
 		monitor = _monitor;
 		jobsList = _monitor->jobsList;
 		serverList = _monitor->serverList;
@@ -70,11 +72,11 @@ public:
 	QTreeWidgetItem *firstJobItem;
 
 	// variables Generales
-	const QString managerHost = fread( "../../etc/manager_host" );
+	const QString managerHost = fread("../../etc/manager_host");
 	//--------------------------------------
 
 	// Job Acciones
-	QAction *deleteAction = new QAction( "Delete" );
+	QAction *deleteAction = new QAction("Delete");
 	QAction *jobSuspendAction = new QAction("Suspend");
 	QAction *jobResumeAction = new QAction("Resume");
 	QAction *jobRestartAction = new QAction("Restart");
@@ -92,16 +94,15 @@ public:
 	void jobModify();
 	void jobOptionsOk();
 
-	void jobDeleteStart( QString action );   
-	void jobAction( QString action );
+	void jobDeleteStart(QString action);
+	void jobAction(QString action);
 
-	void jobMessage( void ( jobs_actions::*funtion )( QString ), QString action, 
-							QString ask, QString tile, jobs_actions *_class );
+	void jobMessage(void (jobs_actions::*funtion)(QString), QString action,
+					QString ask, QString tile, jobs_actions *_class);
 
 	void itemDelete();
 
 	//-----------------------------
-
 };
 
 #endif //JOBS_ACTIONS_H
