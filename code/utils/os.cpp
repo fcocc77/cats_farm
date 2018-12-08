@@ -28,13 +28,19 @@ namespace os {
 		}
 
 		else if ( _linux ){
-
+			static QList <long> current;
+			QList <long> prev;
 			long prev_idle, idle, prev_not_idle, not_idle, prev_total, total;
 			float totald, idled;
 
-			auto prev=getStat();
-			usleep(100000);
-			auto current=getStat();
+			if ( current.empty() ){
+				current = getStat();
+				prev = getStat();
+			}
+			else{ 
+				prev = current;
+				current = getStat(); 
+			}
 
 			prev_idle = prev[3] + prev[4];
 			idle = current[3] + current[4];
