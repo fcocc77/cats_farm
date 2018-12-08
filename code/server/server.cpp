@@ -77,8 +77,11 @@ QString server::recieveManager( QString _recv ){
 				_render->qprocess( VMCinemaKill );
 			} //-------------------------------------------------------------------------
 
-			_render->taskKill[i.toInt()] = true;
-			os::kill( _render->pid[i.toInt()] );
+			int pid = _render->pid[i.toInt()];
+			if ( pid ){
+				_render->taskKill[i.toInt()] = true;
+				os::kill( pid );
+			}
 		}
 
 		// kill noice
