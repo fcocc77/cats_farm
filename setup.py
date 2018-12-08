@@ -367,8 +367,6 @@ def windows_install():
     if server_start:
         sh("sc start \"CatsFarm Server\"")
     else:
-        else:
-    else:
         sh("sc stop \"CatsFarm Server\"")
         sh("sc config \"CatsFarm Server\" start= disabled")
 
