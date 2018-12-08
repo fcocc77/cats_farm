@@ -238,24 +238,23 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 				// obtiene nombre de carpeta de renders
 				QString _dirname = os::dirname(extra);
 				QString _basename = os::basename(extra);
-				_basename = _basename.replace( ".mov", "" );
+				_basename.replace( ".mov", "" );
 				//-----------------------------------------------------
 
 				QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 
 				//obtiene ruta correcta
 				QString src_path, dst_path, extra;
-
 				for ( QJsonValue p1 : system_path ){
 					for ( QJsonValue p2 : system_path){
-						extra = project.replace( p1.toString(), p2.toString() );
+						extra = project;
+						extra.replace( p1.toString(), p2.toString() );
 
 						if ( os::isfile( extra ) ){
 							src_path = p1.toString();
 							dst_path = p2.toString();
 							break;
 						}
-
 					}
 
 					if ( os::isfile( extra ) ){
@@ -264,7 +263,7 @@ void manager::render_task( server_struct *server, inst_struct *instance, job_str
 				}
 				//--------------------------------------
 
-				_dirname = _dirname.replace( src_path, dst_path );
+				_dirname.replace( src_path, dst_path );
 				if ( os::isdir( _dirname ) ){
 					concat( _dirname + "/" + _basename );
 				}
