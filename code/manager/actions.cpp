@@ -52,9 +52,10 @@ void manager::kill_tasks( job_struct *job, bool _delete ){
 		erase_by_name( jobs, job->name );
 	}
 
+	QJsonArray kill_ins = {0,1,2,3};
 	for ( auto server : servers ){
 		if ( active_server.contains( server->name ) )
-			tcpClient( server->host, 7001, jats({ 3, 0 }) );
+			tcpClient( server->host, 7001, jats({ 3, kill_ins }) );
 
 	}
 }
