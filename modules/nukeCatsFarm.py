@@ -1,4 +1,3 @@
-from util import *
 import sys
 from sys import platform
 import nuke
@@ -19,21 +18,16 @@ else:
 # -------------------------------------------------------
 
 sys.path.insert(0, path + '/modules')
-
+from util import *
 
 class catsFarmSend():
     def __init__(self):
-
         self.write = nuke.selectedNode()
-
         checkOK = self.checkProject()
 
         if checkOK:
-
             if self.write.Class() == "Write":
-
                 self.general_data()
-
             else:
                 nuke.message("No Write type.")
 
