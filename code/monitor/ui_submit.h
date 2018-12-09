@@ -101,17 +101,8 @@ class ui_submit : public QDockWidget
 	QLineEdit *lastFrame = new QLineEdit();
 	QCheckBox *suspendBox = new QCheckBox("Suspended");
 	QPushButton *buttom = new QPushButton("Submit");
-
 	//--------------------------------------------
 
-	// parameter noice
-	QWidget *widgetNoice = new QWidget();
-	QLineEdit *patchRadius = new QLineEdit();
-	QLineEdit *searchRadius = new QLineEdit();
-	QLineEdit *variance = new QLineEdit();
-	QLineEdit *temporalRange = new QLineEdit();
-	QLineEdit *aov = new QLineEdit();
-	//------------------------------------
 
   public slots:
 	void submitSoftwareBox(int index);

@@ -3,7 +3,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 TEMPLATE = app
 TARGET = "CatsFarm Monitor"
-CONFIG += c++11 console
+CONFIG += c++11
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 
 RC_ICONS = ../../icons/monitor.ico
@@ -25,7 +25,6 @@ HEADERS += 	./general.h \
 			./ui_servers_tree.h \
 			./ui_server_options.h \
 			./ui_submit.h \
-			./ui_denoiser.h \
 			./ui_tasks_tree.h \
 			../utils/os.h \
 			../utils/tcp.h \
@@ -61,7 +60,6 @@ SOURCES += 	./main.cpp \
 			./ui_servers_tree.cpp \
 			./ui_server_options.cpp \
 			./ui_submit.cpp \
-			./ui_denoiser.cpp \
 			./ui_tasks_tree.cpp \
 			../utils/os.cpp \
 			../utils/util.cpp \

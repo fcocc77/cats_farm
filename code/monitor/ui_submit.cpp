@@ -75,52 +75,6 @@ void ui_submit::ui()
 	vboxSubmit->addWidget(widget2);
 	//---------------------------------------
 
-	// box 1.5
-	QVBoxLayout *vboxNoice = new QVBoxLayout();
-	vboxNoice->setContentsMargins(15, 15, 15, 15);
-
-	QHBoxLayout *hbox10_1 = new QHBoxLayout();
-	hbox10_1->setContentsMargins(0, 0, 0, 0);
-	QLabel *pr_label = new QLabel("PR:");
-	hbox10_1->addWidget(pr_label);
-	hbox10_1->addWidget(patchRadius);
-
-	QLabel *sr_label = new QLabel("SR:");
-	hbox10_1->addWidget(sr_label);
-	hbox10_1->addWidget(searchRadius);
-
-	QLabel *v_label = new QLabel("V:");
-	hbox10_1->addWidget(v_label);
-	hbox10_1->addWidget(variance);
-
-	QLabel *tr_label = new QLabel("TR:");
-	hbox10_1->addWidget(tr_label);
-	hbox10_1->addWidget(temporalRange);
-
-	QWidget *widget10_1 = new QWidget();
-	widget10_1->setLayout(hbox10_1);
-	widget10_1->setObjectName("style2");
-
-	vboxNoice->addWidget(widget10_1);
-
-	QHBoxLayout *hbox10_2 = new QHBoxLayout();
-	hbox10_2->setContentsMargins(0, 0, 0, 0);
-	QLabel *passes_label = new QLabel("AOV:");
-	hbox10_2->addWidget(passes_label);
-	hbox10_2->addWidget(aov);
-
-	QWidget *widget10_2 = new QWidget();
-	widget10_2->setLayout(hbox10_2);
-	widget10_2->setObjectName("style2");
-
-	vboxNoice->addWidget(widget10_2);
-
-	widgetNoice->setLayout(vboxNoice);
-	widgetNoice->setObjectName("style1");
-
-	vboxSubmit->addWidget(widgetNoice);
-	//---------------------------------------
-
 	// box 2
 	QVBoxLayout *vbox3 = new QVBoxLayout();
 	vbox3->setContentsMargins(15, 15, 15, 15);
@@ -347,7 +301,6 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		fileFile->setText("Script");
 		renderLine->setText("Write1");
 		outputFile->setText("...");
-		widgetNoice->setVisible(false);
 	}
 
 	if (software == "Maya")
@@ -364,7 +317,6 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		fileFile->setText("Scene");
 		renderLine->setText("");
 		outputFile->setText("...");
-		widgetNoice->setVisible(false);
 
 		QString file_name = fileLine->text();
 
@@ -393,7 +345,6 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		renderLine->setText("/out/arnold1");
 		projectLine->setText("");
 		outputFile->setText("...");
-		widgetNoice->setVisible(false);
 	}
 	if (software == "Cinema4D")
 	{
@@ -410,7 +361,6 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		renderLine->setText("");
 		projectLine->setText("");
 		outputFile->setText("...");
-		widgetNoice->setVisible(false);
 	}
 
 	if (software == "Fusion")
@@ -428,7 +378,6 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		renderLine->setText("");
 		projectLine->setText("");
 		outputFile->setText("...");
-		widgetNoice->setVisible(false);
 	}
 
 	if (software == "Natron")
@@ -446,7 +395,6 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		fileFile->setText("Script");
 		renderLine->setText("Write1");
 		outputFile->setText("...");
-		widgetNoice->setVisible(false);
 	}
 }
 
@@ -532,13 +480,6 @@ void ui_submit::submitPanelOpen()
 		outputLine->setText(panel["outputLine"].toString());
 		renderLine->setText(panel["renderLine"].toString());
 		softwareBox->setCurrentIndex(panel["softwareBox"].toInt());
-
-		patchRadius->setText(panel["patchRadius"].toString());
-		searchRadius->setText(panel["searchRadius"].toString());
-		variance->setText(panel["variance"].toString());
-		temporalRange->setText(panel["temporalRange"].toString());
-		aov->setText(panel["aov"].toString());
-
 		jobName->setText(panel["jobName"].toString());
 		firstFrame->setText(panel["firstFrame"].toString());
 		lastFrame->setText(panel["lastFrame"].toString());
@@ -559,13 +500,6 @@ void ui_submit::submitPanelSave()
 		{"fileLine", fileLine->text()},
 		{"outputLine", outputLine->text()},
 		{"renderLine", renderLine->text()},
-
-		{"patchRadius", patchRadius->text()},
-		{"searchRadius", searchRadius->text()},
-		{"variance", variance->text()},
-		{"temporalRange", temporalRange->text()},
-		{"aov", aov->text()},
-
 		{"jobName", jobName->text()},
 		{"firstFrame", firstFrame->text()},
 		{"lastFrame", lastFrame->text()},

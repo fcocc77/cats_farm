@@ -55,7 +55,6 @@ void monitor::assamble()
 
 	this->setCentralWidget(jobsList->widget);
 	this->addDockWidget(Qt::LeftDockWidgetArea, uiSubmit);
-	this->addDockWidget(Qt::LeftDockWidgetArea, uiDenoiser);
 	this->addDockWidget(Qt::BottomDockWidgetArea, uiServerOptions);
 	this->addDockWidget(Qt::BottomDockWidgetArea, serverList->dock);
 	this->addDockWidget(Qt::BottomDockWidgetArea, groupList->dock);

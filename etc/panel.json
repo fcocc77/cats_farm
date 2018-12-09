@@ -1,21 +1,16 @@
 {
-    "aov": "diffuse_direct,  diffuse_indirect, specular_direct, specular_indirect",
     "commentLine": "Comment",
     "fileLine": "",
     "firstFrame": "1",
     "jobName": "Job Name",
     "lastFrame": "100",
     "outputLine": "",
-    "patchRadius": "3",
     "priority": 2,
     "projectLine": "",
     "renderLine": "",
-    "searchRadius": "3",
     "serverBox": 0,
     "serverGroupBox": 0,
     "softwareBox": 1,
     "suspendBox": false,
-    "taskSize": "10",
-    "temporalRange": "0",
-    "variance": "0.5"
+    "taskSize": "10"
 }

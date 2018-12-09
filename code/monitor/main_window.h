@@ -4,7 +4,6 @@
 #include <QAction>
 
 // QT5 Library
-
 #include <QApplication>
 #include <QMainWindow>
 #include <QToolBar>
@@ -24,7 +23,6 @@ using namespace std;
 #include "ui_tasks_tree.h"
 #include "ui_job_options.h"
 #include "ui_server_options.h"
-#include "ui_denoiser.h"
 #include "get_manager_info.h"
 #include "group_actions.h"
 #include "jobs_actions.h"
@@ -65,7 +63,6 @@ class monitor : public QMainWindow
     ui_servers_tree *serverList = new ui_servers_tree(this);
     ui_groups_tree *groupList = new ui_groups_tree();
     ui_submit *uiSubmit = new ui_submit(this);
-    ui_denoiser *uiDenoiser = new ui_denoiser(this);
     ui_tasks_tree *taskList = new ui_tasks_tree();
     ui_jobs_tree *jobsList = new ui_jobs_tree(this);
     ui_server_options *uiServerOptions = new ui_server_options();
