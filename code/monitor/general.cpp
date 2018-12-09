@@ -85,12 +85,16 @@ void general::notifyIcon()
 	});
 
 	connect(notify, &QSystemTrayIcon::activated, this, [this](QSystemTrayIcon::ActivationReason reason) {
-		if ( reason == QSystemTrayIcon::Trigger ){
+		if (reason == QSystemTrayIcon::Trigger)
+		{
 			// al clickear el icono muestra o oculta la ventana principal
-			if ( monitor->isVisible() ){ monitor->hide(); }
-			else{ monitor->show(); }
-		    //------------------------------------------------
-		} });
+			if (monitor->isVisible())
+				monitor->hide();
+			else
+				monitor->show();
+			//------------------------------------------------
+		}
+	});
 	notify->show();
 
 	QMenu *menu = new QMenu(monitor);
@@ -112,16 +116,11 @@ void general::notifyIcon()
 			QString notifyJob = "../../log/trayIcon/" + name;
 
 			if (status == "Queue" or status == "Rendering...")
-			{
 				if (os::isfile(notifyJob))
-				{
 					os::remove(notifyJob);
-				}
-			}
 
 			if (status == "Failed" or status == "Completed")
 			{
-
 				if (not os::isfile(notifyJob))
 				{
 					fwrite(notifyJob, "0");
@@ -135,7 +134,6 @@ void general::notifyIcon()
 					if (status == "Completed")
 					{
 						notify->showMessage("CatsFarm", name + "  has finished");
-
 						QSound("../../sound/meaw_cat.wav", this).play();
 					}
 				}
