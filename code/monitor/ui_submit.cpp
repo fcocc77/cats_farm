@@ -520,29 +520,19 @@ void ui_submit::submitAction(QString software)
 
 	bool suspend = false;
 	if (suspendBox->isChecked())
-	{
 		suspend = true;
-	}
 
 	QString dirProject = projectLine->text();
 	if (software == "Fusion")
-	{
 		dirProject = outputLine->text();
-	}
 
 	QString system;
 	if (_linux)
-	{
 		system = "Linux";
-	}
 	else if (_win32)
-	{
 		system = "Windows";
-	}
 	else
-	{
 		system = "Mac";
-	}
 
 	// crea lista de texto facil para poder enviar por tcp.
 	QJsonArray info = {jobName->text(),
