@@ -14,7 +14,7 @@
 //-------------
 using namespace std;
 #include <iostream>
-
+#include "../utils/os.h"
 #include "shared_variables.h"
 
 class ui_servers_tree : public QTreeWidget

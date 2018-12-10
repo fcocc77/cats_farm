@@ -77,7 +77,6 @@ class monitor : public QMainWindow
 
     void init();
     void assamble();
-    //void ui();
     void update();
     void main_menu();
     void tool_bar();

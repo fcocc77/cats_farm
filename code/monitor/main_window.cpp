@@ -2,39 +2,10 @@
 
 void monitor::init()
 {
-
-	//shared->server_display = {0,0,0,0,0,0,0};
 	main_menu();
 	tool_bar();
 	log_ui();
-
-	//ui();
-	//notifyIcon();
 	assamble();
-
-	/*
-	QSettings *settings = new QSettings("JumpCats", "CatsFarm");
-	restoreGeometry( settings->value("geometry", "").toByteArray());
-	restoreState( settings->value("windowState", "").toByteArray());
-
-	bool status = 1;//tcpClient(host=managerHost, port=7772, timeout=5).status
-
-	if ( status ){ startApp(); }
-	else{
-		bool ok;
-		QString ip = QInputDialog::getText( this, "Manager Connect", "Enter Manager IP:", QLineEdit::Normal,
-                                         QDir::home().dirName(), &ok);
-
-		if ( ok ){
-			fwrite( "../../etc/manager_host", ip.toStdString() );
-			status = 1;//tcpClient(host=managerHost, port=7772, timeout=5).status
-
-			if ( status ){ startApp(); }
-			else{ closeApp(); }
-		}
-		else{ closeApp(); }
-	}
-    */
 
 	qthread(&monitor::update, this);
 }
@@ -52,7 +23,6 @@ void monitor::update()
 
 void monitor::assamble()
 {
-
 	this->setCentralWidget(jobsList->widget);
 	this->addDockWidget(Qt::LeftDockWidgetArea, uiSubmit);
 	this->addDockWidget(Qt::BottomDockWidgetArea, uiServerOptions);
@@ -66,7 +36,6 @@ void monitor::assamble()
 
 void monitor::main_menu()
 {
-
 	// Main Menu-------------------------------------
 	QMenuBar *mainMenu = menuBar();
 	QMenu *fileMenu = new QMenu("&File", this);
@@ -126,9 +95,7 @@ void monitor::main_menu()
 
 void monitor::tool_bar()
 {
-
 	// toolBar
-
 	toolBar->setObjectName("ToolBar");
 	toolBar->addAction(jobActions->jobResumeAction);
 	toolBar->addSeparator();
@@ -140,13 +107,12 @@ void monitor::tool_bar()
 	toolBar->setIconSize(QSize(24, 24));
 	toolBar->setMovable(0);
 	toolBar->setWindowTitle("Tools Bar");
-
 	//---------------------
 }
 
 void monitor::log_ui()
-{
-
+{	
+	// esto es para que el log tenga colores 
 	kgl::QCodeEditorDesign design(":/design.xml");
 	QList<kgl::QSyntaxRule> rules = kgl::QSyntaxRules::loadFromFile(":/rule_cpp.xml", design);
 
@@ -154,6 +120,7 @@ void monitor::log_ui()
 	log_text->setRules(rules);
 	log_text->setKeywords({"printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset"});
 	log_text->setReadOnly(true);
+	//------------------------------------------
 
 	QWidget *widget = new QWidget();
 	QVBoxLayout *hbox = new QVBoxLayout();

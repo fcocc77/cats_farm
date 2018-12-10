@@ -2,22 +2,14 @@
 
 void ui_servers_tree::actions()
 {
-
-	// display job list
-	//shared->server_display=jread("../../etc/shared->server_display.json")
-	//if not shared->server_display:
-
-	shared->server_display = {{"mac", true}, {"linux", true}, {"window", true}, {"on", true}, {"off", true}, {"show", true}, {"hide", true}};
+	shared->server_display = jread("../../etc/server_display.json");
 
 	auto displayAction = [this](QString action) {
 		if (shared->server_display[action].toBool())
-		{
 			shared->server_display[action] = false;
-		}
 		else
-		{
 			shared->server_display[action] = true;
-		}
+		jwrite("../../etc/server_display.json", shared->server_display);
 	};
 
 	auto displayAll = [this](bool status) {
@@ -34,6 +26,8 @@ void ui_servers_tree::actions()
 		displayMacAction->setChecked(status);
 		displayOnAction->setChecked(status);
 		displayOffAction->setChecked(status);
+
+		jwrite("../../etc/server_display.json", shared->server_display);
 	};
 
 	connect(showAllAction, &QAction::triggered, this, [=]() { displayAll(true); });
