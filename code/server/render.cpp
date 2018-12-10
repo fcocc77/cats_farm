@@ -241,7 +241,18 @@ bool render::nuke(int ins)
 
 	// rendering ...
 	// ----------------------------------
-	QString log = qprocess(cmd, ins);
+	QString log;
+	log = qprocess(cmd, ins);
+	// al hacer render en una comp nueva por primera vez
+	// aparece un error de "missing close-brace" y para evitar que
+	// llegue el error al manager intenta en un segundo si vuelve
+	// a aparecer manda el error
+	if (log.contains("missing close-brace"))
+	{
+		sleep(1);
+		log = qprocess(cmd, ins);
+	}
+	// ---------------------------------------
 	fwrite(log_file, log);
 	// ----------------------------------
 
