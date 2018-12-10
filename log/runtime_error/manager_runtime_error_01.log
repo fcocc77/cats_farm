@@ -1,0 +1,13 @@
+#0  0x00000038e6075f05 in malloc_consolidate () from /lib64/libc.so.6
+#1  0x00000038e6079bb8 in _int_malloc () from /lib64/libc.so.6
+#2  0x00000038e607aaac in malloc () from /lib64/libc.so.6
+#3  0x00007ffff64eb122 in QJsonObject::detach2(unsigned int) () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#4  0x00007ffff64eb423 in QJsonObject::compact() () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#5  0x00007ffff64e9b90 in QJsonDocument::setObject(QJsonObject const&) () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#6  0x0000000000423f9c in jots (data=...) at /opt/cats_farm/code/utils/util.cpp:62
+#7  0x0000000000421ce7 in manager::update_server_thread (this=0x7fffffffebf0, recv=...) at /opt/cats_farm/code/manager/update.cpp:107
+#8  0x0000000000407b39 in manager::server_tcp (this=0x7fffffffebf0, _recv=...) at /opt/cats_farm/code/manager/manager.cpp:32
+#9  0x0000000000415f02 in tcp_socket<manager>::run (this=0x45c9d0) at /opt/cats_farm/code/manager/../utils/tcp.h:93
+#10 0x00007ffff6341539 in ?? () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#11 0x00000038e6407aa1 in start_thread () from /lib64/libpthread.so.0
+#12 0x00000038e60e8bcd in clone () from /lib64/libc.so.6
