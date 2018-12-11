@@ -25,13 +25,9 @@ void general::actions()
 
 	connect(hideAction, &QAction::triggered, this, [this]() {
 		if (monitor->isVisible())
-		{
 			monitor->hide();
-		}
 		else
-		{
 			monitor->show();
-		}
 	});
 	hideAction->setShortcut(QString("Ctrl+Q"));
 

@@ -14,7 +14,7 @@ void monitor::update()
 {
 	// si el archivo esta en 1 muestra el monitor
 	static QString showMonitor = path + "/etc/showMonitor";
-	if (not(fread(showMonitor) == "0"))
+	if (fread(showMonitor).toInt())
 	{
 		this->show();
 		fwrite(showMonitor, "0");
@@ -111,8 +111,8 @@ void monitor::tool_bar()
 }
 
 void monitor::log_ui()
-{	
-	// esto es para que el log tenga colores 
+{
+	// esto es para que el log tenga colores
 	kgl::QCodeEditorDesign design(":/design.xml");
 	QList<kgl::QSyntaxRule> rules = kgl::QSyntaxRules::loadFromFile(":/rule_cpp.xml", design);
 
