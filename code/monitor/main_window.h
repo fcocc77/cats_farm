@@ -10,6 +10,7 @@
 #include <QPlainTextEdit>
 #include <QDockWidget>
 #include <QVBoxLayout>
+#include <QCloseEvent>
 //------------------------
 
 #include <iostream>
@@ -50,7 +51,6 @@ class monitor : public QMainWindow
         fwrite(openMonitor, "0"); // escrebe que el monitor ya esta cerrado
     }
 
-    bool app_started = false;
     QToolBar *toolBar = new QToolBar();
 
     //log
@@ -81,6 +81,9 @@ class monitor : public QMainWindow
     void main_menu();
     void tool_bar();
     void log_ui();
+
+  private:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif //MAIN_WINDOW_H

@@ -2,7 +2,6 @@
 
 void general::init()
 {
-
 	notifyIcon();
 	style_ui();
 	actions();
@@ -20,6 +19,7 @@ void general::actions()
 	preferencesAction->setShortcut(QString("S"));
 
 	connect(quitAction, &QAction::triggered, this, [this]() {
+		shared->app_close = true;
 		monitor->close();
 	});
 

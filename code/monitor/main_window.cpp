@@ -1,5 +1,16 @@
 #include "main_window.h"
 
+void monitor::closeEvent(QCloseEvent *event)
+{
+	if (shared->app_close)
+		event->accept();
+	else
+	{
+		event->ignore();
+		this->hide();
+	}
+}
+
 void monitor::init()
 {
 	main_menu();

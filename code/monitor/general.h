@@ -17,7 +17,7 @@
 #include "ui_jobs_tree.h"
 #include "settings.h"
 #include "ui_submit.h"
-
+#include "shared_variables.h"
 //----------
 
 #include <iostream>
@@ -37,6 +37,7 @@ class general : public QObject
 
     QMainWindow *monitor;
     ui_jobs_tree *jobsList;
+    shared_variables *shared;
 
     template <class T>
     general(T *_monitor)
@@ -47,8 +48,8 @@ class general : public QObject
         uiJobOptions = _monitor->uiJobOptions;
         uiServerOptions = _monitor->uiServerOptions;
         log_dock = _monitor->log_dock;
-
         jobsList = _monitor->jobsList;
+        shared = _monitor->shared;
 
         init();
     }

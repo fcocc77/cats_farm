@@ -11,6 +11,7 @@ struct shared_variables
     QJsonObject jobs;
     QJsonArray servers;
     bool stopUpdate;
+    bool app_close;
 };
 
 #endif //SHARED_VARIABLES_H
