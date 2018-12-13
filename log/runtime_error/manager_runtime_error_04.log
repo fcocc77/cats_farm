@@ -1,0 +1,9 @@
+#0  0x00007ffff64e7f6d in ?? () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#1  0x00007ffff64eb926 in QJsonObject::operator[](QString const&) () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#2  0x000000000040df52 in manager::struct_to_json (this=0x7fffffffebf0) at /opt/cats_farm/code/manager/manager.cpp:460
+#3  0x0000000000409060 in manager::sendToMonitor_thread (this=0x7fffffffebf0) at /opt/cats_farm/code/manager/manager.cpp:251
+#4  0x0000000000407b69 in manager::server_tcp (this=0x7fffffffebf0, _recv=...) at /opt/cats_farm/code/manager/manager.cpp:34
+#5  0x0000000000415f02 in tcp_socket<manager>::run (this=0x46da60) at /opt/cats_farm/code/manager/../utils/tcp.h:93
+#6  0x00007ffff6341539 in ?? () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
+#7  0x00000038e6407aa1 in start_thread () from /lib64/libpthread.so.0
+#8  0x00000038e60e8bcd in clone () from /lib64/libc.so.6
