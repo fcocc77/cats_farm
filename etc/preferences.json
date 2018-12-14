@@ -62,7 +62,7 @@
         "system": [
             "/mnt/server_01",
             "/media/server_01",
-            "//192.168.10.45/server_01",
+            "//192.168.10.46/server_01",
             "/Volumes/server_01",
             "/Volumes/server_01-1",
             "//VBOXSVR/server_01",
