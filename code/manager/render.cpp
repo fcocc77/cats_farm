@@ -41,14 +41,18 @@ void manager::render_job()
 			for (auto server : servers)
 			{
 				bool serverOK = 0;
-				if (machinesList.contains(server->name))
+				try
+				{ // evita error de runtime en esta line "machinesList.contains(server->name)" manager_runtime_error_03.log
+					if (machinesList.contains(server->name))
+						serverOK = 1;
+				}
+				catch (...)
 				{
-					serverOK = 1;
-				} //----------------------------------
+					fwrite(path + "/log/manager_runtime_error_03_crash.log", "log/runtime_error/manager_runtime_error_03.log");
+				} //-----------------------------------------------------------
 
 				for (int ins = 0; ins < server->max_instances; ins++)
 				{
-
 					// si la instancia esta dentro del trabajo renderea
 					bool instanceOK = 0;
 					for (int i = 0; i < job->instances; i++)
