@@ -90,7 +90,8 @@ class manager : public QObject
 		return false;
 	}
 
-	void erase_by_name(auto &lista, QString name)
+	template <typename T>
+	void erase_by_name(T &lista, QString name)
 	{
 		int i = 0;
 		for (auto s : lista)
