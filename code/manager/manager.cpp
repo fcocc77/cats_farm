@@ -513,3 +513,33 @@ QJsonObject manager::struct_to_json()
 
 	return info;
 }
+
+job_struct *manager::findJob(QString name)
+{
+	for (auto job : jobs)
+		if (job->name == name)
+			return job;
+	return jobs[0];
+}
+server_struct *manager::findServer(QString name)
+{
+	for (auto server : servers)
+		if (server->name == name)
+			return server;
+	return servers[0];
+}
+group_struct *manager::findGroup(QString name)
+{
+	for (auto group : groups)
+		if (group->name == name)
+			return group;
+	return groups[0];
+}
+
+task_struct *manager::findTask(QList<task_struct *> tasks, QString name)
+{
+	for (auto task : tasks)
+		if (task->name == name)
+			return task;
+	return tasks[0];
+}

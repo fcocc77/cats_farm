@@ -61,44 +61,30 @@ class manager : public QObject
 	void update_jobs();
 	void container_save();
 	void update_all();
-
-	// encuentra un index por el nombre de un vector de estructuras
-	template <typename T> // para que el retorno sea diferente al primer argumento
-	auto *find_struct(T lista, QString name)
-	{
-		for (auto s : lista)
-		{
-			if (s->name == name)
-			{
-				return s;
-			}
-		}
-		return lista[0];
-	}
-	//-----------------------------------------------------------------
+	job_struct *findJob(QString name);
+	server_struct *findServer(QString name);
+	group_struct *findGroup(QString name);
+	task_struct *findTask(QList<task_struct *> tasks, QString name);
 
 	template <typename T>
 	bool is_struct(T lista, QString name)
 	{
 		for (auto s : lista)
-		{
 			if (s->name == name)
-			{
 				return true;
-			}
-		}
+
 		return false;
 	}
 
-	void erase_by_name(auto &lista, QString name)
+	template <typename T>
+	void erase_by_name(T &lista, QString name)
 	{
 		int i = 0;
 		for (auto s : lista)
 		{
 			if (s->name == name)
-			{
 				break;
-			}
+
 			i++;
 		}
 

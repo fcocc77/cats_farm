@@ -87,7 +87,7 @@ void manager::jobAction(QJsonArray pks)
 		QString job_name = _job[0].toString();
 		QString job_action = _job[1].toString();
 
-		auto job = find_struct(jobs, job_name);
+		auto job = findJob(job_name);
 
 		if (job_action == "delete")
 		{
@@ -156,7 +156,7 @@ QString manager::jobOptions(QJsonArray pks)
 		QJsonArray options = _job[1].toArray();
 		QString action = _job[2].toString();
 
-		auto job = find_struct(jobs, job_name);
+		auto job = findJob(job_name);
 
 		if (action == "write")
 		{
@@ -271,7 +271,7 @@ QString manager::serverAction(QJsonArray pks)
 		QString name = _server[0].toString();
 		QString server_action = _server[1].toString();
 		int info = _server[2].toInt();
-		auto server = find_struct(servers, name);
+		auto server = findServer(name);
 
 		if (server_action == "max_instances")
 		{
@@ -348,7 +348,7 @@ QString manager::serverOptions(QJsonArray pks)
 		QJsonArray recv = _server[1].toArray();
 		QString action = _server[2].toString();
 
-		auto server = find_struct(servers, name);
+		auto server = findServer(name);
 
 		if (action == "read")
 		{
@@ -380,7 +380,7 @@ void manager::groupAction(QJsonArray pks)
 			QString name = _group[0].toString();
 			QJsonArray serverList = _group[1].toArray();
 
-			auto group = find_struct(groups, name);
+			auto group = findGroup(name);
 
 			for (QJsonValue s : serverList)
 			{
@@ -388,7 +388,7 @@ void manager::groupAction(QJsonArray pks)
 				if (not is_struct(group->server, server))
 				{
 
-					QString status = find_struct(servers, server)->status;
+					QString status = findServer(server)->status;
 					bool _status = true;
 
 					if (status == "absent")
@@ -416,7 +416,7 @@ void manager::groupAction(QJsonArray pks)
 			QString name = _group[0].toString();
 			QString server = _group[1].toString();
 
-			auto group = find_struct(groups, name);
+			auto group = findGroup(name);
 
 			erase_by_name(group->server, server);
 		}
@@ -439,8 +439,8 @@ void manager::taskAction(QJsonArray pks)
 		QString task_name = _task[1].toString();
 		QString task_action = _task[2].toString();
 
-		auto job = find_struct(jobs, job_name);
-		auto task = find_struct(job->task, task_name);
+		auto job = findJob(job_name);
+		auto task = findTask(job->task, task_name);
 
 		if (task_action == "suspend")
 		{
@@ -548,7 +548,7 @@ QString manager::preferencesAction(QJsonArray _pks)
 QString manager::jobLogAction(QString server_name)
 {
 
-	auto server = find_struct(servers, server_name);
+	auto server = findServer(server_name);
 	QString result = server->log;
 
 	return result;
