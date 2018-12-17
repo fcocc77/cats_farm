@@ -179,7 +179,7 @@ QString manager::make_job(QJsonArray recv)
 	return "";
 }
 
-QList<task_struct *> manager::make_task(int first_frame, int last_frame, int task_size)
+vector<task_struct *> manager::make_task(int first_frame, int last_frame, int task_size)
 {
 
 	//Crea una lista de tareas con el frame de inicio y final
@@ -214,7 +214,7 @@ QList<task_struct *> manager::make_task(int first_frame, int last_frame, int tas
 	//--------------------------------------------------------
 
 	// create tasks
-	QList<task_struct *> tasks;
+	vector<task_struct *> tasks;
 
 	int num = 0;
 	QString task_name;
@@ -536,7 +536,7 @@ group_struct *manager::findGroup(QString name)
 	return groups[0];
 }
 
-task_struct *manager::findTask(QList<task_struct *> tasks, QString name)
+task_struct *manager::findTask(vector<task_struct *> tasks, QString name)
 {
 	for (auto task : tasks)
 		if (task->name == name)

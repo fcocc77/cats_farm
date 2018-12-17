@@ -44,7 +44,7 @@ struct job_struct
 	int task_size;
 	int first_frame;
 	int last_frame;
-	QList<task_struct *> task;
+	vector<task_struct *> task;
 };
 
 struct inst_struct

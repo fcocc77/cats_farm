@@ -2,6 +2,7 @@
 #define MANAGER_H
 
 #include <iostream>
+#include <vector>
 using namespace std;
 #include <ctime>	 // time_t
 #include <algorithm> //sort
@@ -24,15 +25,15 @@ using namespace std;
 class manager : public QObject
 {
   public:
-	QList<job_struct *> jobs;
-	QList<server_struct *> servers;
-	QList<group_struct *> groups;
+	vector<job_struct *> jobs;
+	vector<server_struct *> servers;
+	vector<group_struct *> groups;
 	QJsonObject preferences = jread("../../etc/preferences.json");
 	bool reset_render;
 
 	void init();
 	QString make_job(QJsonArray recv);
-	QList<task_struct *> make_task(int first_frame, int last_frame, int task_size);
+	vector<task_struct *> make_task(int first_frame, int last_frame, int task_size);
 	void resetAllServer();
 	void kill_tasks(job_struct *job, bool _delete);
 	void render_job();
@@ -64,7 +65,7 @@ class manager : public QObject
 	job_struct *findJob(QString name);
 	server_struct *findServer(QString name);
 	group_struct *findGroup(QString name);
-	task_struct *findTask(QList<task_struct *> tasks, QString name);
+	task_struct *findTask(vector<task_struct *> tasks, QString name);
 
 	template <typename T>
 	bool is_struct(T lista, QString name)
