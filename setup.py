@@ -20,6 +20,7 @@ ip = "192.168.10.46"
 manager_start = True
 server_start = True
 action = True
+clean_compilation = False
 if platform == "linux2":
     debug = True
 else:
@@ -94,6 +95,8 @@ def compile_(project):
 
     if platform == "win32":
         ProgramData = "C:/ProgramData/cats_farm/" + basename
+        if clean_compilation:
+            shutil.rmtree(ProgramData)
         if not os.path.isdir(ProgramData):
             os.makedirs(ProgramData)
 
@@ -115,6 +118,8 @@ def compile_(project):
             name = basename
 
         temp = "/var/tmp/" + name
+        if clean_compilation:
+            shutil.rmtree(temp)
         if not os.path.isdir(temp):
             os.makedirs(temp)
 
