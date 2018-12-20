@@ -7,7 +7,7 @@ using namespace std;
 void concat(QString folder)
 {
 
-	QString ffmpeg, logMetod, dirMovie, list, safe, concat, movie, movie_list, name, cmd, null;
+	QString ffmpeg, logMetod, dirMovie, list, concat, movie, movie_list, name, cmd, null;
 
 	if (_win32)
 	{
@@ -44,14 +44,9 @@ void concat(QString folder)
 	//-----------------------------------------
 
 	if (_win32)
-	{
-		safe = "-safe 0";
-		list = list.replace("/", "\\");
-	}
-	else
-		safe = "";
+		list.replace("/", "\\");
 
-	concat = ffmpeg + " -y -f concat " + safe + " -i " + '"' + list + '"' + " -c copy " + '"' + movie + '"';
+	concat = ffmpeg + " -y -f concat -safe 0 -i " + '"' + list + '"' + " -c copy " + '"' + movie + '"';
 	os::sh(concat);
 
 	// borra lista creada
