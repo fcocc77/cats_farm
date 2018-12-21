@@ -16,7 +16,7 @@ macInstall = "/usr/local/cats_farm"
 # --------------------------
 
 # Datos Generales
-ip = "192.168.10.46"
+ip = "192.168.10.48"
 manager_start = True
 server_start = True
 action = True
@@ -76,7 +76,7 @@ def fwrite(path, info):
 
 def compile_(project):
     if platform == "linux2":
-        qmake = "/opt/Qt5.7.1/5.7/gcc_64/bin/qmake"
+        qmake = "/opt/Qt5.11.3/5.11.3/gcc_64/bin/qmake"
     elif platform == "win32":
         qmake = "C:/Qt/Qt5.7.1/5.7/mingw53_32/bin/qmake.exe"
         make = "C:/Qt/Qt5.7.1/Tools/mingw530_32/bin/mingw32-make.exe"
@@ -128,12 +128,8 @@ def compile_(project):
         if os.path.isfile(exe):
             os.remove(exe)
 
-        # Aniade directorio de catsfarm para poder compilarlo
-        sh("find " + linuxInstall + " -type f -exec touch {} +")
-        # Aniade directorio de QT5
-        sh("find /opt/Qt5.7.1/ -type f -exec touch {} +")
         sh("cd \"" + temp + "\" && " + qmake + " " + project)
-        sh("cd \"" + temp + "\" && source /opt/rh/devtoolset-7/enable && make")
+        sh("cd \"" + temp + "\" && make")
 
         shutil.move(exe, linuxInstall + "/bin/linux/" + basename)
 
@@ -163,19 +159,20 @@ def compiler_install():
             zf.extractall("C:/")
 
     if platform == "linux2":
-        if not os.path.isdir("/opt/Qt5.7.1"):
+        if not os.path.isdir("/opt/Qt5.11.3"):
             # untar QT5
-            tar = tarfile.open(path + "/qt/linux/Qt5.7.1.tar.gz")
+            tar = tarfile.open(path + "/qt/linux/Qt5.11.3.tar.gz")
             for i in tar:
                 tar.extract(i, path="/opt")
             tar.close()
             # ----------------------
 
         # install rpms nesesarios
-        rpms = ""
-        for rpm in os.listdir(path + "/qt/linux/libs"):
-            rpms += path + "/qt/linux/libs/" + rpm + " "
-        sh("yum -y install " + rpms)
+        sh("yum -y install epel-release")
+        sh("yum -y install http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm")
+        sh("yum -y install mesa-libGL-devel mesa-libGLU-devel")
+        sh("yum -y install ffmpeg")
+        sh("yum -y install lm_sensors")
         # ----------------------
 
     if platform == "darwin":
@@ -278,6 +275,20 @@ def linux_install():
     sh("sed -i -e 's/\r//g' /etc/init.d/cserver")
     sh("sed -i -e 's/\r//g' /etc/init.d/cmanager")
     # --------------------------------------------------------------------------------
+
+    # Copia librerias necesarias en lib/bin
+    libs = ["libicudata.so.56", "libicui18n.so.56", "libicuuc.so.56", "libQt5Core.so.5", "libQt5DBus.so.5",
+            "libQt5Gui.so.5", "libQt5Multimedia.so.5", "libQt5Network.so.5", "libQt5Widgets.so.5", "libQt5XcbQpa.so.5"]
+    for l in libs:
+        shutil.copy("/opt/Qt5.11.3/5.11.3/gcc_64/lib/" +
+                    l, linuxInstall + "/bin/linux/lib")
+
+    plugins = ["libqoffscreen.so", "libqxcb.so"]
+    for p in plugins:
+
+        shutil.copy("/opt/Qt5.11.3/5.11.3/gcc_64/plugins/platforms/" +
+                    p, linuxInstall + "/bin/linux/plugins/platforms")
+    # ------------------------------------------
 
     if server_start:
         os.system("service cserver start")
