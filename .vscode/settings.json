@@ -2,5 +2,6 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "vector": "cpp"
-    }
+    },
+    "python.pythonPath": "C:\\Python27\\python.exe"
 }

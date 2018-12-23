@@ -17,7 +17,7 @@ macInstall = "/usr/local/cats_farm"
 
 # Datos Generales
 ip = "192.168.10.48"
-manager_start = True
+manager_start = False
 server_start = True
 action = True
 clean_compilation = False
@@ -78,10 +78,10 @@ def compile_(project):
     if platform == "linux2":
         qmake = "/opt/Qt5.11.3/5.11.3/gcc_64/bin/qmake"
     elif platform == "win32":
-        qmake = "C:/Qt/Qt5.7.1/5.7/mingw53_32/bin/qmake.exe"
-        make = "C:/Qt/Qt5.7.1/Tools/mingw530_32/bin/mingw32-make.exe"
+        qmake = "C:/Qt/Qt5.11.3/5.11.3/mingw53_32/bin/qmake.exe"
+        make = "C:/Qt/Qt5.11.3/Tools/mingw530_32/bin/mingw32-make.exe"
     else:
-        qmake = "/usr/local/Qt5.11.1/5.11.1/clang_64/bin/qmake"
+        qmake = "/usr/local/Qt5.11.3/5.11.3/clang_64/bin/qmake"
 
     basename = fread(project).split("TARGET")[1].split(
         "\n")[0].strip().strip("=").strip().strip("\"")
@@ -155,7 +155,7 @@ def compile_(project):
 def compiler_install():
     if platform == "win32":
         if not os.path.isdir("C:/Qt"):
-            zf = ZipFile(path + "/qt/win/Qt5.7.1.zip", "r")
+            zf = ZipFile(path + "/qt/win/Qt5.11.3.zip", "r")
             zf.extractall("C:/")
 
     if platform == "linux2":
@@ -285,7 +285,6 @@ def linux_install():
 
     plugins = ["libqoffscreen.so", "libqxcb.so"]
     for p in plugins:
-
         shutil.copy("/opt/Qt5.11.3/5.11.3/gcc_64/plugins/platforms/" +
                     p, linuxInstall + "/bin/linux/plugins/platforms")
     # ------------------------------------------
@@ -329,7 +328,6 @@ def windows_install():
         os.mkdir(windowsInstall)
 
     # copia el contenido necesario
-    copydir(path + "/bin/win", windowsInstall + "/bin/win")
     copydir(path + "/code", windowsInstall + "/code")
     copydir(path + "/etc", windowsInstall + "/etc")
     copydir(path + "/icons", windowsInstall + "/icons")
@@ -341,6 +339,11 @@ def windows_install():
     # -----------------------------------------------------
 
     fwrite(windowsInstall + "/etc/manager_host", ip)
+
+    # Directorio de librerias
+    libWin =  windowsInstall + "/bin/win"
+    os.makedirs(libWin)    
+    # ---------------------------------
 
     compile_(windowsInstall + "/code/server/server.pro")
     compile_(windowsInstall + "/code/monitor/monitor.pro")
@@ -419,6 +422,22 @@ def windows_install():
     sh("netsh advfirewall firewall add rule name=\"sshd Ports:22\" dir=in action=allow enable=yes profile=Any protocol=TCP localport=22")
     sh("netsh advfirewall firewall add rule name=\"sshd Ports:22\" dir=out action=allow enable=yes profile=Any protocol=TCP localport=22")
     # ------------------------------------------------------------------------------------
+
+    # Copia librerias necesarias en lib/bin
+    libs = ["libgcc_s_dw2-1.dll", "libstdc++-6.dll", "libwinpthread-1.dll", "Qt5Core.dll", "Qt5Gui.dll",
+            "Qt5Multimedia.dll", "Qt5Network.dll", "Qt5Widgets.dll"]
+
+    for l in libs:
+        shutil.copy("C:/Qt/Qt5.11.3/5.11.3/mingw53_32/bin/" + l, libWin)
+
+    plugins = ["qwindows.dll"]
+    platformDir = libWin + "/platforms"
+    os.makedirs(platformDir)
+    
+    for p in plugins:
+        shutil.copy("C:/Qt/Qt5.11.3/5.11.3/mingw53_32/plugins/platforms/" + p, platformDir)
+    # ------------------------------------------
+
 
     nuke_module(1)
 
