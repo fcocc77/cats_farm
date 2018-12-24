@@ -211,7 +211,8 @@ void settings::path_ui()
 void settings::pathSusRead()
 {
 
-	QString recv = tcpClient(managerHost, 7000, jats({3, {{"preferences", {{"read", "none"}}}}}));
+	QJsonArray send = {"preferences", QJsonArray({"read", "none"})};
+	QString recv = tcpClient(managerHost, 7000, jats({3, send}));
 	QJsonObject preferences = jofs(recv);
 
 	if (not preferences.empty())
