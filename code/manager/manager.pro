@@ -7,7 +7,7 @@ TARGET = "CatsFarm Manager"
 RC_ICONS = ../../icons/manager.ico
 
 CONFIG += console c++11
-
+CONFIG -= app_bundle
 QT += core gui multimedia widgets
 
 HEADERS +=  ../utils/os.h \

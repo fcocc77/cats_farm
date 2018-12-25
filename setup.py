@@ -16,8 +16,8 @@ macInstall = "/usr/local/cats_farm"
 # --------------------------
 
 # Datos Generales
-ip = "192.168.10.48"
-manager_start = False
+ip = "192.168.0.48"
+manager_start = True
 server_start = True
 action = True
 clean_compilation = False
@@ -155,11 +155,13 @@ def compile_(project):
 def compiler_install():
     if platform == "win32":
         if not os.path.isdir("C:/Qt"):
+            print "Installing Qt5.11.3..."
             zf = ZipFile(path + "/qt/win/Qt5.11.3.zip", "r")
             zf.extractall("C:/")
 
     if platform == "linux2":
         if not os.path.isdir("/opt/Qt5.11.3"):
+            print "Installing Qt5.11.3..."
             # untar QT5
             tar = tarfile.open(path + "/qt/linux/Qt5.11.3.tar.gz")
             for i in tar:
@@ -176,9 +178,9 @@ def compiler_install():
         # ----------------------
 
     if platform == "darwin":
-        if not os.path.isdir("/usr/local/Qt5.11.1"):
-            print "Installing Qt5.11.1..."
-            sh("unzip -o " + path + "/qt/mac/Qt5.11.1.zip -d /usr/local")
+        if not os.path.isdir("/usr/local/Qt5.11.3"):
+            print "Installing Qt5.11.3..."
+            sh("unzip -o " + path + "/qt/mac/Qt5.11.3.zip -d /usr/local")
             print "Installing Command Line Tools..."
             sh("installer -pkg \"" + path +
                "/qt/mac/Command Line Tools.pkg\" -target /")
@@ -341,8 +343,8 @@ def windows_install():
     fwrite(windowsInstall + "/etc/manager_host", ip)
 
     # Directorio de librerias
-    libWin =  windowsInstall + "/bin/win"
-    os.makedirs(libWin)    
+    libWin = windowsInstall + "/bin/win"
+    os.makedirs(libWin)
     # ---------------------------------
 
     compile_(windowsInstall + "/code/server/server.pro")
@@ -433,11 +435,11 @@ def windows_install():
     plugins = ["qwindows.dll"]
     platformDir = libWin + "/platforms"
     os.makedirs(platformDir)
-    
-    for p in plugins:
-        shutil.copy("C:/Qt/Qt5.11.3/5.11.3/mingw53_32/plugins/platforms/" + p, platformDir)
-    # ------------------------------------------
 
+    for p in plugins:
+        shutil.copy(
+            "C:/Qt/Qt5.11.3/5.11.3/mingw53_32/plugins/platforms/" + p, platformDir)
+    # ------------------------------------------
 
     nuke_module(1)
 
@@ -481,8 +483,14 @@ def mac_install():
     if not os.path.isdir(macInstall):
         os.mkdir(macInstall)
 
+    # Copia librerias necesarias en lib/bin/platforms
+    platform = macInstall + "/bin/mac/platforms"
+    os.makedirs(platform)
+    shutil.copy(
+        "/usr/local/Qt5.11.3/5.11.3/clang_64/plugins/platforms/libqcocoa.dylib", platform)
+    # ------------------------------------------
+
     # copia el contenido necesario
-    copydir(path + "/bin/mac", macInstall + "/bin/mac")
     copydir(path + "/code", macInstall + "/code")
     copydir(path + "/etc", macInstall + "/etc")
     copydir(path + "/icons", macInstall + "/icons")
@@ -495,6 +503,8 @@ def mac_install():
     sh("chmod -R 777 " + macInstall)
 
     compile_(macInstall + "/code/server/server.pro")
+    compile_(macInstall + "/code/manager/manager.pro")
+    compile_(macInstall + "/code/monitor/monitor.pro")
 
     fwrite(macInstall + "/etc/manager_host", ip)
 
@@ -503,25 +513,38 @@ def mac_install():
     # --------------------------------------------------------------------------------
 
     # server service
-    init_src = macInstall + "/os/mac/init/com.catsfarm.server.plist"
-    init_dst = "/Library/LaunchDaemons/com.catsfarm.server.plist"
+    server_init_src = macInstall + "/os/mac/init/com.catsfarm.server.plist"
+    server_init_dst = "/Library/LaunchDaemons/com.catsfarm.server.plist"
 
-    shutil.copy(init_src, init_dst)
-    sh("chown root " + init_dst)
-    sh("chmod 755 " + init_dst)
+    shutil.copy(server_init_src, server_init_dst)
+    sh("chown root " + server_init_dst)
+    sh("chmod 755 " + server_init_dst)
 
     if server_start:
-        sh("launchctl load -w " + init_dst)
+        sh("launchctl load -w " + server_init_dst)
+    # -----------------------------------------------
+
+    # server manager
+    manager_init_src = macInstall + "/os/mac/init/com.catsfarm.manager.plist"
+    manager_init_dst = "/Library/LaunchDaemons/com.catsfarm.manager.plist"
+
+    shutil.copy(manager_init_src, manager_init_dst)
+    sh("chown root " + manager_init_dst)
+    sh("chmod 755 " + manager_init_dst)
+
+    if manager_start:
+        sh("launchctl load -w " + manager_init_dst)
     # -----------------------------------------------
 
     # connet server service
-    init_src = macInstall + "/os/mac/init/com.catsfarm.connect.plist"
-    init_dst = "/Library/LaunchDaemons/com.catsfarm.connect.plist"
+    connect_init_src = macInstall + "/os/mac/init/com.catsfarm.connect.plist"
+    connect_init_dst = "/Library/LaunchDaemons/com.catsfarm.connect.plist"
 
-    shutil.copy(init_src, init_dst)
-    sh("chmod 755 " + init_dst)
-    sh("chown root " + init_dst)
-    sh("launchctl load -w " + init_dst)
+    shutil.copy(connect_init_src, connect_init_dst)
+    sh("chmod 755 " + connect_init_dst)
+    sh("chmod -R 755 " + macInstall)
+    sh("chown root " + connect_init_dst)
+    sh("launchctl load -w " + connect_init_dst)
     # ---------------------------------------------
 
 
@@ -533,6 +556,11 @@ def mac_uninstall():
     sh("launchctl unload -w "+catsfarm_server)
     if os.path.isfile(catsfarm_server):
         os.remove(catsfarm_server)
+    
+    catsfarm_manager = "/Library/LaunchDaemons/com.catsfarm.manager.plist"
+    sh("launchctl unload -w "+catsfarm_manager)
+    if os.path.isfile(catsfarm_manager):
+        os.remove(catsfarm_manager)
 
     server_connect = "/Library/LaunchDaemons/com.catsfarm.connect.plist"
     sh("launchctl unload -w "+server_connect)

@@ -5,7 +5,7 @@ TEMPLATE = app
 TARGET = "CatsFarm Monitor"
 CONFIG += c++11
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
-
+CONFIG -= app_bundle
 RC_ICONS = ../../icons/monitor.ico
 
 QT += core gui widgets multimedia
