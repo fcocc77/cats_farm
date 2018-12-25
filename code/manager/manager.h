@@ -8,7 +8,7 @@ using namespace std;
 #include <algorithm> //sort
 #include <unistd.h>  // sleep usleep
 #include <thread>	// thread
-#include <QApplication>
+#include <QCoreApplication>
 #include <QString>
 #include <QDebug>
 #include <QObject>

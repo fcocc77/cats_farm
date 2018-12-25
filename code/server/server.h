@@ -8,7 +8,7 @@ using namespace std;
 #include "../utils/util.h"
 #include "../utils/tcp.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QProcess>
 #include <QObject>
 #include <QFileInfo>

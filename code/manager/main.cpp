@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
+	QCoreApplication app(argc, argv);
 
 	manager _manager;
 	_manager.init();

@@ -1,32 +1,14 @@
-code/monitor/release
-code/monitor/*.o
-code/monitor/moc_*
-code/monitor/qrc_res.cpp
-code/monitor/Makefile*
-code/monitor/object_script*
-code/monitor/.qmake.stash
-code/monitor/CatsFarm Monitor*
+code/*/release
+code/*/*.o
+code/*/moc_*
+code/*/qrc_res.cpp
+code/*/Makefile*
+code/*/object_script*
+code/*/.qmake.stash
+code/*/CatsFarm*
+code/*/*.app
 
-code/manager/release
-code/manager/.qmake.stash
-code/manager/CatsFarm Manager_resource.rc
-code/manager/Makefile*
-
-code/server/release
-code/server/.qmake.stash
-code/server/Makefile*
-
-code/submit/release
-code/submit/.qmake.stash
-code/submit/Makefile*
-code/submit/*.rc
-
-code/utils/.qmake.stash
-code/utils/Makefile*
-code/utils/release
-
-etc/info.json
-etc/info.json.old
+etc/info.json*
 log/bugs.txt
 qt
 .DS_Store
