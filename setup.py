@@ -155,13 +155,14 @@ def compile_(project):
 def set_path_env(values):
     # set env variables SYSTEM USER
     old_path = sh("echo %path%")
-    # Agrega los dos puntos finales a el valor
+
     value = ""
     for v in values:
         value += v + ";"
-    # -------------------
+
     paths = old_path.replace(value, "")
-    sh("setx -m PATH \"" + paths.strip() + value + "\"")
+    sh("setx -m PATH \"" + paths.strip() + value + "\"")  # env permanente
+    sh("set PATH= \"" + paths.strip() + value + "\"")
     # -----------------------------------------------------------
 
 
