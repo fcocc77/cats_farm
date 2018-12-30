@@ -7,12 +7,14 @@ code/*/object_script*
 code/*/.qmake.stash
 code/*/CatsFarm*
 code/*/*.app
+code/*/*.rc
 
 etc/info.json*
 log/bugs.txt
 qt
 .DS_Store
-
+*.swp
+*.swo
 
 
 
