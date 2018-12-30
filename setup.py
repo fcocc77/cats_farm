@@ -16,7 +16,7 @@ macInstall = "/usr/local/cats_farm"
 # --------------------------
 
 # Datos Generales
-ip = "192.168.0.48"
+ip = "192.168.1.48"
 manager_start = True
 server_start = True
 action = True
@@ -152,12 +152,30 @@ def compile_(project):
     print "---------------------------------------------"
 
 
+def set_path_env(values):
+    # set env variables SYSTEM USER
+    old_path = sh("echo %path%")
+    # Agrega los dos puntos finales a el valor
+    value = ""
+    for v in values:
+        value += v + ";"
+    # -------------------
+    paths = old_path.replace(value, "")
+    sh("setx -m PATH \"" + paths.strip() + value + "\"")
+    # -----------------------------------------------------------
+
+
 def compiler_install():
     if platform == "win32":
         if not os.path.isdir("C:/Qt"):
             print "Installing Qt5.11.3..."
             zf = ZipFile(path + "/qt/win/Qt5.11.3.zip", "r")
             zf.extractall("C:/")
+
+            qmake_bin = "C:\\Qt\\Qt5.11.3\\5.11.3\\mingw53_32\\bin"
+            mingw_32_bin = "C:\\Qt\\Qt5.11.3\\Tools\\mingw530_32\\bin"
+
+            set_path_env([qmake_bin, mingw_32_bin])
 
     if platform == "linux2":
         if not os.path.isdir("/opt/Qt5.11.3"):
@@ -556,7 +574,7 @@ def mac_uninstall():
     sh("launchctl unload -w "+catsfarm_server)
     if os.path.isfile(catsfarm_server):
         os.remove(catsfarm_server)
-    
+
     catsfarm_manager = "/Library/LaunchDaemons/com.catsfarm.manager.plist"
     sh("launchctl unload -w "+catsfarm_manager)
     if os.path.isfile(catsfarm_manager):
