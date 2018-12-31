@@ -28,7 +28,7 @@ class manager : public QObject
 	vector<job_struct *> jobs;
 	vector<server_struct *> servers;
 	vector<group_struct *> groups;
-	QJsonObject preferences = jread("../../etc/preferences.json");
+	QJsonObject preferences = jread(path + "/etc/preferences.json");
 	bool reset_render;
 
 	void init();

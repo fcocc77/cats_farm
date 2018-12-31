@@ -22,7 +22,7 @@ void settings::ui()
 	connect(ap, &QPushButton::clicked, this, [this]() { pathSusWrite(); });
 	connect(ok, &QPushButton::clicked, this, [this]() {
 		QString _manager_ip = manager_ip->text();
-		fwrite("../../etc/manager_host", _manager_ip);
+		fwrite(path + "/etc/manager_host", _manager_ip);
 
 		pathSusWrite();
 
@@ -61,13 +61,13 @@ void settings::style()
 	//---------------------------------------------------
 
 	resize(700, 400);
-	QString _style = fread("../../theme/style.css");
+	QString _style = fread(path + "/theme/style.css");
 	setStyleSheet(_style.toStdString().c_str());
 	setWindowTitle("CatsFarm Setting");
 
 	// Agrega el icono y titulo al panel y ventana
 	QIcon *app_icon = new QIcon();
-	app_icon->addFile("../../icons/app.ico", QSize(16, 16));
+	app_icon->addFile(path + "/icons/app.ico", QSize(16, 16));
 	//setWindowIcon( app_icon );
 	//---------------------------------------------------
 }

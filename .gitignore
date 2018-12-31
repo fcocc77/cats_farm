@@ -7,6 +7,7 @@ code/*/Makefile*
 code/*/object_script*
 code/*/.qmake.stash
 code/*/CatsFarm*
+code/*/*.exe
 code/*/*.app
 code/*/*.rc
 

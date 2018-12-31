@@ -10,9 +10,9 @@ int main(int argc, char *argv[])
 	int count = 0;
 	if (_win32)
 	{
-		QStringList lista = os::sh("tasklist -fi \"IMAGENAME eq CatsFarm Monitor.exe\"").split("\n");
+		QStringList lista = os::sh("tasklist -fi \"IMAGENAME eq cMonitor.exe\"").split("\n");
 		for (QString l : lista)
-			if (l.contains("CatsFarm Monitor.exe"))
+			if (l.contains("cMonitor.exe"))
 				count++;
 	}
 	else

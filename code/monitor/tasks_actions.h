@@ -21,7 +21,7 @@ class tasks_actions : public QObject
 	ui_tasks_tree *taskList;
 	QMainWindow *monitor;
 
-	const QString managerHost = fread("../../etc/manager_host");
+	const QString managerHost = fread(path + "/etc/manager_host");
 
 	template <class T>
 	tasks_actions(T *_monitor)

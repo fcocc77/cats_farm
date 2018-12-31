@@ -15,7 +15,7 @@ void general::actions()
 		_settings->show();
 	});
 
-	preferencesAction->setIcon(QIcon("../../icons/setting.png"));
+	preferencesAction->setIcon(QIcon(path + "/icons/setting.png"));
 	preferencesAction->setShortcut(QString("S"));
 
 	connect(quitAction, &QAction::triggered, this, [this]() {
@@ -43,7 +43,7 @@ void general::actions()
         uiSubmit->submitPanelOpen();
 		uiSubmit->show(); });
 
-	panelSubmitAction->setIcon(QIcon("../../icons/submit.png"));
+	panelSubmitAction->setIcon(QIcon(path + "/icons/submit.png"));
 
 	connect(hidePanelsAction, &QAction::triggered, this, [this]() {
 		uiSubmit->hide();
@@ -60,10 +60,10 @@ void general::style_ui()
 
 	monitor->setWindowTitle("CatsFarm Monitor");
 
-	QIcon icon("../../icons/monitor.png");
+	QIcon icon(path + "/icons/monitor.png");
 	monitor->setWindowIcon(icon);
 
-	QString style = fread("../../theme/style.css");
+	QString style = fread(path + "/theme/style.css");
 
 	monitor->setStyleSheet(style.toStdString().c_str());
 }
@@ -74,7 +74,7 @@ void general::show_splash()
 
 void general::notifyIcon()
 {
-	notify = new QSystemTrayIcon(QIcon("../../icons/monitor.png"), monitor);
+	notify = new QSystemTrayIcon(QIcon(path + "/icons/monitor.png"), monitor);
 
 	connect(notify, &QSystemTrayIcon::messageClicked, this, [this]() {
 		monitor->show();
@@ -109,7 +109,7 @@ void general::notifyIcon()
 			QString status = item->text(4);
 			QString name = item->text(0);
 
-			QString notifyJob = "../../log/trayIcon/" + name;
+			QString notifyJob = path + "/log/trayIcon/" + name;
 
 			if (status == "Queue" or status == "Rendering...")
 				if (os::isfile(notifyJob))
@@ -124,13 +124,13 @@ void general::notifyIcon()
 					if (status == "Failed")
 					{
 						notify->showMessage("CatsFarm", name + "  has failed");
-						QSound("../../sound/angry_cat.wav", this).play();
+						QSound(path + "/sound/angry_cat.wav", this).play();
 					}
 
 					if (status == "Completed")
 					{
 						notify->showMessage("CatsFarm", name + "  has finished");
-						QSound("../../sound/meaw_cat.wav", this).play();
+						QSound(path + "/sound/meaw_cat.wav", this).play();
 					}
 				}
 			}

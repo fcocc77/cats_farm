@@ -470,7 +470,7 @@ void ui_submit::submitUpdateBox(int action)
 void ui_submit::submitPanelOpen()
 {
 
-	QJsonObject panel = jread("../../etc/panel.json");
+	QJsonObject panel = jread(path + "/etc/panel.json");
 
 	if (not panel.empty())
 	{
@@ -512,7 +512,7 @@ void ui_submit::submitPanelSave()
 		{"suspendBox", suspendBox->isChecked()},
 	};
 
-	jwrite("../../etc/panel.json", panel);
+	jwrite(path + "/etc/panel.json", panel);
 }
 
 void ui_submit::submitAction(QString software)
@@ -582,7 +582,7 @@ void ui_submit::submitAction(QString software)
 	if (ok)
 	{
 		submitPanelSave();
-		const QString managerHost = fread("../../etc/manager_host");
+		const QString managerHost = fread(path + "/etc/manager_host");
 
 		tcpClient(managerHost, 7000, jats({4, info}));
 		msg->setText("The " + jobName->text() + " job has sended.");

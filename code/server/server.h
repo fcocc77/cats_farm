@@ -26,7 +26,7 @@ class server : public QObject
 	QString send_resources(QString recv);
 	QString recieveManager(QString data);
 
-	const QString managerHost = fread("../../etc/manager_host");
+	const QString managerHost = fread(path + "/etc/manager_host");
 };
 
 #endif // SERVER_H

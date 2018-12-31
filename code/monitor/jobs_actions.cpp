@@ -19,7 +19,7 @@ void jobs_actions::actions()
 	// Job Acciones
 	connect(deleteAction, &QAction::triggered, this, &jobs_actions::itemDelete);
 
-	deleteAction->setIcon(QIcon("../../icons/delete.png"));
+	deleteAction->setIcon(QIcon(path + "/icons/delete.png"));
 	deleteAction->setShortcut(QString("Del"));
 
 	connect(jobSuspendAction, &QAction::triggered, this, [this]() {
@@ -36,12 +36,12 @@ void jobs_actions::actions()
 		jobMessage(&jobs_actions::jobAction, action, ask, tile, this);
 	});
 
-	jobSuspendAction->setIcon(QIcon("../../icons/pause.png"));
+	jobSuspendAction->setIcon(QIcon(path + "/icons/pause.png"));
 
 	connect(jobResumeAction, &QAction::triggered, this, [this]() {
 		jobAction("resume");
 	});
-	jobResumeAction->setIcon(QIcon("../../icons/play3.png"));
+	jobResumeAction->setIcon(QIcon(path + "/icons/play3.png"));
 
 	connect(jobUnlockServersAction, &QAction::triggered, this, [this]() {
 		jobAction("unlock");
@@ -369,7 +369,7 @@ void jobs_actions::jobDeleteStart(QString action)
 	{
 
 		QString job_name = item->text(0);
-		os::remove("../../log/trayIcon/" + job_name);
+		os::remove(path + "/log/trayIcon/" + job_name);
 
 		pks.push_back({{job_name, action}});
 

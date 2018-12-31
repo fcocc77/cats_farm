@@ -4,7 +4,7 @@ void manager::init()
 {
 	// Carga la informacion guardada de Jobs, Servers y Groups
 
-	QJsonObject info = jread("../../etc/info.json");
+	QJsonObject info = jread(path + "/etc/info.json");
 	if (not info.empty())
 	{
 		json_to_struct(info);

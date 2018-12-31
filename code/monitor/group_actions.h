@@ -51,7 +51,7 @@ class group_actions : public QObject
     }
 
     // variables Generales
-    const QString managerHost = fread("../../etc/manager_host");
+    const QString managerHost = fread(path + "/etc/manager_host");
     //--------------------------------------
 
     // Group Action

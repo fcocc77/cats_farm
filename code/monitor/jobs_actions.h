@@ -72,7 +72,7 @@ class jobs_actions : public QObject
 	QTreeWidgetItem *firstJobItem;
 
 	// variables Generales
-	const QString managerHost = fread("../../etc/manager_host");
+	const QString managerHost = fread(path + "/etc/manager_host");
 	//--------------------------------------
 
 	// Job Acciones

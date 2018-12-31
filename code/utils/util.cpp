@@ -210,15 +210,12 @@ void print(QString input)
 
 QString getPath()
 {
-
-	QJsonObject paths = jread("../../etc/paths.json");
-
 	if (_win32)
-		return paths["win"].toString();
+		return "C:/cats_farm";
 	else if (_darwin)
-		return paths["mac"].toString();
+		return "/usr/local/cats_farm";
 	else
-		return paths["linux"].toString();
+		return "/opt/cats_farm";
 }
 
 /*

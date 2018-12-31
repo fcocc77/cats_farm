@@ -2,14 +2,14 @@
 
 void ui_servers_tree::actions()
 {
-	shared->server_display = jread("../../etc/server_display.json");
+	shared->server_display = jread(path + "/etc/server_display.json");
 
 	auto displayAction = [this](QString action) {
 		if (shared->server_display[action].toBool())
 			shared->server_display[action] = false;
 		else
 			shared->server_display[action] = true;
-		jwrite("../../etc/server_display.json", shared->server_display);
+		jwrite(path + "/etc/server_display.json", shared->server_display);
 	};
 
 	auto displayAll = [this](bool status) {
@@ -27,7 +27,7 @@ void ui_servers_tree::actions()
 		displayOnAction->setChecked(status);
 		displayOffAction->setChecked(status);
 
-		jwrite("../../etc/server_display.json", shared->server_display);
+		jwrite(path + "/etc/server_display.json", shared->server_display);
 	};
 
 	connect(showAllAction, &QAction::triggered, this, [=]() { displayAll(true); });

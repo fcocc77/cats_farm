@@ -533,13 +533,13 @@ QString manager::preferencesAction(QJsonArray _pks)
 
 	if (action == "read")
 	{
-		return jots(jread("../../etc/preferences.json"));
+		return jots(jread(path + "/etc/preferences.json"));
 	}
 	else
 	{
 		QJsonObject pks = _pks[1].toObject();
 		preferences["paths"] = pks;
-		jwrite("../../etc/preferences.json", preferences);
+		jwrite(path + "/etc/preferences.json", preferences);
 	}
 
 	return "";

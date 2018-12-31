@@ -83,7 +83,7 @@ QString render::render_task(QJsonArray recv)
 			else
 			{
 				status = "failed";
-				os::copy(log_file, "../../log/render_log");
+				os::copy(log_file, path + "/log/render_log");
 			}
 		}
 

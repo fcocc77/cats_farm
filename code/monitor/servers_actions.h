@@ -53,7 +53,7 @@ class servers_actions : public QObject
 
 	QTreeWidgetItem *firstServerItem;
 
-	const QString managerHost = fread("../../etc/manager_host");
+	const QString managerHost = fread(path + "/etc/manager_host");
 
 	// Server Action
 	QAction *serverInactiveAction = new QAction("Disable");

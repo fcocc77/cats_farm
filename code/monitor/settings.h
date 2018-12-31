@@ -45,7 +45,7 @@ class settings : public QMainWindow
 
   private:
 	//QWidgets Generales
-	const QString managerHost = fread("../../etc/manager_host");
+	const QString managerHost = fread(path + "/etc/manager_host");
 	QLineEdit *manager_ip = new QLineEdit(managerHost);
 	QTabWidget *tab_widget = new QTabWidget();
 	QPlainTextEdit *system_edit = new QPlainTextEdit();

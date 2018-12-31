@@ -12,7 +12,7 @@ QString server::send_resources(QString recv)
 	if (not recv.isEmpty())
 	{
 		_render->preferences = jofs(recv);
-		jwrite("../../etc/preferences_s.json", _render->preferences);
+		jwrite(path + "/etc/preferences_s.json", _render->preferences);
 	}
 
 	QString system;
@@ -80,9 +80,9 @@ QString server::recieveManager(QString _recv)
 	{
 		bool failed = recv[0].toBool();
 		if (failed)
-			send = fread("../../log/render_log");
+			send = fread(path + "/log/render_log");
 		else
-			send = fread("../../log/render_log_0");
+			send = fread(path + "/log/render_log_0");
 	}
 
 	if (input == 3)
@@ -158,12 +158,12 @@ QString server::recieveManager(QString _recv)
 			}
 
 			os::sh(vm);
-			fwrite("../../log/vbox", "0");
+			fwrite(path + "/log/vbox", "0");
 		}
 
 		if (action == "cpu_limit")
 		{
-			fwrite("../../etc/cpu_limit", info);
+			fwrite(path + "/etc/cpu_limit", info);
 		}
 	}
 

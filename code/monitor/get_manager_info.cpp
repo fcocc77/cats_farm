@@ -8,7 +8,7 @@ void get_manager_info::actions()
 void get_manager_info::managerRecieve()
 {
 
-	QString host = fread("../../etc/manager_host");
+	QString host = fread(path + "/etc/manager_host");
 
 	// actualiza una ves antes del loop.
 	QString recv = tcpClient(host, 7000, jats({2, "none"}));
@@ -712,7 +712,7 @@ void get_manager_info::updateGroup(QJsonObject recv)
 				}
 			}
 		}
-		awrite("../../log/bugs.txt", "4\n");
+		awrite(path + "/log/bugs.txt", "4\n");
 		// si el grupo ya no existe, borra el item
 		for (_group_item group : group_item)
 		{
