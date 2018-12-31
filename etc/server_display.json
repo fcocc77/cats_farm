@@ -1,9 +1,9 @@
 {
-    "hide": true, 
-    "linux": true, 
-    "mac": true, 
-    "off": false, 
-    "on": true, 
-    "show": true, 
-    "windows": true
+    "hide": true,
+    "linux": true,
+    "mac": true,
+    "off": true,
+    "on": true,
+    "show": true,
+    "window": true
 }

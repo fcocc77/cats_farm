@@ -1,4 +1,5 @@
 code/*/release
+code/*/debug
 code/*/*.o
 code/*/moc_*
 code/*/qrc_res.cpp
