@@ -3,7 +3,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 
 TEMPLATE = app
-TARGET = "CatsFarm Manager"
+TARGET = "cManager"
 RC_ICONS = ../../icons/manager.ico
 
 CONFIG += console c++11

@@ -9,7 +9,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/code/monitor/CatsFarm Monitor.exe",
+            "program": "${workspaceFolder}/code/monitor/debug/cMonitor.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

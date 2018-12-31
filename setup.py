@@ -376,10 +376,10 @@ def windows_install():
 
     nssm = windowsInstall + "/os/win/service/nssm.exe"  # para crear servicios
 
-    sh(nssm + " install \"CatsFarm Server\" \"" +
-       windowsInstall + "/bin/win/CatsFarm Server.exe\"")
-    sh(nssm + " install \"CatsFarm Manager\" \"" +
-       windowsInstall + "/bin/win/CatsFarm Manager.exe\"")
+    sh(nssm + " install \"cServer\" \"" +
+       windowsInstall + "/bin/win/cServer.exe\"")
+    sh(nssm + " install \"cManager\" \"" +
+       windowsInstall + "/bin/win/cManager.exe\"")
     # -------------------------------------
 
     # ingrsar clave de usuario
@@ -392,12 +392,12 @@ def windows_install():
         else:
             password = raw_input(user + ' password: ')
 
-        sh(nssm + " set \"CatsFarm Server\" ObjectName  \".\\" +
+        sh(nssm + " set \"cServer\" ObjectName  \".\\" +
            user + "\" \"" + password + "\"")
-        login = sh("sc start \"CatsFarm Server\"")
+        login = sh("sc start \"cServer\"")
 
         if not "logon failure" in login:
-            sh(nssm + " set \"CatsFarm Manager\" ObjectName  \".\\" +
+            sh(nssm + " set \"cManager\" ObjectName  \".\\" +
                user + "\" \"" + password + "\"")
             fwrite(user_file, password)
             break
@@ -405,15 +405,15 @@ def windows_install():
             print "Wrong password..."
     # -----------------------------------------
     if server_start:
-        sh("sc start \"CatsFarm Server\"")
+        sh("sc start \"cServer\"")
     else:
-        sh("sc stop \"CatsFarm Server\"")
-        sh("sc config \"CatsFarm Server\" start= disabled")
+        sh("sc stop \"cServer\"")
+        sh("sc config \"cServer\" start= disabled")
 
     if manager_start:
-        sh("sc start \"CatsFarm Manager\"")
+        sh("sc start \"cManager\"")
     else:
-        sh("sc config \"CatsFarm Manager\" start= disabled")
+        sh("sc config \"cManager\" start= disabled")
     # -------------------------------------
 
     # core temp
@@ -469,13 +469,10 @@ def windows_uninstall():
 
     # remove services
     nssm = windowsInstall + "/os/win/service/nssm.exe"  # para crear servicios
-    sh(nssm + " stop \"CatsFarm Server\"")
-    sh(nssm + " remove \"CatsFarm Server\" confirm")
-    sh(nssm + " stop \"CatsFarm Manager\"")
-    sh(nssm + " remove \"CatsFarm Manager\" confirm")
-
-    sh(nssm + " stop \"Core Temp\"")  # borrar en un tiempo mas
-    sh(nssm + " remove \"Core Temp\" confirm")  # borrar en un tiempo mas
+    sh(nssm + " stop \"cServer\"")
+    sh(nssm + " remove \"cServer\" confirm")
+    sh(nssm + " stop \"cManager\"")
+    sh(nssm + " remove \"cManager\" confirm")
 
     sh(nssm + " stop \"CatsFarm CoreTemp\"")
     sh(nssm + " remove \"CatsFarm CoreTemp\" confirm")
@@ -483,7 +480,7 @@ def windows_uninstall():
     sh(nssm + " stop \"CatsFarm SSHD\"")
     sh(nssm + " remove \"CatsFarm SSHD\" confirm")
 
-    sh("taskkill -f -im \"CatsFarm Monitor.exe\"")
+    sh("taskkill -f -im \"cMonitor.exe\"")
 
     sleep(0.1)
     if os.path.isdir(windowsInstall):
