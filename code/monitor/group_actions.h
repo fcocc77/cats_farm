@@ -66,7 +66,7 @@ class group_actions : public QObject
     void group_popup();
     void groupCreateWindow();
     QTreeWidgetItem *groupMake(QString group_name, int totaMachine, int activeMachine, int offMachine);
-    void groupMakeServer(QTreeWidgetItem *item, QStringList machines);
+    void groupMakeServer(QTreeWidgetItem *item, QJsonArray machines);
     void groupAddMachine();
     void groupDelete();
     //-----------------

@@ -625,7 +625,6 @@ void get_manager_info::updateGroup(QJsonObject recv)
 			group_item.push_back({name, item});
 		}
 
-		QStringList group_name_list;
 		for (QJsonValue g : recv)
 		{
 			QJsonObject group = g.toObject();
@@ -634,22 +633,11 @@ void get_manager_info::updateGroup(QJsonObject recv)
 			int totaMachine = group["totaMachine"].toInt();
 			int activeMachine = group["activeMachine"].toInt();
 			int offMachine = totaMachine - activeMachine;
-			QStringList machines;
-
-			for (QJsonValue server : group["server"].toArray())
-			{
-				machines.push_back(server.toArray()[0].toString());
-			}
-
-			// agrega a la lista para saber que grupo ya no estan
-			group_name_list.push_back(group_name);
-			//------------------------------------
+			QJsonArray machines = group["server"].toArray();
 
 			// Si el nombre no esta en la lista de la interface, agrega el nuevo grupo.
 			if (not group_list.contains(group_name))
-			{
 				groupActions->groupMake(group_name, totaMachine, activeMachine, offMachine);
-			}
 
 			//-----------------------------------------------------------------------
 			for (int i = 0; i < groupList->topLevelItemCount(); ++i)
@@ -671,26 +659,18 @@ void get_manager_info::updateGroup(QJsonObject recv)
 					labels[5]->setText(QString::number(totaMachine));
 
 					if (group_status)
-					{
 						name_label[1]->setText("Group is being used");
-					}
 					else
-					{
 						name_label[1]->setText("Group is idle");
-					}
 
 					if (activeMachine)
 					{
 						labels[1]->setStyleSheet("QLabel{color: rgb(100,200,100);}");
 						name_label[0]->setStyleSheet("QLabel{color: rgb(220,220,220);  font:10pt;}");
 						if (group_status)
-						{
 							name_label[1]->setStyleSheet("QLabel{color: rgb(100,200,100);  font:8pt;}");
-						}
 						else
-						{
 							name_label[1]->setStyleSheet("QLabel{color: rgb(100,150,220);  font:8pt;}");
-						}
 					}
 					else
 					{
@@ -700,33 +680,17 @@ void get_manager_info::updateGroup(QJsonObject recv)
 					}
 
 					if (not offMachine)
-					{
 						labels[3]->setStyleSheet("QLabel{color: rgb(100,200,100);}");
-					}
 					else
-					{
 						labels[3]->setStyleSheet("QLabel{color: rgb(255,30,30);}");
-					}
 
 					labels[5]->setStyleSheet("QLabel{color: rgb(120,150,250);}");
 				}
 			}
 		}
-		awrite(path + "/log/bugs.txt", "4\n");
-		// si el grupo ya no existe, borra el item
-		for (_group_item group : group_item)
-		{
-			if (not group_name_list.contains(group.name))
-			{
-				//auto root = groupList.invisibleRootItem();
-				//falta esto
-				//(group.item.parent() or root).removeChild( group.item );
-			}
-		}
 	}
 	else
 	{
-
 		groupList->clear();
 	}
 }

@@ -48,12 +48,12 @@ void group_actions::groupCreateWindow()
 		auto selected = serverList->selectedItems();
 
 		QJsonArray machines_send;
-		QStringList machines;
+		QJsonArray machines;
 
 		for (auto item : selected)
 		{
 			machines_send.push_back(item->text(0));
-			machines.push_back(item->text(0));
+			machines.push_back(QJsonArray({item->text(0), true}));
 		}
 
 		QJsonArray group = {group_name, machines_send.size(), 0, machines_send};
@@ -199,29 +199,14 @@ QTreeWidgetItem *group_actions::groupMake(QString group_name, int totaMachine, i
 	return item;
 }
 
-void group_actions::groupMakeServer(QTreeWidgetItem *item, QStringList machines)
+void group_actions::groupMakeServer(QTreeWidgetItem *item, QJsonArray machines)
 {
-
-	// lambda  si exisite el QString en el vector
-	auto in = [this](QString word, QStringList _vector) {
-		bool _in = false;
-		for (auto i : _vector)
-		{
-			if (word == i)
-			{
-				_in = true;
-			}
-		}
-		return _in;
-	};
-	//--------------------------------------------------
-
 	struct _name_item
 	{
 		QString name;
 		QTreeWidgetItem *item;
 		QString status;
-	} name_item;
+	};
 
 	// crea lista de los childItem antiguos
 	QList<_name_item> oldChild;
@@ -234,25 +219,29 @@ void group_actions::groupMakeServer(QTreeWidgetItem *item, QStringList machines)
 		oldChild.push_back({childName, childItem, NULL});
 		oldChildName.push_back(childName);
 	}
-
 	//-------------------------------------------------
 
 	// crea lista de los nuevos childItem
 	QList<_name_item> newChild;
 	QStringList newChildName;
 
-	for (auto server : machines)
+	for (QJsonValue server : machines)
 	{
+		QString server_name = server.toArray()[0].toString();
+		QString status = "Off";
+		if (server.toArray()[1].toBool())
+			status = "On";
+
 		QTreeWidgetItem *childItem = new QTreeWidgetItem();
-		newChild.push_back({server, childItem, "On"});
-		newChildName.push_back(server);
+		newChild.push_back({server_name, childItem, status});
+		newChildName.push_back(server_name);
 	}
 	//-------------------------------------------
 
 	// si los nuevos childItem no estan en el antiguo, los crea
 	for (auto child : newChild)
 	{
-		if (not in(child.name, oldChildName))
+		if (not oldChildName.contains(child.name))
 		{
 			QTreeWidgetItem *childItem = new QTreeWidgetItem();
 			childItem->setText(0, child.name);
@@ -265,26 +254,23 @@ void group_actions::groupMakeServer(QTreeWidgetItem *item, QStringList machines)
 	// si los antiguos childItem no estan en los nuevos, los borra
 	for (auto child : oldChild)
 	{
-		if (not in(child.name, newChildName))
+		if (not newChildName.contains(child.name))
 		{
 			auto root = groupList->invisibleRootItem();
 			root->removeChild(child.item);
 			child.item->parent()->removeChild(child.item);
-			//( child.item->parent() or root)->removeChild( child.item );
 		}
 	}
 	//---------------------------------------------------------
 
 	//Actualiza el status del childItem
-
 	for (int i = 0; i < item->childCount(); ++i)
 	{
-
 		QTreeWidgetItem *childItem = item->child(i);
 
 		for (auto child : newChild)
 		{
-			if (child.name == child.item->text(0))
+			if (child.name == childItem->text(0))
 			{
 				childItem->setText(1, child.status);
 
