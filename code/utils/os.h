@@ -44,6 +44,7 @@ QString dirname(QString file);
 QString basename(QString file);
 bool isfile(QString file);
 bool isdir(QString dir);
+void makedirs(QString dir);
 void kill(int pid);
 QStringList listdir(QString folder, bool onlyname = 0);
 QString sh(QString cmd);
