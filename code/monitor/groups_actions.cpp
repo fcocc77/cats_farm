@@ -328,7 +328,8 @@ void group_actions::groupAddMachine()
 				QTreeWidgetItem *childItem = new QTreeWidgetItem();
 
 				childItem->setText(0, serverName.toString());
-				childItem->setText(1, "1");
+				childItem->setText(1, "On");
+				childItem->setForeground(1, QColor(100, 200, 100));
 
 				item->addChild(childItem);
 			}
