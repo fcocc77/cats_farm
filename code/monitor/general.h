@@ -38,6 +38,7 @@ class general : public QObject
     QMainWindow *monitor;
     ui_jobs_tree *jobsList;
     shared_variables *shared;
+    QStringList completedJobs;
 
     template <class T>
     general(T *_monitor)
@@ -72,8 +73,6 @@ class general : public QObject
     void notifyIcon();
     void style_ui();
     void show_splash();
-    void fileOpen();
-    void fileOutputOpen();
     //----------------------------
 };
 

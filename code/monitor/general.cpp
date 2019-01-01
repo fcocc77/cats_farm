@@ -99,49 +99,62 @@ void general::notifyIcon()
 
 	notify->setContextMenu(menu);
 
+	// Importa lista de jobs completados
+	for (QJsonValue job : jafs(fread(path + "/log/trayIcon")))
+		completedJobs.push_back(job.toString());
+	// ----------------------------------------------
+
 	threading([this]() {
-		int itemCount = jobsList->topLevelItemCount();
-
-		for (int i = 0; i < itemCount; i++)
+		while (1)
 		{
-
-			QTreeWidgetItem *item = jobsList->topLevelItem(i);
-			QString status = item->text(4);
-			QString name = item->text(0);
-
-			QString notifyJob = path + "/log/trayIcon/" + name;
-
-			if (status == "Queue" or status == "Rendering...")
-				if (os::isfile(notifyJob))
-					os::remove(notifyJob);
-
-			if (status == "Failed" or status == "Completed")
+			QStringList inListJobs;
+			for (int i = 0; i < jobsList->topLevelItemCount(); i++)
 			{
-				if (not os::isfile(notifyJob))
+				QTreeWidgetItem *item = jobsList->topLevelItem(i);
+				QString status = item->text(4);
+				QString name = item->text(0);
+				inListJobs.push_back(name);
+
+				if (status == "Queue" or status == "Rendering...")
+					completedJobs.removeOne(name);
+
+				if (status == "Failed" or status == "Completed")
 				{
-					fwrite(notifyJob, "0");
-
-					if (status == "Failed")
+					if (not completedJobs.contains(name))
 					{
-						notify->showMessage("CatsFarm", name + "  has failed");
-						QSound(path + "/sound/angry_cat.wav", this).play();
-					}
+						completedJobs.push_back(name);
 
-					if (status == "Completed")
-					{
-						notify->showMessage("CatsFarm", name + "  has finished");
-						QSound(path + "/sound/meaw_cat.wav", this).play();
+						// Guarda lista de jobs completados
+						fwrite(path + "/log/trayIcon", jats(QJsonArray::fromStringList(completedJobs)));
+						//---------------------------------
+
+						if (status == "Failed")
+						{
+							notify->showMessage("CatsFarm", name + "  has failed");
+							QSound(path + "/sound/angry_cat.wav", this).play();
+						}
+
+						if (status == "Completed")
+						{
+							notify->showMessage("CatsFarm", name + "  has finished");
+							QSound(path + "/sound/meaw_cat.wav", this).play();
+						}
 					}
 				}
 			}
+
+			// Borra los job que ya no estan en la jobList
+			for (QString job : completedJobs)
+			{
+				if (not inListJobs.contains(job))
+				{
+					completedJobs.removeOne(job);
+					// Guarda lista de jobs completados
+					fwrite(path + "/log/trayIcon", jats(QJsonArray::fromStringList(completedJobs)));
+					//---------------------------------
+				}
+			} //-----------------------------
+			sleep(1);
 		}
 	});
-}
-
-void general::fileOpen()
-{
-}
-
-void general::fileOutputOpen()
-{
 }
