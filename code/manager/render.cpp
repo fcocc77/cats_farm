@@ -40,16 +40,11 @@ void manager::render_job()
 
 			for (auto server : servers)
 			{
+				// Checkea si esl servidor esta prendido y tammbien si esta en el grupo del jobs
 				bool serverOK = 0;
-				try
-				{ // evita error de runtime en esta line "machinesList.contains(server->name)" manager_runtime_error_03.log
-					if (machinesList.contains(server->name))
-						serverOK = 1;
-				}
-				catch (...)
-				{
-					fwrite(path + "/log/manager_runtime_error_03_crash.log", "log/runtime_error/manager_runtime_error_03.log");
-				} //-----------------------------------------------------------
+				if (machinesList.contains(server->name) and server->status != "absent")
+					serverOK = 1;
+				//------------------------------------------------------------------------
 
 				for (int ins = 0; ins < server->max_instances; ins++)
 				{
