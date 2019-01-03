@@ -1,0 +1,20 @@
+#0  0x00007ffff4f8261c in malloc_consolidate () from /lib64/libc.so.6
+#1  0x00007ffff4f84295 in _int_malloc () from /lib64/libc.so.6
+#2  0x00007ffff4f871ac in malloc () from /lib64/libc.so.6
+#3  0x00007ffff62653e2 in QJsonObject::detach2(unsigned int) ()
+   from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#4  0x00007ffff62656f3 in QJsonObject::compact() ()
+   from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#5  0x00007ffff6263bd8 in QJsonDocument::setObject(QJsonObject const&) ()
+   from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#6  0x0000000000424046 in jots (data=...) at ../utils/util.cpp:73
+#7  0x00000000004217a2 in manager::update_server_thread (this=0x7fffffffdf90,
+    recv=...) at update.cpp:107
+#8  0x00000000004064f1 in manager::server_tcp (this=0x7fffffffdf90, _recv=...)
+    at manager.cpp:32
+#9  0x0000000000416590 in tcp_socket<manager>::run (this=0x79c960)
+    at ../utils/tcp.h:93
+#10 0x00007ffff60445a4 in QThreadPrivate::start(void*) ()
+   from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#11 0x00007ffff5af5dd5 in start_thread () from /lib64/libpthread.so.0
+#12 0x00007ffff4fffead in clone () from /lib64/libc.so.6
