@@ -39,16 +39,15 @@ int main()
 
 	while (1)
 	{
-		try
-		{
-			QJsonDocument doc(data);
-		}
+
+		QJsonObject casa;
+
+		casa = data;
+
+		qDebug() << data.empty();
+		QJsonDocument doc(casa);
+
+		qDebug() << data.size();
+		usleep(100000);
 	}
-	catch (...)
-	{
-		qDebug() << "this is error";
-	}
-	qDebug() << data.size();
-	sleep(1);
-}
 }
