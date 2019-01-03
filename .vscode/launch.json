@@ -9,7 +9,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/code/monitor/debug/cMonitor.exe",
+            "program": "${workspaceFolder}/code/utils/debug/utils.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
