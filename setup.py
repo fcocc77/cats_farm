@@ -279,9 +279,10 @@ def linux_install():
     copyfile(path + "/os/linux/link/CatsFarm.desktop",
              "/usr/share/applications")
 
-    shutil.copy(linuxInstall + "/os/linux/init/cserver", "/etc/init.d/cserver")
-    shutil.copy(linuxInstall + "/os/linux/init/cmanager",
-                "/etc/init.d/cmanager")
+    shutil.copy(linuxInstall + "/os/linux/init/cserver.service",
+                "/etc/systemd/system/cserver.service")
+    shutil.copy(linuxInstall + "/os/linux/init/cmanager.service",
+                "/etc/systemd/system/cmanager.service")
 
     fwrite(linuxInstall + "/etc/manager_host", ip)
 
@@ -293,8 +294,8 @@ def linux_install():
     f.write(dbug)
     f.close()
     # los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
-    sh("sed -i -e 's/\r//g' /etc/init.d/cserver")
-    sh("sed -i -e 's/\r//g' /etc/init.d/cmanager")
+    sh("sed -i -e 's/\r//g' " + linuxInstall + "/os/linux/init/cserver.sh")
+    sh("sed -i -e 's/\r//g' " + linuxInstall + "/os/linux/init/cmanager.sh")
     # --------------------------------------------------------------------------------
 
     # Copia librerias necesarias en lib/bin
@@ -311,25 +312,25 @@ def linux_install():
     # ------------------------------------------
 
     if server_start:
-        os.system("service cserver start")
-        os.system("chkconfig cserver on")
+        os.system("systemctl start cserver")
+        os.system("systemctl enable cserver")
 
     if manager_start:
-        os.system("service cmanager start ")
-        os.system("chkconfig cmanager on")
+        os.system("systemctl start cmanager")
+        os.system("systemctl enable cmanager")
 
     nuke_module(1)
 
 
 def linux_uninstall():
 
-    sh("service cserver stop ")
-    cserver = "/etc/init.d/cserver"
+    sh("systemctl stop cserver")
+    cserver = "/etc/systemd/system/cserver.service"
     if os.path.isfile(cserver):
         os.remove(cserver)
 
-    sh("service cmanager stop ")
-    cmanager = "/etc/init.d/cmanager"
+    sh("systemctl stop cmanager")
+    cmanager = "/etc/systemd/system/cmanager.service"
     if os.path.isfile(cmanager):
         os.remove(cmanager)
 

@@ -1,20 +1,15 @@
-#!/bin/bash
-# chkconfig: 345 99 01
-# description: some startup script
-. /etc/init.d/functions
-
 pid_file='/opt/cats_farm/os/linux/init/serverPID'
 log_file='/opt/cats_farm/log/server.log'
 debug=$(cat '/opt/cats_farm/etc/debug')
 
 run() {
 	# mata el pid a partir del puerto de catsfarm
-	fuser -k 7001/tcp &>/dev/null
+	fuser -k 7000/tcp &>/dev/null
 	#----------------------------------
 	if $debug; then
 		rm $log_file &> /dev/null
 		echo "Started debugging."
-		/opt/rh/devtoolset-7/root/usr/bin/gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q "./cServer" &> /dev/null
+		gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q "./cServer" &> /dev/null
 	else
 		"./cServer" &> /dev/null
 	fi
@@ -25,7 +20,7 @@ start() {
 
 	if ! kill -0 $pid > /dev/null 2>&1; then
 		echo "CatsFarm Server has started."
-		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen &&  cd '/opt/cats_farm/bin/linux' && run &>/dev/null & echo $! > $pid_file
+		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen && cd '/opt/cats_farm/bin/linux' && run &>/dev/null & echo $! > $pid_file
 	else
 		echo "CatsFarm Server is running now."
 	fi
@@ -44,23 +39,15 @@ stop() {
 	fi
 }
 
-case "$1" in
-	start)
-		start
-	;;
-	stop)
-		stop
-	;;
-	status)
-		status cserver
-	;;
-	restart|reload|condrestart)
-		stop
-		start
-	;;
-	*)
-	echo $"Usage: $0 {start|stop|restart|reload|status}"
-	exit 1
-esac
+
+if [ "$1" = "start" ]
+then
+    start
+fi
+
+if [ "$1" = "stop" ]
+then
+    stop
+fi
 
 exit 0
