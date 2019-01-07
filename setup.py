@@ -7,7 +7,7 @@ import tarfile
 from zipfile import ZipFile
 import subprocess
 from time import sleep
-path = os.path.dirname(__file__)
+path = sys.path[0]
 
 # Rutas de Instalacion
 linuxInstall = "/opt/cats_farm"
