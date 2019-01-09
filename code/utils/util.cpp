@@ -14,7 +14,7 @@ QString fread(QString _path)
 		info += in.readLine() + "\n";
 	file.close();
 
-	return info;
+	return info.left(info.size() - 1); // borra el ultimo caracter "\n"
 }
 
 void fwrite(QString _path, QString data)
