@@ -284,6 +284,7 @@ def linux_install():
                 "/etc/systemd/system/cserver.service")
     shutil.copy(linuxInstall + "/os/linux/init/cmanager.service",
                 "/etc/systemd/system/cmanager.service")
+    sh("systemctl daemon-reload")
 
     fwrite(linuxInstall + "/etc/manager_host", ip)
 
