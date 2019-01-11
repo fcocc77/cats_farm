@@ -186,7 +186,7 @@ class catsFarmSend():
                    " -comment " + "Nuke Render" +
                    " -software " + "Nuke" +
                    " -project " + '"' + script_save + '"' +
-                   " -extra " + '"' + writFile + '"' +
+                   " -extra " + writFile + 
                    " -system " + system +
                    " -instances " + instances +
                    " -render " + render)
