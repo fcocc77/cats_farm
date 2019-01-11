@@ -1,0 +1,18 @@
+#0  0x00007ffff4f84154 in _int_malloc () from /lib64/libc.so.6
+#1  0x00007ffff4f871ac in malloc () from /lib64/libc.so.6
+#2  0x00007ffff6045b2d in QArrayData::allocate(unsigned long, unsigned long, unsigned long, QFlags<QArrayData::AllocationOption>) () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#3  0x00007ffff60b84e5 in QString::QString(QChar const*, int) () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#4  0x00007ffff60b8723 in QString::mid(int, int) const () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#5  0x00007ffff60c5e48 in QString::split(QString const&, QString::SplitBehavior, Qt::CaseSensitivity) const () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#6  0x0000000000421ddb in manager::iTime (this=0x7fffffffebc0, schedule=...) at /opt/cats_farm/code/manager/update.cpp:193
+#7  0x0000000000421bd4 in manager::update_server (this=0x7fffffffebc0) at /opt/cats_farm/code/manager/update.cpp:160
+#8  0x000000000042104e in manager::update_all (this=0x7fffffffebc0) at /opt/cats_farm/code/manager/update.cpp:10
+#9  0x0000000000410668 in void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}::operator()() const (__closure=0x64b8f0) at /opt/cats_farm/code/manager/../utils/threading.h:27
+#10 0x0000000000415815 in QtPrivate::FunctorCall<QtPrivate::IndexesList<>, QtPrivate::List<>, void, void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}>::call({lambda()#1}&, void**) (f=..., arg=0x7fffe66accd0) at /opt/Qt5.11.3/5.11.3/gcc_64/include/QtCore/qobjectdefs_impl.h:128
+#11 0x000000000041563d in QtPrivate::Functor<void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}, 0>::call<QtPrivate::List<>, void>({lambda()#1}&, void*, {lambda()#1}&*) (f=..., arg=0x7fffe66accd0) at /opt/Qt5.11.3/5.11.3/gcc_64/include/QtCore/qobjectdefs_impl.h:238
+#12 0x000000000041528e in QtPrivate::QFunctorSlotObject<void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}, 0, QtPrivate::List<>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*) (which=1, this_=0x64b8e0, r=0x64afd0, a=0x7fffe66accd0, ret=0x0) at /opt/Qt5.11.3/5.11.3/gcc_64/include/QtCore/qobjectdefs_impl.h:421
+#13 0x00007ffff622c136 in QMetaObject::activate(QObject*, int, int, void**) () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#14 0x00007ffff6038a47 in QThread::started(QThread::QPrivateSignal) () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#15 0x00007ffff604458b in QThreadPrivate::start(void*) () from /opt/Qt5.11.3/5.11.3/gcc_64/lib/libQt5Core.so.5
+#16 0x00007ffff5af5dd5 in start_thread () from /lib64/libpthread.so.0
+#17 0x00007ffff4fffead in clone () from /lib64/libc.so.6
