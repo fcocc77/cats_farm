@@ -201,17 +201,11 @@ void manager::update_server()
 
 bool manager::iTime(QString schedule)
 {
-
 	int start = 0, end = 0;
-	try
-	{
-		auto range = schedule.split("-");
-		start = range[0].toInt();
-		end = range[1].toInt() - 1;
-	}
-	catch (exception &e)
-	{
-	}
+
+	auto range = schedule.split("-");
+	start = range[0].toInt();
+	end = range[1].toInt() - 1;
 
 	// si no esta en el rango de tiempo inTime es 0
 	int hora = currentDateTime(6).toInt();
