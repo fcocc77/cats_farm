@@ -53,30 +53,14 @@ void jwrite(QString _path, QJsonObject data)
 
 QString jats(QJsonArray data)
 { // jats =  json array to string
-	QString _return;
-	try
-	{
-		QJsonDocument doc(data);
-		_return = doc.toJson(QJsonDocument::Compact);
-	}
-	catch (...)
-	{
-	}
-	return _return;
+	QJsonDocument doc(data);
+	return doc.toJson(QJsonDocument::Compact);
 }
 
 QString jots(QJsonObject data)
 { // jots =  json object to string
-	QString _return;
-	try // para evitar el error "manager runtime error 01" ( esta en log/runtime_error)
-	{
-		QJsonDocument doc(data);
-		_return = doc.toJson(QJsonDocument::Compact);
-	}
-	catch (...)
-	{
-	}
-	return _return;
+	QJsonDocument doc(data);
+	return doc.toJson(QJsonDocument::Compact);
 }
 
 QJsonObject jofs(QString data)

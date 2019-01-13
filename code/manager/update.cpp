@@ -104,7 +104,17 @@ QString manager::update_server_thread(QJsonArray recv)
 		}
 	}
 
-	return jots(preferences);
+	// se usan dos bool para que cuando se este generando el json no se este
+	// copiando informacion en "preferences" si no el programa se cae
+	if (preferences_idle)
+	{
+		jots_idle = false;
+		return jots(preferences);
+		jots_idle = true;
+	}
+	else
+		return "";
+	//---------------------------------------------------------------
 }
 
 void manager::update_server()
@@ -181,7 +191,12 @@ void manager::update_server()
 		//-----------------------------
 	}
 
-	preferences["servers"] = serverList;
+	if (jots_idle)
+	{
+		preferences_idle = false;
+		preferences["servers"] = serverList;
+		preferences_idle = true;
+	}
 }
 
 bool manager::iTime(QString schedule)
@@ -281,7 +296,12 @@ void manager::update_group()
 		group->activeMachine = activeMachine;
 	}
 
-	preferences["groups"] = grouplist;
+	if (jots_idle)
+	{
+		preferences_idle = false;
+		preferences["groups"] = grouplist;
+		preferences_idle = true;
+	}
 }
 
 void manager::update_jobs()
