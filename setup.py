@@ -17,8 +17,8 @@ macInstall = "/usr/local/cats_farm"
 # --------------------------
 
 # Datos Generales
-ip = "192.168.10.48"
-manager_start = True
+ip = "192.168.10.45"
+manager_start = False
 server_start = True
 action = True
 clean_compilation = False
