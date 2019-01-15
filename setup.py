@@ -259,7 +259,7 @@ def linux_install():
     sh("yum group install \"Development Tools\"")
     # ----------------------
 
-   if not os.path.isdir(linuxInstall):
+    if not os.path.isdir(linuxInstall):
         os.mkdir(linuxInstall)
 
     # copia el contenido necesario
