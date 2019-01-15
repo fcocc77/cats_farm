@@ -29,7 +29,9 @@ class manager : public QObject
 	vector<server_struct *> servers;
 	vector<group_struct *> groups;
 	QJsonObject preferences = jread(path + "/etc/preferences.json");
-	bool reset_render, preferences_idle, jots_idle;
+	bool reset_render;
+	bool preferences_idle = true;
+	bool jots_idle = true;
 
 	void init();
 	QString make_job(QJsonArray recv);
