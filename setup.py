@@ -189,14 +189,6 @@ def compiler_install():
             tar.close()
             # ----------------------
 
-        # install rpms nesesarios
-        sh("yum -y install epel-release")
-        sh("yum -y install http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm")
-        sh("yum -y install mesa-libGL-devel mesa-libGLU-devel")
-        sh("yum -y install ffmpeg")
-        sh("yum -y install lm_sensors")
-        # ----------------------
-
     if platform == "darwin":
         if not os.path.isdir("/usr/local/Qt5.11.3"):
             print "Installing Qt5.11.3..."
@@ -258,7 +250,16 @@ def nuke_module(install):
 
 
 def linux_install():
-    if not os.path.isdir(linuxInstall):
+    # install rpms nesesarios
+    sh("yum -y install epel-release")
+    sh("yum -y install http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm")
+    sh("yum -y install mesa-libGL-devel mesa-libGLU-devel")
+    sh("yum -y install ffmpeg")
+    sh("yum -y install lm_sensors")
+    sh("yum group install \"Development Tools\"")
+    # ----------------------
+
+   if not os.path.isdir(linuxInstall):
         os.mkdir(linuxInstall)
 
     # copia el contenido necesario
