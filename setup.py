@@ -322,6 +322,7 @@ def linux_install():
         os.system("systemctl start cmanager")
         os.system("systemctl enable cmanager")
 
+    sh("chmod 755 -R " + linuxInstall)
     nuke_module(1)
 
 
