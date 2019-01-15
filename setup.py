@@ -314,6 +314,7 @@ def linux_install():
                     p, linuxInstall + "/bin/linux/plugins/platforms")
     # ------------------------------------------
 
+    sh("chmod 755 -R " + linuxInstall)
     if server_start:
         os.system("systemctl start cserver")
         os.system("systemctl enable cserver")
@@ -322,7 +323,6 @@ def linux_install():
         os.system("systemctl start cmanager")
         os.system("systemctl enable cmanager")
 
-    sh("chmod 755 -R " + linuxInstall)
     nuke_module(1)
 
 
