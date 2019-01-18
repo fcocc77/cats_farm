@@ -271,7 +271,7 @@ bool render::maya(int ins)
 	os::remove(log_file);
 
 	QString args = " -r file -s " + QString::number(first_frame[ins]) + " -e " + QString::number(last_frame[ins]) +
-				   " -proj \"" + extra[ins] + "\" \"" + project[ins] + '"' + " -log \"" + log_file + "\"";
+				   " -proj '" + extra[ins] + "' '" + project[ins] + "'" + " -log '" + log_file + "'";
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
@@ -287,7 +287,7 @@ bool render::maya(int ins)
 	//-----------------------------------------------
 	args = args.replace(src_path[ins], dst_path[ins]);
 
-	QString cmd = '"' + exe + "\" " + args;
+	QString cmd = "/bin/sh -c \"'" + exe + "' " + args + "\"";
 	// rendering ...
 	// ----------------------------------
 	qprocess(cmd, ins);
