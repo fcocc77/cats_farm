@@ -223,7 +223,7 @@ void servers_actions::serverVNC()
 	for (auto item : serverList->selectedItems())
 	{
 		QString ip = item->text(7);
-		QString arg = "\"" + tigervnc + "\" " + ip + ":1";
+		QString arg = "\"" + tigervnc + "\" " + ip + ":7";
 		os::back(arg);
 	}
 }
