@@ -287,7 +287,7 @@ bool render::maya(int ins)
 	//-----------------------------------------------
 	args = args.replace(src_path[ins], dst_path[ins]);
 
-	QString cmd = "/bin/sh -c \"'" + exe + "' " + args + "\"";
+	QString cmd = "/bin/sh -c \"export MAYA_DISABLE_CIP=1 && '" + exe + "' " + args + "\"";
 	// rendering ...
 	// ----------------------------------
 	qprocess(cmd, ins);
