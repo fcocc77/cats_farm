@@ -303,6 +303,9 @@ def linux_install():
     # --------------------------------------------------------------------------------
 
     # Copia librerias necesarias en lib/bin
+    os.makedirs(linuxInstall + "/bin/linux/lib")
+    os.makedirs(linuxInstall + "/bin/linux/plugins/platforms")
+
     libs = ["libicudata.so.56", "libicui18n.so.56", "libicuuc.so.56", "libQt5Core.so.5", "libQt5DBus.so.5",
             "libQt5Gui.so.5", "libQt5Multimedia.so.5", "libQt5Network.so.5", "libQt5Widgets.so.5", "libQt5XcbQpa.so.5"]
     for l in libs:
