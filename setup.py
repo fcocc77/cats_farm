@@ -256,7 +256,8 @@ def linux_install():
     sh("yum -y install mesa-libGL-devel mesa-libGLU-devel")
     sh("yum -y install ffmpeg")
     sh("yum -y install lm_sensors")
-    sh("yum group install \"Development Tools\"")
+    sh("yum -y group install \"Development Tools\"")
+    sh("yum -y install gcc-c++")
     # ----------------------
 
     if not os.path.isdir(linuxInstall):
