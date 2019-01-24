@@ -175,12 +175,15 @@ int cpuTemp()
 	if (_linux)
 	{
 		QString sensors = sh("sensors");
-		int core0 = sensors.split("Core 0:")[1].split(".")[0].replace("+", "").toInt();
-		int core1 = sensors.split("Core 1:")[1].split(".")[0].replace("+", "").toInt();
-		int core2 = sensors.split("Core 2:")[1].split(".")[0].replace("+", "").toInt();
-		int core3 = sensors.split("Core 3:")[1].split(".")[0].replace("+", "").toInt();
+		if (not sensors.contains("No sensors found!"))
+		{
+			int core0 = sensors.split("Core 0:")[1].split(".")[0].replace("+", "").toInt();
+			int core1 = sensors.split("Core 1:")[1].split(".")[0].replace("+", "").toInt();
+			int core2 = sensors.split("Core 2:")[1].split(".")[0].replace("+", "").toInt();
+			int core3 = sensors.split("Core 3:")[1].split(".")[0].replace("+", "").toInt();
 
-		temp = (core0 + core1 + core2 + core3) / 4;
+			temp = (core0 + core1 + core2 + core3) / 4;
+		}
 	}
 
 	if (_win32)
