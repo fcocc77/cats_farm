@@ -254,6 +254,7 @@ def linux_install():
     sh("yum -y install epel-release")
     sh("yum -y install http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm")
     sh("yum -y install mesa-libGL-devel mesa-libGLU-devel")
+    sh("yum -y install pulseaudio-libs-glib2.x86_64")
     sh("yum -y install ffmpeg")
     sh("yum -y install lm_sensors")
     sh("yum -y group install \"Development Tools\"")
