@@ -28,11 +28,9 @@ start() {
 
 stop() {
 	cpid=$(cat $pid_file)
-	ppid=$(pgrep -P $cpid)
 
 	if kill -0 $cpid > /dev/null 2>&1; then
-		kill $ppid
-		kill $cpid
+		fuser -k 7000/tcp
 		echo "CatsFarm Manager has stopped."
 	else
 		echo "Is not running."
