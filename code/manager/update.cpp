@@ -106,14 +106,14 @@ QString manager::update_server_thread(QJsonArray recv)
 
 	// se usan dos bool para que cuando se este generando el json no se este
 	// copiando informacion en "preferences" si no el programa se cae
+	QString ret;
 	if (preferences_idle)
 	{
 		jots_idle = false;
-		return jots(preferences);
+		ret = jots(preferences);
 		jots_idle = true;
 	}
-	else
-		return "";
+	return ret;
 	//---------------------------------------------------------------
 }
 
