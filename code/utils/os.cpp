@@ -203,18 +203,21 @@ int cpuTemp()
 				if (not _file.isEmpty())
 				{
 
-					QStringList tempReadList = fread(f).split("\n");
-					QString tempRead = tempReadList[tempReadList.size() - 2];
+					QStringList tempReadList = _file.split("\n");
+					int index = tempReadList.size() - 2;
+					if (index >= 0)
+					{
+						QString tempRead = tempReadList[index];
+						QStringList core = tempRead.split(",,,")[0].split(",");
+						int cpu_count = core.size() - 1;
+						int cores = 0;
 
-					QStringList core = tempRead.split(",,,")[0].split(",");
-					int cpu_count = core.size() - 1;
-					int cores = 0;
+						for (int i = 1; i < cpu_count + 1; ++i)
+							cores += core[i].toInt();
 
-					for (int i = 1; i < cpu_count + 1; ++i)
-						cores += core[i].toInt();
-
-					if (cores)
-						temp = cores / cpu_count;
+						if (cores)
+							temp = cores / cpu_count;
+					}
 				}
 
 				if (csv_delete > 10)
