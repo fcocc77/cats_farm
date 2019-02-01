@@ -270,36 +270,24 @@ QString manager::serverAction(QJsonArray pks)
 		QJsonArray _server = s.toArray();
 		QString name = _server[0].toString();
 		QString server_action = _server[1].toString();
-		int info = _server[2].toInt();
+		int instances = _server[2].toString().toInt();
 		auto server = findServer(name);
 
 		if (server_action == "max_instances")
-		{
-			server->max_instances = info;
-		}
+			server->max_instances = instances;
 
 		if (server_action == "inactive")
-		{
 			serverSetState(server, false);
-		}
 
 		if (server_action == "reactive")
-		{
 			serverSetState(server, true);
-		}
 
 		if (server_action == "delete")
-		{
 			if (not(server->status == "active"))
-			{
 				erase_by_name(servers, name);
-			}
-		}
 
 		if (server_action == "ssh")
-		{
 			return jats({server->sshUser, server->sshPass, server->host});
-		}
 	}
 
 	return "{}";
