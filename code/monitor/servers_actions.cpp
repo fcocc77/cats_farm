@@ -104,43 +104,28 @@ void servers_actions::server_popup()
 		menu->addAction(serverShowLog);
 		menu->addSeparator();
 
-		/*
 		//-------------------------------------------------
-		QMenu *submenu = new QMenu("Max Instances");			
-		QSignalMapper *mapper = new QSignalMapper();
+		QMenu *submenu = new QMenu("Number of instances", monitor);
+		QSignalMapper *mapper = new QSignalMapper(monitor);
 
-		for (int i = 1; i < 17; ++i){
+		for (int i = 1; i < 17; ++i)
+		{
 			QString n = QString::number(i);
-			QAction *action = new QAction( n + " Instances" );
-			connect( action, SIGNAL("triggered()"), mapper, SLOT("map()"));
-			mapper->setMapping( action, n );
-			submenu->addAction( action );			
+			QAction *action = new QAction(n + " Instances");
+			connect(action, SIGNAL(triggered()), mapper, SLOT(map()));
+			mapper->setMapping(action, i);
+			submenu->addAction(action);
 		}
 		connect(mapper, SIGNAL(mapped(int)), this, SLOT(serverMaxInstances(int)));
-		menu->addMenu( submenu );
+
+		menu->addMenu(submenu);
 		//-------------------------------------------------
 
-		QMenu *submenu2 = new QMenu("CPU Limit");			
-		QSignalMapper *mapper2 = new QSignalMapper();
-
-		for (int i = 1; i < 11; ++i){
-			QString n = QString::number( i * 10 );
-			QAction *action = new QAction( n + "% CPU" );
-			connect( action, SIGNAL("triggered()"), mapper, SLOT("map()"));
-			mapper2->setMapping( action, n );
-			submenu2->addAction( action );			
-		}
-		connect(mapper2, SIGNAL(mapped(int)), this, SLOT(serverCpuLimit(int)));
-		menu->addMenu( submenu2 );
-		//---------------------------------------------------
-		*/
-		//menu->addMenu( submenu );
 		menu->addAction(serverFreeramAction);
 		menu->addSeparator();
 		menu->addAction(serverSshAction);
 		menu->addAction(serverVncAction);
 		menu->addSeparator();
-		//menu->addAction( groupCreateAction );
 		menu->popup(QCursor::pos());
 	}
 	else

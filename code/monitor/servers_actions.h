@@ -29,6 +29,7 @@ using namespace std;
 
 class servers_actions : public QObject
 {
+	Q_OBJECT
   public:
 	QMainWindow *monitor;
 	ui_jobs_tree *jobsList;
@@ -75,7 +76,6 @@ class servers_actions : public QObject
 	void server_popup();
 	void serverCpuLimit(int limit);
 	void serverLog();
-	void serverMaxInstances(int ins);
 	void serverSSH();
 	void serverVNC();
 	void serverMessage(QString (servers_actions::*funtion)(QString, QString), QString action,
@@ -83,8 +83,10 @@ class servers_actions : public QObject
 	void serverActionMessage();
 	QString serverAction(QString action, QString info);
 	void sendToServer(QString action, QString info);
-
 	//----------------
+
+  public slots:
+	void serverMaxInstances(int);
 };
 
 #endif //SERVERS_ACTIONS_H
