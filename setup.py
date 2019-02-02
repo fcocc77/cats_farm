@@ -101,6 +101,15 @@ def compile_(project):
         if not os.path.isdir(ProgramData):
             os.makedirs(ProgramData)
 
+        # Cuando el archivo .pro tiene debug lo borra para que node error
+        f = open(project, "r")
+        _project = f.read().replace("debug", "")
+        f.close()
+        f = open(project, "w")
+        f.write(_project)
+        f.close()
+        # ------------------------------------------------
+
         exe = ProgramData + "/release/" + basename + ".exe"
 
         if os.path.isfile(exe):
@@ -109,8 +118,10 @@ def compile_(project):
         sh("cd " + ProgramData + " && " + qmake + " " + project)
         sh("set path=" + os.path.dirname(make) +
            "; && cd " + ProgramData + " && " + make)
-
-        shutil.move(exe, windowsInstall + "/bin/win/" + basename + ".exe")
+        try:
+            shutil.move(exe, windowsInstall + "/bin/win/" + basename + ".exe")
+        except:
+            print "\nCompilation error in the " + basename + ".\n"
 
     elif platform == "linux2":
         if debug:
