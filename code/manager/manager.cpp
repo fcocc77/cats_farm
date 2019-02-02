@@ -36,8 +36,18 @@ QString manager::server_tcp(QString _recv)
 		return recieve_monitor_thread(pks);
 	if (input == 4)
 		return make_job(pks);
+	if (input == 5)
+		return pivot_to_server(pks);
 
 	return "";
+}
+
+QString manager::pivot_to_server(QJsonArray recv)
+{
+	QString host = recv[0].toString();
+	QJsonArray pks = recv[1].toArray();
+
+	return tcpClient(host, 7001, jats(pks));
 }
 
 void manager::reactive_all()

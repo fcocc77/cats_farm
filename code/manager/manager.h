@@ -35,6 +35,7 @@ class manager : public QObject
 
 	void init();
 	QString make_job(QJsonArray recv);
+	QString pivot_to_server(QJsonArray recv);
 	vector<task_struct *> make_task(int first_frame, int last_frame, int task_size);
 	void resetAllServer();
 	void kill_tasks(job_struct *job, bool _delete);
