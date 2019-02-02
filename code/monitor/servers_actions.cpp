@@ -156,7 +156,9 @@ void servers_actions::serverLog()
 	if (not selected.empty())
 	{
 		QString host = (selected[0]->text(7));
-		QString result = tcpClient(host, 7001, jats({1, true}));
+
+		QJsonArray send = {host, QJsonArray({1, true})};
+		QString result = tcpClient(managerHost, 7000, jats({5, send}));
 
 		log_text->setPlainText(result);
 		log_dock->show();
@@ -262,7 +264,9 @@ void servers_actions::sendToServer(QString action, QString info)
 	for (auto item : selected)
 	{
 		QString host = item->text(7);
-		tcpClient(host, 7001, jats({4, {{action, info}}}));
+
+		QJsonArray send = {host, QJsonArray({4, {{action, info}}})};
+		tcpClient(managerHost, 7000, jats({5, send}));
 	}
 	//-------------------------------------
 }

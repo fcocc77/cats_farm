@@ -157,7 +157,8 @@ void jobs_actions::jobShowLog()
 					failed = true;
 				}
 
-				QString result = tcpClient(_host, 7001, jats({1, failed}));
+				QJsonArray send = {_host, QJsonArray({1, failed})};
+				QString result = tcpClient(managerHost, 7000, jats({5, send}));
 
 				log_text->setPlainText(_name + " Log:\n\n" + result);
 				break;
