@@ -375,49 +375,43 @@ void get_manager_info::updateServer(QJsonObject recv)
 
 		// crea lista con el nombre de la instancia y el status
 		QString instance_job;
+		// 0 = idle,	1 = active,		2 = disable,	3 = failed
 		QList<bool> general_status = {0, 0, 0, 0};
+		int active_instances = 0;
 
 		if (status == "absent")
-		{
 			instance_job = "...";
-		}
+
 		else
 		{
 			for (int i = 0; i < max_instances; ++i)
 			{
-				auto ins = instances[i];
-				general_status[ins->status] = true;
-				instance_job += "   " + ins->job_task;
+				if (instances[i]->status == 1)
+					active_instances += 1;
+				general_status[instances[i]->status] = true;
+				instance_job += "   " + instances[i]->job_task;
 			}
 
 			if (general_status[3])
-			{
 				status = "failed";
-			}
+
 			else if (general_status[2])
-			{
 				status = "disabled";
-			}
+
 			else if (general_status[1])
-			{
 				status = "active";
-			}
+
 			else
-			{
 				status = "idle";
-			}
 		}
 		//--------------------------------------------------------------
 
 		// si el jobs se borro recientemente no se agrega ni actualiza
 		bool _delete = false;
 		for (auto d : deleteList)
-		{
 			if (d == server_name)
-			{
 				_delete = true;
-			}
-		}
+
 		//---------------------------------
 
 		if (not _delete)
@@ -496,14 +490,10 @@ void get_manager_info::updateServer(QJsonObject recv)
 					if (name == server_name)
 					{
 
-						if ((general_status[1] > 1) and (status == "active"))
-						{
-							item->setText(1, QString::number(general_status[1]) + " " + status);
-						}
+						if ((active_instances > 1) and (status == "active"))
+							item->setText(1, QString::number(active_instances) + " " + status);
 						else
-						{
 							item->setText(1, status);
-						}
 
 						item->setText(0, server_name);
 						item->setText(2, QString::number(max_instances));
