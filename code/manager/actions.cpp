@@ -70,7 +70,10 @@ void manager::kill_tasks(job_struct *job, bool _delete)
 		erase_by_name(jobs, job->name);
 	}
 
-	QJsonArray kill_ins = {0, 1, 2, 3};
+	QJsonArray kill_ins;
+	for(int i = 0; i < 15; i++)
+		kill_ins.push_back(i);
+	
 	for (auto server : servers)
 	{
 		if (active_server.contains(server->name))
