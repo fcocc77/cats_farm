@@ -108,7 +108,7 @@ void servers_actions::server_popup()
 		QMenu *submenu = new QMenu("Number of instances", monitor);
 		QSignalMapper *mapper = new QSignalMapper(monitor);
 
-		for (int i = 1; i < 17; ++i)
+		for (int i = 1; i < 16; ++i)
 		{
 			QString n = QString::number(i);
 			QAction *action = new QAction(n + " Instances");
