@@ -4,7 +4,7 @@ debug=$(cat '/opt/cats_farm/etc/debug')
 
 run() {
 	# mata el pid a partir del puerto de catsfarm
-	fuser -k 7000/tcp &>/dev/null
+	fuser -k 7001/tcp &>/dev/null
 	#----------------------------------
 	if $debug; then
 		rm $log_file &> /dev/null
