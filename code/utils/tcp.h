@@ -65,20 +65,15 @@ class tcp_socket : public QThread
 			// 6 recive paquete
 			recv = "";
 			int totalBytesRead = 0;
-			int totalBytesReadOld = 0;
 			while (totalBytesRead < size)
 			{
 				if (qsocket->waitForReadyRead(wait))
 				{
 					totalBytesRead += qsocket->bytesAvailable();
 					recv += qsocket->readAll();
-
-					// Cuando el server se cae queda este while en loop infinito por eso esta condicional
-					if (totalBytesRead == totalBytesReadOld)
-						break;
-					totalBytesReadOld = totalBytesRead;
-					//----------------------------------------
 				}
+				else
+					break;
 			}
 			//----------------------------------------------------
 
@@ -328,20 +323,15 @@ class tcp_client : public QThread
 				// 12 recive paquete
 				recv = "";
 				int totalBytesRead = 0;
-				int totalBytesReadOld = 0;
 				while (totalBytesRead < size)
 				{
 					if (socket->waitForReadyRead(wait))
 					{
 						totalBytesRead += socket->bytesAvailable();
 						recv += socket->readAll();
-
-						// Cuando el server se cae queda este while en loop infinito por eso esta condicional
-						if (totalBytesRead == totalBytesReadOld)
-							break;
-						totalBytesReadOld = totalBytesRead;
-						//----------------------------------------
 					}
+					else
+						break;
 				}
 				//----------------------------------------------------
 
