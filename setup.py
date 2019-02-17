@@ -270,6 +270,7 @@ def linux_install():
     sh("yum -y install lm_sensors")
     sh("yum -y group install \"Development Tools\"")
     sh("yum -y install gcc-c++")
+    sh("yum -y install sshpass")
     # ----------------------
 
     if not os.path.isdir(linuxInstall):
