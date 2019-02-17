@@ -359,6 +359,9 @@ class tcp_client : public QThread
 						totalBytesRead += socket->bytesAvailable();
 						recv += socket->readAll();
 					}
+					
+					if (not socket->bytesAvailable())
+						break;
 				}
 				//----------------------------------------------------
 
