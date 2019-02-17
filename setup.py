@@ -271,7 +271,7 @@ def linux_install():
     sh("yum -y group install \"Development Tools\"")
     sh("yum -y install gcc-c++")
     sh("yum -y install sshpass")
-    sh("yum -y install fuser")
+    sh("yum -y install psmisc") # fuser
     # ----------------------
 
     if not os.path.isdir(linuxInstall):
