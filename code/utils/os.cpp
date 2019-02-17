@@ -544,7 +544,7 @@ const QString ip()
 void back(QString cmd)
 {
 	QProcess pro;
-	pro.start(cmd);
+	pro.startDetached(cmd);
 	pro.waitForStarted();
 }
 

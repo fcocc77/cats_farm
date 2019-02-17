@@ -181,12 +181,13 @@ void servers_actions::serverSSH()
 
 	QString disable_ask = " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
 	QString cmd;
-	QString ssh = "\"C:/Program Files/OpenSSH/bin/ssh.exe\"";
-	if (_win32)
-		cmd = "cmd /C " + ssh + disable_ask + sshUser + "@" + ip;
-	else
-		cmd = "gnome-terminal -e 'sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip + "'";
+	QString ssh = "C:/cats_farm/os/win/OpenSSH/bin/ssh.exe";
+	QString linux_sshpass = "sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip;
 
+	if (_win32)
+		cmd = "cmd.exe /K start cmd.exe /K " + ssh + " -tt " + disable_ask + sshUser + "@" + managerHost + " \"" + linux_sshpass + "\"";
+	else
+		cmd = "gnome-terminal -e '" + linux_sshpass + "'";
 	os::back(cmd);
 }
 
