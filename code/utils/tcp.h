@@ -78,31 +78,7 @@ class tcp_socket : public QThread
 			}
 			//----------------------------------------------------
 
-			/* Si se desconecta el cliente, no termina la transferencia de los
-			paquete, y el json al hacer parse da un error, por eso try except.*/
-			bool recv_ok = false;
-			try
-			{
-				recv_ok = true;
-			}
-			catch (exception &e)
-			{
-			}
-
-			if (recv_ok)
-			{
-				try
-				{
-					send = (_class->*func)(recv);
-				}
-				catch (...)
-				{
-					send = "";
-				}
-			}
-			else
-				send = "";
-			//-----------------------------------------------------------
+			send = (_class->*func)(recv);
 
 			// 7 - envia tamanio de paquete
 			// cuando el cliente de desconecta da un error, si no da el error, espera los byte escritos
@@ -339,13 +315,10 @@ class tcp_client : public QThread
 
 				//9 envia si la accion si es en loop o no
 				if (loop)
-				{
 					socket->write("true");
-				}
 				else
-				{
 					socket->write("false");
-				}
+
 				socket->waitForBytesWritten(wait);
 				//-------------------------------------------------
 
@@ -359,7 +332,7 @@ class tcp_client : public QThread
 						totalBytesRead += socket->bytesAvailable();
 						recv += socket->readAll();
 					}
-					
+
 					if (not socket->bytesAvailable())
 						break;
 				}
@@ -368,13 +341,9 @@ class tcp_client : public QThread
 				_recv = recv;
 
 				if (loop)
-				{
 					sleep(1);
-				}
 				else
-				{
 					break;
-				}
 			}
 			socket->close();
 
