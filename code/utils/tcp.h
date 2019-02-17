@@ -72,6 +72,9 @@ class tcp_socket : public QThread
 					totalBytesRead += qsocket->bytesAvailable();
 					recv += qsocket->readAll();
 				}
+
+				if (not qsocket->bytesAvailable())
+					break;
 			}
 			//----------------------------------------------------
 
