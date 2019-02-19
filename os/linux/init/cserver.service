@@ -6,6 +6,7 @@ After=network.target
 Type=forking
 ExecStart=/bin/sh -c "/opt/cats_farm/os/linux/init/cserver.sh start"
 ExecStop=/bin/sh -c "/opt/cats_farm/os/linux/init/cserver.sh stop"
+Restart=always
 TimeoutStartSec=0
 
 [Install]
