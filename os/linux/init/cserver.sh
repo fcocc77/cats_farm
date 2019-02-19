@@ -1,5 +1,5 @@
 pid_file='/opt/cats_farm/os/linux/init/serverPID'
-log_file='/opt/cats_farm/log/server.log'
+log_file='/opt/cats_farm/log/server crash - '$(date)'.log'
 debug=$(cat '/opt/cats_farm/etc/debug')
 
 run() {

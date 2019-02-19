@@ -1,5 +1,5 @@
 pid_file='/opt/cats_farm/os/linux/init/managerPID'
-log_file='/opt/cats_farm/log/manager.log'
+log_file='/opt/cats_farm/log/manager crash - '$(date)'.log'
 debug=$(cat '/opt/cats_farm/etc/debug')
 
 run() {
