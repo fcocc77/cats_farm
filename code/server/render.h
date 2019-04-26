@@ -41,6 +41,7 @@ class render : public QObject
 	}
 
 	QString render_task(QJsonArray recv);
+	QList <QString> find_correct_path(QJsonArray system_path, QString _path);
 	QString qprocess(QString cmd, int ins = -1);
 	void vbox_turn(bool turn);
 	bool vbox_working();

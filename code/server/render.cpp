@@ -2,7 +2,6 @@
 
 QString render::render_task(QJsonArray recv)
 {
-
 	// comvierte lista de json en variables usables
 	QString status;
 
@@ -27,31 +26,14 @@ QString render::render_task(QJsonArray recv)
 	//-----------------------------------------------------------------
 
 	if (renderNow)
-	{
+	{	
+		//obtiene ruta correcta
 		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 
-		//obtiene ruta correcta
-		QString proj;
-		for (QJsonValue p1 : system_path)
-		{
-			for (QJsonValue p2 : system_path)
-			{
-				proj = project[ins];
-				proj.replace(p1.toString(), p2.toString());
-
-				if (os::isfile(proj))
-				{
-					src_path[ins] = p1.toString();
-					dst_path[ins] = p2.toString();
-					break;
-				}
-			}
-
-			if (os::isfile(proj))
-			{
-				break;
-			}
-		}
+		auto correctPath = find_correct_path(system_path, project[ins]);
+		src_path[ins] = correctPath[0];
+		dst_path[ins] = correctPath[1];
+		//------------------------------------------------------
 
 		// ---------- rendering softwares -----------------
 		bool renderOK = false;
@@ -93,6 +75,32 @@ QString render::render_task(QJsonArray recv)
 	}
 
 	return status;
+}
+QList <QString> render::find_correct_path(QJsonArray system_path, QString _path){
+	//obtiene ruta correcta
+	QString proj;
+	QString src;
+	QString dst;
+	for (QJsonValue p1 : system_path)
+	{
+		for (QJsonValue p2 : system_path)
+		{
+			proj = _path;
+			proj.replace(p1.toString(), p2.toString());
+
+			if (os::isfile(proj) || os::isdir(proj))
+			{
+				src = p1.toString();
+				dst = p2.toString();
+				break;
+			}
+		}
+
+		if (os::isfile(proj) || os::isdir(proj))
+			break;
+	}
+
+	return {src, dst};
 }
 
 QString render::qprocess(QString cmd, int ins)
@@ -184,9 +192,24 @@ void render::suspend_vbox()
 
 bool render::nuke(int ins)
 {
+	// Ecuentra ruta del write y la remplaza por la ruta correcta segun OS
+	QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
+	auto correctPath = find_correct_path(system_path, os::dirname(extra[ins]));
+
+	QString proj = project[ins];
+	proj.replace(src_path[ins], dst_path[ins]);
+
+	QString tmpProj = proj;
+	tmpProj.replace(".nk", "_" + os::hostName() + ".nk");
+	
+	QString nk = fread(proj);
+	nk.replace(correctPath[0], correctPath[1]);
+	
+	fwrite(tmpProj, nk);
+	// ------------------------------------------------------
 
 	// crea la carpeta donde se renderearan los archivos
-	QString dirFile = extra[ins].replace(src_path[ins], dst_path[ins]);
+	QString dirFile = extra[ins].replace(correctPath[0], correctPath[1]);
 
 	QString dirRender = os::dirname(dirFile);
 	QString fileRender = os::basename(dirFile);
@@ -197,13 +220,9 @@ bool render::nuke(int ins)
 
 	QString folder;
 	if (ext == "mov")
-	{
 		folder = fileRender;
-	}
 	else
-	{
 		folder = fileRender.replace("_" + pad, "");
-	}
 
 	QString folderRender = dirRender + "/" + folder;
 
@@ -215,7 +234,7 @@ bool render::nuke(int ins)
 	}
 	//---------------------------------------------------
 
-	QString args = "-f -X " + renderNode[ins] + " \"" + project[ins] + "\" " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]);
+	QString args = "-f -X " + renderNode[ins] + " \"" + tmpProj + "\" " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]);
 
 	// remapeo rutas de Nuke
 	QString nukeRemap = " -remap \"" + src_path[ins] + "," + dst_path[ins] + "\" ";
@@ -229,9 +248,7 @@ bool render::nuke(int ins)
 	{
 		exe = e.toString();
 		if (os::isfile(exe))
-		{
 			break;
-		}
 	}
 	//-----------------------------------------------
 
@@ -255,6 +272,10 @@ bool render::nuke(int ins)
 	// ---------------------------------------
 	fwrite(log_file, log);
 	// ----------------------------------
+
+	// Borra proyecto temporal 
+	os::remove(tmpProj);
+	// -----------------------------
 
 	int total_frame = last_frame[ins] - first_frame[ins] + 1;
 
