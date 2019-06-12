@@ -17,9 +17,14 @@ macInstall = "/usr/local/cats_farm"
 # --------------------------
 
 # Datos Generales
-ip = "192.168.10.45"
+ip = "192.168.0.77"
+# ------------------------
 manager_start = True
 server_start = True
+# ------------------------
+compileInProject = False
+compileInOs = False
+# ------------------------
 action = True
 clean_compilation = False
 if platform == "linux2":
@@ -75,7 +80,9 @@ def fwrite(path, info):
     f.close()
 
 
-def compile_(project):
+def compile_(project, directory):
+    compiler_install()
+    
     if platform == "linux2":
         qmake = "/opt/Qt5.11.3/5.11.3/gcc_64/bin/qmake"
     elif platform == "win32":
@@ -119,7 +126,7 @@ def compile_(project):
         sh("set path=" + os.path.dirname(make) +
            "; && cd " + ProgramData + " && " + make)
         try:
-            shutil.move(exe, windowsInstall + "/bin/win/" + basename + ".exe")
+            shutil.move(exe, directory + "/bin/win/" + basename + ".exe")
         except:
             print "\nCompilation error in the " + basename + ".\n"
 
@@ -290,8 +297,8 @@ def linux_install():
     # -----------------------------------------------------
 
     if manager_start:
-        compile_(linuxInstall + "/code/manager/manager.pro")
-    compile_(linuxInstall + "/code/server/server.pro")
+        compile_(linuxInstall + "/code/manager/manager.pro", linuxInstall)
+    compile_(linuxInstall + "/code/server/server.pro", linuxInstall)
 
     copyfile(path + "/os/linux/link/CatsFarm.desktop",
              "/usr/share/applications")
@@ -372,6 +379,7 @@ def windows_install():
         os.mkdir(windowsInstall)
 
     # copia el contenido necesario
+    copydir(path + "/bin", windowsInstall + "/bin")
     copydir(path + "/code", windowsInstall + "/code")
     copydir(path + "/etc", windowsInstall + "/etc")
     copydir(path + "/icons", windowsInstall + "/icons")
@@ -384,15 +392,39 @@ def windows_install():
 
     fwrite(windowsInstall + "/etc/manager_host", ip)
 
-    # Directorio de librerias
-    libWin = windowsInstall + "/bin/win"
-    os.makedirs(libWin)
-    # ---------------------------------
+    def startCompilation(dstCompilation):
+        # Directorio de librerias
+        libWin = dstCompilation + "/bin/win"
+        if not os.path.isdir(libWin):
+            os.makedirs(libWin)
+        # ---------------------------------
+        compile_(dstCompilation + "/code/server/server.pro", dstCompilation)
+        compile_(dstCompilation + "/code/monitor/monitor.pro", dstCompilation)
+        compile_(dstCompilation + "/code/manager/manager.pro", dstCompilation)
+        compile_(dstCompilation + "/code/submit/submit.pro", dstCompilation)
+        
+        # Copia librerias necesarias en lib/bin
+        libs = ["libgcc_s_dw2-1.dll", "libstdc++-6.dll", "libwinpthread-1.dll", "Qt5Core.dll", "Qt5Gui.dll",
+                "Qt5Multimedia.dll", "Qt5Network.dll", "Qt5Widgets.dll"]
 
-    compile_(windowsInstall + "/code/server/server.pro")
-    compile_(windowsInstall + "/code/monitor/monitor.pro")
-    compile_(windowsInstall + "/code/manager/manager.pro")
-    compile_(windowsInstall + "/code/submit/submit.pro")
+        for l in libs:
+            shutil.copy("C:/Qt/Qt5.11.3/5.11.3/mingw53_32/bin/" + l, libWin)
+
+        plugins = ["qwindows.dll"]
+        platformDir = libWin + "/platforms"
+        if not os.path.isdir(platformDir):
+            os.makedirs(platformDir)
+
+        for p in plugins:
+            shutil.copy(
+                "C:/Qt/Qt5.11.3/5.11.3/mingw53_32/plugins/platforms/" + p, platformDir)
+        # ------------------------------------------
+
+    if compileInProject:
+        startCompilation(path)
+        copydir(path + "/bin", windowsInstall + "/bin")
+    elif compileInOs:
+        startCompilation(windowsInstall) 
 
     copyfile(windowsInstall + "/os/win/link/CatsFarm Monitor.lnk",
              "C:/ProgramData/Microsoft/Windows/Start Menu/Programs")
@@ -466,22 +498,6 @@ def windows_install():
     sh("netsh advfirewall firewall add rule name=\"sshd Ports:22\" dir=in action=allow enable=yes profile=Any protocol=TCP localport=22")
     sh("netsh advfirewall firewall add rule name=\"sshd Ports:22\" dir=out action=allow enable=yes profile=Any protocol=TCP localport=22")
     # ------------------------------------------------------------------------------------
-
-    # Copia librerias necesarias en lib/bin
-    libs = ["libgcc_s_dw2-1.dll", "libstdc++-6.dll", "libwinpthread-1.dll", "Qt5Core.dll", "Qt5Gui.dll",
-            "Qt5Multimedia.dll", "Qt5Network.dll", "Qt5Widgets.dll"]
-
-    for l in libs:
-        shutil.copy("C:/Qt/Qt5.11.3/5.11.3/mingw53_32/bin/" + l, libWin)
-
-    plugins = ["qwindows.dll"]
-    platformDir = libWin + "/platforms"
-    os.makedirs(platformDir)
-
-    for p in plugins:
-        shutil.copy(
-            "C:/Qt/Qt5.11.3/5.11.3/mingw53_32/plugins/platforms/" + p, platformDir)
-    # ------------------------------------------
 
     nuke_module(1)
 
@@ -611,8 +627,6 @@ def mac_uninstall():
     if os.path.isfile(pfd):
         os.remove(pfd)
 
-
-compiler_install()
 
 if platform == "win32":
     if windows_uninstall():

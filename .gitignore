@@ -10,7 +10,7 @@ code/*/CatsFarm*
 code/*/*.exe
 code/*/*.app
 code/*/*.rc
-
+bin/win
 etc/info.json*
 log/bugs.txt
 qt
