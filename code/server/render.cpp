@@ -26,7 +26,7 @@ QString render::render_task(QJsonArray recv)
 	//-----------------------------------------------------------------
 
 	if (renderNow)
-	{	
+	{
 		//obtiene ruta correcta
 		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 
@@ -76,7 +76,8 @@ QString render::render_task(QJsonArray recv)
 
 	return status;
 }
-QList <QString> render::find_correct_path(QJsonArray system_path, QString _path){
+QList<QString> render::find_correct_path(QJsonArray system_path, QString _path)
+{
 	//obtiene ruta correcta
 	QString proj;
 	QString src;
@@ -201,10 +202,10 @@ bool render::nuke(int ins)
 
 	QString tmpProj = proj;
 	tmpProj.replace(".nk", "_" + os::hostName() + ".nk");
-	
+
 	QString nk = fread(proj);
 	nk.replace(correctPath[0], correctPath[1]);
-	
+
 	fwrite(tmpProj, nk);
 	// ------------------------------------------------------
 
@@ -233,9 +234,14 @@ bool render::nuke(int ins)
 			os::system("chmod 777 -R " + folderRender);
 	}
 	//---------------------------------------------------
+	// Si es hay licencia de nodo de render nuke_r poner true
+	bool nuke_r = false;
+	QString xi = "";
+	if (not nuke_r)
+		xi = "-xi";
+	// ----------------------------------
 
-	QString args = "-f -X " + renderNode[ins] + " \"" + tmpProj + "\" " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]);
-
+	QString args = "-f " + xi + " -X " + renderNode[ins] + " \"" + tmpProj + "\" " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]);
 	// remapeo rutas de Nuke
 	QString nukeRemap = " -remap \"" + src_path[ins] + "," + dst_path[ins] + "\" ";
 	args = args.replace(src_path[ins], dst_path[ins]);
@@ -273,7 +279,7 @@ bool render::nuke(int ins)
 	fwrite(log_file, log);
 	// ----------------------------------
 
-	// Borra proyecto temporal 
+	// Borra proyecto temporal
 	os::remove(tmpProj);
 	// -----------------------------
 
