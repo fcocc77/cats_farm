@@ -25,7 +25,7 @@ int cpuUsed()
 	QString result;
 	if (_win32)
 	{
-		result = sh("wmic cpu get loadpercentage");
+		result = sh("C:/Windows/SysWOW64/wbem/wmic.exe cpu get loadpercentage");
 		result = result.replace("LoadPercentage", "");
 
 		usage = result.toInt();
