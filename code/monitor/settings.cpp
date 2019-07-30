@@ -191,20 +191,20 @@ void settings::path_ui()
 	tab_widget->addTab(widget6, "Fusion");
 	//--------------------------------------
 
-	// Natron Path----------------------------
+	// AE Path----------------------------
 	QWidget *widget7 = new QWidget();
 	QVBoxLayout *vbox7 = new QVBoxLayout();
 
-	QLabel *label7 = new QLabel("Natron Path:");
+	QLabel *label7 = new QLabel("AE Path:");
 
 	vbox7->addWidget(label7);
-	vbox7->addWidget(natron_edit);
+	vbox7->addWidget(ae_edit);
 
 	widget7->setLayout(vbox7);
 	widget7->setMinimumHeight(size_plain);
 
-	natron_edit->setObjectName("style1");
-	tab_widget->addTab(widget7, "Natron");
+	ae_edit->setObjectName("style1");
+	tab_widget->addTab(widget7, "AE");
 	//--------------------------------------
 }
 
@@ -219,7 +219,7 @@ void settings::pathSusRead()
 	{
 		QJsonObject paths = preferences["paths"].toObject();
 
-		QString system, nuke, maya, houdini, cinema, fusion, natron;
+		QString system, nuke, maya, houdini, cinema, fusion, ae;
 
 		for (QJsonValue p : paths["system"].toArray())
 		{
@@ -246,9 +246,9 @@ void settings::pathSusRead()
 			maya += p.toString() + "\n";
 		}
 
-		for (QJsonValue p : paths["natron"].toArray())
+		for (QJsonValue p : paths["ae"].toArray())
 		{
-			natron += p.toString() + "\n";
+			ae += p.toString() + "\n";
 		}
 
 		system_edit->setPlainText(system);
@@ -257,7 +257,7 @@ void settings::pathSusRead()
 		houdini_edit->setPlainText(houdini);
 		cinema_edit->setPlainText(cinema);
 		fusion_edit->setPlainText(fusion);
-		natron_edit->setPlainText(natron);
+		ae_edit->setPlainText(ae);
 	}
 }
 
@@ -296,10 +296,10 @@ void settings::pathSusWrite()
 		fusion.push_back(l);
 	paths["fusion"] = fusion;
 
-	QJsonArray natron;
-	for (auto l : natron_edit->toPlainText().split("\n"))
-		natron.push_back(l);
-	paths["natron"] = natron;
+	QJsonArray ae;
+	for (auto l : ae_edit->toPlainText().split("\n"))
+		ae.push_back(l);
+	paths["ae"] = ae;
 
 	tcpClient(managerHost, 7000, jats({3, {{"preferences", {{"write", paths}}}}}));
 }

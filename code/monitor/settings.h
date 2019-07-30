@@ -54,7 +54,7 @@ class settings : public QMainWindow
 	QPlainTextEdit *houdini_edit = new QPlainTextEdit();
 	QPlainTextEdit *cinema_edit = new QPlainTextEdit();
 	QPlainTextEdit *fusion_edit = new QPlainTextEdit();
-	QPlainTextEdit *natron_edit = new QPlainTextEdit();
+	QPlainTextEdit *ae_edit = new QPlainTextEdit();
 
 	//------------------------------
 

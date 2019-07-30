@@ -51,7 +51,7 @@ class render : public QObject
 	bool houdini(int ins);
 	bool cinema(int ins);
 	bool fusion(int ins);
-	bool natron(int ins);
+	bool ae(int ins);
 };
 
 #endif // RENDER_H

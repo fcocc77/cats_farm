@@ -47,8 +47,8 @@ QString render::render_task(QJsonArray recv)
 			renderOK = fusion(ins);
 		if (software == "Cinema4D")
 			renderOK = cinema(ins);
-		if (software == "Natron")
-			renderOK = natron(ins);
+		if (software == "AE")
+			renderOK = ae(ins);
 		// -------------------------------------------------
 
 		QString log_file = path + "/log/render_log_" + QString::number(ins);
@@ -534,7 +534,7 @@ bool render::fusion(int ins)
 	//-----------------------------------------------
 }
 
-bool render::natron(int ins)
+bool render::ae(int ins)
 {
 
 	QString args = "-i " + renderNode[ins] + " " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]) + " \"" + project[ins] + "\"";
@@ -543,7 +543,7 @@ bool render::natron(int ins)
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for (auto e : preferences["paths"].toObject()["natron"].toArray())
+	for (auto e : preferences["paths"].toObject()["ae"].toArray())
 	{
 		exe = e.toString();
 		if (os::isfile(exe))

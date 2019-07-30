@@ -24,7 +24,7 @@
             "/usr/local/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render",
             "/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render"
         ],
-        "natron": [
+        "ae": [
             "/opt/Natron2/bin/NatronRenderer",
             "C:/Program Files/INRIA/Natron-2.3.14/bin/NatronRenderer.exe"
         ],

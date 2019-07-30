@@ -6,7 +6,7 @@ void ui_submit::ui()
 	QVBoxLayout *vboxSubmit = new QVBoxLayout();
 	vboxSubmit->setContentsMargins(15, 15, 15, 15);
 
-	QStringList items = {"Nuke", "Maya", "Houdini", "Cinema4D", "Fusion", "Natron"};
+	QStringList items = {"Nuke", "Maya", "Houdini", "Cinema4D", "Fusion", "AE"};
 	softwareBox->addItems(items);
 	vboxSubmit->addWidget(softwareBox);
 
@@ -380,7 +380,7 @@ void ui_submit::submitSoftwareBox(int index = 0)
 		outputFile->setText("...");
 	}
 
-	if (software == "Natron")
+	if (software == "AE")
 	{
 		projectLine->setDisabled(1);
 		projectFile->setDisabled(1);
