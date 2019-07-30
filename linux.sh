@@ -17,7 +17,12 @@ compile() {
 }
 
 install() {
-
+    # Si no esta copiada la libreria qt5 la copia
+    qt5="/opt/Qt5.11.3"
+    if ! [[ -d $qt5 ]]; then
+        tar -xzvf $path/qt/linux/Qt5.11.3.tar.gz -C "/opt"
+    fi
+    # -----------------------------
 
     # install rpms nesesarios
     yum -y install epel-release
@@ -32,15 +37,39 @@ install() {
     yum -y install psmisc #fuser
     # ----------------------
 
-
-
-
     # Compilacion de todo
     compile server
     compile manager
     compile monitor
     compile submit
     # ----------------------
+
+    echo $ip > $dst"/etc/manager_host"
+
+    # Copia librerias necesarias en lib/bin
+    qt="/opt/Qt5.11.3/5.11.3/gcc_64/lib"
+    platforms="/opt/Qt5.11.3/5.11.3/gcc_64/plugins/platforms"
+
+    mkdir -p $path/bin/linux/lib
+    mkdir -p $path/bin/linux/plugins/platforms
+
+    cp $qt/5libicudata.so.56 $qt/libicui18n.so.56 $qt/libicuuc.so.56 $qt/libQt5Core.so.5 $qt/libQt5DBus.so.5 $qt/libQt5Gui.so.5 $qt/libQt5Multimedia.so.5 $qt/libQt5Network.so.5 $qt/libQt5Widgets.so.5 $qt/libQt5XcbQpa.so.5 $path/bin/linux/lib
+
+    cp $platforms/libqoffscreen.so $platforms/libqxcb.so $path/bin/linux/plugins/platforms
+    # ------------------------------------------
+
+    chmod 755 -R $dst
+
+    # Creacion de servicios
+    cp $path/os/linux/init/cserver.service /etc/systemd/system
+    cp $path/os/linux/init/cmanager.service /etc/systemd/system
+    systemctl daemon-reload
+    # -----------------------------
+
+    # los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
+    sed -i -e 's/\r//g' $path/os/linux/init/cserver.sh
+    sed -i -e 's/\r//g' $path/os/linux/init/cmanager.sh
+    # --------------------------------------------------------------------------------
 
     mkdir $dst
     mkdir $dst/os
@@ -57,54 +86,23 @@ install() {
     cp -rf "$path/theme" $dst
     # # ------------------------
 
-    echo $ip > $dst"/etc/manager_host"
+    # inicializacion de servicios
+    if server_start; then
+        systemctl start cserver
+        systemctl enable cserver
+    fi
 
-
-
-    # Copia librerias necesarias en lib/bin
-    qt="/opt/Qt5.11.3/5.11.3/gcc_64/lib"
-    platforms="/opt/Qt5.11.3/5.11.3/gcc_64/plugins/platforms"
-
-    mkdir -p $path/bin/linux/lib
-    mkdir -p $path/bin/linux/plugins/platforms
-
-    cp $qt/5libicudata.so.56 $qt/libicui18n.so.56 $qt/libicuuc.so.56 $qt/libQt5Core.so.5 $qt/libQt5DBus.so.5 $qt/libQt5Gui.so.5 $qt/libQt5Multimedia.so.5 $qt/libQt5Network.so.5 $qt/libQt5Widgets.so.5 $qt/libQt5XcbQpa.so.5 $path/bin/linux/lib
-
-    cp $platforms/libqoffscreen.so $platforms/libqxcb.so $path/bin/linux/plugins/platforms
-    # ------------------------------------------
-
-    chmod 755 -R $dst
-
-
-    # Creacion de servicios
-    nssm="$path/os/win/service/nssm.exe"
-    $nssm install cServer $dst/bin/win/cServer.exe
-    $nssm install cManager $dst/bin/win/cManager.exe
-    $nssm install coreTemp $dst/os/win/core_temp/core_temp.exe
-    # -----------------------------
-    $nssm set "cManager" ObjectName .\\$user $password
-    $nssm set "cServer" ObjectName .\\$user $password
-
-    # Inicializa servicios
-    sc start "cServer"
-    sc start "cManager"
-    sc start "coreTemp"
+    if manager_start; then
+        systemctl start cmanager
+        systemctl enable cmanager
+    fi
     # -----------------------------
 }
 
 uninstall() {
-    nssm="$path/os/win/service/nssm.exe"
-    $nssm stop "cServer"
-    $nssm stop "cManager"
-    $nssm stop "coreTemp"
+    systemctl stop cmanager
+    systemctl stop cserver
 
-    $nssm remove "cServer" confirm
-    $nssm remove "cManager" confirm
-    $nssm remove "coreTemp" confirm
-
-    taskkill -f -im "cMonitor.exe"
-
-    rm "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
     rm -rf $dst
 }
 
