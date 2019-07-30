@@ -76,6 +76,13 @@ install() {
     # -----------------------
     sc start "coreTemp"
     # -----------------------------
+
+    # desbloquear puertos firewall
+    netsh advfirewall firewall delete rule name="CatsFarm Ports:7000,7001"  # delete
+
+    netsh advfirewall firewall add rule name="CatsFarm Ports:7000,7001" dir=in action=allow enable=yes profile=Any protocol=TCP localport=7000,7001
+    netsh advfirewall firewall add rule name="CatsFarm Ports:7000,7001" dir=out action=allow enable=yes profile=Any protocol=TCP localport=7000,7001
+    # ------------------------------------------------------------------------------------
 }
 
 uninstall() {
@@ -96,5 +103,3 @@ uninstall() {
 
 uninstall
 install
-
-
