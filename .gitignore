@@ -13,7 +13,8 @@ code/*/*.rc
 bin/win
 etc/info.json*
 log/bugs.txt
-qt
+qt/*/*zip
+qt/*/*tar.gz
 .DS_Store
 *.swp
 *.swo
