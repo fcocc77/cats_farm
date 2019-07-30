@@ -1,3 +1,5 @@
+path="$( cd "$(dirname "$0")" ; pwd -P )"
+
 # ruta de instalacion
 dst="/opt/cats_farm"
 # ------------------
@@ -13,7 +15,7 @@ compile() {
     cd $folder
     /opt/Qt5.11.3/5.11.3/gcc_64/bin/qmake
     make
-    mv $folder/release/*.exe $path/bin/win 
+    mv $folder/$2 $path/bin/linux 
 }
 
 install() {
@@ -38,13 +40,12 @@ install() {
     # ----------------------
 
     # Compilacion de todo
-    compile server
-    compile manager
-    compile monitor
-    compile submit
+    compile server cServer
+    compile manager cManager
+    compile submit submit 
     # ----------------------
 
-    echo $ip > $dst"/etc/manager_host"
+    echo $ip > $path"/etc/manager_host"
 
     # Copia librerias necesarias en lib/bin
     qt="/opt/Qt5.11.3/5.11.3/gcc_64/lib"
@@ -53,12 +54,10 @@ install() {
     mkdir -p $path/bin/linux/lib
     mkdir -p $path/bin/linux/plugins/platforms
 
-    cp $qt/5libicudata.so.56 $qt/libicui18n.so.56 $qt/libicuuc.so.56 $qt/libQt5Core.so.5 $qt/libQt5DBus.so.5 $qt/libQt5Gui.so.5 $qt/libQt5Multimedia.so.5 $qt/libQt5Network.so.5 $qt/libQt5Widgets.so.5 $qt/libQt5XcbQpa.so.5 $path/bin/linux/lib
+    cp $qt/libicudata.so.56 $qt/libicui18n.so.56 $qt/libicuuc.so.56 $qt/libQt5Core.so.5 $qt/libQt5DBus.so.5 $qt/libQt5Gui.so.5 $qt/libQt5Multimedia.so.5 $qt/libQt5Network.so.5 $qt/libQt5Widgets.so.5 $qt/libQt5XcbQpa.so.5 $path/bin/linux/lib
 
     cp $platforms/libqoffscreen.so $platforms/libqxcb.so $path/bin/linux/plugins/platforms
     # ------------------------------------------
-
-    chmod 755 -R $dst
 
     # Creacion de servicios
     cp $path/os/linux/init/cserver.service /etc/systemd/system
@@ -80,19 +79,21 @@ install() {
     cp -rf "$path/etc" $dst
     cp -rf "$path/icons" $dst
     cp -rf "$path/log" $dst
-    cp -rf "$path/os/win" $dst/os
+    cp -rf "$path/os/linux" $dst/os
     cp -rf "$path/sound" $dst
     cp -rf "$path/modules" $dst
     cp -rf "$path/theme" $dst
     # # ------------------------
 
+    chmod 755 -R $dst
+
     # inicializacion de servicios
-    if server_start; then
+    if $server_start; then
         systemctl start cserver
         systemctl enable cserver
     fi
 
-    if manager_start; then
+    if $manager_start; then
         systemctl start cmanager
         systemctl enable cmanager
     fi
