@@ -15,6 +15,7 @@ etc/info.json*
 log/bugs.txt
 qt/*/*zip
 qt/*/*tar.gz
+.vscode
 .DS_Store
 *.swp
 *.swo
