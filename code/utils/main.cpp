@@ -15,39 +15,11 @@
 #include <QList>
 #include <unistd.h> // sleep usleep
 
-QJsonObject data;
-QJsonObject data2;
-void test_funccion()
-{
-	while (1)
-	{
-		data = {
-			{"property1", 1},
-			{"property2", 2}};
-
-		for (size_t i = 0; i < 10000; i++)
-		{
-			data["test" + QString::number(i)] = 20;
-		}
-	}
-}
 
 int main()
 {
+    QString test = "000002";
 
-	threading(&test_funccion);
+    qDebug() << test;
 
-	while (1)
-	{
-
-		QJsonObject casa;
-
-		casa = data;
-
-		qDebug() << data.empty();
-		QJsonDocument doc(casa);
-
-		qDebug() << data.size();
-		usleep(100000);
-	}
 }

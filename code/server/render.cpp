@@ -536,8 +536,29 @@ bool render::fusion(int ins)
 
 bool render::ae(int ins)
 {
+	QString log_file = path + "/log/render_log_" + QString::number(ins);
+	os::remove(log_file);
 
-	QString args = "-i " + renderNode[ins] + " " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]) + " \"" + project[ins] + "\"";
+	QString folderRender = os::dirname(project[ins]) + "/render";
+	// Crea carpeta de renders
+	if (not os::isdir(folderRender))
+	{
+		os::mkdir(folderRender);
+		if (_linux)
+			os::system("chmod 777 -R " + folderRender);
+	}
+	//---------------------------------------------------
+
+	QString firstFrame = QString::number(first_frame[ins]);
+	QString lastFrame = QString::number(last_frame[ins]);
+	QString output = folderRender + "/render_" + firstFrame + ".mov";
+
+	QString args = " -comp \"" + renderNode[ins] 
+			+ "\" -project \"" + project[ins] 
+			+ "\" -s " + firstFrame
+			+ " -e " + lastFrame
+			+ " -output " + output
+			+ " -log " + log_file;
 
 	args = args.replace(src_path[ins], dst_path[ins]);
 
@@ -547,21 +568,21 @@ bool render::ae(int ins)
 	{
 		exe = e.toString();
 		if (os::isfile(exe))
-		{
 			break;
-		}
 	}
 	//-----------------------------------------------
 
 	QString cmd = '"' + exe + '"' + args;
-
-	QString log_file = path + "/log/render_log_" + QString::number(ins);
-
 	// rendering ...
 	// ----------------------------------
-	QString log = qprocess(cmd, ins);
-	fwrite(log_file, log);
+	qprocess(cmd, ins);
 	// ----------------------------------
 
-	return false;
+	// post render
+	QString log = fread(log_file);
+	if (log.contains("Finished composition"))
+		return true;
+	else
+		return false;
+	//-----------------------------------------------
 }

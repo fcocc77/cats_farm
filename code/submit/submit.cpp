@@ -10,65 +10,35 @@ void submit::init(int argc, char const *argv[])
 	{
 		arg = argv[i];
 		if (arg == "-jobName")
-		{
 			jobName = argv[i + 1];
-		}
 		if (arg == "-server")
-		{
 			server = argv[i + 1];
-		}
 		if (arg == "-serverGroup")
-		{
 			serverGroup = argv[i + 1];
-		}
 		if (arg == "-firstFrame")
-		{
 			firstFrame = argv[i + 1];
-		}
 		if (arg == "-lastFrame")
-		{
 			lastFrame = argv[i + 1];
-		}
 		if (arg == "-taskSize")
-		{
 			taskSize = argv[i + 1];
-		}
 		if (arg == "-priority")
-		{
 			priority = argv[i + 1];
-		}
 		if (arg == "-suspend")
-		{
 			suspend = argv[i + 1];
-		}
 		if (arg == "-comment")
-		{
 			comment = argv[i + 1];
-		}
 		if (arg == "-software")
-		{
 			software = argv[i + 1];
-		}
 		if (arg == "-project")
-		{
 			project = argv[i + 1];
-		}
 		if (arg == "-extra")
-		{
 			extra = argv[i + 1];
-		}
 		if (arg == "-system")
-		{
 			system = argv[i + 1];
-		}
 		if (arg == "-instances")
-		{
 			instances = argv[i + 1];
-		}
 		if (arg == "-render")
-		{
 			render = argv[i + 1];
-		}
 	}
 
 	bool _suspend = false;

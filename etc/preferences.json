@@ -25,8 +25,7 @@
             "/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render"
         ],
         "ae": [
-            "/opt/Natron2/bin/NatronRenderer",
-            "C:/Program Files/INRIA/Natron-2.3.14/bin/NatronRenderer.exe"
+            "C:/Program Files (x86)/Adobe/Adobe After Effects 7.0/Support Files/aerender.exe"
         ],
         "nuke": [
             "/usr/local/Nuke10.5v8/Nuke10.5",
@@ -45,7 +44,8 @@
             "//192.168.10.46/server_01",
             "/Volumes/server_01",
             "//VBOXSVR/server_01",
-            "Z:"
+            "Z:",
+            "C:"
         ]
     },
     "servers": [

@@ -267,11 +267,32 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 
 	if (Completed)
 	{
+		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
+		//obtiene ruta correcta
+		QString src_path, dst_path, extra;
+		for (QJsonValue p1 : system_path)
+		{
+			for (QJsonValue p2 : system_path)
+			{
+				extra = project;
+				extra.replace(p1.toString(), p2.toString());
+
+				if (os::isfile(extra))
+				{
+					src_path = p1.toString();
+					dst_path = p2.toString();
+					break;
+				}
+			}
+
+			if (os::isfile(extra))
+				break;
+		}
+		//--------------------------------------
+
 		if (software == "Nuke")
 		{
-
 			QString ext = extra.split(".").last();
-
 			if (ext == "mov")
 			{
 				job->status = "Concatenate";
@@ -280,40 +301,22 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 				QString _dirname = os::dirname(extra);
 				QString _basename = os::basename(extra);
 				_basename.replace(".mov", "");
-				//-----------------------------------------------------
-
-				QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
-
-				//obtiene ruta correcta
-				QString src_path, dst_path, extra;
-				for (QJsonValue p1 : system_path)
-				{
-					for (QJsonValue p2 : system_path)
-					{
-						extra = project;
-						extra.replace(p1.toString(), p2.toString());
-
-						if (os::isfile(extra))
-						{
-							src_path = p1.toString();
-							dst_path = p2.toString();
-							break;
-						}
-					}
-
-					if (os::isfile(extra))
-					{
-						break;
-					}
-				}
-				//--------------------------------------
+				//-----------------------------------------
 
 				_dirname.replace(src_path, dst_path);
 				if (os::isdir(_dirname))
-				{
 					concat(_dirname + "/" + _basename);
-				}
 			}
+		}
+		if (software == "AE")
+		{
+			job->status = "Concatenate";
+
+			QString folderRender = os::dirname(project) + "/render";
+			folderRender.replace(src_path, dst_path);
+			//-----------------------------------------
+			if (os::isdir(folderRender))
+				concat(folderRender);
 		}
 		//------------------------------------------------------------
 
