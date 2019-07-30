@@ -1,4 +1,3 @@
-
 path="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # ruta de instalacion
@@ -53,31 +52,43 @@ install() {
 
     # Creacion de servicios
     nssm="$path/os/win/service/nssm.exe"
-    $nssm install cServer $dst/bin/win/cServer.exe
-    $nssm install cManager $dst/bin/win/cManager.exe
+    $nssm install cserver $dst/bin/win/cserver.exe
+    $nssm install cmanager $dst/bin/win/cmanager.exe
     $nssm install coreTemp $dst/os/win/core_temp/core_temp.exe
     # -----------------------------
-    $nssm set "cManager" ObjectName .\\$user $password
-    $nssm set "cServer" ObjectName .\\$user $password
+    $nssm set "cmanager" ObjectName .\\$user $password
+    $nssm set "cserver" ObjectName .\\$user $password
 
     # Inicializa servicios
-    sc start "cServer"
-    sc start "cManager"
+    if $server_start; then
+        sc start "cserver"
+    else
+        sc stop "cserver"
+        sc config "cserver" start= disabled
+    fi
+    # -----------------------
+    if $manager_start; then
+        sc start "cmanager"
+    else
+        sc stop "cmanager"
+        sc config "cmanager" start= disabled
+    fi
+    # -----------------------
     sc start "coreTemp"
     # -----------------------------
 }
 
 uninstall() {
     nssm="$path/os/win/service/nssm.exe"
-    $nssm stop "cServer"
-    $nssm stop "cManager"
+    $nssm stop "cserver"
+    $nssm stop "cmanager"
     $nssm stop "coreTemp"
 
-    $nssm remove "cServer" confirm
-    $nssm remove "cManager" confirm
+    $nssm remove "cserver" confirm
+    $nssm remove "cmanager" confirm
     $nssm remove "coreTemp" confirm
 
-    taskkill -f -im "cMonitor.exe"
+    taskkill -f -im "cmonitor.exe"
 
     rm "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
     rm -rf $dst

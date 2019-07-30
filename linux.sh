@@ -40,8 +40,8 @@ install() {
     # ----------------------
 
     # Compilacion de todo
-    compile server cServer
-    compile manager cManager
+    compile server cserver
+    compile manager cmanager
     compile submit submit 
     # ----------------------
 

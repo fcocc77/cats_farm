@@ -2,7 +2,7 @@
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 TEMPLATE = app
-TARGET = "cMonitor"
+TARGET = "cmonitor"
 CONFIG += c++11
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 CONFIG -= app_bundle

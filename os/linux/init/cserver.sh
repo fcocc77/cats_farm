@@ -9,9 +9,9 @@ run() {
 	if $debug; then
 		rm $log_file &> /dev/null
 		echo "Started debugging."
-		gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q "./cServer" &> /dev/null
+		gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q "./cserver" &> /dev/null
 	else
-		"./cServer" &> /dev/null
+		"./cserver" &> /dev/null
 	fi
 }
 

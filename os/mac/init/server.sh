@@ -1,2 +1,2 @@
 #!/bin/bash
-cd "/usr/local/cats_farm/bin/mac" && "./cServer"
+cd "/usr/local/cats_farm/bin/mac" && "./cserver"
