@@ -38,9 +38,43 @@ QString manager::server_tcp(QString _recv)
 		return make_job(pks);
 	if (input == 5)
 		return pivot_to_server(pks);
+	if (input == 6)
+		return sendToLogger();
 
 	return "";
 }
+
+// Envia  informacion de jobs al logger
+QString manager::sendToLogger()
+{
+	QJsonObject _jobs;
+	for (auto job : jobs)
+	{
+		QJsonObject j;
+
+		j["name"] = job->name;
+		j["status"] = job->status;
+		j["comment"] = job->comment;
+		j["submit_start"] = job->submit_start;
+		j["submit_finish"] = job->submit_finish;
+		j["total_render_time"] = job->total_render_time;
+		j["estimated_time"] = job->estimated_time;
+		j["timer_last_active"] = job->timer_last_active;
+		j["progres"] = job->progres;
+		j["waiting_task"] = job->waiting_task;
+		j["tasks"] = job->tasks;
+		j["suspended_task"] = job->suspended_task;
+		j["failed_task"] = job->failed_task;
+		j["active_task"] = job->active_task;
+		j["task_size"] = job->task_size;
+		j["first_frame"] = job->first_frame;
+		j["last_frame"] = job->last_frame;
+
+		_jobs[job->name] = j;
+	}
+
+	return jots(_jobs);
+} //-----------------------------------------
 
 QString manager::pivot_to_server(QJsonArray recv)
 {

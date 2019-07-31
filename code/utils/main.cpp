@@ -18,8 +18,8 @@
 
 int main()
 {
-    QString test = "000002";
-
-    qDebug() << test;
-
+    QString test = "0000000002";
+   
+    QStringRef subString(&test,  test.length() - 4, 4); // subString contains "is"
+     qDebug() << subString;
 }

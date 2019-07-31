@@ -42,6 +42,7 @@ class manager : public QObject
 	void render_job();
 	void render_task(server_struct *server, inst_struct *instance, job_struct *job);
 	QString sendToMonitor_thread();
+	QString sendToLogger();
 	QJsonObject struct_to_json();
 	void json_to_struct(QJsonObject info);
 	void reactive_all();
