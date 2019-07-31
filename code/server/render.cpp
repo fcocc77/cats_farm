@@ -551,7 +551,12 @@ bool render::ae(int ins)
 
 	QString firstFrame = QString::number(first_frame[ins]);
 	QString lastFrame = QString::number(last_frame[ins]);
-	QString output = folderRender + "/render_" + firstFrame + ".mov";
+
+	// crea numero con ceros para el nombre a partir del primer cuadro
+	QString num = "0000000000" + firstFrame;
+	QStringRef nameNumber(&num,  num.length() - 10, 10); 
+	// -------------------------------------
+	QString output = folderRender + "/render_" + nameNumber + ".mov";
 
 	QString args = " -comp \"" + renderNode[ins] 
 			+ "\" -project \"" + project[ins] 
