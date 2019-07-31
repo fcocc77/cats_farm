@@ -27,6 +27,7 @@ install() {
     compile manager
     compile monitor
     compile submit
+    compile logger
     # ----------------------
 
     mkdir $dst
