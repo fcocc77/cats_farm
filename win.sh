@@ -14,7 +14,7 @@ password=vfx
 # --------------------
 
 compile() {
-    folder=$path/code/$1
+    folder=$path/src/$1
     cd $folder
     qmake
     mingw32-make

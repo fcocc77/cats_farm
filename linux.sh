@@ -11,7 +11,7 @@ server_start=true
 
 
 compile() {
-    folder=$path/code/$1
+    folder=$path/src/$1
     cd $folder
     qmake-qt5
     make
