@@ -66,7 +66,7 @@ install() {
     mkdir $dst/bin
 
     # # copia el contenido necesario
-    cp -rf "$path/bin/linux" $dst/bin
+    cp -rf "$path/bin" $dst
     cp -rf "$path/etc" $dst
     cp -rf "$path/icons" $dst
     cp -rf "$path/log" $dst
