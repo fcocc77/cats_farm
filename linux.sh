@@ -4,7 +4,7 @@ path="$( cd "$(dirname "$0")" ; pwd -P )"
 dst="/opt/cats_farm"
 # ------------------
 # IP del manager
-ip="192.168.1.77"
+ip="192.168.0.18"
 # ------------------
 manager_start=true
 server_start=true
@@ -13,51 +13,42 @@ server_start=true
 compile() {
     folder=$path/code/$1
     cd $folder
-    /opt/Qt5.11.3/5.11.3/gcc_64/bin/qmake
+    qmake-qt5
     make
-    mv $folder/$2 $path/bin/linux 
+    bin=$path/bin
+    mkdir -p $bin
+    mv $folder/$2 $bin 
 }
 
 install() {
-    # Si no esta copiada la libreria qt5 la copia
-    qt5="/opt/Qt5.11.3"
-    if ! [[ -d $qt5 ]]; then
-        tar -xzvf $path/qt/linux/Qt5.11.3.tar.gz -C "/opt"
-    fi
-    # -----------------------------
+    # Instalacion de Dependencias
+    yum -y install \
+    http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm \
+    epel-release \
+    qt5-qtbase \
+    qt5-qtbase-devel \
+    qt5-qtmultimedia.x86_64 \
+    qt5-qtmultimedia-devel.x86_64 \
+    mesa-libGL-devel \
+    mesa-libGLU-devel \
+    pulseaudio-libs-glib2 \
+    ffmpeg \
+    lm_sensors \
+    gcc-c++ \
+    sshpass \
+    psmisc #fuser
 
-    # install rpms nesesarios
-    yum -y install epel-release
-    yum -y install http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
-    yum -y install mesa-libGL-devel mesa-libGLU-devel
-    yum -y install pulseaudio-libs-glib2.x86_64
-    yum -y install ffmpeg
-    yum -y install lm_sensors
     yum -y group install "Development Tools"
-    yum -y install gcc-c++
-    yum -y install sshpass
-    yum -y install psmisc #fuser
     # ----------------------
 
     # Compilacion de todo
     compile server cserver
     compile manager cmanager
+    compile monitor cmonitor
     compile submit submit 
     # ----------------------
 
     echo $ip > $path"/etc/manager_host"
-
-    # Copia librerias necesarias en lib/bin
-    qt="/opt/Qt5.11.3/5.11.3/gcc_64/lib"
-    platforms="/opt/Qt5.11.3/5.11.3/gcc_64/plugins/platforms"
-
-    mkdir -p $path/bin/linux/lib
-    mkdir -p $path/bin/linux/plugins/platforms
-
-    cp $qt/libicudata.so.56 $qt/libicui18n.so.56 $qt/libicuuc.so.56 $qt/libQt5Core.so.5 $qt/libQt5DBus.so.5 $qt/libQt5Gui.so.5 $qt/libQt5Multimedia.so.5 $qt/libQt5Network.so.5 $qt/libQt5Widgets.so.5 $qt/libQt5XcbQpa.so.5 $path/bin/linux/lib
-
-    cp $platforms/libqoffscreen.so $platforms/libqxcb.so $path/bin/linux/plugins/platforms
-    # ------------------------------------------
 
     # Creacion de servicios
     cp $path/os/linux/init/cserver.service /etc/systemd/system
@@ -104,10 +95,19 @@ uninstall() {
     systemctl stop cmanager
     systemctl stop cserver
 
+    rm /etc/systemd/system/cmanager.service
+    rm /etc/systemd/system/cserver.service
+
     rm -rf $dst
 }
 
-uninstall
-install
-
-
+if [ $1 == install ]; then
+    install
+fi
+if [ $1 == uninstall ]; then
+    uninstall
+fi
+if [ $1 == reinstall ]; then
+    uninstall
+    install
+fi

@@ -20,7 +20,7 @@ start() {
 
 	if ! kill -0 $pid > /dev/null 2>&1; then
 		echo "CatsFarm Server has started."
-		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen && cd '/opt/cats_farm/bin/linux' && run &>/dev/null & echo $! > $pid_file
+		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen && cd '/opt/cats_farm/bin' && run &>/dev/null & echo $! > $pid_file
 	else
 		echo "CatsFarm Server is running now."
 	fi
