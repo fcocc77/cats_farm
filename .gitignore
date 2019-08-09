@@ -10,7 +10,7 @@ src/*/CatsFarm*
 src/*/*.exe
 src/*/*.app
 src/*/*.rc
-bin/win
+bin
 etc/info.json*
 log/bugs.txt
 qt/*/*zip
