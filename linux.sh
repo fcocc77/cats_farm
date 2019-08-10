@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 path="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # ruta de instalacion
@@ -89,6 +90,15 @@ install() {
         systemctl enable cmanager
     fi
     # -----------------------------
+
+    # Acceso directo
+    echo "[Desktop Entry]
+    Name=CatsFarm Monitor
+    Exec=/opt/cats_farm/bin/cmonitor
+    Icon=/opt/cats_farm/icons/monitor.png
+    Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
+    Type=Application" > "/usr/share/applications/CatsFarm.desktop"
+    # ---------------
 }
 
 uninstall() {
@@ -98,6 +108,7 @@ uninstall() {
     rm /etc/systemd/system/cmanager.service
     rm /etc/systemd/system/cserver.service
 
+    rm "/usr/share/applications/CatsFarm.desktop"
     rm -rf $dst
 }
 
