@@ -8,7 +8,7 @@ void submit::init(int argc, char const *argv[])
 	user = argv[2];
 	project = argv[3];
 
-	QJsonArray info = {ip, user, project};
+	QJsonArray info = {user, project};
 
 	if (argc > 2)
 		tcpClient(ip, 7000, jats({7, info}));

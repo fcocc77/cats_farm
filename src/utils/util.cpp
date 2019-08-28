@@ -189,7 +189,8 @@ const QString currentDateTime(int num)
 
 void print(QString input)
 {
-	qDebug().nospace().noquote() << input;
+	os::system("echo " + input);
+	//qDebug().nospace().noquote() << input;
 }
 
 QString getPath()

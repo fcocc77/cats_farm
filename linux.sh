@@ -47,6 +47,7 @@ install() {
     compile manager cmanager
     compile monitor cmonitor
     compile submit submit 
+    compile videovina videovina 
     # ----------------------
 
     echo $ip > $path"/etc/manager_host"

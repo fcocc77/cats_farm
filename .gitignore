@@ -11,6 +11,8 @@ src/*/*.exe
 src/*/*.app
 src/*/*.rc
 src/*/submit
+src/*/cmanager
+src/*/videovina
 bin
 etc/info.json*
 log/bugs.txt

@@ -284,6 +284,10 @@ void copy(QString src, QString dst)
 	QFile::copy(src, dst);
 }
 
+void copydir(QString src, QString dst){
+	os::system("cp -rf " + src + " " + dst);
+}
+
 void move(QString src, QString dst)
 {
 	copymove(src, dst, false);
