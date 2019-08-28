@@ -10,6 +10,7 @@ src/*/CatsFarm*
 src/*/*.exe
 src/*/*.app
 src/*/*.rc
+src/*/submit
 bin
 etc/info.json*
 log/bugs.txt
