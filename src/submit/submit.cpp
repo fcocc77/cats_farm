@@ -4,7 +4,7 @@ void submit::init(int argc, char const *argv[])
 {
 
 	QString arg, jobName, server, serverGroup, firstFrame, lastFrame, taskSize, priority,
-		suspend, comment, software, project, extra, system, instances, render;
+		suspend, comment, software, project, extra, system, instances, render, ip;
 
 	for (int i = 1; i < argc; i++)
 	{
@@ -39,6 +39,8 @@ void submit::init(int argc, char const *argv[])
 			instances = argv[i + 1];
 		if (arg == "-render")
 			render = argv[i + 1];
+		if (arg == "-ip")
+			ip = argv[i + 1];
 	}
 
 	bool _suspend = false;
@@ -49,8 +51,13 @@ void submit::init(int argc, char const *argv[])
 					   _suspend, comment, software, project, extra, system, instances.toInt(), render};
 
 	QString _path = os::dirname(os::dirname(os::dirname(argv[0])));
-	QString managerHost = fread(_path + "/etc/manager_host");
+	QString managerHost;
 
+	if (ip.isEmpty())
+		managerHost = fread(_path + "/etc/manager_host");
+	else
+		managerHost = ip;
+	
 	if (argc > 2)
 		tcpClient(managerHost, 7000, jats({4, info}));
 }
