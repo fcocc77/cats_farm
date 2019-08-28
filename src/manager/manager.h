@@ -58,6 +58,7 @@ class manager : public QObject
 	QString jobLogAction(QString pks);
 	void serverSetState(server_struct *server, bool state);
 	QString server_tcp(QString recv);
+	QString videovina(QJsonArray recv);
 
 	QString update_server_thread(QJsonArray recv);
 	void update_server();

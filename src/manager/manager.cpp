@@ -40,6 +40,8 @@ QString manager::server_tcp(QString _recv)
 		return pivot_to_server(pks);
 	if (input == 6)
 		return sendToLogger();
+	if (input == 7)
+		return videovina(pks);
 
 	return "";
 }

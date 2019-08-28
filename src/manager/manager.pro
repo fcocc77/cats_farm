@@ -23,6 +23,7 @@ SOURCES += 	./main.cpp \
 			./actions.cpp \
 			./render.cpp \
 			./update.cpp \
+			./videovina.cpp \
 			../utils/util.cpp \ 
 			../utils/video.cpp \
 			../utils/os.cpp \

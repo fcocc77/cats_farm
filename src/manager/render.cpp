@@ -163,8 +163,6 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			//------------------------------
 			job->status = "Rendering...";
 
-			QString total_frame = QString::number(last_frame - first_frame + 1);
-
 			// Envia a renderar la tarea al servidor que le corresponde
 			QJsonArray pks = {project, software, instance->index, first_frame, last_frame, jobSystem, extra, render};
 
