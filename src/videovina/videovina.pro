@@ -3,7 +3,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
 
 TEMPLATE = app
-TARGET = submit
+TARGET = videovina
 RC_ICONS = ../../icons/server.ico
 
 CONFIG += console c++11
