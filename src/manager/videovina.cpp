@@ -41,7 +41,7 @@ QString manager::videovina(QJsonArray recv)
     QString vina2ae = "/home/pancho/Documents/GitHub/cats_farm/modules/videovina/vina2ae.jsx";
     QString afterfx = "/opt/AE9.0/AfterFX.exe";
     QString cmd = "wine " + afterfx + " -noui -s \"var aep = '" + project + "';//@include '" + vina2ae + "';\"";
-    os::system(cmd);
+    os::sh(cmd);
     // ---------------------------------------------------
 
     // Lee los datos de salida del script vina2ae.jsx
@@ -54,7 +54,7 @@ QString manager::videovina(QJsonArray recv)
     QString server_group = "videovina";
     int first_frame = 1;
     int last_frame = submit["last_frame"].toInt();
-    int task_size = 10;
+    int task_size = 30;
     int priority = 1;
     bool suspend = false;
     QString comment = "VideoVina Render";
@@ -83,7 +83,7 @@ QString manager::videovina(QJsonArray recv)
 
     };
 
-    //make_job(data);
+    make_job(data);
 
     return "";
 }
