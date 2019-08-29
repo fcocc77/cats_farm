@@ -78,6 +78,7 @@ slidesLayer.stretch = stretch;
 
 //Duracion de composicion final
 finalComp.duration = endTime + 1;
+var endFrame = parseInt((endTime + 1) * 30);
 // ---------------------------------------
 
 // desabilita las slide que no estan en el rango de las fotos que hay en el proyecto
@@ -187,5 +188,12 @@ for (var i = 0; i < photos.length; i++) {
         // -------------------------------------
     }
 }
+
+
+var submit = { "last_frame": endFrame };
+var submitJson = path + "/submit.json";
+
+jwrite(submitJson, submit);
+
 
 app.project.save();
