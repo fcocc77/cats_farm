@@ -7,32 +7,26 @@ QString manager::videovina(QJsonArray recv)
     QString projectName = recv[1].toString();
     QString projectType = projectName;
 
-    QString slideshow ="/home/pancho/Documents/GitHub/videovina/private/slideshows";
+    QString slideshow = "/home/pancho/Documents/GitHub/videovina/private/slideshows";
     QString as3 = "/home/pancho/Documents/GitHub/videovina/static/amazon_s3";
-    
+
     QString vvProjectDir = as3 + "/" + user + "/projects/" + projectName;
     QString vvProject = vvProjectDir + "/project.json";
 
-
     QString localFolder = "/home/pancho/Desktop/renders";
-    
+
     QString userDir = localFolder + "/" + user;
     QString projectDir = userDir + "/" + projectName;
-    
+
     os::makedirs(userDir);
-    
 
+    // Copia la plantilla del proyecto en el directorio local
     os::copydir(slideshow + "/" + projectType, projectDir);
-
+    // -------------------------------------------
 
     // Copia footage de amazon S3 y lo copia en el directorio compartido local
     os::copydir(vvProjectDir + "/footage", projectDir);
     // -------------------------------------------
-
-    
-
-
-
 
     print(vvProject);
 
