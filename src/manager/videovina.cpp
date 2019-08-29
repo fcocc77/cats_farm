@@ -31,22 +31,11 @@ QString manager::videovina(QJsonArray recv)
     QString project = projectDir + "/Ink Slideshow_v05.aep";
     project = "/home/pancho/Documents/GitHub/videovina/private/slideshows/wedding_01/Ink Slideshow_v05.aep";
 
-    QString vina2aeJsx = "/home/pancho/Documents/GitHub/cats_farm/modules/videovina/vina2ae.jsx";
-    QString vina2ae = fread(vina2aeJsx);
-
-    // Cambia las comillas dobles por las simples en el vina2ae.jsx, porque para ejecutar un script en after effect
-    // tienen que estar en comillas dobles
-    vina2ae.replace("\"", "'");
-    // -------------------------------------
-
-    vina2ae.replace("aepProject", project);
-    vina2ae.replace("\n", "");
+    QString vina2ae = "/home/pancho/Documents/GitHub/cats_farm/modules/videovina/vina2ae.jsx";
 
     QString afterfx = "/opt/AE9.0/AfterFX.exe";
 
-    QString cmd = "wine " + afterfx + " -s \"" + vina2ae + "\"";
-
-    fwrite("/home/pancho/Desktop/yes.jsx", cmd);
+    QString cmd = "wine " + afterfx + " -noui -s \"var aep = '" + project + "';//@include '" + vina2ae + "';\"";
 
     os::system(cmd);
 
