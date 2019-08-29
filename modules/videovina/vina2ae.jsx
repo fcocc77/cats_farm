@@ -10,10 +10,13 @@
  * textos, fotos, modos de fucion y colores
  *****************************************************************************/
 
-var aep = "aepProject";
-var projectFile = new File(aep);
-app.open(projectFile);
-
+// La variable aep de define el catsfarm, si no se usa catsfarm para este script lo omite
+try {
+    var projectFile = new File(aep);
+    app.open(projectFile);
+}
+catch (error) { }
+// --------------------------------
 //@include "utils.jsx"
 
 // crea la lista de fotos que estan en la linea de tiempo
@@ -23,7 +26,7 @@ for (var name in project.media.pictures) {
     var photo = project.media.pictures[name];
 
     if (photo.timeline)
-        photos.push({ "name": name, "index": photo.index })
+        photos.push({ "name": name, "iEXITndex": photo.index })
 }
 
 photos.sort(function (a, b) {
