@@ -21,14 +21,34 @@ QString manager::videovina(QJsonArray recv)
     os::makedirs(userDir);
 
     // Copia la plantilla del proyecto en el directorio local
-    os::copydir(slideshow + "/" + projectType, projectDir);
+    //os::copydir(slideshow + "/" + projectType, projectDir);
     // -------------------------------------------
 
     // Copia footage de amazon S3 y lo copia en el directorio compartido local
-    os::copydir(vvProjectDir + "/footage", projectDir);
+    //os::copydir(vvProjectDir + "/footage", projectDir);
     // -------------------------------------------
 
-    print(vvProject);
+    QString project = projectDir + "/Ink Slideshow_v05.aep";
+    project = "/home/pancho/Documents/GitHub/videovina/private/slideshows/wedding_01/Ink Slideshow_v05.aep";
+
+    QString vina2aeJsx = "/home/pancho/Documents/GitHub/cats_farm/modules/videovina/vina2ae.jsx";
+    QString vina2ae = fread(vina2aeJsx);
+
+    // Cambia las comillas dobles por las simples en el vina2ae.jsx, porque para ejecutar un script en after effect
+    // tienen que estar en comillas dobles
+    vina2ae.replace("\"", "'");
+    // -------------------------------------
+
+    vina2ae.replace("aepProject", project);
+    vina2ae.replace("\n", "");
+
+    QString afterfx = "/opt/AE9.0/AfterFX.exe";
+
+    QString cmd = "wine " + afterfx + " -s \"" + vina2ae + "\"";
+
+    fwrite("/home/pancho/Desktop/yes.jsx", cmd);
+
+    os::system(cmd);
 
     QString job_name = recv[0].toString();
     QString server = "None";
@@ -40,7 +60,7 @@ QString manager::videovina(QJsonArray recv)
     bool suspend = false;
     QString comment = "Render de VideoVina";
     QString software = "AE";
-    QString project = "";
+
     QString extra = "";
     QString _system = "linux";
     int instances = 1;

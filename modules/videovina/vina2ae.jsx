@@ -9,8 +9,12 @@
  * estan ubicadas en la capa "control" de la composicion "final", y esta modifica
  * textos, fotos, modos de fucion y colores
  *****************************************************************************/
-//@include "utils.jsx"
 
+var aep = "aepProject";
+var projectFile = new File(aep);
+app.open(projectFile);
+
+//@include "utils.jsx"
 
 // crea la lista de fotos que estan en la linea de tiempo
 // y luego las ordena segun el index
@@ -180,3 +184,5 @@ for (var i = 0; i < photos.length; i++) {
         // -------------------------------------
     }
 }
+
+app.project.save();
