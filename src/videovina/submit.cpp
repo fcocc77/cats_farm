@@ -2,13 +2,14 @@
 
 void submit::init(int argc, char const *argv[])
 {
-	QString ip, user, project;
+	QString ip, user, type, name;
 
 	ip = argv[1];
 	user = argv[2];
-	project = argv[3];
+	type = argv[3];
+	name = argv[4];
 
-	QJsonArray info = {user, project};
+	QJsonArray info = {user, type, name};
 
 	if (argc > 2)
 		tcpClient(ip, 7000, jats({7, info}));
