@@ -26,7 +26,7 @@ for (var name in project.media.pictures) {
     var photo = project.media.pictures[name];
 
     if (photo.timeline)
-        photos.push({ "name": name, "iEXITndex": photo.index })
+        photos.push({ "name": name, "index": photo.index })
 }
 
 photos.sort(function (a, b) {
@@ -58,7 +58,7 @@ if (getItem(songName))
     getItem(songName).remove();
 // -------------------------
 
-var io = new ImportOptions(File(path + "/music/" + songName));
+var io = new ImportOptions(File(project.songPath));
 var importedSong = app.project.importFile(io);
 
 finalComp.layers.add(importedSong);
@@ -189,11 +189,30 @@ for (var i = 0; i < photos.length; i++) {
     }
 }
 
+// Cola de render
+var queue = app.project.renderQueue;
+// Borra todos los items de la cola
+while (queue.numItems > 0) {
+    queue.item(queue.numItems).remove();
+}
+// -----------------------------------------------
 
+// Agrega la comp final a la cola
+var render = queue.items.add(finalComp);
+// ------------------------------------------
+
+// cambia la plantilla
+render.outputModules[1].applyTemplate("h264");
+// ----------------------------------------
+
+// Cambia el nombre de la salida
+render.outputModule(1).file = new File(path + "/renders/" + project.name + ".mov");
+// ------------------------------------
+
+// Guarda informacion en un json para poder obtenerla en el catsfarm
 var submit = { "last_frame": endFrame };
 var submitJson = path + "/submit.json";
-
 jwrite(submitJson, submit);
-
+//-------------------------------------
 
 app.project.save();

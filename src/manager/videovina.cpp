@@ -3,10 +3,12 @@
 QString manager::videovina(QJsonArray recv)
 {
     // Rutas generales
-    QString slideshow = "/home/pancho/Documents/GitHub/videovina/private/slideshows";
-    QString musicDir = "/home/pancho/Documents/GitHub/videovina/private/music";
+    QString assets = "/home/pancho/Documents/GitHub/videovina/private";
     QString as3 = "/home/pancho/Documents/GitHub/videovina/static/amazon_s3";
+    QString catsfarm = "/home/pancho/Documents/GitHub/cats_farm";
     QString localFolder = "/home/pancho/Desktop/renders";
+    QString slideshow = assets + "/slideshows";
+    QString musicDir = assets + "/music";
     // -------------------------------
 
     // Datos recividos del servidor principal
@@ -15,38 +17,52 @@ QString manager::videovina(QJsonArray recv)
     QString projectName = recv[2].toString();
     // -------------------------------------
 
+    // Abre el project json del el respaldo de as3
     QString vvProjectDir = as3 + "/" + user + "/projects/" + projectName;
     QString vvProjectJson = vvProjectDir + "/project.json";
     QJsonObject vvProject = jread(vvProjectJson);
+    // --------------------------------------------
 
+    // Directorios locales
     QString userDir = localFolder + "/" + user;
     QString projectDir = userDir + "/" + projectName;
+    QString project = projectDir + "/" + projectType + ".aep";
+    // ---------------------------------
 
-    os::makedirs(userDir);
+    print("copiando footage...");
+
+    // Cambia la ruta de la musica y la guarda el el project.json
+    QString song = vvProject["song"].toString() + ".mp3";
+    vvProject["songPath"] = musicDir + "/" + song;
+    // -----------------------------------
+
+    os::makedirs(projectDir + "/renders");
 
     // Copia la plantilla del proyecto en el directorio local
-    os::copydir(slideshow + "/" + projectType, projectDir);
+    os::copy(slideshow + "/" + projectType + "/" + projectType + ".aep", project);
     // -------------------------------------------
 
-    // Copia footage, musica y project.json de amazon S3 y lo copia en el directorio compartido local
+    // Copia footage, project.json de amazon S3 y lo copia en el directorio compartido local
     os::copydir(vvProjectDir + "/footage", projectDir);
-    os::copy(vvProjectJson, projectDir + "/project.json");
-    QString song = vvProject["song"].toString() + ".mp3";
-    os::copy(musicDir + "/" + song, projectDir + "/music/" + song);
+    jwrite(projectDir + "/project.json", vvProject);
     // -------------------------------------------
 
-    QString project = projectDir + "/" + projectType + ".aep";
+    // Permisos de carpeta de proyecto
+    os::sh("chmod 777 -R " + projectDir);
+    // -------------------------------------
 
     // Modifica el proyecto de after effect con los datos del proyecto del usuario
-    QString vina2ae = "/home/pancho/Documents/GitHub/cats_farm/modules/videovina/vina2ae.jsx";
+    QString vina2ae = catsfarm + "/modules/videovina/vina2ae.jsx";
     QString afterfx = "/opt/AE9.0/AfterFX.exe";
     QString cmd = "wine " + afterfx + " -noui -s \"var aep = '" + project + "';//@include '" + vina2ae + "';\"";
-    os::sh(cmd);
+    print("start project");
+    os::system(cmd);
+    print("end.");
     // ---------------------------------------------------
 
     // Lee los datos de salida del script vina2ae.jsx
     QString submitJson = projectDir + "/submit.json";
-    QJsonObject submit = jread(submitJson);
+    QJsonObject submit = jread(submitJson); // aumento de ram cuando no encuetra el archivo json ( ¡revisar)
     // ---------------------------------------------
 
     QString job_name = user + "-" + projectName;

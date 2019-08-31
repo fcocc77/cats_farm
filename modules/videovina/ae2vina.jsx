@@ -37,7 +37,7 @@ function exportSlides() {
         // --------------------------------------------
 
         // cambia la plantilla
-        render.outputModules[1].applyTemplate("videovina");
+        render.outputModules[1].applyTemplate("png_alpha");
         // ----------------------------------------
 
         //guarda un frame justo el de la mitad de cada composicion
