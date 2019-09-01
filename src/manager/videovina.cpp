@@ -61,7 +61,7 @@ QString manager::videovina(QJsonArray recv)
     QString afterfx = "/opt/AE9.0/AfterFX.exe";
     QString cmd = "wine " + afterfx + " -noui -s \"var aep = '" + project + "';//@include '" + vina2ae + "';\"";
     print("start project");
-    os::system(cmd);
+    os::sh(cmd);
     print("end.");
     // ---------------------------------------------------
 
@@ -69,6 +69,12 @@ QString manager::videovina(QJsonArray recv)
     QString submitJson = projectDir + "/submit.json";
     QJsonObject submit = jread(submitJson); // aumento de ram cuando no encuetra el archivo json ( ¡revisar)
     // ---------------------------------------------
+
+    // aveces en las pruebas cuando vina2ae.jsx da un error no crea el submit.json y no lo puede leer
+    // por eso si no hay informacion retorna para que no de conflicto despues
+    if (submit.empty())
+        return "";
+    // ------------------------------------
 
     QString job_name = user + "-" + projectName;
     QString server = "None";
