@@ -39,6 +39,7 @@ function main() {
     timeModifier();
     songModifier();
     disableSlides();
+    deleteMovies();
 
     for (var i = 0; i < photos.length; i++) {
         photosLoads(i);
@@ -98,7 +99,7 @@ function updateFilesPath() {
                 if (file == 1)
                     item.replace(File(footagePath));
                 if (file == 2)
-                    item.setProxy(File(footagePath));
+                    item.setProxyWithSequence(File(footagePath), "forceAlphabetical");
             }
             // -------------------------------------------
         }
@@ -171,6 +172,25 @@ function textModifier(index) {
             // ------------------------------------------
         }
         // -------------------------------------
+    }
+}
+
+function deleteMovies() {
+    // Borra todos los archivos con extencion de video,
+    // por que el after effect con wine da errores cuando hay
+    // un video inportado, y es mas lento
+    var deletes = [];
+    for (var i = 1; i <= app.project.numItems; i++) {
+        var item = app.project.item(i);
+        if (item.file != undefined) {
+            var ext = String(item.file).split(".").pop();
+            if (ext == "mov" || ext == "mp4" || ext == "avi")
+                deletes.push(item);
+        }
+    }
+
+    for (var i = 0; i < deletes.length; i++) {
+        deletes[i].remove();
     }
 }
 
@@ -254,7 +274,8 @@ function renderQueue() {
     var render = queue.items.add(finalComp);
     // ------------------------------------------
 
-    // cambia la plantilla
+    // cambia las plantilla
+    render.applyTemplate("videovina");
     render.outputModules[1].applyTemplate("h264");
     // ----------------------------------------
 

@@ -7,9 +7,10 @@ QString manager::videovina(QJsonArray recv)
     QString as3 = "/home/pancho/Documents/GitHub/videovina/static/amazon_s3";
     QString catsfarm = "/home/pancho/Documents/GitHub/cats_farm";
     QString localFolder = "/home/pancho/Desktop/renders";
+    // -------------------------------
+
     QString slideshow = assets + "/slideshows";
     QString musicDir = assets + "/music";
-    // -------------------------------
 
     // Datos recividos del servidor principal
     QString user = recv[0].toString();
