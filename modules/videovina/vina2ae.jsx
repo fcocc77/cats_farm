@@ -17,114 +17,99 @@ try {
 }
 catch (error) { }
 // --------------------------------
+
 //@include "utils.jsx"
-
-// crea la lista de fotos que estan en la linea de tiempo
-// y luego las ordena segun el index
-var photos = [];
-for (var name in project.media.pictures) {
-    var photo = project.media.pictures[name];
-
-    if (photo.timeline)
-        photos.push({ "name": name, "index": photo.index })
-}
-
-photos.sort(function (a, b) {
-    return a.index - b.index;
-});
-// --------------------------------------
 
 var finalComp = getComp("Final comp");
 var slidesLayer = finalComp.layer("Slides");
 var slidesComp = getComp("Slides");
 var color = project.color.rgb / 255;
-slidesLayer.effect("Color").color.setValue(color);
 
-//Busca el tiempo final de la slide y pone una transicion a negro en la comp final
-var lastSlideName = "slide_" + (photos.length - 1);
-var lastSlide = slidesComp.layer(lastSlideName);
-var endTime = lastSlide.startTime + lastSlide.source.duration;
+// declaracion de variables globales
+var photos = [];
+var endTime;
+var endFrame;
+var transition = 2; // Transicion en segundos
+// ----------------------------
 
-var opacity = slidesLayer.property("Opacity");
-var transition = 2; // Segundos
-opacity.setValueAtTime(endTime - transition, 100);
-opacity.setValueAtTime(endTime, 0);
-// ---------------------------------------------------
+function main() {
+    slidesLayer.effect("Color").color.setValue(color);
 
-// Importacion de musica
-var songName = project.song + ".mp3";
-//elimina la cancion si esta inportada
-if (getItem(songName))
-    getItem(songName).remove();
-// -------------------------
+    photosSorted();
+    timeModifier();
+    songModifier();
+    disableSlides();
 
-var io = new ImportOptions(File(project.songPath));
-var importedSong = app.project.importFile(io);
-
-finalComp.layers.add(importedSong);
-var songLayer = finalComp.layer(1);
-songLayer.startTime = 0; // la deja en el primer frame
-// baja el nivel de audio en el final
-var level = songLayer.property("Audio Levels");
-level.setValueAtTime(endTime - transition, [0, 0]);
-level.setValueAtTime(endTime, [-48, -48]);
-// ---------------------------------------------------
-
-// Cambio de tiempo
-var seg = 3;
-var stretch = (seg * 100) / 3;
-slidesLayer.stretch = stretch;
-// -------------------------------    
-
-//Duracion de composicion final
-finalComp.duration = endTime + 1;
-var endFrame = parseInt((endTime + 1) * 30);
-// ---------------------------------------
-
-// desabilita las slide que no estan en el rango de las fotos que hay en el proyecto
-for (var i = 0; i < 50; i++) {
-    var slide = slidesComp.layer("slide_" + i);
-    if (slide != null)
-        if (i < photos.length)
-            slide.enabled = true;
-        else
-            slide.enabled = false;
-}
-// ---------------------------------------------------
-
-for (var i = 0; i < photos.length; i++) {
-    var photo = photos[i].name;
-
-    //elimina la foto si ya esta inportada
-    if (getItem(photo))
-        getItem(photo).remove();
-    // ---------------------------------
-
-    var slide = getComp("slide_" + i);
-    var textComp = getComp("Text " + i);
-
-    // Carga las photos al proyecto after effect
-    var imgComp = getComp("Image " + i);
-    var io = new ImportOptions(File(path + "/footage/" + photo));
-    var importedPhoto = app.project.importFile(io);
-    imgComp.layers.add(importedPhoto)
-    imgComp.layer(1).startTime = 0; // la deja en el primer frame
-    // ---------------------------------
-
-    if (slide != undefined) {
-        for (var e = 1; e <= slide.layers.length; e++) {
-            var layer = slide.layer(e);
-            // Cambia el color de todos los textos de la capa
-            if (layer.name == "text")
-                layer.effect("Fill")("Color").setValue(color);
-            // -----------------------
-        }
-        // ------------------------------
+    for (var i = 0; i < photos.length; i++) {
+        photosLoads(i);
+        slideModifier(i);
+        textModifier(i);
     }
 
-    if (textComp != undefined) {
-        // Cambia Fuente a todos los textos
+    // actualiza las rutas de los assets
+    updateFilesPath();
+    // ----------------------------
+    
+    renderQueue(finalComp);
 
+    // Guarda informacion en un json para poder obtenerla en el catsfarm
+    var submit = { "last_frame": endFrame };
+    var submitJson = path + "/submit.json";
+    jwrite(submitJson, submit);
+    //-------------------------------------
+
+    app.project.save();
+}
+
+function updateFilesPath() {
+    for (var i = 1; i <= app.project.numItems; i++) {
+        var item = app.project.item(i);
+
+        // checkea si el item tiene file o proxy y los guarda con un numero 1 es file y 2 es proxy
+        var file = 0;
+        if (item.file != undefined)
+            file = 1;
+        if (item.proxySource != undefined && item.proxySource != null)
+            file = 2;
+        // ------------------------------------
+
+        if (file) {
+            // encuentra el archivo de origen dependiendo si es file o proxy
+            var src;
+            if (file == 1)
+                src = item.file;
+            if (file == 2)
+                src = item.proxySource.file;
+            // -----------------------------------------
+
+            // crea una ruta relativa haciendole un split con el nombre de la carpeta del proyecto "project.type"
+            var relative = String(src).split(project.type).pop();
+            relative = relative.replace("Assets", "assets"); // cambia assest si esta con mayuscula
+            // --------------------------------------------
+
+            // nueva ruta
+            var footagePath = path + relative;
+            // --------------------------
+
+            // si el directorio del archivo existe setea el file o proxy, se hace esto 
+            // por hay archivos que estan dentro del la carpeta de proyecto del usuario 
+            // que no necesitas cambiarse, solo es necesario en los assets del proyecto original
+            if (isDir(dirname(footagePath))) {
+                if (file == 1)
+                    item.replace(File(footagePath));
+                if (file == 2)
+                    item.setProxy(File(footagePath));
+            }
+            // -------------------------------------------
+        }
+    }
+}
+
+function textModifier(index) {
+    var textComp = getComp("Text " + index);
+    if (textComp != undefined) {
+
+        // Cambia Fuente a todos los textos
         var title = "Este es el Titulo";
         var subtitle = "Este es el subtitulo de titulo la de segunda linea";
 
@@ -189,30 +174,133 @@ for (var i = 0; i < photos.length; i++) {
     }
 }
 
-// Cola de render
-var queue = app.project.renderQueue;
-// Borra todos los items de la cola
-while (queue.numItems > 0) {
-    queue.item(queue.numItems).remove();
+function songModifier() {
+    // Importacion de musica
+    var songName = project.song + ".mp3";
+    //elimina la cancion si esta inportada
+    if (getItem(songName))
+        getItem(songName).remove();
+    // -------------------------
+
+    var io = new ImportOptions(File(project.songPath));
+    var importedSong = app.project.importFile(io);
+    
+    finalComp.layers.add(importedSong);
+    var songLayer = finalComp.layer(1);
+    songLayer.startTime = 0; // la deja en el primer frame
+    // baja el nivel de audio en el final
+    var level = songLayer.property("Audio Levels");
+    level.setValueAtTime(endTime - transition, [0, 0]);
+    level.setValueAtTime(endTime, [-48, -48]);
+    // ---------------------------------------------------
 }
-// -----------------------------------------------
 
-// Agrega la comp final a la cola
-var render = queue.items.add(finalComp);
-// ------------------------------------------
+function photosSorted() {
+    // crea la lista de fotos que estan en la linea de tiempo
+    // y luego las ordena segun el index
+    for (var name in project.media.pictures) {
+        var photo = project.media.pictures[name];
 
-// cambia la plantilla
-render.outputModules[1].applyTemplate("h264");
-// ----------------------------------------
+        if (photo.timeline)
+            photos.push({ "name": name, "index": photo.index })
+    }
 
-// Cambia el nombre de la salida
-render.outputModule(1).file = new File(path + "/renders/" + project.name + ".mov");
-// ------------------------------------
+    photos.sort(function (a, b) {
+        return a.index - b.index;
+    });
+    // --------------------------------------
+}
 
-// Guarda informacion en un json para poder obtenerla en el catsfarm
-var submit = { "last_frame": endFrame };
-var submitJson = path + "/submit.json";
-jwrite(submitJson, submit);
-//-------------------------------------
+function photosLoads(index) {
+    var photo = photos[index].name;
 
-app.project.save();
+    //elimina la foto si ya esta inportada
+    if (getItem(photo))
+        getItem(photo).remove();
+    // ---------------------------------
+
+    // Carga las photos al proyecto after effect
+    var imgComp = getComp("Image " + index);
+    var io = new ImportOptions(File(path + "/footage/" + photo));
+    var importedPhoto = app.project.importFile(io);
+    imgComp.layers.add(importedPhoto)
+    imgComp.layer(1).startTime = 0; // la deja en el primer frame
+    // ---------------------------------
+}
+
+function disableSlides() {
+    // desabilita las slide que no estan en el rango de las fotos que hay en el proyecto
+    for (var i = 0; i < 50; i++) {
+        var slide = slidesComp.layer("slide_" + i);
+        if (slide != null)
+            if (i < photos.length)
+                slide.enabled = true;
+            else
+                slide.enabled = false;
+    }
+    // ---------------------------------------------------
+}
+
+function renderQueue() {
+    // Cola de render
+    var queue = app.project.renderQueue;
+    // Borra todos los items de la cola
+    while (queue.numItems > 0) {
+        queue.item(queue.numItems).remove();
+    }
+    // -----------------------------------------------
+
+    // Agrega la comp final a la cola
+    var render = queue.items.add(finalComp);
+    // ------------------------------------------
+
+    // cambia la plantilla
+    render.outputModules[1].applyTemplate("h264");
+    // ----------------------------------------
+
+    // Cambia el nombre de la salida
+    render.outputModule(1).file = new File(path + "/renders/" + project.name + ".mov");
+    // ------------------------------------
+}
+
+function timeModifier() {
+    //Busca el tiempo final de la slide y pone una transicion a negro en la comp final
+    var lastSlideName = "slide_" + (photos.length - 1);
+    var lastSlide = slidesComp.layer(lastSlideName);
+    endTime = lastSlide.startTime + lastSlide.source.duration;
+
+    var opacity = slidesLayer.property("Opacity");
+    
+    opacity.setValueAtTime(endTime - transition, 100);
+    opacity.setValueAtTime(endTime, 0);
+    // ---------------------------------------------------
+
+    // Cambio de tiempo
+    var seg = 3;
+    var stretch = (seg * 100) / 3;
+    slidesLayer.stretch = stretch;
+    // -------------------------------    
+
+    //Duracion de composicion final
+    finalComp.duration = endTime + 1;
+    endFrame = parseInt((endTime + 1) * 30);
+    // ---------------------------------------
+}
+
+function slideModifier(index) {
+    var slide = getComp("slide_" + index);
+
+    if (slide != undefined) {
+        for (var e = 1; e <= slide.layers.length; e++) {
+            var layer = slide.layer(e);
+            // Cambia el color de todos los textos de la capa
+            if (layer.name == "text")
+                layer.effect("Fill")("Color").setValue(color);
+            // -----------------------
+        }
+        // ------------------------------
+    }
+}
+
+main();
+

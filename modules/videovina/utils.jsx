@@ -64,3 +64,28 @@ function getItem(name) {
     return false;
 }
 
+function isDir(_path) {
+    var folder = new Folder(_path);
+    if (folder.exists)
+        return true;
+    else
+        return false;
+}
+
+function isFile(_path) {
+    var file = new File(_path);
+
+    if (file.exists)
+        return true;
+    else
+        return false;
+}
+
+function basename(_path){
+    return String(_path).split("/").pop();
+}
+
+function dirname(_path){
+    _path = String(_path);
+    return _path.substring(0, _path.lastIndexOf('/'));
+}
