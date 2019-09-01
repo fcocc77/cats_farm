@@ -49,7 +49,7 @@ function main() {
     // actualiza las rutas de los assets
     updateFilesPath();
     // ----------------------------
-    
+
     renderQueue(finalComp);
 
     // Guarda informacion en un json para poder obtenerla en el catsfarm
@@ -87,8 +87,8 @@ function updateFilesPath() {
             relative = relative.replace("Assets", "assets"); // cambia assest si esta con mayuscula
             // --------------------------------------------
 
-            // nueva ruta
-            var footagePath = path + relative;
+            // nueva ruta a partir del directorio donde estan los proyectos originals ( esta ruta la da catsfarm )
+            var footagePath = project.slideshowPath + "/" + project.type + "/" + relative;
             // --------------------------
 
             // si el directorio del archivo existe setea el file o proxy, se hace esto 
@@ -184,7 +184,7 @@ function songModifier() {
 
     var io = new ImportOptions(File(project.songPath));
     var importedSong = app.project.importFile(io);
-    
+
     finalComp.layers.add(importedSong);
     var songLayer = finalComp.layer(1);
     songLayer.startTime = 0; // la deja en el primer frame
@@ -270,7 +270,7 @@ function timeModifier() {
     endTime = lastSlide.startTime + lastSlide.source.duration;
 
     var opacity = slidesLayer.property("Opacity");
-    
+
     opacity.setValueAtTime(endTime - transition, 100);
     opacity.setValueAtTime(endTime, 0);
     // ---------------------------------------------------

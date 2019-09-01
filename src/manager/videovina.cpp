@@ -36,6 +36,10 @@ QString manager::videovina(QJsonArray recv)
     vvProject["songPath"] = musicDir + "/" + song;
     // -----------------------------------
 
+    // guarda ruta de los proyectos slideshows
+    vvProject["slideshowPath"] = slideshow;
+    // -----------------------------------
+
     os::makedirs(projectDir + "/renders");
 
     // Copia la plantilla del proyecto en el directorio local
