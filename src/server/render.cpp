@@ -554,30 +554,15 @@ bool render::ae(int ins)
 
 	// crea numero con ceros para el nombre a partir del primer cuadro
 	QString num = "0000000000" + firstFrame;
-	QStringRef nameNumber(&num,  num.length() - 10, 10); 
+	QStringRef nameNumber(&num, num.length() - 10, 10);
 	// -------------------------------------
 	QString output = folderRender + "/render_" + nameNumber + ".mov";
 
-	QString args = " -comp \"" + renderNode[ins] 
-			+ "\" -project \"" + project[ins] 
-			+ "\" -s " + firstFrame
-			+ " -e " + lastFrame
-			+ " -output " + output
-			+ " -log " + log_file;
+	QString args = "\"" + renderNode[ins] + "\" \"" + project[ins] + "\" \"" + output + "\" \"" + log_file + "\" " + firstFrame + " " + lastFrame;
 
 	args = args.replace(src_path[ins], dst_path[ins]);
 
-	//Obtiene el excecutable que existe en este sistema
-	QString exe;
-	for (auto e : preferences["paths"].toObject()["ae"].toArray())
-	{
-		exe = e.toString();
-		if (os::isfile(exe))
-			break;
-	}
-	//-----------------------------------------------
-
-	QString cmd = '"' + exe + '"' + args;
+	QString cmd = "sh " + path + "/modules/ae/aerender.sh " + args;
 	// rendering ...
 	// ----------------------------------
 	qprocess(cmd, ins);

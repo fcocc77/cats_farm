@@ -87,16 +87,8 @@ QString server::recieveManager(QString _recv)
 
 	if (input == 3)
 	{
-
 		for (auto i : recv)
 		{
-			// kill cinema 4d que esta dentro de la maquina virtual
-			if (_render->VMCinemaActive)
-			{
-				QString VMCinemaKill = _render->VMSH + "\"taskkill\" \"-im\" \"Cinema 4D.exe\" \"-f\"";
-				_render->qprocess(VMCinemaKill);
-			} //-------------------------------------------------------------------------
-
 			int pid = _render->pid[i.toInt()];
 			if (pid)
 			{
@@ -105,12 +97,18 @@ QString server::recieveManager(QString _recv)
 			}
 		}
 
-		// kill noice
-		if (_linux)
-			_render->qprocess("pkill noice");
-		else
-			_render->qprocess("taskkill -im -f noice.exe");
-		//---------------------------
+		// Mata las pid a partir del nombre "d" (es el after effect render de wine)
+		QStringList ps = os::sh("ps cax").split("\n");
+		for (QString line : ps)
+		{
+			QString lastWord = line.split(" ").back();
+			if (lastWord == "d")
+			{
+				int pid = line.split(" ")[0].toInt();
+				os::kill(pid);
+			}
+		}
+		// -------------------------------------------
 	}
 
 	if (input == 4)
