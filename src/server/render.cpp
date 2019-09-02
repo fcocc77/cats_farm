@@ -557,6 +557,7 @@ bool render::ae(int ins)
 	QStringRef nameNumber(&num, num.length() - 10, 10);
 	// -------------------------------------
 	QString output = extra[ins] + "_" + nameNumber + ".mov";
+	os::remove(output); // borra el mov antes del render
 
 	QString args = "\"" + renderNode[ins] + "\" \"" + project[ins] + "\" \"" + output + "\" \"" + log_file + "\" " + firstFrame + " " + lastFrame;
 

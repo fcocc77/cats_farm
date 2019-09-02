@@ -309,8 +309,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 		if (software == "AE")
 		{
 			job->status = "Concatenate";
-
-			QString folderRender = os::dirname(extra);
+			QString folderRender = os::dirname(job->extra);
 			folderRender.replace(src_path, dst_path);
 			//-----------------------------------------
 			if (os::isdir(folderRender))
