@@ -15,11 +15,22 @@
 #include <QList>
 #include <unistd.h> // sleep usleep
 
-
 int main()
 {
-    QString test = "0000000002";
-   
-    QStringRef subString(&test,  test.length() - 4, 4); // subString contains "is"
-     qDebug() << subString;
+
+    // Mata las pid a partir del nombre "d" (es el after effect render)
+    QStringList ps = os::sh("ps cax").split("\n");
+    for (QString line : ps)
+    {
+        QString lastWord = line.split(" ").back();
+        if (lastWord == "d")
+        {
+            int pid = line.split(" ")[0].toInt();
+            os::kill(pid);
+        }
+    }
+    // -------------------------------------------
+
+
+
 }

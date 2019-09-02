@@ -104,8 +104,8 @@ QString server::recieveManager(QString _recv)
 			QString lastWord = line.split(" ").back();
 			if (lastWord == "d")
 			{
-				int pid = line.split(" ")[0].toInt();
-				os::kill(pid);
+				QString pid = line.split(" ")[0];
+				os::sh("kill " + pid);
 			}
 		}
 		// -------------------------------------------
