@@ -65,6 +65,11 @@ QString manager::videovina(QJsonArray recv)
     print("end.");
     // ---------------------------------------------------
 
+    // genera la ruta base de la salida del mov, no es completa por que despues en el render
+    // hay que ponerle el numero del video y la extencion por cada tarea para poder hacer el concat
+    QString output = projectDir + "/renders/" + projectName + "/" + projectName;
+    // ---------------------------------------------------
+
     // Lee los datos de salida del script vina2ae.jsx
     QString submitJson = projectDir + "/submit.json";
     QJsonObject submit = jread(submitJson); // aumento de ram cuando no encuetra el archivo json ( ¡revisar)
@@ -86,9 +91,9 @@ QString manager::videovina(QJsonArray recv)
     bool suspend = false;
     QString comment = "VideoVina Render";
     QString software = "AE";
-    QString extra = "";
+    QString extra = output;
     QString _system = "linux";
-    int instances = 1;
+    int instances = 3;
     QString render = "Final comp";
 
     QJsonArray data = {

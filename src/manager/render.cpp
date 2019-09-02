@@ -310,7 +310,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 		{
 			job->status = "Concatenate";
 
-			QString folderRender = os::dirname(project) + "/render";
+			QString folderRender = os::dirname(extra);
 			folderRender.replace(src_path, dst_path);
 			//-----------------------------------------
 			if (os::isdir(folderRender))

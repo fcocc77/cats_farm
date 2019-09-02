@@ -278,10 +278,6 @@ function renderQueue() {
     render.applyTemplate("videovina");
     render.outputModules[1].applyTemplate("h264");
     // ----------------------------------------
-
-    // Cambia el nombre de la salida
-    render.outputModule(1).file = new File(path + "/renders/" + project.name + ".mov");
-    // ------------------------------------
 }
 
 function timeModifier() {

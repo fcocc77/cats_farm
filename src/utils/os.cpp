@@ -383,16 +383,14 @@ void rename(QString src, QString dst)
 
 QString dirname(QString file)
 {
-	if (_win32)
-		file = file.replace("\\", "/");
-	return file.replace("/" + basename(file), "");
+	QFileInfo _file(file);
+	return _file.absolutePath();
 }
 
 QString basename(QString file)
 {
-	if (_win32)
-		file = file.replace("\\", "/");
-	return file.split("/").last();
+	QFileInfo _file(file);
+	return _file.baseName();
 }
 
 bool isfile(QString file)

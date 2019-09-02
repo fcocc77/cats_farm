@@ -11,7 +11,10 @@ src/*/*.exe
 src/*/*.app
 src/*/*.rc
 src/*/submit
+src/*/cserver
 src/*/cmanager
+src/*/cmonitor
+src/*/utils
 src/*/videovina
 bin
 etc/info.json*

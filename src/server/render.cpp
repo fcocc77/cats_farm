@@ -539,7 +539,7 @@ bool render::ae(int ins)
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
 	os::remove(log_file);
 
-	QString folderRender = os::dirname(project[ins]) + "/render";
+	QString folderRender = os::dirname(extra[ins]);
 	// Crea carpeta de renders
 	if (not os::isdir(folderRender))
 	{
@@ -556,7 +556,7 @@ bool render::ae(int ins)
 	QString num = "0000000000" + firstFrame;
 	QStringRef nameNumber(&num, num.length() - 10, 10);
 	// -------------------------------------
-	QString output = folderRender + "/render_" + nameNumber + ".mov";
+	QString output = extra[ins] + "_" + nameNumber + ".mov";
 
 	QString args = "\"" + renderNode[ins] + "\" \"" + project[ins] + "\" \"" + output + "\" \"" + log_file + "\" " + firstFrame + " " + lastFrame;
 
