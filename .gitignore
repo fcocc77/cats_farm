@@ -14,6 +14,7 @@ src/*/submit
 src/*/cserver
 src/*/cmanager
 src/*/cmonitor
+src/*/logger
 src/*/utils
 src/*/videovina
 bin
