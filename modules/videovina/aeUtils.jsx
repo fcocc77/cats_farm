@@ -59,7 +59,7 @@ function getFileItems() {
 
 function isSequence(src) {
     var exts = ["jpg", "png", "JPG", "PNG"];
-    file = String(src.file);
+    var file = String(src.file);
     var ext = file.split(".").pop();
     // si el archivos tiene las extenciones de arriba y no es un still, es una secuencia
     for (var i = 0; i < exts.length; i++) {

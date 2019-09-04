@@ -19,7 +19,6 @@ function proxyExport() {
 	for (var i = 0; i < items.length; i++) {
 
 		var item = items[i].item;
-		var type = items[i].type;
 		var src = items[i].src;
 		var file = String(src.file);
 

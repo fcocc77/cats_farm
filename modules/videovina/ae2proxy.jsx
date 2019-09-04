@@ -1,6 +1,18 @@
 ﻿//@include "utils.jsx"
 //@include "aeUtils.jsx"
 
+/*****************************************************************************
+ * ae2proxy.jsx: Script After Efects
+ *****************************************************************************
+ * 2018-2019 VideoVina, Santiago de Chile
+ *
+ * Authors: Francisco Contreras Cuevas <fcocc77@gmail.com>
+ *
+ * Este script reescala todas las composiciones y footage a una resolucion mas baja (proxy)
+ * antes de ejecutar este script es necesario crear el proxy de todas las sequencias de imagenes
+ * esto se hace con el script "proxyExport.jsx"
+ *****************************************************************************/
+
 // resolucion para el proxy
 var width = 640;
 var height = 360;
@@ -15,9 +27,9 @@ var scalePlus = 1920 / width;
 var comps = getAllComps();
 // -------------------------------------------
 
-// Cambia la estala de la capa dependiendo de la resolucion del proxy,
-// si la capa tiene key frames, reescala por cada key 
 function changeScale(layer) {
+	// Cambia la estala de la capa dependiendo de la resolucion del proxy,
+	// si la capa tiene key frames, reescala por cada key 
 	var scale = layer.scale;
 	if (scale.numKeys == 0) {
 		var newValue = scale.value * scalePlus;
@@ -33,12 +45,12 @@ function changeScale(layer) {
 	}
 	//-----------------------------
 }
-// --------------------------------------
 
-// Para encontrar una composicion en las layer es necesario que tengan
-// el nombre original de la comp, asi esta funcion deja sin nombre todas
-// las capas en todas las comp
 function allLayerWithoutName() {
+	// Para encontrar una composicion en las layer es necesario que tengan
+	// el nombre original de la comp, asi esta funcion deja sin nombre todas
+	// las capas en todas las comp
+
 	for (var i = 0; i < comps.length; i++) {
 		var comp = comps[i];
 		for (var a = 1; a <= comp.layers.length; a++) {
@@ -48,12 +60,10 @@ function allLayerWithoutName() {
 		}
 	}
 }
-allLayerWithoutName();
-// ---------------------------------------------
 
-// Crea un null y vincula todas las capas que no esten enparentadas
-// y luego reescala el null a la resolucion del proxy
 function nullCreate(item) {
+	// Crea un null y vincula todas las capas que no esten enparentadas
+	// y luego reescala el null a la resolucion del proxy
 	var _null = item.layers.addNull();
 	_null.position.setValue([0, 0]);
 
@@ -67,10 +77,33 @@ function nullCreate(item) {
 
 	_null.scale.setValue([scale, scale]);
 }
-// --------------------------------------
 
-// Cambia la resolucion en la comp y en el layer de la misma comp
-function toProxy() {
+function proxysImport() {
+	// Remplaza el material de las secuencias por el proxy
+	var items = getFileItems();
+
+	for (var i = 0; i < items.length; i++) {
+		var item = items[i].item;
+		var type = items[i].type;
+		var file = String(items[i].src.file);
+
+		var _file = filePathBreak(file);
+		var proxyFile = _file.base + "_proxy_" + _file.number + "." + _file.ext;
+
+		if (isFile(proxyFile)) {
+			if (type == "file")
+				item.replaceWithSequence(File(proxyFile), null);
+			if (type == "proxy")
+				item.setProxyWithSequence(File(proxyFile), null);
+		}
+		// -------------------------------------------
+	}
+}
+
+function main() {
+	// Cambia la resolucion en la comp y en el layer de la misma comp
+	allLayerWithoutName();
+	proxysImport();
 	for (var i = 0; i < comps.length; i++) {
 		var comp = comps[i];
 		comp.width = width;
@@ -85,6 +118,5 @@ function toProxy() {
 		// -----------------------------------
 	}
 }
-// ---------------------------
 
-toProxy();
+main();

@@ -86,7 +86,7 @@ function updateFilesPath() {
             if (type == "file")
                 item.replace(File(footagePath));
             if (type == "proxy")
-                item.setProxyWithSequence(File(footagePath), "forceAlphabetical");
+                item.setProxyWithSequence(File(footagePath), null);
         }
         // -------------------------------------------
     }
