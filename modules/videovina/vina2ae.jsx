@@ -19,6 +19,7 @@ catch (error) { }
 // --------------------------------
 
 //@include "utils.jsx"
+//@include "aeUtils.jsx"
 
 var finalComp = getComp("Final comp");
 var slidesLayer = finalComp.layer("Slides");
@@ -63,46 +64,31 @@ function main() {
 }
 
 function updateFilesPath() {
-    for (var i = 1; i <= app.project.numItems; i++) {
-        var item = app.project.item(i);
+    var items = getFileItems();
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i].item;
+        var type = items[i].type;
+        var src = String(items[i].src.file);
 
-        // checkea si el item tiene file o proxy y los guarda con un numero 1 es file y 2 es proxy
-        var file = 0;
-        if (item.file != undefined)
-            file = 1;
-        if (item.proxySource != undefined && item.proxySource != null)
-            file = 2;
-        // ------------------------------------
+        // crea una ruta relativa haciendole un split con el nombre de la carpeta del proyecto "project.type"
+        var relative = src.split(project.type).pop();
+        relative = relative.replace("Assets", "assets"); // cambia assest si esta con mayuscula
+        // --------------------------------------------
 
-        if (file) {
-            // encuentra el archivo de origen dependiendo si es file o proxy
-            var src;
-            if (file == 1)
-                src = item.file;
-            if (file == 2)
-                src = item.proxySource.file;
-            // -----------------------------------------
+        // nueva ruta a partir del directorio donde estan los proyectos originals ( esta ruta la da catsfarm )
+        var footagePath = project.slideshowPath + "/" + project.type + "/" + relative;
+        // --------------------------
 
-            // crea una ruta relativa haciendole un split con el nombre de la carpeta del proyecto "project.type"
-            var relative = String(src).split(project.type).pop();
-            relative = relative.replace("Assets", "assets"); // cambia assest si esta con mayuscula
-            // --------------------------------------------
-
-            // nueva ruta a partir del directorio donde estan los proyectos originals ( esta ruta la da catsfarm )
-            var footagePath = project.slideshowPath + "/" + project.type + "/" + relative;
-            // --------------------------
-
-            // si el directorio del archivo existe setea el file o proxy, se hace esto 
-            // por hay archivos que estan dentro del la carpeta de proyecto del usuario 
-            // que no necesitas cambiarse, solo es necesario en los assets del proyecto original
-            if (isDir(dirname(footagePath))) {
-                if (file == 1)
-                    item.replace(File(footagePath));
-                if (file == 2)
-                    item.setProxyWithSequence(File(footagePath), "forceAlphabetical");
-            }
-            // -------------------------------------------
+        // si el directorio del archivo existe setea el file o proxy, se hace esto 
+        // por hay archivos que estan dentro del la carpeta de proyecto del usuario 
+        // que no necesitas cambiarse, solo es necesario en los assets del proyecto original
+        if (isDir(dirname(footagePath))) {
+            if (type == "file")
+                item.replace(File(footagePath));
+            if (type == "proxy")
+                item.setProxyWithSequence(File(footagePath), "forceAlphabetical");
         }
+        // -------------------------------------------
     }
 }
 

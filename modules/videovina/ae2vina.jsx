@@ -1,4 +1,5 @@
 ﻿//@include "utils.jsx"
+//@include "aeUtils.jsx"
 
 function textsEnabled(slide, enable) {
     for (var e = 1; e <= slide.layers.length; e++) {
@@ -100,5 +101,3 @@ function getTextTransform() {
         jwrite(projectFile, project);
     }
 }
-
-exportSlides();
