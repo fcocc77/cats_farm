@@ -62,20 +62,18 @@ function allLayerWithoutName() {
 }
 
 function nullCreate(item) {
-	// Crea un null y vincula todas las capas que no esten enparentadas
+	// Crea un null y vincula todas las capas
 	// y luego reescala el null a la resolucion del proxy
 	var _null = item.layers.addNull();
 	_null.position.setValue([0, 0]);
 
 	for (var i = 1; i <= item.layers.length; i++) {
 		var layer = item.layers[i];
-		layer.locked = false;
-		if (layer.parent == null)
-			if (layer != _null)
-				layer.parent = _null;
+		if (layer.name != _null.name)
+			layer.parent = _null;
 	}
-
 	_null.scale.setValue([scale, scale]);
+	_null.remove();
 }
 
 function proxysImport() {
@@ -100,10 +98,66 @@ function proxysImport() {
 	}
 }
 
+function unParentAll() {
+	// esta funcion borra el parent de todas las layer en todas las comp y
+	// las guarda en una lista para despues restaurarlas
+
+	var compsLayers = [];
+	for (var i = 0; i < comps.length; i++) {
+		var comp = comps[i];
+
+		//el indicador de tiempo tiene que estar en la mitad
+		//para que sea correcto el unparent
+		comp.time = comp.duration / 2
+		//------------------------
+
+		// lista para layer emparentadas, para revertir el cambio al final
+		var layersWithParent = [];
+		// -----------------------------------
+
+		for (var e = 1; e <= comp.layers.length; e++) {
+			var layer = comp.layers[e];
+			layer.locked = false;
+			// si la capa esta emparentada la agrega a la lista
+			if (layer.parent != null)
+				layersWithParent.push({ "index": layer.index, "parent": layer.parent });
+			// ---------------------------------------------------------
+			layer.parent = null;
+		}
+		compsLayers.push({ "comp": comp, "layers": layersWithParent });
+	}
+
+	return compsLayers;
+}
+
+function parentAll(compsLayers) {
+	for (var i = 0; i < compsLayers.length; i++) {
+		var comp = compsLayers[i].comp;
+		var layersWithParent = compsLayers[i].layers;
+
+		//el indicador de tiempo tiene que estar en la mitad
+		//para que sea correcto el parent
+		comp.time = comp.duration / 2
+		//------------------------
+
+		for (var e = 0; e < layersWithParent.length; e++) {
+			var layer = layersWithParent[e];
+			comp.layers[layer.index].parent = layer.parent;
+		}
+	}
+}
+
 function main() {
 	// Cambia la resolucion en la comp y en el layer de la misma comp
 	allLayerWithoutName();
+	// es necesario que esten ya los archivos proxy ( se crean con proxyExport.jsx )
 	proxysImport();
+	// --------------------------
+
+	// desenparenta todas las capas para que no tenga problema el reescalado
+	var compsLayers = unParentAll();
+	// ----------------------------------------
+
 	for (var i = 0; i < comps.length; i++) {
 		var comp = comps[i];
 		comp.width = width;
@@ -112,11 +166,17 @@ function main() {
 		// usedIn busca en que composicion esta, esta comp como capa
 		for (var a = 0; a < comp.usedIn.length; a++) {
 			var parentComp = comp.usedIn[a];
-			var layer = parentComp.layer(comp.name);
-			changeScale(layer);
+			var layers = layersByName(parentComp, comp.name);
+
+			for (var e = 0; e < layers.length; e++)
+				changeScale(layers[e]);
 		}
 		// -----------------------------------
 	}
+
+	// vuelve a conectar todos los parent como antes
+	parentAll(compsLayers);
+	// --------------------------------------------
 }
 
 main();

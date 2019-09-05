@@ -84,3 +84,20 @@ function filePathBreak(file) {
 
     return { "base": basePath, "ext": ext, "padding": padding, "number": number };
 }
+
+function fileBreak(file) {
+    var basePath = file.split('.').slice(0, -1).join('.');
+    var ext = file.split(".").pop();
+
+    return { "base": basePath, "ext": ext };
+}
+
+function layersByName(comp, name) {
+    var layers = [];
+    for (var i = 1; i <= comp.layers.length; i++) {
+        var layer = comp.layer(i);
+        if (layer.name == name)
+            layers.push(layer);
+    }
+    return layers;
+}

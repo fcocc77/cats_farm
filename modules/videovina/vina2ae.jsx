@@ -21,6 +21,10 @@ catch (error) { }
 //@include "utils.jsx"
 //@include "aeUtils.jsx"
 
+// ----------------------------
+var project = jread(path + "/project.json");
+// ----------------------------
+
 var finalComp = getComp("Final comp");
 var slidesLayer = finalComp.layer("Slides");
 var slidesComp = getComp("Slides");
@@ -31,14 +35,16 @@ var photos = [];
 var endTime;
 var endFrame;
 var transition = 2; // Transicion en segundos
+var proxy = true;
 // ----------------------------
+
 
 function main() {
     slidesLayer.effect("Color").color.setValue(color);
 
     photosSorted();
     timeModifier();
-    songModifier();
+    //songModifier();
     disableSlides();
     deleteMovies();
 
@@ -60,7 +66,7 @@ function main() {
     jwrite(submitJson, submit);
     //-------------------------------------
 
-    app.project.save();
+    //app.project.save();
 }
 
 function updateFilesPath() {
@@ -115,6 +121,15 @@ function textModifier(index) {
                 subtitleNew += word + " "; // espacio por caracter
         }
         // --------------------------------------------------
+		
+			// borra las capas que no son texto
+		for (var f = 1; f <= textComp.layers.length;f++){
+			 var layer = textComp.layer(f);
+			 if (layer.text == undefined)
+				layer.remove();
+		}
+	//--------------------------------------
+
 
         textComp.layer(1).property("Source Text").setValue(title);
         textComp.layer(2).property("Source Text").setValue(subtitleNew);
@@ -220,14 +235,19 @@ function photosSorted() {
 function photosLoads(index) {
     var photo = photos[index].name;
 
-    //elimina la foto si ya esta inportada
+    //elimina la foto si ya esta importada
     if (getItem(photo))
         getItem(photo).remove();
     // ---------------------------------
-
-    // Carga las photos al proyecto after effect
+		
+	var file = path + "/footage/" + photo;
+	if (proxy){
+		_file = fileBreak(file);
+		file = _file.base + "_proxy." + _file.ext; 
+	}
+	// Carga las photos al proyecto after effect
     var imgComp = getComp("Image " + index);
-    var io = new ImportOptions(File(path + "/footage/" + photo));
+    var io = new ImportOptions(File(file));
     var importedPhoto = app.project.importFile(io);
     imgComp.layers.add(importedPhoto)
     imgComp.layer(1).startTime = 0; // la deja en el primer frame

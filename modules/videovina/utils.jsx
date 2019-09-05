@@ -5,9 +5,6 @@ var path = app.project.file.toString();
 path = path.substring(0, path.lastIndexOf('/'));
 //----------------------	
 
-var projectFile = path + "/project.json";
-//var project = jread(projectFile);
-
 function fread(_file) {
     var file = File(_file);
     file.open("r");
