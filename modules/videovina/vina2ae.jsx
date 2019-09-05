@@ -35,7 +35,6 @@ var photos = [];
 var endTime;
 var endFrame;
 var transition = 2; // Transicion en segundos
-var proxy = true;
 // ----------------------------
 
 
@@ -44,7 +43,7 @@ function main() {
 
     photosSorted();
     timeModifier();
-    //songModifier();
+    songModifier();
     disableSlides();
     deleteMovies();
 
@@ -66,7 +65,7 @@ function main() {
     jwrite(submitJson, submit);
     //-------------------------------------
 
-    //app.project.save();
+    app.project.save();
 }
 
 function updateFilesPath() {
@@ -121,14 +120,14 @@ function textModifier(index) {
                 subtitleNew += word + " "; // espacio por caracter
         }
         // --------------------------------------------------
-		
-			// borra las capas que no son texto
-		for (var f = 1; f <= textComp.layers.length;f++){
-			 var layer = textComp.layer(f);
-			 if (layer.text == undefined)
-				layer.remove();
-		}
-	//--------------------------------------
+
+        // borra las capas que no son texto
+        for (var f = 1; f <= textComp.layers.length; f++) {
+            var layer = textComp.layer(f);
+            if (layer.text == undefined)
+                layer.remove();
+        }
+        //--------------------------------------
 
 
         textComp.layer(1).property("Source Text").setValue(title);
@@ -239,13 +238,13 @@ function photosLoads(index) {
     if (getItem(photo))
         getItem(photo).remove();
     // ---------------------------------
-		
-	var file = path + "/footage/" + photo;
-	if (proxy){
-		_file = fileBreak(file);
-		file = _file.base + "_proxy." + _file.ext; 
-	}
-	// Carga las photos al proyecto after effect
+
+    var file = path + "/footage/" + photo;
+    if (project.proxy) {
+        _file = fileBreak(file);
+        file = _file.base + "_proxy." + _file.ext;
+    }
+    // Carga las photos al proyecto after effect
     var imgComp = getComp("Image " + index);
     var io = new ImportOptions(File(file));
     var importedPhoto = app.project.importFile(io);

@@ -6,7 +6,6 @@ using namespace std;
 #include "os.h"
 void concat(QString folder)
 {
-
 	QString ffmpeg, logMetod, dirMovie, list, concat, movie, movie_list, name, cmd, null;
 
 	if (_win32)
@@ -30,7 +29,7 @@ void concat(QString folder)
 	for (auto i : dir_list)
 	{
 		QString ext = i.split(".").last();
-		if (ext == "mov")
+		if (ext == "mp4")
 			movie_list += "file '" + i + "'\n";
 	}
 	//-------------------------
@@ -40,7 +39,7 @@ void concat(QString folder)
 	//----------------------------------
 
 	// crea ruta del exportacion
-	movie = dirMovie + "/" + name + ".mov";
+	movie = dirMovie + "/" + name + ".mp4";
 	//-----------------------------------------
 
 	if (_win32)

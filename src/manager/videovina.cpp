@@ -16,6 +16,7 @@ QString manager::videovina(QJsonArray recv)
     QString user = recv[0].toString();
     QString projectType = recv[1].toString();
     QString projectName = recv[2].toString();
+    bool proxy = recv[3].toString().toInt();
     // -------------------------------------
 
     // Abre el project json del el respaldo de as3
@@ -27,7 +28,11 @@ QString manager::videovina(QJsonArray recv)
     // Directorios locales
     QString userDir = localFolder + "/" + user;
     QString projectDir = userDir + "/" + projectName;
-    QString project = projectDir + "/" + projectType + ".aep";
+    QString project;
+    if (proxy)
+        project = projectDir + "/" + projectType + "_proxy.aep";
+    else
+        project = projectDir + "/" + projectType + ".aep";
     // ---------------------------------
 
     print("copiando footage...");
@@ -40,11 +45,17 @@ QString manager::videovina(QJsonArray recv)
     // guarda ruta de los proyectos slideshows
     vvProject["slideshowPath"] = slideshow;
     // -----------------------------------
+    vvProject["proxy"] = proxy;
 
     os::makedirs(projectDir + "/renders");
 
     // Copia la plantilla del proyecto en el directorio local
-    os::copy(slideshow + "/" + projectType + "/" + projectType + ".aep", project);
+    QString originalProject;
+    if (proxy)
+        originalProject = slideshow + "/" + projectType + "/" + projectType + "_proxy.aep";
+    else
+        originalProject = slideshow + "/" + projectType + "/" + projectType + ".aep";
+    os::copy(originalProject, project);
     // -------------------------------------------
 
     // Copia footage, project.json de amazon S3 y lo copia en el directorio compartido local
