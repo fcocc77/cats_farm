@@ -97,7 +97,7 @@ QString manager::videovina(QJsonArray recv)
     QString server_group = "videovina";
     int first_frame = 1;
     int last_frame = submit["last_frame"].toInt();
-    int task_size = 30;
+    int task_size = 50;
     int priority = 1;
     bool suspend = false;
     QString comment = "VideoVina Render";

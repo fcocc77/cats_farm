@@ -571,7 +571,7 @@ bool render::ae(int ins)
 	// ----------------------------------
 
 	// crea una version mas liviana ".mp4" del video y luego borra el original ".mov"
-	QString postRender = "ffmpeg -i \"" + output + "\" -b:v 3000000 -c:a pcm_s16le " + tmp;
+	QString postRender = "ffmpeg -i \"" + output + "\" -b:v 5M -c:a pcm_s16le " + tmp;
 	os::sh(postRender);
 	os::remove(output);
 	os::rename(tmp, output);
