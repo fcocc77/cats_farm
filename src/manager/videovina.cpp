@@ -104,7 +104,11 @@ QString manager::videovina(QJsonArray recv)
     QString software = "AE";
     QString extra = output;
     QString _system = "linux";
-    int instances = 3;
+    int instances;
+    if (proxy)
+        instances = 7;
+    else
+        instances = 3;
     QString render = "Final comp";
 
     QJsonArray data = {

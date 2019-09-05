@@ -557,7 +557,7 @@ bool render::ae(int ins)
 	QStringRef nameNumber(&num, num.length() - 10, 10);
 	// -------------------------------------
 	QString output = extra[ins] + "_" + nameNumber + ".mov";
-	QString mp4 = extra[ins] + "_" + nameNumber + ".mp4";
+	QString tmp = extra[ins] + "_" + nameNumber + "_tmp.mov";
 	os::remove(output); // borra el mov antes del render
 
 	QString args = "\"" + renderNode[ins] + "\" \"" + project[ins] + "\" \"" + output + "\" \"" + log_file + "\" " + firstFrame + " " + lastFrame;
@@ -571,9 +571,10 @@ bool render::ae(int ins)
 	// ----------------------------------
 
 	// crea una version mas liviana ".mp4" del video y luego borra el original ".mov"
-	QString postRender = "ffmpeg -i \"" + output + "\" -b 3000000 " + mp4;
+	QString postRender = "ffmpeg -i \"" + output + "\" -b:v 3000000 -c:a pcm_s16le " + tmp;
 	os::sh(postRender);
 	os::remove(output);
+	os::rename(tmp, output);
 	// ----------------------------------------
 
 	// post render

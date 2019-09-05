@@ -29,7 +29,7 @@ void concat(QString folder)
 	for (auto i : dir_list)
 	{
 		QString ext = i.split(".").last();
-		if (ext == "mp4")
+		if (ext == "mov")
 			movie_list += "file '" + i + "'\n";
 	}
 	//-------------------------
@@ -45,7 +45,7 @@ void concat(QString folder)
 	if (_win32)
 		list.replace("/", "\\");
 
-	concat = ffmpeg + " -y -f concat -safe 0 -i " + '"' + list + '"' + " -c copy " + '"' + movie + '"';
+	concat = ffmpeg + " -y -f concat -safe 0 -i " + '"' + list + '"' + " -c:v copy " + '"' + movie + '"';
 	os::sh(concat);
 
 	// borra lista creada
