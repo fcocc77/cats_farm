@@ -2,13 +2,6 @@
 
 QString manager::videovina(QJsonArray recv)
 {
-    // Rutas generales
-    QString assets = "/home/pancho/Documents/GitHub/videovina/private";
-    QString as3 = "/var/www/html/static/amazon_s3";
-    QString catsfarm = "/home/pancho/Documents/GitHub/cats_farm";
-    QString local_folder = "/home/pancho/Desktop/renders";
-    // -------------------------------
-
     QString slideshow = assets + "/slideshows";
     QString music_dir = assets + "/music";
 
@@ -28,7 +21,7 @@ QString manager::videovina(QJsonArray recv)
     // --------------------------------------------
 
     // Directorios locales
-    QString user_dir = local_folder + "/" + user;
+    QString user_dir = vv_local_folder + "/" + user;
     QString project_dir = user_dir + "/" + project_name;
     QString project;
     if (proxy)
@@ -48,6 +41,10 @@ QString manager::videovina(QJsonArray recv)
     vv_project["slideshowPath"] = slideshow;
     // -----------------------------------
     vv_project["proxy"] = proxy;
+
+    // guarda el user_id en el proyecto
+    vv_project["user_id"] = user_id;
+    // ----------------
 
     os::makedirs(project_dir + "/renders");
 

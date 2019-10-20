@@ -24,7 +24,7 @@ using namespace std;
 
 class manager : public QObject
 {
-  public:
+public:
 	vector<job_struct *> jobs;
 	vector<server_struct *> servers;
 	vector<group_struct *> groups;
@@ -32,6 +32,13 @@ class manager : public QObject
 	bool reset_render;
 	bool preferences_idle = true;
 	bool jots_idle = true;
+
+	// rutas generales para videovina
+	QString assets = "/home/pancho/Documents/GitHub/videovina/private";
+	QString as3 = "/var/www/html/static/amazon_s3";
+	QString catsfarm = "/home/pancho/Documents/GitHub/cats_farm";
+	QString vv_local_folder = "/home/pancho/Desktop/renders";
+	// -------------------------------
 
 	void init();
 	QString make_job(QJsonArray recv);

@@ -314,6 +314,22 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			//-----------------------------------------
 			if (os::isdir(folderRender))
 				concat(folderRender);
+
+			// cuando termina el render, lee el proyecto videovina para reconstruir las rutas
+			// y asi copiar el video renderizado al la carpeta publica de s3 del usuario.
+			QString vv_project_dir = os::dirname(os::dirname(folderRender));
+			QString vv_project_json = vv_project_dir + "/project.json";
+			QJsonObject vv_project = jread(vv_project_json);
+
+			QString user_id = vv_project["user_id"].toString();
+			QString project_name = vv_project["name"].toString();
+
+			QString src_video = folderRender + ".mp4";
+			QString dst_video = as3 + "/public/" + user_id + "/projects/" + project_name + "/renders/" + project_name + ".mp4";
+
+			os::mkdir(os::dirname(dst_video));
+			os::copy(src_video, dst_video);
+			// -----------------------------------------
 		}
 		//------------------------------------------------------------
 
