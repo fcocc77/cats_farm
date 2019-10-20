@@ -4,67 +4,73 @@ QString manager::videovina(QJsonArray recv)
 {
     // Rutas generales
     QString assets = "/home/pancho/Documents/GitHub/videovina/private";
-    QString as3 = "/home/pancho/Documents/GitHub/videovina/static/amazon_s3";
+    QString as3 = "/var/www/html/static/amazon_s3";
     QString catsfarm = "/home/pancho/Documents/GitHub/cats_farm";
-    QString localFolder = "/home/pancho/Desktop/renders";
+    QString local_folder = "/home/pancho/Desktop/renders";
     // -------------------------------
 
     QString slideshow = assets + "/slideshows";
-    QString musicDir = assets + "/music";
+    QString music_dir = assets + "/music";
 
     // Datos recividos del servidor principal
     QString user = recv[0].toString();
-    QString projectType = recv[1].toString();
-    QString projectName = recv[2].toString();
-    bool proxy = recv[3].toString().toInt();
+    QString user_id = recv[1].toString();
+    QString project_type = recv[2].toString();
+    QString project_name = recv[3].toString();
+    bool proxy = recv[4].toString().toInt();
     // -------------------------------------
 
     // Abre el project json del el respaldo de as3
-    QString vvProjectDir = as3 + "/" + user + "/projects/" + projectName;
-    QString vvProjectJson = vvProjectDir + "/project.json";
-    QJsonObject vvProject = jread(vvProjectJson);
+    QString vv_project_dir = as3 + "/private/" + user + "/projects/" + project_name;
+    QString vv_project_dir_public = as3 + "/public/" + user_id + "/projects/" + project_name;
+    QString vv_project_json = vv_project_dir + "/project.json";
+    QJsonObject vv_project = jread(vv_project_json);
     // --------------------------------------------
 
     // Directorios locales
-    QString userDir = localFolder + "/" + user;
-    QString projectDir = userDir + "/" + projectName;
+    QString user_dir = local_folder + "/" + user;
+    QString project_dir = user_dir + "/" + project_name;
     QString project;
     if (proxy)
-        project = projectDir + "/" + projectType + "_proxy.aep";
+        project = project_dir + "/" + project_type + "_proxy.aep";
     else
-        project = projectDir + "/" + projectType + ".aep";
+        project = project_dir + "/" + project_type + ".aep";
     // ---------------------------------
 
     print("copiando footage...");
 
     // Cambia la ruta de la musica y la guarda el el project.json
-    QString song = vvProject["song"].toString() + ".mp3";
-    vvProject["songPath"] = musicDir + "/" + song;
+    QString song = vv_project["song"].toString() + ".mp3";
+    vv_project["songPath"] = music_dir + "/" + song;
     // -----------------------------------
 
     // guarda ruta de los proyectos slideshows
-    vvProject["slideshowPath"] = slideshow;
+    vv_project["slideshowPath"] = slideshow;
     // -----------------------------------
-    vvProject["proxy"] = proxy;
+    vv_project["proxy"] = proxy;
 
-    os::makedirs(projectDir + "/renders");
+    os::makedirs(project_dir + "/renders");
 
     // Copia la plantilla del proyecto en el directorio local
-    QString originalProject;
+    QString original_project;
     if (proxy)
-        originalProject = slideshow + "/" + projectType + "/" + projectType + "_proxy.aep";
+        original_project = slideshow + "/" + project_type + "/" + project_type + "_proxy.aep";
     else
-        originalProject = slideshow + "/" + projectType + "/" + projectType + ".aep";
-    os::copy(originalProject, project);
+        original_project = slideshow + "/" + project_type + "/" + project_type + ".aep";
+    os::copy(original_project, project);
     // -------------------------------------------
 
     // Copia footage, project.json de amazon S3 y lo copia en el directorio compartido local
-    os::copydir(vvProjectDir + "/footage", projectDir);
-    jwrite(projectDir + "/project.json", vvProject);
-    // -------------------------------------------
+    os::copydir(vv_project_dir + "/footage", project_dir);
 
+    QString copy_proxy_footage = "cp " + vv_project_dir_public + "/footage/* " + project_dir + "/footage";
+    os::system(copy_proxy_footage);
+
+    jwrite(project_dir + "/project.json", vv_project);
+    // -------------------------------------------
+   
     // Permisos de carpeta de proyecto
-    os::sh("chmod 777 -R " + projectDir);
+    os::sh("chmod 777 -R " + project_dir);
     // -------------------------------------
 
     // Modifica el proyecto de after effect con los datos del proyecto del usuario
@@ -78,12 +84,12 @@ QString manager::videovina(QJsonArray recv)
 
     // genera la ruta base de la salida del mov, no es completa por que despues en el render
     // hay que ponerle el numero del video y la extencion por cada tarea para poder hacer el concat
-    QString output = projectDir + "/renders/" + projectName + "/" + projectName;
+    QString output = project_dir + "/renders/" + project_name + "/" + project_name;
     // ---------------------------------------------------
 
     // Lee los datos de salida del script vina2ae.jsx
-    QString submitJson = projectDir + "/submit.json";
-    QJsonObject submit = jread(submitJson); // aumento de ram cuando no encuetra el archivo json ( ¡revisar)
+    QString submit_json = project_dir + "/submit.json";
+    QJsonObject submit = jread(submit_json); // aumento de ram cuando no encuetra el archivo json ( ¡revisar)
     // ---------------------------------------------
 
     // aveces en las pruebas cuando vina2ae.jsx da un error no crea el submit.json y no lo puede leer
@@ -92,7 +98,7 @@ QString manager::videovina(QJsonArray recv)
         return "";
     // ------------------------------------
 
-    QString job_name = user + "-" + projectName;
+    QString job_name = user + "-" + project_name;
     QString server = "None";
     QString server_group = "videovina";
     int first_frame = 1;
