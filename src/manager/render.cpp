@@ -330,6 +330,10 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			os::mkdir(os::dirname(dst_video));
 			os::copy(src_video, dst_video);
 			// -----------------------------------------
+
+			// borra el jobs para que no se acumule, ya que es un render de videovina
+			erase_by_name(jobs, job->name);
+			// ---------------------
 		}
 		//------------------------------------------------------------
 
