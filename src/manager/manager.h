@@ -34,10 +34,11 @@ public:
 	bool jots_idle = true;
 
 	// rutas generales para videovina
-	QString assets = "/home/pancho/Documents/GitHub/videovina/private";
-	QString as3 = "/var/www/html/static/amazon_s3";
-	QString catsfarm = "/home/pancho/Documents/GitHub/cats_farm";
-	QString vv_local_folder = "/home/pancho/Desktop/renders";
+	QJsonObject env_videovina = jread(path + "/etc/videovina.json");
+	QString assets = env_videovina["assets"].toString();
+	QString as3 = env_videovina["s3"].toString();
+	QString catsfarm = env_videovina["catsfarm"].toString();
+	QString vv_local_folder = env_videovina["local"].toString();
 	// -------------------------------
 
 	void init();

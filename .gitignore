@@ -26,6 +26,7 @@ qt/*/*tar.gz
 .DS_Store
 *.swp
 *.swo
+modules/ae/*.gz
 
 
 

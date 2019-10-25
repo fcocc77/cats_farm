@@ -5,7 +5,7 @@ path="$( cd "$(dirname "$0")" ; pwd -P )"
 dst="/opt/cats_farm"
 # ------------------
 # IP del manager
-ip="192.168.0.18"
+ip="192.168.1.40"
 # ------------------
 manager_start=true
 server_start=true
@@ -23,9 +23,8 @@ compile() {
 
 install() {
     # Instalacion de Dependencias
+    yum -y install epel-release http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
     yum -y install \
-    http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm \
-    epel-release \
     qt5-qtbase \
     qt5-qtbase-devel \
     qt5-qtmultimedia.x86_64 \
