@@ -65,15 +65,15 @@ QString manager::videovina(QJsonArray recv)
 
     jwrite(project_dir + "/project.json", vv_project);
     // -------------------------------------------
-   
+
     // Permisos de carpeta de proyecto
     os::sh("chmod 777 -R " + project_dir);
     // -------------------------------------
 
     // Modifica el proyecto de after effect con los datos del proyecto del usuario
     QString vina2ae = catsfarm + "/modules/videovina/vina2ae.jsx";
-    QString afterfx = "/opt/AE9.0/AfterFX.exe";
-    QString cmd = "wine " + afterfx + " -noui -s \"var aep = '" + project + "';//@include '" + vina2ae + "';\"";
+    QString afterfx = catsfarm + "/modules/ae/afterfx.sh";
+    QString cmd = "sh " + afterfx + " " + project + " " + vina2ae;
     print("start project");
     os::sh(cmd);
     print("end.");
