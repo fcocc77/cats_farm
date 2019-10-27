@@ -7,6 +7,7 @@ using namespace std;
 
 #include "../utils/util.h"
 #include "../utils/tcp.h"
+#include "../utils/os.h"
 
 #include <QCoreApplication>
 #include <QProcess>
@@ -17,7 +18,7 @@ using namespace std;
 
 class logger : public QObject
 {
-  public:
+public:
     logger();
     QJsonObject zones;
     QString get(QString recv, QJsonObject extra);
