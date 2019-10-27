@@ -19,9 +19,8 @@ class logger : public QObject
 {
   public:
     logger();
-    const QString managerHost = fread(path + "/etc/manager_host");
-
-    QString get(QString recv);
+    QJsonObject zones;
+    QString get(QString recv, QJsonObject extra);
 };
 
 #endif // LOGGER_H

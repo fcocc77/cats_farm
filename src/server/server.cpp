@@ -6,7 +6,7 @@ void server::init()
 	tcpServer(7001, &server::recieveManager, this);
 }
 
-QString server::send_resources(QString recv)
+QString server::send_resources(QString recv, QJsonObject extra)
 {
 
 	if (not recv.isEmpty())

@@ -22,7 +22,7 @@ using namespace std;
 template <class T>
 class tcp_socket : public QThread
 {
-  public:
+public:
 	int port;
 	T *_class;
 	QString (T::*func)(QString);
@@ -109,7 +109,7 @@ class tcp_socket : public QThread
 template <class T>
 class tcp_server : public QTcpServer
 {
-  public:
+public:
 	int port;
 	T *_class;
 	QString (T::*func)(QString);
@@ -135,7 +135,7 @@ class tcp_server : public QTcpServer
 		}
 	}
 
-  protected:
+protected:
 	void incomingConnection(qintptr socketDescriptor)
 	{
 		tcp_socket<T> *_tcp_socket = new tcp_socket<T>(socketDescriptor, port, func, _class);
@@ -146,11 +146,12 @@ class tcp_server : public QTcpServer
 template <class T>
 class tcp_client_widget : public QThread
 {
-  public:
+public:
 	T *_class;
-	QString (T::*func)(QString);
+	QString (T::*func)(QString, QJsonObject);
 	QTimer *qtimer;
 	bool widget;
+	QJsonObject extra;
 
 	QString *update_send;
 	QString *update_recv;
@@ -158,8 +159,8 @@ class tcp_client_widget : public QThread
 	bool *recv_ready;
 
 	// Constructor client loop
-	tcp_client_widget(QString (T::*_func)(QString), T *__class, QString *_update_send, QString *_update_recv,
-					  bool *_send_ready, bool *_recv_ready, bool _widget) : QThread(__class)
+	tcp_client_widget(QString (T::*_func)(QString, QJsonObject), T *__class, QString *_update_send, QString *_update_recv,
+					  bool *_send_ready, bool *_recv_ready, bool _widget, QJsonObject _extra) : QThread(__class)
 	{
 		_class = __class;
 		func = _func;
@@ -168,6 +169,7 @@ class tcp_client_widget : public QThread
 		send_ready = _send_ready;
 		recv_ready = _recv_ready;
 		widget = _widget;
+		extra = _extra;
 
 		// hilo loop para widget, se inicia por fuera
 		qtimer = new QTimer();
@@ -209,7 +211,7 @@ class tcp_client_widget : public QThread
 		if (*send_ready)
 		{
 			QString _send = *update_send;
-			*update_recv = (_class->*func)(_send);
+			*update_recv = (_class->*func)(_send, extra);
 		}
 
 		*recv_ready = true;
@@ -218,7 +220,7 @@ class tcp_client_widget : public QThread
 
 class tcp_client : public QThread
 {
-  public:
+public:
 	QString host;
 	int port;
 	bool loop;
@@ -361,7 +363,7 @@ void tcpServer(int _port, QString (T::*_func)(QString), T *_class)
 }
 
 template <class T>
-void tcpClient(QString _host, int _port, QString (T::*_func)(QString), T *_class, bool widget = false)
+void tcpClient(QString _host, int _port, QString (T::*_func)(QString, QJsonObject), T *_class, bool widget = false, QJsonObject extra = {})
 {
 	// inicia thread de tcp socket
 	tcp_client *_client = new tcp_client(_host, _port, _class);
@@ -371,7 +373,7 @@ void tcpClient(QString _host, int _port, QString (T::*_func)(QString), T *_class
 
 	// inicia thread de update widget
 	tcp_client_widget<T> *_widget = new tcp_client_widget<T>(_func, _class, &_client->update_send,
-															 &_client->update_recv, &_client->send_ready, &_client->recv_ready, widget);
+															 &_client->update_recv, &_client->send_ready, &_client->recv_ready, widget, extra);
 	_widget->exit();
 	_widget->start();
 	//-------------------------------------

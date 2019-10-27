@@ -19,11 +19,11 @@ using namespace std;
 
 class server : public QObject
 {
-  public:
+public:
 	render *_render = new render();
 
 	void init();
-	QString send_resources(QString recv);
+	QString send_resources(QString recv, QJsonObject extra);
 	QString recieveManager(QString data);
 
 	const QString managerHost = fread(path + "/etc/manager_host");

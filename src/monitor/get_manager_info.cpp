@@ -12,12 +12,12 @@ void get_manager_info::managerRecieve()
 
 	// actualiza una ves antes del loop.
 	QString recv = tcpClient(host, 7000, jats({2, "none"}));
-	managerRecieveUpdate(recv);
+	managerRecieveUpdate(recv, {});
 	//--------------------------------------
 	tcpClient(host, 7000, &get_manager_info::managerRecieveUpdate, this, true);
 }
 
-QString get_manager_info::managerRecieveUpdate(QString _recv)
+QString get_manager_info::managerRecieveUpdate(QString _recv, QJsonObject extra)
 {
 	QJsonObject recv = jofs(_recv);
 

@@ -37,46 +37,46 @@ using namespace std;
 
 class get_manager_info : public QObject
 {
-  public:
-    QMainWindow *monitor;
+public:
+  QMainWindow *monitor;
 
-    ui_jobs_tree *jobsList;
-    ui_servers_tree *serverList;
-    ui_groups_tree *groupList;
-    ui_tasks_tree *taskList;
-    group_actions *groupActions;
-    shared_variables *shared;
+  ui_jobs_tree *jobsList;
+  ui_servers_tree *serverList;
+  ui_groups_tree *groupList;
+  ui_tasks_tree *taskList;
+  group_actions *groupActions;
+  shared_variables *shared;
 
-    template <class T>
-    get_manager_info(T *_monitor)
-    {
-        monitor = _monitor;
-        jobsList = _monitor->jobsList;
-        serverList = _monitor->serverList;
-        groupList = _monitor->groupList;
-        taskList = _monitor->taskList;
-        groupActions = _monitor->groupActions;
-        shared = _monitor->shared;
+  template <class T>
+  get_manager_info(T *_monitor)
+  {
+    monitor = _monitor;
+    jobsList = _monitor->jobsList;
+    serverList = _monitor->serverList;
+    groupList = _monitor->groupList;
+    taskList = _monitor->taskList;
+    groupActions = _monitor->groupActions;
+    shared = _monitor->shared;
 
-        actions();
-        managerRecieve();
-    }
+    actions();
+    managerRecieve();
+  }
 
-    bool task_first_add;
-    QStringList deleteList;
-    QThread *getTask_thread = new QThread();
+  bool task_first_add;
+  QStringList deleteList;
+  QThread *getTask_thread = new QThread();
 
-    // revice desde manager
+  // revice desde manager
 
-    QString managerRecieveUpdate(QString recv);
-    void actions();
-    void managerRecieve();
-    void updateJob(QJsonObject recv);
-    void updateServer(QJsonObject recv);
-    void updateGroup(QJsonObject recv);
-    void updateTask();
-    void getTask();
-    //-----------------------------
+  QString managerRecieveUpdate(QString recv, QJsonObject extra);
+  void actions();
+  void managerRecieve();
+  void updateJob(QJsonObject recv);
+  void updateServer(QJsonObject recv);
+  void updateGroup(QJsonObject recv);
+  void updateTask();
+  void getTask();
+  //-----------------------------
 };
 
 #endif //GET_MANAGER_INFO
