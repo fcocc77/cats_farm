@@ -1,4 +1,4 @@
-#include "ui_groups_tree.h"
+#include "../hpp/ui_groups_tree.h"
 
 ui_groups_tree::ui_groups_tree()
 {

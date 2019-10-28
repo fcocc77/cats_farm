@@ -1,4 +1,4 @@
-#include "general.h"
+#include "../hpp/general.h"
 
 void general::init()
 {
@@ -63,7 +63,7 @@ void general::style_ui()
 	QIcon icon(path + "/icons/monitor.png");
 	monitor->setWindowIcon(icon);
 
-	QString style = fread(path + "/theme/style.css");
+	QString style = fread(path + "/src/monitor/sass/main.css");
 
 	monitor->setStyleSheet(style.toStdString().c_str());
 }

@@ -1,4 +1,4 @@
-#include "ui_jobs_tree.h"
+#include "../hpp/ui_jobs_tree.h"
 
 void ui_jobs_tree::ui()
 {

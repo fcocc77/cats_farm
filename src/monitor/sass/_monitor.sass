@@ -1,0 +1,273 @@
+QWidget
+    color: red
+    background-color: rgb(30, 30, 30)
+    border: 0px
+    font: 8pt "Tahoma"
+QMainWindow
+    &::separator 
+        background-color: rgb(20, 20, 20)
+        width: 2px
+        border-style: outset
+        border-width: 1px
+QLabel
+    background-color: rgba(0,0,0,0)
+QToolBar 
+    background-color: rgb(30, 30, 30)
+    padding: 4
+    border: 1px solid rgb(20, 20, 20)
+    border-style: outset
+    &:top, &:bottom 
+        background-color: rgb(35, 35, 35)
+    &::separator  
+        background-color: rgb(50, 50, 50) 
+        width: 1 
+        height: 1 
+        margin: 7
+QTabBar
+    &::tab 
+        background-color: rgb(45, 45, 45)
+        padding: 4px
+        border: 1px solid rgb(55, 55, 55)
+QTabWidget::pane 
+    border: 0px
+    background-color: rgb(145, 45, 45)
+QToolButton 
+    background-color: rgb(35, 35, 35)
+    &::hover 
+        background-color: rgb(45, 45, 45)
+        border: 1px solid rgb(55, 55, 55)
+QMenuBar
+    background-color: rgb(40, 40, 40)
+    &::item 
+        background-color: rgb(40, 40, 40)
+    &::item:pressed 
+        background-color: rgb(40, 40, 40)
+        border: 1px solid rgb(20, 20, 20)
+QMenu 
+    background-color: rgb(30, 30, 30)
+    &::item 
+        padding: 2px 20px 2px 20px
+        border: 1px solid transparent
+        spacing: 20px
+    &::item:selected 
+        background-color: rgb(50, 80, 100)
+    &::separator 
+        background-color: rgb(45, 45, 45)
+        margin: 5px
+        height: 1px
+    &::indicator 
+        width: 20px
+        height: 13px
+QSlider 
+    background-color: rgba(0, 0, 0, 0)
+    &::groove:horizontal 
+        border: 1px rgb(100, 100, 100)
+        height: 4px
+        background-color: rgb(80, 80, 80)
+        margin: 2px 0
+    &::handle:horizontal 
+        background-color: rgb(120, 120, 120)
+        border: 1px solid #5c5c5c
+        width: 18px
+        margin: -2px 0
+        border-radius: 3px
+QTreeWidget
+    outline: 0
+    alternate-background-color: rgb(30, 30, 30)
+    background-color: rgb(35, 35, 35)
+    border-color: rgb(255, 170, 0)
+    border: 1px solid rgb(40, 40, 40)
+    &::branch 
+        border-bottom: 1px solid rgb(42, 42, 42)
+        background-color: rgb(35, 35, 35)
+        &:hover
+            background-color: rgb(35, 40, 45)
+        &:has-children:closed 
+            image: url(#{$images}/right_arrow.png)
+            background-color: rgb(35, 35, 35)
+            &:selected
+                background-color: rgb(30, 45, 60)
+                border-bottom: 1px solid rgb(35, 50, 55)
+                color: rgb(200, 200, 200)
+            &:hover
+                background-color: rgb(35, 40, 45)
+        &:open 
+            image: url(#{$images}/down_arrow.png)
+            background-color: rgb(35, 35, 35)
+            &:selected
+                background-color: rgb(30, 45, 60)
+                border-bottom: 1px solid rgb(35, 50, 55)
+                color: rgb(200, 200, 200)
+        &:selected
+            background-color: rgb(30, 45, 60)
+            border-bottom: 1px solid rgb(35, 50, 55)
+            color: rgb(200, 200, 200)
+        // &::!has-children:alternate:hover 
+        //     background-color: rgb(35, 40, 45)
+    &::item 
+        border-bottom: 1px solid rgb(44, 44, 44)
+        &:selected
+            background-color: rgb(30, 45, 60)
+            border-bottom: 1px solid rgb(35, 50, 55)
+            color: rgb(200, 200, 200)
+        &:hover
+            background-color: rgb(35, 40, 45)
+QHeaderView
+    &::section 
+        background-color: rgb(40, 40, 40)
+        padding-left: 5px
+        padding-top: 2px
+        padding-bottom: 2px
+        border: 0px solid rgb(90, 60, 60)
+        margin-left: 1px
+        margin-top: 1px
+        margin-bottom: 1px
+QScrollBar
+    &:horizontal 
+        background-color: rgb(35, 35, 35)
+        height: 10px
+    &:vertical 
+        background-color: rgb(35, 35, 35)
+        width: 10px
+    &::handle
+        &:horizontal, &:vertical 
+            background-color: rgb(60, 80, 100)
+            min-height: 20px
+            border-radius: 2px
+            margin-left: 11
+            margin-right: 11
+    &::add-line
+        &:horizontal, &:vertical
+            border-radius: 2px
+            background-color: rgb(60, 80, 100)
+    &::sub-line
+        &:horizontal, &:vertical 
+            border-radius: 2px
+            background-color: rgb(60, 80, 100)
+    &::right-arrow:horizontal 
+        image: url(#{$images}/theme/rc/right_arrow.png)
+        width: 7px
+        height: 7px
+    &::left-arrow:horizontal 
+        image: url(#{$images}/theme/rc/left_arrow.png)
+        width: 7px
+        height: 7px
+    &::up-arrow:vertical 
+        image: url(#{$images}/theme/rc/up_arrow.png)
+        width: 7px
+        height: 7px
+    &::down-arrow:vertical 
+        image: url(#{$images}/theme/rc/down_arrow.png)
+        width: 7px
+        height: 7px
+    &::add-page
+        &:horizontal, &:vertical
+            background: none
+    &::sub-page
+        &:horizontal, &:vertical
+            background: none
+QDockWidget
+    &:floatable 
+        background-color: rgb(35, 35, 35)
+        titlebar-close-icon: url(#{$images}/radio_checked.png)
+        titlebar-normal-icon: url(#{$images}/radio_unchecked.png)
+        border: 1px solid rgb(55, 55, 55)
+    &::focus 
+        background-color: rgb(135, 35, 35)
+    &::close-button
+        border: 10px
+        padding: 2px
+        &:hover 
+            image: url(#{$images}/radio_checked_focus.png)
+    &::float-button 
+        border: 10px
+        padding: 2px
+        &:hover 
+            image: url(#{$images}/radio_unchecked_focus.png)
+    &::title 
+        background-color: rgb(30, 30, 30)
+        padding-top: 2px
+        text-align: center
+QLineEdit, QTextEdit
+    background-color: rgb(70, 70, 70)
+    border: 1px solid rgb(80, 80, 80)
+    padding-left: 2px
+    border-radius: 4px
+    &:focus
+        border: 1px solid rgb(130, 170, 200)
+    &:disabled 
+        background-color: rgb(50, 50, 50)
+        border: 1px solid rgb(55, 55, 55)
+QCheckBox 
+    background-color: rgba(0, 0, 0, 0)
+    &::indicator
+        &:checked
+            image: url(#{$images}/checkbox_checked.png)
+            &:focus 
+                image: url(#{$images}/checkbox_checked_focus.png)
+        &:unchecked
+            image: url(#{$images}/checkbox_unchecked.png)
+            &:focus 
+                image: url(#{$images}/checkbox_unchecked_focus.png)
+QTreeView
+    &::indicator
+        &:unchecked
+            image: url(#{$images}/checkbox_unchecked.png)
+        &:checked
+            image: url(#{$images}/checkbox_checked.png)
+QPushButton 
+    background-color: rgb(60, 60, 60)
+    border: 1px solid rgb(70, 70, 70)
+    border-radius: 2px
+    &::hover 
+        background-color: rgb(70, 85, 100)
+        border-radius: 5px
+QFrame 
+    border-radius: 3px
+QComboBox
+    background-color: rgba(40, 40, 40, 0)
+    border: 0px solid rgb(50, 50, 50)
+    padding-left: 4px
+    &:focus 
+        border: 1px solid rgb(130, 170, 200)
+    &::drop-down 
+        background-color: rgb(50, 50, 50)
+        width: 0px
+    &:hover 
+        color: rgb(120, 170, 200)
+    QAbstractItemView 
+        background-color: rgb(30, 30, 30)
+        border: 1px solid rgb(70, 70, 70)
+        border-radius: 0px
+    &:item:selected 
+        background-color: rgb(60, 80, 100)
+        padding-left: 0px
+    &::indicator 
+        background-color: transparent
+QProgressBar
+    &:horizontal 
+        background: rgba(40, 40, 40, 100)
+        border: 0px solid rgb(52, 52, 52)
+        text-align: center
+        &::chunk:horizontal 
+            background: rgba(100, 150, 200, 100)
+            margin-top: 1px
+            margin-bottom: 0px
+            border-radius: 3px
+QWidget
+    &::disabled 
+        color: rgb(100, 100, 100)
+    #style2 
+        background-color: rgb(40, 40, 40)
+    #style1 
+        background-color: rgb(40, 40, 40)
+        border-color: rgb(255, 170, 0)
+        border: 1px solid rgb(60, 60, 60)
+        border-radius: 3px
+    #QCodeEditorLineWidget 
+        background-color: rgb(30, 30, 30)
+    #Logs 
+        background-color: rgb(40, 40, 40)
+        border-color: rgb(255, 170, 0)
+        border: 1px solid rgb(45, 45, 45)
+        border-radius: 3px

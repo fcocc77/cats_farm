@@ -1,0 +1,415 @@
+/* Black blue color */
+QWidget {
+  color: red;
+  background-color: #1e1e1e;
+  border: 0px;
+  font: 8pt "Tahoma";
+}
+
+QMainWindow::separator {
+  background-color: #141414;
+  width: 2px;
+  border-style: outset;
+  border-width: 1px;
+}
+
+QLabel {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+QToolBar {
+  background-color: #1e1e1e;
+  padding: 4;
+  border: 1px solid #141414;
+  border-style: outset;
+}
+
+QToolBar:top, QToolBar:bottom {
+  background-color: #232323;
+}
+
+QToolBar::separator {
+  background-color: #323232;
+  width: 1;
+  height: 1;
+  margin: 7;
+}
+
+QTabBar::tab {
+  background-color: #2d2d2d;
+  padding: 4px;
+  border: 1px solid #373737;
+}
+
+QTabWidget::pane {
+  border: 0px;
+  background-color: #912d2d;
+}
+
+QToolButton {
+  background-color: #232323;
+}
+
+QToolButton::hover {
+  background-color: #2d2d2d;
+  border: 1px solid #373737;
+}
+
+QMenuBar {
+  background-color: #282828;
+}
+
+QMenuBar::item {
+  background-color: #282828;
+}
+
+QMenuBar::item:pressed {
+  background-color: #282828;
+  border: 1px solid #141414;
+}
+
+QMenu {
+  background-color: #1e1e1e;
+}
+
+QMenu::item {
+  padding: 2px 20px 2px 20px;
+  border: 1px solid transparent;
+  spacing: 20px;
+}
+
+QMenu::item:selected {
+  background-color: #325064;
+}
+
+QMenu::separator {
+  background-color: #2d2d2d;
+  margin: 5px;
+  height: 1px;
+}
+
+QMenu::indicator {
+  width: 20px;
+  height: 13px;
+}
+
+QSlider {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+QSlider::groove:horizontal {
+  border: 1px #646464;
+  height: 4px;
+  background-color: #505050;
+  margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+  background-color: #787878;
+  border: 1px solid #5c5c5c;
+  width: 18px;
+  margin: -2px 0;
+  border-radius: 3px;
+}
+
+QTreeWidget {
+  outline: 0;
+  alternate-background-color: #1e1e1e;
+  background-color: #232323;
+  border-color: #ffaa00;
+  border: 1px solid #282828;
+}
+
+QTreeWidget::branch {
+  border-bottom: 1px solid #2a2a2a;
+  background-color: #232323;
+}
+
+QTreeWidget::branch:hover {
+  background-color: #23282d;
+}
+
+QTreeWidget::branch:has-children:closed {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/right_arrow.png);
+  background-color: #232323;
+}
+
+QTreeWidget::branch:has-children:closed:selected {
+  background-color: #1e2d3c;
+  border-bottom: 1px solid #233237;
+  color: #c8c8c8;
+}
+
+QTreeWidget::branch:has-children:closed:hover {
+  background-color: #23282d;
+}
+
+QTreeWidget::branch:open {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/down_arrow.png);
+  background-color: #232323;
+}
+
+QTreeWidget::branch:open:selected {
+  background-color: #1e2d3c;
+  border-bottom: 1px solid #233237;
+  color: #c8c8c8;
+}
+
+QTreeWidget::branch:selected {
+  background-color: #1e2d3c;
+  border-bottom: 1px solid #233237;
+  color: #c8c8c8;
+}
+
+QTreeWidget::item {
+  border-bottom: 1px solid #2c2c2c;
+}
+
+QTreeWidget::item:selected {
+  background-color: #1e2d3c;
+  border-bottom: 1px solid #233237;
+  color: #c8c8c8;
+}
+
+QTreeWidget::item:hover {
+  background-color: #23282d;
+}
+
+QHeaderView::section {
+  background-color: #282828;
+  padding-left: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border: 0px solid #5a3c3c;
+  margin-left: 1px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+QScrollBar:horizontal {
+  background-color: #232323;
+  height: 10px;
+}
+
+QScrollBar:vertical {
+  background-color: #232323;
+  width: 10px;
+}
+
+QScrollBar::handle:horizontal, QScrollBar::handle:vertical {
+  background-color: #3c5064;
+  min-height: 20px;
+  border-radius: 2px;
+  margin-left: 11;
+  margin-right: 11;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::add-line:vertical {
+  border-radius: 2px;
+  background-color: #3c5064;
+}
+
+QScrollBar::sub-line:horizontal, QScrollBar::sub-line:vertical {
+  border-radius: 2px;
+  background-color: #3c5064;
+}
+
+QScrollBar::right-arrow:horizontal {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/right_arrow.png);
+  width: 7px;
+  height: 7px;
+}
+
+QScrollBar::left-arrow:horizontal {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/left_arrow.png);
+  width: 7px;
+  height: 7px;
+}
+
+QScrollBar::up-arrow:vertical {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/up_arrow.png);
+  width: 7px;
+  height: 7px;
+}
+
+QScrollBar::down-arrow:vertical {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/down_arrow.png);
+  width: 7px;
+  height: 7px;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::add-page:vertical {
+  background: none;
+}
+
+QScrollBar::sub-page:horizontal, QScrollBar::sub-page:vertical {
+  background: none;
+}
+
+QDockWidget:floatable {
+  background-color: #232323;
+  titlebar-close-icon: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_checked.png);
+  titlebar-normal-icon: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_unchecked.png);
+  border: 1px solid #373737;
+}
+
+QDockWidget::focus {
+  background-color: #872323;
+}
+
+QDockWidget::close-button {
+  border: 10px;
+  padding: 2px;
+}
+
+QDockWidget::close-button:hover {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_checked_focus.png);
+}
+
+QDockWidget::float-button {
+  border: 10px;
+  padding: 2px;
+}
+
+QDockWidget::float-button:hover {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_unchecked_focus.png);
+}
+
+QDockWidget::title {
+  background-color: #1e1e1e;
+  padding-top: 2px;
+  text-align: center;
+}
+
+QLineEdit, QTextEdit {
+  background-color: #464646;
+  border: 1px solid #505050;
+  padding-left: 2px;
+  border-radius: 4px;
+}
+
+QLineEdit:focus, QTextEdit:focus {
+  border: 1px solid #82aac8;
+}
+
+QLineEdit:disabled, QTextEdit:disabled {
+  background-color: #323232;
+  border: 1px solid #373737;
+}
+
+QCheckBox {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+QCheckBox::indicator:checked {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_checked.png);
+}
+
+QCheckBox::indicator:checked:focus {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_checked_focus.png);
+}
+
+QCheckBox::indicator:unchecked {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_unchecked.png);
+}
+
+QCheckBox::indicator:unchecked:focus {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_unchecked_focus.png);
+}
+
+QTreeView::indicator:unchecked {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_unchecked.png);
+}
+
+QTreeView::indicator:checked {
+  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_checked.png);
+}
+
+QPushButton {
+  background-color: #3c3c3c;
+  border: 1px solid #464646;
+  border-radius: 2px;
+}
+
+QPushButton::hover {
+  background-color: #465564;
+  border-radius: 5px;
+}
+
+QFrame {
+  border-radius: 3px;
+}
+
+QComboBox {
+  background-color: rgba(40, 40, 40, 0);
+  border: 0px solid #323232;
+  padding-left: 4px;
+}
+
+QComboBox:focus {
+  border: 1px solid #82aac8;
+}
+
+QComboBox::drop-down {
+  background-color: #323232;
+  width: 0px;
+}
+
+QComboBox:hover {
+  color: #78aac8;
+}
+
+QComboBox QAbstractItemView {
+  background-color: #1e1e1e;
+  border: 1px solid #464646;
+  border-radius: 0px;
+}
+
+QComboBox:item:selected {
+  background-color: #3c5064;
+  padding-left: 0px;
+}
+
+QComboBox::indicator {
+  background-color: transparent;
+}
+
+QProgressBar:horizontal {
+  background: #282828;
+  border: 0px solid #343434;
+  text-align: center;
+}
+
+QProgressBar:horizontal::chunk:horizontal {
+  background: #6496c8;
+  margin-top: 1px;
+  margin-bottom: 0px;
+  border-radius: 3px;
+}
+
+QWidget::disabled {
+  color: #646464;
+}
+
+QWidget #style2 {
+  background-color: #282828;
+}
+
+QWidget #style1 {
+  background-color: #282828;
+  border-color: #ffaa00;
+  border: 1px solid #3c3c3c;
+  border-radius: 3px;
+}
+
+QWidget #QCodeEditorLineWidget {
+  background-color: #1e1e1e;
+}
+
+QWidget #Logs {
+  background-color: #282828;
+  border-color: #ffaa00;
+  border: 1px solid #2d2d2d;
+  border-radius: 3px;
+}
+/*# sourceMappingURL=main.css.map */

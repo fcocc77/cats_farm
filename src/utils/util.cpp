@@ -200,7 +200,8 @@ QString getPath()
 	else if (_darwin)
 		return "/usr/local/cats_farm";
 	else
-		return "/opt/cats_farm";
+		// return "/opt/cats_farm";
+		return "/home/pancho/Documents/GitHub/cats_farm";
 }
 
 /*

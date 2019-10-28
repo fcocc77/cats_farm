@@ -10,22 +10,22 @@ RC_ICONS = ../../icons/monitor.ico
 
 QT += core gui widgets multimedia
 
-HEADERS += 	./general.h \
-			./get_manager_info.h \
-			./group_actions.h \
-			./jobs_actions.h \
-			./main_window.h \
-			./servers_actions.h \
-			./settings.h \
-			./shared_variables.h \
-			./tasks_actions.h \
-			./ui_groups_tree.h \
-			./ui_jobs_tree.h \
-			./ui_job_options.h \
-			./ui_servers_tree.h \
-			./ui_server_options.h \
-			./ui_submit.h \
-			./ui_tasks_tree.h \
+HEADERS += 	./hpp/general.h \
+			./hpp/get_manager_info.h \
+			./hpp/group_actions.h \
+			./hpp/jobs_actions.h \
+			./hpp/main_window.h \
+			./hpp/servers_actions.h \
+			./hpp/settings.h \
+			./hpp/shared_variables.h \
+			./hpp/tasks_actions.h \
+			./hpp/ui_groups_tree.h \
+			./hpp/ui_jobs_tree.h \
+			./hpp/ui_job_options.h \
+			./hpp/ui_servers_tree.h \
+			./hpp/ui_server_options.h \
+			./hpp/ui_submit.h \
+			./hpp/ui_tasks_tree.h \
 			../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \
@@ -45,22 +45,22 @@ HEADERS += 	./general.h \
 			../external/QCodeEditor/include/KGL/Design/XmlHelper.hpp \
 			#-------------------------------------
 
-SOURCES += 	./main.cpp \
-			./main_window.cpp \
-			./general.cpp \
-			./get_manager_info.cpp \
-			./groups_actions.cpp \
-			./jobs_actions.cpp \
-			./servers_actions.cpp \
-			./settings.cpp \
-			./tasks_actions.cpp \
-			./ui_groups_tree.cpp \
-			./ui_jobs_tree.cpp \
-			./ui_job_options.cpp \
-			./ui_servers_tree.cpp \
-			./ui_server_options.cpp \
-			./ui_submit.cpp \
-			./ui_tasks_tree.cpp \
+SOURCES += 	./cpp/main.cpp \
+			./cpp/main_window.cpp \
+			./cpp/general.cpp \
+			./cpp/get_manager_info.cpp \
+			./cpp/groups_actions.cpp \
+			./cpp/jobs_actions.cpp \
+			./cpp/servers_actions.cpp \
+			./cpp/settings.cpp \
+			./cpp/tasks_actions.cpp \
+			./cpp/ui_groups_tree.cpp \
+			./cpp/ui_jobs_tree.cpp \
+			./cpp/ui_job_options.cpp \
+			./cpp/ui_servers_tree.cpp \
+			./cpp/ui_server_options.cpp \
+			./cpp/ui_submit.cpp \
+			./cpp/ui_tasks_tree.cpp \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \

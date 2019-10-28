@@ -1,4 +1,4 @@
-#include "main_window.h"
+#include "../hpp/main_window.h"
 
 void monitor::closeEvent(QCloseEvent *event)
 {
@@ -106,6 +106,8 @@ void monitor::main_menu()
 
 void monitor::tool_bar()
 {
+	QComboBox *zone = new QComboBox();
+
 	// toolBar
 	toolBar->setObjectName("ToolBar");
 	toolBar->addAction(jobActions->jobResumeAction);
@@ -115,6 +117,8 @@ void monitor::tool_bar()
 	toolBar->addAction(_general->preferencesAction);
 	toolBar->addSeparator();
 	toolBar->addAction(_general->panelSubmitAction);
+	toolBar->addSeparator();
+	toolBar->addWidget(zone);
 	toolBar->setIconSize(QSize(24, 24));
 	toolBar->setMovable(0);
 	toolBar->setWindowTitle("Tools Bar");
