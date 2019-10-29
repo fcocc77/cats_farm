@@ -10,9 +10,9 @@ int main(int argc, char *argv[])
 	int count = 0;
 	if (_win32)
 	{
-		QStringList lista = os::sh("tasklist -fi \"IMAGENAME eq cmonitor.exe\"").split("\n");
+		QStringList lista = os::sh("tasklist -fi \"IMAGENAME eq vmonitor.exe\"").split("\n");
 		for (QString l : lista)
-			if (l.contains("cmonitor.exe"))
+			if (l.contains("vmonitor.exe"))
 				count++;
 	}
 	else

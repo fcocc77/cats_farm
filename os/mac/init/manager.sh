@@ -1,2 +1,2 @@
 #!/bin/bash
-cd "/usr/local/vinarender/bin/mac" && "./cmanager"
+cd "/usr/local/vinarender/bin/mac" && "./vmanager"

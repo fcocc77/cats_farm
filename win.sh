@@ -53,26 +53,26 @@ install() {
 
     # Creacion de servicios
     nssm="$path/os/win/service/nssm.exe"
-    $nssm install cserver $dst/bin/win/cserver.exe
-    $nssm install cmanager $dst/bin/win/cmanager.exe
+    $nssm install vserver $dst/bin/win/vserver.exe
+    $nssm install vmanager $dst/bin/win/vmanager.exe
     $nssm install coreTemp $dst/os/win/core_temp/core_temp.exe
     # -----------------------------
-    $nssm set "cmanager" ObjectName .\\$user $password
-    $nssm set "cserver" ObjectName .\\$user $password
+    $nssm set "vmanager" ObjectName .\\$user $password
+    $nssm set "vserver" ObjectName .\\$user $password
 
     # Inicializa servicios
     if $server_start; then
-        sc start "cserver"
+        sc start "vserver"
     else
-        sc stop "cserver"
-        sc config "cserver" start= disabled
+        sc stop "vserver"
+        sc config "vserver" start= disabled
     fi
     # -----------------------
     if $manager_start; then
-        sc start "cmanager"
+        sc start "vmanager"
     else
-        sc stop "cmanager"
-        sc config "cmanager" start= disabled
+        sc stop "vmanager"
+        sc config "vmanager" start= disabled
     fi
     # -----------------------
     sc start "coreTemp"
@@ -88,15 +88,15 @@ install() {
 
 uninstall() {
     nssm="$path/os/win/service/nssm.exe"
-    $nssm stop "cserver"
-    $nssm stop "cmanager"
+    $nssm stop "vserver"
+    $nssm stop "vmanager"
     $nssm stop "coreTemp"
 
-    $nssm remove "cserver" confirm
-    $nssm remove "cmanager" confirm
+    $nssm remove "vserver" confirm
+    $nssm remove "vmanager" confirm
     $nssm remove "coreTemp" confirm
 
-    taskkill -f -im "cmonitor.exe"
+    taskkill -f -im "vmonitor.exe"
 
     rm "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/VinaRender Monitor.lnk"
     rm -rf $dst

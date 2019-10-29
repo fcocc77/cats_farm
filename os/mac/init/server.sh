@@ -1,2 +1,2 @@
 #!/bin/bash
-cd "/usr/local/vinarender/bin/mac" && "./cserver"
+cd "/usr/local/vinarender/bin/mac" && "./vserver"

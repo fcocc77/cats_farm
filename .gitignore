@@ -11,9 +11,9 @@ src/*/*.exe
 src/*/*.app
 src/*/*.rc
 src/*/submit
-src/*/cserver
-src/*/cmanager
-src/*/cmonitor
+src/*/vserver
+src/*/vmanager
+src/*/vmonitor
 src/*/logger
 src/*/utils
 src/*/videovina

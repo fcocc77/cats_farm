@@ -42,9 +42,9 @@ install() {
     # ----------------------
 
     # Compilacion de todo
-    compile server cserver
-    compile manager cmanager
-    compile monitor cmonitor
+    compile server vserver
+    compile manager vmanager
+    compile monitor vmonitor
     compile submit submit 
     compile videovina videovina 
     # ----------------------
@@ -52,14 +52,14 @@ install() {
     echo $ip > $path"/etc/manager_host"
 
     # Creacion de servicios
-    cp $path/os/linux/init/cserver.service /etc/systemd/system
-    cp $path/os/linux/init/cmanager.service /etc/systemd/system
+    cp $path/os/linux/init/vserver.service /etc/systemd/system
+    cp $path/os/linux/init/vmanager.service /etc/systemd/system
     systemctl daemon-reload
     # -----------------------------
 
     # los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
-    sed -i -e 's/\r//g' $path/os/linux/init/cserver.sh
-    sed -i -e 's/\r//g' $path/os/linux/init/cmanager.sh
+    sed -i -e 's/\r//g' $path/os/linux/init/vserver.sh
+    sed -i -e 's/\r//g' $path/os/linux/init/vmanager.sh
     # --------------------------------------------------------------------------------
 
     mkdir $dst
@@ -81,20 +81,20 @@ install() {
 
     # inicializacion de servicios
     if $server_start; then
-        systemctl start cserver
-        systemctl enable cserver
+        systemctl start vserver
+        systemctl enable vserver
     fi
 
     if $manager_start; then
-        systemctl start cmanager
-        systemctl enable cmanager
+        systemctl start vmanager
+        systemctl enable vmanager
     fi
     # -----------------------------
 
     # Acceso directo
     echo "[Desktop Entry]
     Name=VinaRender Monitor
-    Exec=/opt/vinarender/bin/cmonitor
+    Exec=/opt/vinarender/bin/vmonitor
     Icon=/opt/vinarender/icons/monitor.png
     Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
     Type=Application" > "/usr/share/applications/VinaRender.desktop"
@@ -102,11 +102,11 @@ install() {
 }
 
 uninstall() {
-    systemctl stop cmanager
-    systemctl stop cserver
+    systemctl stop vmanager
+    systemctl stop vserver
 
-    rm /etc/systemd/system/cmanager.service
-    rm /etc/systemd/system/cserver.service
+    rm /etc/systemd/system/vmanager.service
+    rm /etc/systemd/system/vserver.service
 
     rm "/usr/share/applications/VinaRender.desktop"
     rm -rf $dst

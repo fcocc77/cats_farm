@@ -4,7 +4,7 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 RC_ICONS = ../../icons/server.ico
 
 TEMPLATE = app
-TARGET = "cserver"
+TARGET = "vserver"
 
 CONFIG += console c++11 
 CONFIG -= app_bundle
