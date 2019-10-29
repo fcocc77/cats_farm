@@ -11,14 +11,25 @@ void monitor::closeEvent(QCloseEvent *event)
 	}
 }
 
+monitor::monitor(QWidget *parent) : QMainWindow(parent)
+{
+
+	ui->setupUi(this);
+
+	ui->jobs->setColumnWidth(2, 200);
+}
+
 void monitor::init()
 {
-	main_menu();
-	tool_bar();
-	log_ui();
-	assamble();
 
-	qthread(&monitor::update, this);
+	// this->setCentralWidget(jobsList->widget);
+
+	// main_menu();
+	// tool_bar();
+	// log_ui();
+	// assamble();
+
+	// qthread(&monitor::update, this);
 }
 
 void monitor::update()
@@ -106,7 +117,11 @@ void monitor::main_menu()
 
 void monitor::tool_bar()
 {
-	QComboBox *zone = new QComboBox();
+	QPushButton *tmpButton = new QPushButton();
+
+	connect(tmpButton, &QPushButton::clicked, this, [this]() {
+		_general->style_ui();
+	});
 
 	// toolBar
 	toolBar->setObjectName("ToolBar");
@@ -118,7 +133,7 @@ void monitor::tool_bar()
 	toolBar->addSeparator();
 	toolBar->addAction(_general->panelSubmitAction);
 	toolBar->addSeparator();
-	toolBar->addWidget(zone);
+	toolBar->addWidget(tmpButton);
 	toolBar->setIconSize(QSize(24, 24));
 	toolBar->setMovable(0);
 	toolBar->setWindowTitle("Tools Bar");

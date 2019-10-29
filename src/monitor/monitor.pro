@@ -10,6 +10,8 @@ RC_ICONS = ../../icons/monitor.ico
 
 QT += core gui widgets multimedia
 
+FORMS = ./ui/main.ui
+
 HEADERS += 	./hpp/general.h \
 			./hpp/get_manager_info.h \
 			./hpp/group_actions.h \

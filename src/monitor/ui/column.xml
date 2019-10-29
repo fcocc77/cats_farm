@@ -1,0 +1,5 @@
+<column>
+    <property name="text">
+        <string notr="true">{{value}}</string>
+    </property>
+</column>

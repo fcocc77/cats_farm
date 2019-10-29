@@ -65,7 +65,7 @@ void general::style_ui()
 
 	QString style = fread(path + "/src/monitor/sass/main.css");
 
-	monitor->setStyleSheet(style.toStdString().c_str());
+	// monitor->setStyleSheet(style.toStdString().c_str());
 }
 
 void general::show_splash()

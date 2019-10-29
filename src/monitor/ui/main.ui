@@ -1,4 +1,12 @@
-/* Black blue color */
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui version="4.0">
+    <class>MainWindow</class>
+
+    <widget class="QMainWindow" name="MainWindow">
+
+        <!-- estilos de catsfarm -->
+        <property name="styleSheet">
+            <string notr="true">/* Black blue color */
 QWidget {
   color: #c7cbd1;
   background-color: #1c1e21;
@@ -269,3 +277,83 @@ QWidget #Logs {
 
 #jobs QHeaderView::section {
   padding: 5px 10px 5px 10px; }
+</string>
+        </property>
+        <!---->
+
+
+        <property name="windowTitle">
+            <string>CatsFarm Monitor</string>
+        </property>
+        <widget class="QWidget" name="centralwidget">
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                    <widget class="QTreeWidget" name="jobs">
+    <property name="indentation">
+        <number>0</number>
+    </property>
+    <column>
+    <property name="text">
+        <string notr="true">Job Name</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Priority</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Software</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Progress</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Status</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Submit Data/Time</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Finished Data/Time</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Total Render Time</string>
+    </property>
+</column>
+    <column>
+    <property name="text">
+        <string notr="true">Comment</string>
+    </property>
+</column>
+</widget>
+                </item>             
+            </layout>
+        </widget>
+
+        <widget class="QMenuBar" name="menubar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>800</width>
+                    <height>22</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QStatusBar" name="statusbar" />
+    </widget>
+    <resources />
+    <connections />
+</ui>

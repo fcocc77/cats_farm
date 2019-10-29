@@ -1,0 +1,14 @@
+<widget class="QTreeWidget" name="jobs">
+    <property name="indentation">
+        <number>0</number>
+    </property>
+    {% include 'column.xml' with value="Job Name"%}
+    {% include 'column.xml' with value="Priority"%}
+    {% include 'column.xml' with value="Software"%}
+    {% include 'column.xml' with value="Progress"%}
+    {% include 'column.xml' with value="Status"%}
+    {% include 'column.xml' with value="Submit Data/Time"%}
+    {% include 'column.xml' with value="Finished Data/Time"%}
+    {% include 'column.xml' with value="Total Render Time"%}
+    {% include 'column.xml' with value="Comment"%}
+</widget>

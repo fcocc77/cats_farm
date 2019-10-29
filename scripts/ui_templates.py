@@ -1,21 +1,19 @@
 from django.conf import settings
 from django.template.loader import get_template
 import django
-import sys
 
-path = sys.argv[1]
-
+ui = "src/monitor/ui"
 settings.configure(TEMPLATES=[
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [path],
+        'DIRS': ["./", ui],
     }
 ])
 
 django.setup()
 
-template = get_template("main.xml")
+template = get_template(ui + "/main.xml")
 
-f = open(path + "/main.ui", "w")
+f = open(ui + "/main.ui", "w")
 f.write(template.render())
 f.close()
