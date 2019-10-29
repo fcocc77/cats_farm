@@ -12,22 +12,15 @@ QT += core gui widgets multimedia
 
 FORMS = ./ui/main.ui
 
-HEADERS += 	./hpp/general.h \
-			./hpp/get_manager_info.h \
-			./hpp/group_actions.h \
-			./hpp/jobs_actions.h \
-			./hpp/main_window.h \
-			./hpp/servers_actions.h \
-			./hpp/settings.h \
-			./hpp/shared_variables.h \
-			./hpp/tasks_actions.h \
-			./hpp/ui_groups_tree.h \
-			./hpp/ui_jobs_tree.h \
-			./hpp/ui_job_options.h \
-			./hpp/ui_servers_tree.h \
-			./hpp/ui_server_options.h \
-			./hpp/ui_submit.h \
-			./hpp/ui_tasks_tree.h \
+HEADERS += 	./hpp/includes.hpp \
+			./hpp/menu_bar.hpp \
+			./hpp/jobs.hpp \
+			./hpp/servers.hpp \
+			./hpp/tasks.hpp \
+			./hpp/groups.hpp \
+			./hpp/update.hpp \
+			./hpp/main_window.hpp \
+			./hpp/shared_variables.hpp \
 			../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \
@@ -48,21 +41,13 @@ HEADERS += 	./hpp/general.h \
 			#-------------------------------------
 
 SOURCES += 	./cpp/main.cpp \
+			./cpp/menu_bar.cpp \
+			./cpp/jobs.cpp \
+			./cpp/servers.cpp \
+			./cpp/tasks.cpp \
+			./cpp/groups.cpp \
 			./cpp/main_window.cpp \
-			./cpp/general.cpp \
-			./cpp/get_manager_info.cpp \
-			./cpp/groups_actions.cpp \
-			./cpp/jobs_actions.cpp \
-			./cpp/servers_actions.cpp \
-			./cpp/settings.cpp \
-			./cpp/tasks_actions.cpp \
-			./cpp/ui_groups_tree.cpp \
-			./cpp/ui_jobs_tree.cpp \
-			./cpp/ui_job_options.cpp \
-			./cpp/ui_servers_tree.cpp \
-			./cpp/ui_server_options.cpp \
-			./cpp/ui_submit.cpp \
-			./cpp/ui_tasks_tree.cpp \
+			./cpp/update.cpp \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \

@@ -1,4 +1,4 @@
-#include "../hpp/main_window.h"
+#include "../hpp/main_window.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	{
 		QApplication a(argc, argv);
 		monitor w;
-		w.init();
+		// w.init();
 		w.showMaximized();
 
 		return a.exec();

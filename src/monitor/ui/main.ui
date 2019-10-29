@@ -275,8 +275,24 @@ QWidget #Logs {
   border: 1px solid #2e3238;
   border-radius: 3px; }
 
-#jobs QHeaderView::section {
-  padding: 5px 10px 5px 10px; }
+* {
+  color: #c7cbd1;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  background: white;
+  background-color: white;
+  border: 0px;
+  font: 8pt "Tahoma"; }
+
+#jobs {
+  background-color: #23262a;
+  border: 1px solid red; }
+  #jobs QHeaderView::section {
+    border: 1px solid red;
+    padding: 5px 10px 5px 10px;
+    background-color: #2a2d32;
+    border: 0px solid transparent; }
 </string>
         </property>
         <!---->
@@ -286,6 +302,7 @@ QWidget #Logs {
             <string>CatsFarm Monitor</string>
         </property>
         <widget class="QWidget" name="centralwidget">
+        
             <layout class="QVBoxLayout" name="verticalLayout">
                 <item>
                     <widget class="QTreeWidget" name="jobs">
@@ -341,17 +358,157 @@ QWidget #Logs {
                 </item>             
             </layout>
         </widget>
+        <widget class="QMenuBar" name="menu_bar">
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>766</width>
+            <height>22</height>
+        </rect>
+    </property>
+    <widget class="QMenu" name="menuhola">
+        <property name="title">
+            <string>File</string>
+        </property>
+        <addaction name="actionhola" />
+        <addaction name="separator" />
+        <addaction name="actionsa" />
+    </widget>
+    <addaction name="menuhola" />
+</widget>
+        <widget class="QDockWidget" name="dockWidget">
+    <property name="windowTitle">
+        <string>Servers</string>
+    </property>
+    <attribute name="dockWidgetArea">
+        <number>1</number>
+    </attribute>
+    <widget class="QWidget" name="dockWidgetContents">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+                <widget class="QTreeWidget" name="servers">
+                    <column>
+    <property name="text">
+        <string notr="true">Server Name</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Status</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Ins.</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">CPU Usage</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">RAM Usage</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">System</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">IP</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">VM</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Job Rendered</string>
+    </property>
+</column>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</widget>
+        <widget class="QDockWidget" name="dockWidget">
+    <property name="windowTitle">
+        <string>Tasks</string>
+    </property>
+    <attribute name="dockWidgetArea">
+        <number>1</number>
+    </attribute>
+    <widget class="QWidget" name="dockWidgetContents">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+                <widget class="QTreeWidget" name="tasks">
+                    <column>
+    <property name="text">
+        <string notr="true">Task</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Frame Range</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Status</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Server</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Time</string>
+    </property>
+</column>
 
-        <widget class="QMenuBar" name="menubar">
-            <property name="geometry">
-                <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>800</width>
-                    <height>22</height>
-                </rect>
-            </property>
-        </widget>
+
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</widget>
+        <widget class="QDockWidget" name="dockWidget">
+    <property name="windowTitle">
+        <string>Groups</string>
+    </property>
+    <attribute name="dockWidgetArea">
+        <number>1</number>
+    </attribute>
+    <widget class="QWidget" name="dockWidgetContents">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+                <widget class="QTreeWidget" name="groups">
+                    <column>
+    <property name="text">
+        <string notr="true">Group Name</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
+        <string notr="true">Status</string>
+    </property>
+</column>
+
+
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</widget>
         <widget class="QStatusBar" name="statusbar" />
     </widget>
     <resources />

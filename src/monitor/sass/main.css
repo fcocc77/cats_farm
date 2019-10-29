@@ -267,5 +267,21 @@ QWidget #Logs {
   border: 1px solid #2e3238;
   border-radius: 3px; }
 
-#jobs QHeaderView::section {
-  padding: 5px 10px 5px 10px; }
+* {
+  color: #c7cbd1;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  background: white;
+  background-color: white;
+  border: 0px;
+  font: 8pt "Tahoma"; }
+
+#jobs {
+  background-color: #23262a;
+  border: 1px solid red; }
+  #jobs QHeaderView::section {
+    border: 1px solid red;
+    padding: 5px 10px 5px 10px;
+    background-color: #2a2d32;
+    border: 0px solid transparent; }

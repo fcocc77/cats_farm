@@ -15,23 +15,17 @@
             <string>CatsFarm Monitor</string>
         </property>
         <widget class="QWidget" name="centralwidget">
+        
             <layout class="QVBoxLayout" name="verticalLayout">
                 <item>
-                    {% include 'job_tree.xml'%}
+                    {% include 'jobs.xml'%}
                 </item>             
             </layout>
         </widget>
-
-        <widget class="QMenuBar" name="menubar">
-            <property name="geometry">
-                <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>800</width>
-                    <height>22</height>
-                </rect>
-            </property>
-        </widget>
+        {% include 'menu_bar.xml'%}
+        {% include 'servers.xml'%}
+        {% include 'tasks.xml'%}
+        {% include 'groups.xml'%}
         <widget class="QStatusBar" name="statusbar" />
     </widget>
     <resources />

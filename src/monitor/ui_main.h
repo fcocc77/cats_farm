@@ -13,8 +13,10 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QDockWidget>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTreeWidget>
@@ -29,7 +31,20 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout;
     QTreeWidget *jobs;
-    QMenuBar *menubar;
+    QMenuBar *menu_bar;
+    QMenu *menuhola;
+    QDockWidget *dockWidget;
+    QWidget *dockWidgetContents;
+    QVBoxLayout *verticalLayout_2;
+    QTreeWidget *servers;
+    QDockWidget *dockWidget1;
+    QWidget *dockWidgetContents1;
+    QVBoxLayout *verticalLayout_21;
+    QTreeWidget *tasks;
+    QDockWidget *dockWidget2;
+    QWidget *dockWidgetContents2;
+    QVBoxLayout *verticalLayout_22;
+    QTreeWidget *groups;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -313,8 +328,24 @@ public:
 "  border: 1px solid #2e3238;\n"
 "  border-radius: 3px; }\n"
 "\n"
-"#jobs QHeaderView::section {\n"
-"  padding: 5px 10px 5px 10px; }\n"
+"* {\n"
+"  color: #c7cbd1;\n"
+"  margin: 0;\n"
+"  padding: 0;\n"
+"  outline: 0;\n"
+"  background: white;\n"
+"  background-color: white;\n"
+"  border: 0px;\n"
+"  font: 8pt \"Tahoma\"; }\n"
+"\n"
+"#jobs {\n"
+"  background-color: #23262a;\n"
+"  border: 1px solid red; }\n"
+"  #jobs QHeaderView::section {\n"
+"    border: 1px solid red;\n"
+"    padding: 5px 10px 5px 10px;\n"
+"    background-color: #2a2d32;\n"
+"    border: 0px solid transparent; }\n"
 ""));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
@@ -338,13 +369,79 @@ public:
         verticalLayout->addWidget(jobs);
 
         MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 22));
-        MainWindow->setMenuBar(menubar);
+        menu_bar = new QMenuBar(MainWindow);
+        menu_bar->setObjectName(QStringLiteral("menu_bar"));
+        menu_bar->setGeometry(QRect(0, 0, 766, 22));
+        menuhola = new QMenu(menu_bar);
+        menuhola->setObjectName(QStringLiteral("menuhola"));
+        MainWindow->setMenuBar(menu_bar);
+        dockWidget = new QDockWidget(MainWindow);
+        dockWidget->setObjectName(QStringLiteral("dockWidget"));
+        dockWidgetContents = new QWidget();
+        dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
+        verticalLayout_2 = new QVBoxLayout(dockWidgetContents);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
+        servers = new QTreeWidget(dockWidgetContents);
+        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem();
+        __qtreewidgetitem1->setText(8, QStringLiteral("Job Rendered"));
+        __qtreewidgetitem1->setText(7, QStringLiteral("VM"));
+        __qtreewidgetitem1->setText(6, QStringLiteral("IP"));
+        __qtreewidgetitem1->setText(5, QStringLiteral("System"));
+        __qtreewidgetitem1->setText(4, QStringLiteral("RAM Usage"));
+        __qtreewidgetitem1->setText(3, QStringLiteral("CPU Usage"));
+        __qtreewidgetitem1->setText(2, QStringLiteral("Ins."));
+        __qtreewidgetitem1->setText(1, QStringLiteral("Status"));
+        __qtreewidgetitem1->setText(0, QStringLiteral("Server Name"));
+        servers->setHeaderItem(__qtreewidgetitem1);
+        servers->setObjectName(QStringLiteral("servers"));
+
+        verticalLayout_2->addWidget(servers);
+
+        dockWidget->setWidget(dockWidgetContents);
+        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
+        dockWidget1 = new QDockWidget(MainWindow);
+        dockWidget1->setObjectName(QStringLiteral("dockWidget1"));
+        dockWidgetContents1 = new QWidget();
+        dockWidgetContents1->setObjectName(QStringLiteral("dockWidgetContents1"));
+        verticalLayout_21 = new QVBoxLayout(dockWidgetContents1);
+        verticalLayout_21->setObjectName(QStringLiteral("verticalLayout_21"));
+        tasks = new QTreeWidget(dockWidgetContents1);
+        QTreeWidgetItem *__qtreewidgetitem2 = new QTreeWidgetItem();
+        __qtreewidgetitem2->setText(4, QStringLiteral("Time"));
+        __qtreewidgetitem2->setText(3, QStringLiteral("Server"));
+        __qtreewidgetitem2->setText(2, QStringLiteral("Status"));
+        __qtreewidgetitem2->setText(1, QStringLiteral("Frame Range"));
+        __qtreewidgetitem2->setText(0, QStringLiteral("Task"));
+        tasks->setHeaderItem(__qtreewidgetitem2);
+        tasks->setObjectName(QStringLiteral("tasks"));
+
+        verticalLayout_21->addWidget(tasks);
+
+        dockWidget1->setWidget(dockWidgetContents1);
+        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget1);
+        dockWidget2 = new QDockWidget(MainWindow);
+        dockWidget2->setObjectName(QStringLiteral("dockWidget2"));
+        dockWidgetContents2 = new QWidget();
+        dockWidgetContents2->setObjectName(QStringLiteral("dockWidgetContents2"));
+        verticalLayout_22 = new QVBoxLayout(dockWidgetContents2);
+        verticalLayout_22->setObjectName(QStringLiteral("verticalLayout_22"));
+        groups = new QTreeWidget(dockWidgetContents2);
+        QTreeWidgetItem *__qtreewidgetitem3 = new QTreeWidgetItem();
+        __qtreewidgetitem3->setText(1, QStringLiteral("Status"));
+        __qtreewidgetitem3->setText(0, QStringLiteral("Group Name"));
+        groups->setHeaderItem(__qtreewidgetitem3);
+        groups->setObjectName(QStringLiteral("groups"));
+
+        verticalLayout_22->addWidget(groups);
+
+        dockWidget2->setWidget(dockWidgetContents2);
+        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget2);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));
         MainWindow->setStatusBar(statusbar);
+
+        menu_bar->addAction(menuhola->menuAction());
+        menuhola->addSeparator();
 
         retranslateUi(MainWindow);
 
@@ -354,6 +451,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "CatsFarm Monitor", Q_NULLPTR));
+        menuhola->setTitle(QApplication::translate("MainWindow", "File", Q_NULLPTR));
+        dockWidget->setWindowTitle(QApplication::translate("MainWindow", "Servers", Q_NULLPTR));
+        dockWidget1->setWindowTitle(QApplication::translate("MainWindow", "Tasks", Q_NULLPTR));
+        dockWidget2->setWindowTitle(QApplication::translate("MainWindow", "Groups", Q_NULLPTR));
     } // retranslateUi
 
 };

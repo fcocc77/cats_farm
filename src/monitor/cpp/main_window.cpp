@@ -1,4 +1,28 @@
-#include "../hpp/main_window.h"
+#include "../hpp/main_window.hpp"
+
+monitor::monitor(QWidget *parent) : QMainWindow(parent)
+{
+	ui = new Ui::MainWindow;
+	ui->setupUi(this);
+
+	shared = new shared_variables();
+
+	menu_bar = new menu_bar_class(ui);
+	jobs = new jobs_class(ui);
+	servers = new servers_class(ui);
+	tasks = new tasks_class(ui);
+	groups = new groups_class(ui);
+	servers = new servers_class(ui);
+	update = new update_class(ui, shared);
+}
+
+monitor::~monitor()
+{
+	QString openMonitor = path + "/etc/openMonitor";
+	fwrite(openMonitor, "0"); // escrebe que el monitor ya esta cerrado
+}
+
+/*
 
 void monitor::closeEvent(QCloseEvent *event)
 {
@@ -9,14 +33,6 @@ void monitor::closeEvent(QCloseEvent *event)
 		event->ignore();
 		this->hide();
 	}
-}
-
-monitor::monitor(QWidget *parent) : QMainWindow(parent)
-{
-
-	ui->setupUi(this);
-
-	ui->jobs->setColumnWidth(2, 200);
 }
 
 void monitor::init()
@@ -162,3 +178,6 @@ void monitor::log_ui()
 	log_dock->setWidget(widget);
 	log_dock->hide();
 }
+
+
+*/

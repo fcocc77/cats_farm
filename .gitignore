@@ -17,6 +17,7 @@ src/*/cmonitor
 src/*/logger
 src/*/utils
 src/*/videovina
+src/*/ui_main.h
 bin
 etc/info.json*
 log/bugs.txt
