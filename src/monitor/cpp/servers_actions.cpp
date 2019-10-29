@@ -181,7 +181,7 @@ void servers_actions::serverSSH()
 
 	QString disable_ask = " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
 	QString cmd;
-	QString ssh = "C:/cats_farm/os/win/OpenSSH/bin/ssh.exe";
+	QString ssh = "C:/vinarender/os/win/OpenSSH/bin/ssh.exe";
 	QString linux_sshpass = "sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip;
 
 	if (_win32)

@@ -71,8 +71,8 @@ QString manager::videovina(QJsonArray recv)
     // -------------------------------------
 
     // Modifica el proyecto de after effect con los datos del proyecto del usuario
-    QString vina2ae = catsfarm + "/modules/videovina/vina2ae.jsx";
-    QString afterfx = catsfarm + "/modules/ae/afterfx.sh";
+    QString vina2ae = vinarender + "/modules/videovina/vina2ae.jsx";
+    QString afterfx = vinarender + "/modules/ae/afterfx.sh";
     QString cmd = "sh " + afterfx + " " + project + " " + vina2ae;
     print("start project");
     os::sh(cmd);

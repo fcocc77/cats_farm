@@ -63,7 +63,7 @@ void settings::style()
 	resize(700, 400);
 	QString _style = fread(path + "/theme/style.css");
 	setStyleSheet(_style.toStdString().c_str());
-	setWindowTitle("CatsFarm Setting");
+	setWindowTitle("VinaRender Setting");
 
 	// Agrega el icono y titulo al panel y ventana
 	QIcon *app_icon = new QIcon();

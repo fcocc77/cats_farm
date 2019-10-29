@@ -2,7 +2,7 @@
 path="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # ruta de instalacion
-dst="/opt/cats_farm"
+dst="/opt/vinarender"
 # ------------------
 # IP del manager
 ip="192.168.1.40"
@@ -93,11 +93,11 @@ install() {
 
     # Acceso directo
     echo "[Desktop Entry]
-    Name=CatsFarm Monitor
-    Exec=/opt/cats_farm/bin/cmonitor
-    Icon=/opt/cats_farm/icons/monitor.png
+    Name=VinaRender Monitor
+    Exec=/opt/vinarender/bin/cmonitor
+    Icon=/opt/vinarender/icons/monitor.png
     Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
-    Type=Application" > "/usr/share/applications/CatsFarm.desktop"
+    Type=Application" > "/usr/share/applications/VinaRender.desktop"
     # ---------------
 }
 
@@ -108,7 +108,7 @@ uninstall() {
     rm /etc/systemd/system/cmanager.service
     rm /etc/systemd/system/cserver.service
 
-    rm "/usr/share/applications/CatsFarm.desktop"
+    rm "/usr/share/applications/VinaRender.desktop"
     rm -rf $dst
 }
 

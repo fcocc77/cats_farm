@@ -180,7 +180,7 @@ void render::suspend_vbox()
 			if (VMCinemaRunningTimes > 10)
 			{ // si no se esta usando Cinema4D, al numero 10 se apaga la maquina
 				if (vbox_working() and VMCinemaTurn)
-				{ // solo si esta prendida y si la prendio catsfarm
+				{ // solo si esta prendida y si la prendio vinarender
 					vbox_turn(false);
 					VMCinemaTurn = false;
 				}
@@ -452,7 +452,7 @@ bool render::houdini(int ins)
 
 	QString hipFile = project[ins].replace(src_path[ins], dst_path[ins]);
 
-	QString render_file = path + "/modules/houdiniCatsFarm.py " +
+	QString render_file = path + "/modules/houdiniVinaRender.py " +
 						  hipFile + " " + renderNode[ins] + " " + QString::number(first_frame[ins]) + " " + QString::number(last_frame[ins]);
 
 	QString cmd = '"' + exe + "\" " + render_file;

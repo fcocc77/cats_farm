@@ -37,7 +37,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
 		if (_win32)
 		{
 			username = os::sh("echo %username%").split(" ")[0];
-			userpass = fread("C:/ProgramData/cats_farm/user");
+			userpass = fread("C:/ProgramData/vinarender/user");
 		}
 		else
 		{

@@ -1,7 +1,7 @@
 #0  0x00007ffff64ee810 in QJsonValue::stringDataFromQStringHelper(QString const&) () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
-#1  0x0000000000421f51 in manager::update_server (this=0x7fffffffebf0) at /opt/cats_farm/code/manager/update.cpp:118
-#2  0x00000000004214ba in manager::update_all (this=0x7fffffffebf0) at /opt/cats_farm/code/manager/update.cpp:10
-#3  0x000000000041188c in void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}::operator()() const (__closure=0x45bef0) at /opt/cats_farm/code/manager/../utils/threading.h:27
+#1  0x0000000000421f51 in manager::update_server (this=0x7fffffffebf0) at /opt/vinarender/code/manager/update.cpp:118
+#2  0x00000000004214ba in manager::update_all (this=0x7fffffffebf0) at /opt/vinarender/code/manager/update.cpp:10
+#3  0x000000000041188c in void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}::operator()() const (__closure=0x45bef0) at /opt/vinarender/code/manager/../utils/threading.h:27
 #4  0x0000000000415784 in QtPrivate::FunctorCall<QtPrivate::IndexesList<>, QtPrivate::List<>, void, void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}>::call({lambda()#1}&, void**) (f=..., arg=0x7fffece8ac80) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h:135
 #5  0x000000000041571d in QtPrivate::Functor<void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}, 0>::call<QtPrivate::List<>, void>({lambda()#1}&, void*, {lambda()#1}&*) (f=..., arg=0x7fffece8ac80) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h:192
 #6  0x0000000000415675 in QtPrivate::QFunctorSlotObject<void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}, 0, QtPrivate::List<>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*) (which=1, this_=0x45bee0, r=0x45c360, a=0x7fffece8ac80, ret=0x0) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobject_impl.h:169

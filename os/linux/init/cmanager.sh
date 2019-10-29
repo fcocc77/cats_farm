@@ -1,9 +1,9 @@
-pid_file='/opt/cats_farm/os/linux/init/managerPID'
-log_file='/opt/cats_farm/log/manager crash - '$(date)'.log'
-debug=$(cat '/opt/cats_farm/etc/debug')
+pid_file='/opt/vinarender/os/linux/init/managerPID'
+log_file='/opt/vinarender/log/manager crash - '$(date)'.log'
+debug=$(cat '/opt/vinarender/etc/debug')
 
 run() {
-	# mata el pid a partir del puerto de catsfarm
+	# mata el pid a partir del puerto de vinarender
 	fuser -k 7000/tcp &>/dev/null
 	#----------------------------------
 	if $debug; then
@@ -19,10 +19,10 @@ start() {
  	pid=$(cat $pid_file)
 
 	if ! kill -0 $pid > /dev/null 2>&1; then
-		echo "CatsFarm Manager has started."
-		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen && cd '/opt/cats_farm/bin' && run &>/dev/null & echo $! > $pid_file
+		echo "VinaRender Manager has started."
+		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen && cd '/opt/vinarender/bin' && run &>/dev/null & echo $! > $pid_file
 	else
-		echo "CatsFarm Manager is running now."
+		echo "VinaRender Manager is running now."
 	fi
 }
 
@@ -31,7 +31,7 @@ stop() {
 
 	if kill -0 $cpid > /dev/null 2>&1; then
 		fuser -k 7000/tcp
-		echo "CatsFarm Manager has stopped."
+		echo "VinaRender Manager has stopped."
 	else
 		echo "Is not running."
 	fi

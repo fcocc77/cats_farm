@@ -4,7 +4,7 @@
 
     <widget class="QMainWindow" name="MainWindow">
 
-        <!-- estilos de catsfarm -->
+        <!-- estilos de vinarender -->
         <property name="styleSheet">
             <string notr="true">{% include 'src/monitor/sass/main.css' %}</string>
         </property>
@@ -12,7 +12,7 @@
 
 
         <property name="windowTitle">
-            <string>CatsFarm Monitor</string>
+            <string>VinaRender Monitor</string>
         </property>
         <widget class="QWidget" name="centralwidget">
         

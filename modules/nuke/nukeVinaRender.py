@@ -5,22 +5,22 @@ import nuke
 # detecta el sistema operativo
 if platform == "win32":
     system = "Windows"
-    path = "C:/cats_farm"
+    path = "C:/vinarender"
     bin = path + "/bin/win"
 elif platform == "darwin":
     system = "Mac"
-    path = "/usr/local/cats_farm"
+    path = "/usr/local/vinarender"
     bin = path + "/bin/mac"
 else:
     system = "Linux"
-    path = "/opt/cats_farm"
+    path = "/opt/vinarender"
     bin = path + "/bin/linux"
 # -------------------------------------------------------
 
 sys.path.insert(0, path + '/modules')
 from util import *
 
-class catsFarmSend():
+class VinaRenderSend():
     def __init__(self):
         self.write = nuke.selectedNode()
         checkOK = self.checkProject()

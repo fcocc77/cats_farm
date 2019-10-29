@@ -58,7 +58,7 @@ void general::actions()
 void general::style_ui()
 {
 
-	monitor->setWindowTitle("CatsFarm Monitor");
+	monitor->setWindowTitle("VinaRender Monitor");
 
 	QIcon icon(path + "/icons/monitor.png");
 	monitor->setWindowIcon(icon);
@@ -130,13 +130,13 @@ void general::notifyIcon()
 
 						if (status == "Failed")
 						{
-							notify->showMessage("CatsFarm", name + "  has failed");
+							notify->showMessage("VinaRender", name + "  has failed");
 							QSound(path + "/sound/angry_cat.wav", this).play();
 						}
 
 						if (status == "Completed")
 						{
-							notify->showMessage("CatsFarm", name + "  has finished");
+							notify->showMessage("VinaRender", name + "  has finished");
 							QSound(path + "/sound/meaw_cat.wav", this).play();
 						}
 					}

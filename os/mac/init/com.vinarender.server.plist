@@ -3,9 +3,9 @@
 <plist version="1.0">
 	<dict>
 		<key>Label</key>
-		<string>com.catsfarm.manager</string>
+		<string>com.vinarender.server</string>
 		<key>Program</key>
-		<string>/usr/local/cats_farm/os/mac/init/manager.sh</string>
+		<string>/usr/local/vinarender/os/mac/init/server.sh</string>
 		<key>RunAtLoad</key>
 		<true/>
 	</dict>

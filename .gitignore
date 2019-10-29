@@ -6,7 +6,7 @@ src/*/qrc_res.cpp
 src/*/Makefile*
 src/*/object_script*
 src/*/.qmake.stash
-src/*/CatsFarm*
+src/*/VinaRender*
 src/*/*.exe
 src/*/*.app
 src/*/*.rc

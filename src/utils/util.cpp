@@ -196,12 +196,12 @@ void print(QString input)
 QString getPath()
 {
 	if (_win32)
-		return "C:/cats_farm";
+		return "C:/vinarender";
 	else if (_darwin)
-		return "/usr/local/cats_farm";
+		return "/usr/local/vinarender";
 	else
-		// return "/opt/cats_farm";
-		return "/home/pancho/Documents/GitHub/cats_farm";
+		// return "/opt/vinarender";
+		return "/home/pancho/Documents/GitHub/vinarender";
 }
 
 /*

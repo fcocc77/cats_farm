@@ -1,7 +1,7 @@
 #0  0x00007ffff63d50eb in QtPrivate::QStringList_contains(QStringList const*, QString const&, Qt::CaseSensitivity) () from /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.so.5
 #1  0x000000000041ac0f in QStringList::contains (this=0x7fffec489a58, str=..., cs=Qt::CaseSensitive) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qstringlist.h:214
-#2  0x000000000041dc98 in manager::render_job (this=0x7fffffffebf0) at /opt/cats_farm/code/manager/render.cpp:44
-#3  0x000000000041188c in void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}::operator()() const (__closure=0x46f910) at /opt/cats_farm/code/manager/../utils/threading.h:27
+#2  0x000000000041dc98 in manager::render_job (this=0x7fffffffebf0) at /opt/vinarender/code/manager/render.cpp:44
+#3  0x000000000041188c in void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}::operator()() const (__closure=0x46f910) at /opt/vinarender/code/manager/../utils/threading.h:27
 #4  0x0000000000415784 in QtPrivate::FunctorCall<QtPrivate::IndexesList<>, QtPrivate::List<>, void, void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}>::call({lambda()#1}&, void**) (f=..., arg=0x7fffec489c80) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h:135
 #5  0x000000000041571d in QtPrivate::Functor<void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}, 0>::call<QtPrivate::List<>, void>({lambda()#1}&, void*, {lambda()#1}&*) (f=..., arg=0x7fffec489c80) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h:192
 #6  0x0000000000415675 in QtPrivate::QFunctorSlotObject<void threading<void (), manager>(void (manager::*)(), manager*)::{lambda()#1}, 0, QtPrivate::List<>, void>::impl(int, QtPrivate::QSlotObjectBase*, QObject*, void**, bool*) (which=1, this_=0x46f900, r=0x46f7c0, a=0x7fffec489c80, ret=0x0) at /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobject_impl.h:169

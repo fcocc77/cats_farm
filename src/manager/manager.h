@@ -37,7 +37,7 @@ public:
 	QJsonObject env_videovina = jread(path + "/etc/videovina.json");
 	QString assets = env_videovina["assets"].toString();
 	QString as3 = env_videovina["s3"].toString();
-	QString catsfarm = env_videovina["catsfarm"].toString();
+	QString vinarender = env_videovina["vinarender"].toString();
 	QString vv_local_folder = env_videovina["local"].toString();
 	// -------------------------------
 

@@ -1,7 +1,7 @@
 import os
 
 
-submit = "C:/cats_farm/bin/win/submit.exe"
+submit = "C:/vinarender/bin/win/submit.exe"
 
 
 cmd = submit + " " + "-jobName test"

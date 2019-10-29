@@ -1,6 +1,6 @@
 {
     "assets": "/home/pancho/Documents/GitHub/videovina/private",
     "s3": "/var/www/html/static/amazon_s3",
-    "catsfarm": "/home/pancho/Documents/GitHub/cats_farm",
+    "vinarender": "/home/pancho/Documents/GitHub/vinarender",
     "local": "/home/pancho/Desktop/renders"
 }

@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.catsfarm.connect</string>
+    <string>com.vinarender.connect</string>
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/python</string>
-        <string>/usr/local/cats_farm/os/mac/init/connect.py</string>
+        <string>/usr/local/vinarender/os/mac/init/connect.py</string>
     </array>
     <key>KeepAlive</key>
     <true/>

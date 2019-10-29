@@ -4,7 +4,7 @@
 
     <widget class="QMainWindow" name="MainWindow">
 
-        <!-- estilos de catsfarm -->
+        <!-- estilos de vinarender -->
         <property name="styleSheet">
             <string notr="true">/* Black blue color */
 QWidget {
@@ -75,7 +75,7 @@ QTreeWidget {
   QTreeWidget::branch {
     border-bottom: 1px solid #2e3238; }
     QTreeWidget::branch:has-children:closed {
-      image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/right_arrow.png);
+      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png);
       background-color: transparent; }
       QTreeWidget::branch:has-children:closed:selected {
         background-color: transparent;
@@ -84,7 +84,7 @@ QTreeWidget {
       QTreeWidget::branch:has-children:closed:hover {
         background-color: red; }
     QTreeWidget::branch:open {
-      image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/down_arrow.png);
+      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png);
       background-color: transparent; }
       QTreeWidget::branch:open:selected {
         background-color: red;
@@ -137,22 +137,22 @@ QScrollBar::sub-line:horizontal, QScrollBar::sub-line:vertical {
   background-color: #325064; }
 
 QScrollBar::right-arrow:horizontal {
-  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/right_arrow.png);
+  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/theme/rc/right_arrow.png);
   width: 7px;
   height: 7px; }
 
 QScrollBar::left-arrow:horizontal {
-  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/left_arrow.png);
+  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/theme/rc/left_arrow.png);
   width: 7px;
   height: 7px; }
 
 QScrollBar::up-arrow:vertical {
-  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/up_arrow.png);
+  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/theme/rc/up_arrow.png);
   width: 7px;
   height: 7px; }
 
 QScrollBar::down-arrow:vertical {
-  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/theme/rc/down_arrow.png);
+  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/theme/rc/down_arrow.png);
   width: 7px;
   height: 7px; }
 
@@ -163,8 +163,8 @@ QScrollBar::sub-page:horizontal, QScrollBar::sub-page:vertical {
   background: none; }
 
 QDockWidget:floatable {
-  titlebar-close-icon: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_checked.png);
-  titlebar-normal-icon: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_unchecked.png);
+  titlebar-close-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked.png);
+  titlebar-normal-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked.png);
   border: 1px solid red; }
 
 QDockWidget::focus {
@@ -174,13 +174,13 @@ QDockWidget::close-button {
   border: 10px;
   padding: 2px; }
   QDockWidget::close-button:hover {
-    image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_checked_focus.png); }
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked_focus.png); }
 
 QDockWidget::float-button {
   border: 10px;
   padding: 2px; }
   QDockWidget::float-button:hover {
-    image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/radio_unchecked_focus.png); }
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked_focus.png); }
 
 QDockWidget::title {
   background-color: #1c1e21;
@@ -201,19 +201,19 @@ QLineEdit, QTextEdit {
 QCheckBox {
   background-color: transparent; }
   QCheckBox::indicator:checked {
-    image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_checked.png); }
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/checkbox_checked.png); }
     QCheckBox::indicator:checked:focus {
-      image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_checked_focus.png); }
+      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/checkbox_checked_focus.png); }
   QCheckBox::indicator:unchecked {
-    image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_unchecked.png); }
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/checkbox_unchecked.png); }
     QCheckBox::indicator:unchecked:focus {
-      image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_unchecked_focus.png); }
+      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/checkbox_unchecked_focus.png); }
 
 QTreeView::indicator:unchecked {
-  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_unchecked.png); }
+  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/checkbox_unchecked.png); }
 
 QTreeView::indicator:checked {
-  image: url(/home/pancho/Documents/GitHub/cats_farm/src/monitor/sass/images/checkbox_checked.png); }
+  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/checkbox_checked.png); }
 
 QPushButton {
   background-color: #2e3238;
@@ -299,7 +299,7 @@ QWidget #Logs {
 
 
         <property name="windowTitle">
-            <string>CatsFarm Monitor</string>
+            <string>VinaRender Monitor</string>
         </property>
         <widget class="QWidget" name="centralwidget">
         

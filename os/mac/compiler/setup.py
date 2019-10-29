@@ -3,8 +3,8 @@ import os
 import shutil
 from setuptools import setup
 
-ICON_PNG="/usr/local/CatsFarm/icons/app.png"
-ICON="/usr/local/CatsFarm/icons/app.icns"
+ICON_PNG="/usr/local/VinaRender/icons/app.png"
+ICON="/usr/local/VinaRender/icons/app.icns"
 
 # crea .icns a partir de un png
 icns_make="sips -s format icns "+ICON_PNG+" --out "+ICON
@@ -16,7 +16,7 @@ BUILD_DIR="/tmp/build"
 if not os.path.isdir(BUILD_DIR):
 	os.mkdir(BUILD_DIR)
 
-APP = ['/usr/local/CatsFarm/os/mac/compiler/CatsFarm Monitor.py']
+APP = ['/usr/local/VinaRender/os/mac/compiler/VinaRender Monitor.py']
 DATA_FILES = []
 OPTIONS = {'argv_emulation': True, 
 			'iconfile':ICON,
@@ -31,6 +31,6 @@ setup(
 	setup_requires=['py2app'],
 )
 
-os.rename("/Applications/CatsFarm Monitor.app","/Applications/CatsFarm.app")
-os.system("chmod -R 777 /Applications/CatsFarm.app")
+os.rename("/Applications/VinaRender Monitor.app","/Applications/VinaRender.app")
+os.system("chmod -R 777 /Applications/VinaRender.app")
 shutil.rmtree(BUILD_DIR)

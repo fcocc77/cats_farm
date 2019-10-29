@@ -1,7 +1,7 @@
 path="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # ruta de instalacion
-dst="C:/cats_farm"
+dst="C:/vinarender"
 # ------------------
 # IP del manager
 ip="192.168.1.77"
@@ -48,7 +48,7 @@ install() {
     echo $ip > $dst"/etc/manager_host"
 
     # copia accecos directo
-    cp "$path/os/win/link/CatsFarm Monitor.lnk" "C:/ProgramData/Microsoft/Windows/Start Menu/Programs"
+    cp "$path/os/win/link/VinaRender Monitor.lnk" "C:/ProgramData/Microsoft/Windows/Start Menu/Programs"
     # -----------------
 
     # Creacion de servicios
@@ -79,10 +79,10 @@ install() {
     # -----------------------------
 
     # desbloquear puertos firewall
-    netsh advfirewall firewall delete rule name="CatsFarm Ports:7000,7001"  # delete
+    netsh advfirewall firewall delete rule name="VinaRender Ports:7000,7001"  # delete
 
-    netsh advfirewall firewall add rule name="CatsFarm Ports:7000,7001" dir=in action=allow enable=yes profile=Any protocol=TCP localport=7000,7001
-    netsh advfirewall firewall add rule name="CatsFarm Ports:7000,7001" dir=out action=allow enable=yes profile=Any protocol=TCP localport=7000,7001
+    netsh advfirewall firewall add rule name="VinaRender Ports:7000,7001" dir=in action=allow enable=yes profile=Any protocol=TCP localport=7000,7001
+    netsh advfirewall firewall add rule name="VinaRender Ports:7000,7001" dir=out action=allow enable=yes profile=Any protocol=TCP localport=7000,7001
     # ------------------------------------------------------------------------------------
 }
 
@@ -98,7 +98,7 @@ uninstall() {
 
     taskkill -f -im "cmonitor.exe"
 
-    rm "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/CatsFarm Monitor.lnk"
+    rm "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/VinaRender Monitor.lnk"
     rm -rf $dst
 }
 

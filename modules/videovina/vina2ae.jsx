@@ -10,7 +10,7 @@
  * textos, fotos, modos de fucion y colores
  *****************************************************************************/
 
-// La variable aep de define el catsfarm, si no se usa catsfarm para este script lo omite
+// La variable aep de define el vinarender, si no se usa vinarender para este script lo omite
 try {
     var projectFile = new File(aep);
     app.open(projectFile);
@@ -59,7 +59,7 @@ function main() {
 
     renderQueue(finalComp);
 
-    // Guarda informacion en un json para poder obtenerla en el catsfarm
+    // Guarda informacion en un json para poder obtenerla en el vinarender
     var submit = { "last_frame": endFrame };
     var submitJson = path + "/submit.json";
     jwrite(submitJson, submit);
@@ -80,7 +80,7 @@ function updateFilesPath() {
         relative = relative.replace("Assets", "assets"); // cambia assest si esta con mayuscula
         // --------------------------------------------
 
-        // nueva ruta a partir del directorio donde estan los proyectos originals ( esta ruta la da catsfarm )
+        // nueva ruta a partir del directorio donde estan los proyectos originals ( esta ruta la da vinarender )
         var footagePath = project.slideshowPath + "/" + project.type + "/" + relative;
         // --------------------------
 

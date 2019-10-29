@@ -56,7 +56,7 @@ firewall(action="block", program='C:/Program Files/Common Files/Adobe')
 firewall(action="block", program="C:/Program Files/MAXON")
 firewall(action="block", program="C:/Program Files/Mari3.3v1")
 
-firewall(name="CatsFarm", action="allow",
+firewall(name="VinaRender", action="allow",
          protocol="TCP", localport="7773,7774")
 
 # Hbilita Firewall

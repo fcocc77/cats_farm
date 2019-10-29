@@ -6,6 +6,6 @@ import psutil
 import json
 #----------------------------------------------------
 
-sys.path.insert(0,'/usr/local/CatsFarm/code')
+sys.path.insert(0,'/usr/local/VinaRender/code')
 
 import monitor
