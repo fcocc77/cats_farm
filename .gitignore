@@ -27,6 +27,6 @@ qt/*/*tar.gz
 *.swp
 *.swo
 modules/ae/*.gz
-
+node_modules
 
 
