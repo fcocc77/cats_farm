@@ -17,6 +17,7 @@ using namespace std;
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
+#include <QMutex>
 //----------------------
 
 template <class T>
@@ -155,21 +156,19 @@ public:
 
 	QString *update_send;
 	QString *update_recv;
-	bool *send_ready;
-	bool *recv_ready;
+	QMutex *mutex;
 
 	// Constructor client loop
 	tcp_client_widget(QString (T::*_func)(QString, QJsonObject), T *__class, QString *_update_send, QString *_update_recv,
-					  bool *_send_ready, bool *_recv_ready, bool _widget, QJsonObject _extra) : QThread(__class)
+					  QMutex *_mutex, bool _widget, QJsonObject _extra) : QThread(__class)
 	{
 		_class = __class;
 		func = _func;
 		update_send = _update_send;
 		update_recv = _update_recv;
-		send_ready = _send_ready;
-		recv_ready = _recv_ready;
 		widget = _widget;
 		extra = _extra;
+		mutex = _mutex;
 
 		// hilo loop para widget, se inicia por fuera
 		qtimer = new QTimer();
@@ -203,18 +202,13 @@ public:
 
 	void widget_update()
 	{
-
-		/* recv_ready y send_ready son para que json no de error de memoria
-		cuando se intercambian las variable entre client y client_widget */
-		*recv_ready = false;
-
-		if (*send_ready)
-		{
-			QString _send = *update_send;
-			*update_recv = (_class->*func)(_send, extra);
-		}
-
-		*recv_ready = true;
+		/* mutex es para que en las variables compartidas no den error de memoria,
+		esto pasa cuando se intercambian los datos entre client y client_widget */
+		mutex->lock();
+		QString _send = *update_send;
+		*update_recv = (_class->*func)(_send, extra);
+		mutex->unlock();
+		// ---------------------------
 	}
 };
 
@@ -228,8 +222,9 @@ public:
 
 	QString update_send;
 	QString update_recv;
-	bool send_ready; // para que json no de error cuando se intercambian las variable entre client y client_widget
-	bool recv_ready = true;
+
+	QMutex mutex;
+
 	// Constructor client loop
 	template <class T>
 	tcp_client(QString _host, int _port, T *_class)
@@ -272,26 +267,13 @@ public:
 
 				if (loop)
 				{
-					/* recv_ready y send_ready son para que json no de error de memoria
-					cuando se intercambian las variable entre client y client_widget */
-					send_ready = false;
-
-					if (recv_ready)
-					{
-						update_send = _recv;
-						send = update_recv;
-					}
-					else
-					{
-						/* Cuando el recv_ready no esta listo
-						el loop continua en la siguiente iteracion
-						por que si sigue da conflicto en el server
-						al recibir los paquetes y se queda pegado */
-						sleep(1);
-						continue;
-					}
-
-					send_ready = true;
+					/* mutex es para que en las variables compartidas no den error de memoria,
+					esto pasa cuando se intercambian los datos entre client y client_widget */
+					mutex.lock();
+					update_send = _recv;
+					send = update_recv;
+					mutex.unlock();
+					// ---------------------------
 				}
 
 				// 1 - envia tamanio de paquete
@@ -373,7 +355,7 @@ void tcpClient(QString _host, int _port, QString (T::*_func)(QString, QJsonObjec
 
 	// inicia thread de update widget
 	tcp_client_widget<T> *_widget = new tcp_client_widget<T>(_func, _class, &_client->update_send,
-															 &_client->update_recv, &_client->send_ready, &_client->recv_ready, widget, extra);
+															 &_client->update_recv, &_client->mutex, widget, extra);
 	_widget->exit();
 	_widget->start();
 	//-------------------------------------
