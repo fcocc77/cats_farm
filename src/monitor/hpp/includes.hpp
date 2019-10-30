@@ -10,9 +10,7 @@
 #include <QPlainTextEdit>
 #include <QDockWidget>
 #include <QCloseEvent>
-#include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include <QTreeWidget>
 #include <QProgressBar>
 #include <QLabel>
 #include <QObject>
@@ -24,6 +22,10 @@
 #include <QWidget>
 #include <QStringList>
 #include <QList>
+#include <QSystemTrayIcon>
+#include <QMenu>
+#include <QTreeWidget>
+#include <QSound>
 //------------------------
 
 #include <iostream>
@@ -34,6 +36,7 @@ using namespace std;
 #include "../../utils/os.h"
 #include "../../manager/structs.h"
 #include "../../utils/tcp.h"
+
 
 #include "shared_variables.hpp"
 

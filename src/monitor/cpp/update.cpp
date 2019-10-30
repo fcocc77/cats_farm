@@ -28,6 +28,7 @@ void update_class::manager_recieve()
 {
 
 	QString host = fread(path + "/etc/manager_host");
+	print(host);
 
 	// actualiza una ves antes del loop.
 	QString recv = tcpClient(host, 7000, jats({2, "none"}));

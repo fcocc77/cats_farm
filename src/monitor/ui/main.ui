@@ -286,10 +286,8 @@ QWidget #Logs {
   font: 8pt "Tahoma"; }
 
 #jobs {
-  background-color: #23262a;
-  border: 1px solid red; }
+  background-color: #23262a; }
   #jobs QHeaderView::section {
-    border: 1px solid red;
     padding: 5px 10px 5px 10px;
     background-color: #2a2d32;
     border: 0px solid transparent; }
@@ -358,24 +356,38 @@ QWidget #Logs {
                 </item>             
             </layout>
         </widget>
-        <widget class="QMenuBar" name="menu_bar">
+        <widget class="QMenuBar" name="main_menu">
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>766</width>
-            <height>22</height>
+            <width>552</width>
+            <height>19</height>
         </rect>
     </property>
-    <widget class="QMenu" name="menuhola">
+    <widget class="QMenu" name="file_menu">
         <property name="title">
             <string>File</string>
         </property>
-        <addaction name="actionhola" />
-        <addaction name="separator" />
-        <addaction name="actionsa" />
     </widget>
-    <addaction name="menuhola" />
+    <widget class="QMenu" name="edit_menu">
+        <property name="title">
+            <string>Edit</string>
+        </property>
+    </widget>
+    <addaction name="file_menu" />
+    <addaction name="edit_menu" />
+</widget>
+        <widget class="QToolBar" name="toolBar">
+    <property name="windowTitle">
+        <string>toolBar</string>
+    </property>
+    <attribute name="toolBarArea">
+        <enum>TopToolBarArea</enum>
+    </attribute>
+    <attribute name="toolBarBreak">
+        <bool>false</bool>
+    </attribute>
 </widget>
         <widget class="QDockWidget" name="dockWidget">
     <property name="windowTitle">

@@ -13,7 +13,7 @@ QT += core gui widgets multimedia
 FORMS = ./ui/main.ui
 
 HEADERS += 	./hpp/includes.hpp \
-			./hpp/menu_bar.hpp \
+			./hpp/main_menu.hpp \
 			./hpp/jobs.hpp \
 			./hpp/servers.hpp \
 			./hpp/tasks.hpp \
@@ -21,6 +21,7 @@ HEADERS += 	./hpp/includes.hpp \
 			./hpp/update.hpp \
 			./hpp/main_window.hpp \
 			./hpp/shared_variables.hpp \
+			./hpp/global.hpp \
 			../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \
@@ -41,13 +42,14 @@ HEADERS += 	./hpp/includes.hpp \
 			#-------------------------------------
 
 SOURCES += 	./cpp/main.cpp \
-			./cpp/menu_bar.cpp \
+			./cpp/main_menu.cpp \
 			./cpp/jobs.cpp \
 			./cpp/servers.cpp \
 			./cpp/tasks.cpp \
 			./cpp/groups.cpp \
 			./cpp/main_window.cpp \
 			./cpp/update.cpp \
+			./cpp/global.cpp \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \

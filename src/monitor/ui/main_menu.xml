@@ -1,0 +1,22 @@
+<widget class="QMenuBar" name="main_menu">
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>552</width>
+            <height>19</height>
+        </rect>
+    </property>
+    <widget class="QMenu" name="file_menu">
+        <property name="title">
+            <string>File</string>
+        </property>
+    </widget>
+    <widget class="QMenu" name="edit_menu">
+        <property name="title">
+            <string>Edit</string>
+        </property>
+    </widget>
+    <addaction name="file_menu" />
+    <addaction name="edit_menu" />
+</widget>

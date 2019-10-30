@@ -1,23 +1,25 @@
-#include "../hpp/general.h"
+#include "../hpp/global.hpp"
 
-void general::init()
+void global_class::init()
 {
-	notifyIcon();
-	style_ui();
-	actions();
+	// notifyIcon();
+	// style_ui();
+	connections();
 }
 
-void general::actions()
+void global_class::connections()
 {
 
 	// General Action
-	connect(preferencesAction, &QAction::triggered, this, [this]() {
-		_settings->show();
+	connect(preferences_action, &QAction::triggered, this, [this]() {
+		// _settings->show();
 	});
 
-	preferencesAction->setIcon(QIcon(path + "/icons/setting.png"));
-	preferencesAction->setShortcut(QString("S"));
+	preferences_action->setIcon(QIcon(path + "/icons/setting.png"));
+	preferences_action->setShortcut(QString("S"));
 
+
+	/*
 	connect(quitAction, &QAction::triggered, this, [this]() {
 		shared->app_close = true;
 		monitor->close();
@@ -53,9 +55,11 @@ void general::actions()
 	});
 	hidePanelsAction->setShortcut(QString("Esc"));
 	//---------------------------------------------------
-}
 
-void general::style_ui()
+	*/
+}
+/*
+void global_class::style_ui()
 {
 
 	monitor->setWindowTitle("VinaRender Monitor");
@@ -68,11 +72,11 @@ void general::style_ui()
 	// monitor->setStyleSheet(style.toStdString().c_str());
 }
 
-void general::show_splash()
+void global_class::show_splash()
 {
 }
 
-void general::notifyIcon()
+void global_class::notifyIcon()
 {
 	notify = new QSystemTrayIcon(QIcon(path + "/icons/monitor.png"), monitor);
 
@@ -158,3 +162,4 @@ void general::notifyIcon()
 		}
 	});
 }
+*/

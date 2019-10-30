@@ -6,12 +6,13 @@
 #include <iostream>
 using namespace std;
 
-#include "menu_bar.hpp"
+#include "main_menu.hpp"
 #include "jobs.hpp"
 #include "servers.hpp"
 #include "groups.hpp"
 #include "tasks.hpp"
 #include "update.hpp"
+#include "global.hpp"
 
 // monitor modules
 // #include "ui_submit.h"
@@ -53,12 +54,13 @@ public:
   // ----------------------------
 
   // Modulos
-  menu_bar_class *menu_bar;
+  main_menu_class *menu_bar;
   jobs_class *jobs;
   servers_class *servers;
   tasks_class *tasks;
   groups_class *groups;
   update_class *update;
+  global_class *global;
 
   // --------------------------------
 

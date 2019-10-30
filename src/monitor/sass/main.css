@@ -278,10 +278,8 @@ QWidget #Logs {
   font: 8pt "Tahoma"; }
 
 #jobs {
-  background-color: #23262a;
-  border: 1px solid red; }
+  background-color: #23262a; }
   #jobs QHeaderView::section {
-    border: 1px solid red;
     padding: 5px 10px 5px 10px;
     background-color: #2a2d32;
     border: 0px solid transparent; }

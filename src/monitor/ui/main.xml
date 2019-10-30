@@ -22,7 +22,8 @@
                 </item>             
             </layout>
         </widget>
-        {% include 'menu_bar.xml'%}
+        {% include 'main_menu.xml'%}
+        {% include 'tool_bar.xml'%}
         {% include 'servers.xml'%}
         {% include 'tasks.xml'%}
         {% include 'groups.xml'%}
