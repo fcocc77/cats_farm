@@ -1,5 +1,5 @@
-#ifndef GENERAL_H
-#define GENERAL_H
+#ifndef GLOBAL_HPP
+#define GLOBAL_HPP
 
 #include "../hpp/includes.hpp"
 
@@ -64,4 +64,4 @@ public:
   //----------------------------
 };
 
-#endif //GENERAL_H
+#endif //GLOBAL_HPP
