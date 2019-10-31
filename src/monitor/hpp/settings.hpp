@@ -3,11 +3,16 @@
 
 #include "includes.hpp"
 
-class settings_class
+class settings_class : public QObject
 {
 private:
     Ui::MainWindow *ui;
     void property();
+    void connections();
+    void path_read();
+    void path_write();
+
+    QString manager_host;
 
 public:
     settings_class(
