@@ -1,10 +1,7 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include "../hpp/includes.hpp"
-
-#include <iostream>
-using namespace std;
+#include "includes.hpp"
 
 #include "main_menu.hpp"
 #include "jobs.hpp"
@@ -18,23 +15,6 @@ using namespace std;
 #include "log.hpp"
 #include "options.hpp"
 
-// monitor modules
-// #include "ui_submit.h"
-// #include "ui_jobs_tree.h"
-// #include "ui_servers_tree.h"
-// #include "ui_groups_tree.h"
-// #include "ui_tasks_tree.h"
-// #include "ui_job_options.h"
-// #include "ui_server_options.h"
-// #include "get_manager_info.h"
-// #include "group_actions.h"
-// #include "jobs_actions.h"
-// #include "general.h"
-// #include "servers_actions.h"
-// #include "tasks_actions.h"
-// #include "shared_variables.h"
-// #include "../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp"
-//--------------------------------------
 #include <QTextEdit>
 using namespace std;
 
@@ -58,7 +38,7 @@ public:
   // ----------------------------
 
   // Modulos
-  main_menu_class *menu_bar;
+  main_menu_class *main_menu;
   jobs_class *jobs;
   servers_class *servers;
   tasks_class *tasks;
@@ -75,7 +55,6 @@ public:
   // QToolBar *toolBar = new QToolBar();
 
   //log
-
 
   // declaracion de modulos
   // ui_servers_tree *serverList = new ui_servers_tree(this);

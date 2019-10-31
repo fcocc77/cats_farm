@@ -56,7 +56,6 @@ public:
     QAction *job_unlock_servers_action;
     QAction *job_log_action;
     QAction *job_modify_action;
-    QAction *job_show_render_folder_action;
     //------------------------------------------------
 };
 

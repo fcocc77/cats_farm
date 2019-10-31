@@ -1,5 +1,5 @@
-#ifndef SHARED_VARIABLES_H
-#define SHARED_VARIABLES_H
+#ifndef SHARED_VARIABLES_HPP
+#define SHARED_VARIABLES_HPP
 
 using namespace std;
 #include <QJsonArray>
@@ -14,4 +14,4 @@ struct shared_variables
     bool app_close;
 };
 
-#endif //SHARED_VARIABLES_H
+#endif //SHARED_VARIABLES_HPP

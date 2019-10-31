@@ -20,7 +20,6 @@ jobs_class::jobs_class(
     job_unlock_servers_action = new QAction("Enable blocked servers");
     job_log_action = new QAction("Show Log");
     job_modify_action = new QAction("Modify");
-    job_show_render_folder_action = new QAction("Show Render Folder");
     //------------------------------------------------
 
     manager_host = fread(path + "/etc/manager_host");
@@ -124,8 +123,6 @@ void jobs_class::popup()
         menu->addAction(job_unlock_servers_action);
 
         menu->addSeparator();
-
-        menu->addAction(job_show_render_folder_action);
         menu->addAction(job_modify_action);
 
         menu->popup(QCursor::pos());

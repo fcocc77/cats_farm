@@ -21,7 +21,7 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	update = new update_class(ui, shared);
 
 	global = new global_class(ui, this, shared);
-	menu_bar = new main_menu_class(ui, global, jobs);
+	main_menu = new main_menu_class(ui, global, jobs, servers, groups, tasks);
 	toolbar = new toolbar_class(ui, global);
 	options = new options_class(ui);
 }
