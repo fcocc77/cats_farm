@@ -7,6 +7,7 @@ class log_class
 {
 private:
     Ui::MainWindow *ui;
+    void property();
 
 public:
     log_class(

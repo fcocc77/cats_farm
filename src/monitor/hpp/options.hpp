@@ -7,6 +7,7 @@ class options_class
 {
 private:
     Ui::MainWindow *ui;
+    void property();
 
 public:
     options_class(
