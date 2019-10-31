@@ -27,6 +27,8 @@
 #include <QTreeWidget>
 #include <QSound>
 #include <QSignalMapper>
+#include <QPainter>
+#include <QInputDialog>
 //------------------------
 
 #include <iostream>

@@ -1,0 +1,18 @@
+#groups
+    // &::item:!has-children,
+    // &::branch::!has-children
+    //     background-color: rgb(39, 39, 39)
+    //     border-bottom: 1px solid rgb(46, 46, 46)
+
+    &::item:selected, &::branch:selected,
+    &::branch:has-children:closed:selected,
+    &::branch:open:selected 
+        background-color: rgb(30, 45, 60)
+        border-bottom: 1px solid rgb(35, 50, 55)
+        color: rgb(200, 200, 200)
+
+    &::item:hover,
+    &::branch:hover,
+    &::branch:has-children:closed:hover
+    // &::branch::!has-children:alternate:hover 
+        background-color: rgb(35, 40, 45)

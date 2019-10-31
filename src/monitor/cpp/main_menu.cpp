@@ -37,10 +37,10 @@ void main_menu_class::connections()
 
     // QMenu *groupMenu = new QMenu("&Groups", this);
     // mainMenu->addMenu(groupMenu);
-    // groupMenu->addAction(groupActions->groupCreateAction);
+    // groupMenu->addAction(groupActions->create_action);
     // groupMenu->addAction(groupActions->deleteAction);
     // groupMenu->addSeparator();
-    // groupMenu->addAction(groupActions->groupAddmachineAction);
+    // groupMenu->addAction(groupActions->add_machine_action);
 
     // QMenu *jobMenu = new QMenu("&Jobs", this);
     // mainMenu->addMenu(jobMenu);

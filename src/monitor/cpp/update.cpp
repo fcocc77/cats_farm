@@ -647,7 +647,7 @@ void update_class::update_groups(QJsonObject recv)
 
 			// Si el nombre no esta en la lista de la interface, agrega el nuevo grupo.
 			if (not group_list.contains(group_name))
-				groupActions->groupMake(group_name, totaMachine, activeMachine, offMachine);
+				groupActions->group_make(group_name, totaMachine, activeMachine, offMachine);
 
 			//-----------------------------------------------------------------------
 			for (int i = 0; i < groupList->topLevelItemCount(); ++i)
@@ -657,7 +657,7 @@ void update_class::update_groups(QJsonObject recv)
 				QString name = item->text(2);
 				if (name == group_name)
 				{
-					groupActions->groupMakeServer(item, machines);
+					groupActions->make_server(item, machines);
 
 					item->setText(2, group_name);
 

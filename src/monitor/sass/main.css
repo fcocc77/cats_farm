@@ -282,3 +282,8 @@ QWidget #style1 {
   border-radius: 3px; }
   #Log #QCodeEditorLineWidget {
     background-color: #1c1e21; }
+
+#groups::item:selected, #groups::branch:selected, #groups::branch:has-children:closed:selected, #groups::branch:open:selected {
+  background-color: #1e2d3c;
+  border-bottom: 1px solid #233237;
+  color: #c8c8c8; }
