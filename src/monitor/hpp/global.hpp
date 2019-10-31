@@ -16,6 +16,7 @@ private:
   // General Funcions
   void connections();
   void notify_icon();
+  void style();
   //----------------------------
 
 public:
@@ -30,6 +31,7 @@ public:
   QAction *hide_action;
   QAction *show_action;
   QAction *hide_all_panels_action;
+  QAction *update_style_action;
   //------------------------------------------------
 };
 

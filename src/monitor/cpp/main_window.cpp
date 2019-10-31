@@ -5,11 +5,6 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	ui = new Ui::MainWindow;
 	ui->setupUi(this);
 
-	// estilo de general
-	QString style = fread(path + "/src/monitor/sass/main.css");
-	this->setStyleSheet(style.toStdString().c_str());
-	// ----------------------------
-
 	shared = new shared_variables();
 	log = new log_class(ui);
 
@@ -22,7 +17,7 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 
 	global = new global_class(ui, this, shared);
 	main_menu = new main_menu_class(ui, global, jobs, servers, groups, tasks);
-	toolbar = new toolbar_class(ui, global);
+	toolbar = new toolbar_class(ui, global, jobs);
 	options = new options_class(ui);
 }
 

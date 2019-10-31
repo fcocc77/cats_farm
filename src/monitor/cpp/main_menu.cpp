@@ -55,4 +55,6 @@ void main_menu_class::connections()
     ui->tasks_menu->addAction(tasks->suspend_action);
     ui->tasks_menu->addSeparator();
     ui->tasks_menu->addAction(tasks->restart_action);
+
+    ui->extra_menu->addAction(global->update_style_action);
 }

@@ -15,10 +15,12 @@ global_class::global_class(
 	hide_action = new QAction("Hide");
 	show_action = new QAction("Show App");
 	hide_all_panels_action = new QAction("Hide Panels");
+	update_style_action = new QAction("Update Style");
 	//------------------------------------------------
 
 	notify_icon();
 	connections();
+	style();
 }
 
 void global_class::connections()
@@ -53,7 +55,17 @@ void global_class::connections()
 		ui->settings->hide();
 	});
 	hide_all_panels_action->setShortcut(QString("Esc"));
-	//---------------------------------------------------
+
+	connect(update_style_action, &QAction::triggered, this, &global_class::style);
+	update_style_action->setShortcut(QString("Ctrl+R"));
+}
+
+void global_class::style()
+{
+	// estilo de general
+	QString style = fread(path + "/src/monitor/sass/main.css");
+	monitor->setStyleSheet(style.toStdString().c_str());
+	// ----------------------------
 }
 
 void global_class::notify_icon()
