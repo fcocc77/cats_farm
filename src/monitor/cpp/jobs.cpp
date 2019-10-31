@@ -57,7 +57,6 @@ void jobs_class::properties()
 
 void jobs_class::connections()
 {
-
     connect(ui->jobs, &QTreeWidget::itemDoubleClicked, this, &jobs_class::modify);
     connect(ui->jobs, &QTreeWidget::customContextMenuRequested, this, &jobs_class::popup);
 
@@ -467,3 +466,14 @@ void jobs_class::item_delete()
     QString action = "delete";
     message(&jobs_class::delete_start, action, ask, tile, this);
 }
+
+// void jobs_class::mousePressEvent(QMouseEvent *event)
+// {
+//     QTreeView::mousePressEvent(event);
+
+//     bool selected = selectionModel()->isSelected(indexAt(event->pos()));
+//     // si se clickea no en un item, borra las tareas de la lista
+//     if (not selected)
+//         ui->tasks->clear();
+//     //----------------------------------------------------
+// }

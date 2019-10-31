@@ -14,6 +14,7 @@ private:
     log_class *log;
     void properties();
     void connections();
+    // virtual void mousePressEvent(QMouseEvent *event);
 
     // Jobs Funcions
     void popup();
