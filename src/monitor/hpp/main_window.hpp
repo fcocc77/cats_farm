@@ -13,6 +13,10 @@ using namespace std;
 #include "tasks.hpp"
 #include "update.hpp"
 #include "global.hpp"
+#include "settings.hpp"
+#include "toolbar.hpp"
+#include "log.hpp"
+#include "options.hpp"
 
 // monitor modules
 // #include "ui_submit.h"
@@ -61,6 +65,10 @@ public:
   groups_class *groups;
   update_class *update;
   global_class *global;
+  settings_class *settings;
+  toolbar_class *toolbar;
+  log_class *log;
+  options_class *options;
 
   // --------------------------------
 

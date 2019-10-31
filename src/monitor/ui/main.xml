@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ui version="4.0">
     <class>MainWindow</class>
-
     <widget class="QMainWindow" name="MainWindow">
-
         <!-- estilos de vinarender -->
         <property name="styleSheet">
             <string notr="true">{% include 'src/monitor/sass/main.css' %}</string>
         </property>
         <!---->
-
-
         <property name="windowTitle">
             <string>VinaRender Monitor</string>
         </property>
         <widget class="QWidget" name="centralwidget">
-        
             <layout class="QVBoxLayout" name="verticalLayout">
                 <item>
                     {% include 'jobs.xml'%}
                 </item>             
             </layout>
         </widget>
+        {% include 'settings.xml'%}
         {% include 'main_menu.xml'%}
-        {% include 'tool_bar.xml'%}
+        {% include 'toolbar.xml'%}
         {% include 'servers.xml'%}
         {% include 'tasks.xml'%}
         {% include 'groups.xml'%}
+        {% include 'options.xml'%}
+        {% include 'log.xml'%}
         <widget class="QStatusBar" name="statusbar" />
     </widget>
     <resources />

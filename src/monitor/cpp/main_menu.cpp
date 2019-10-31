@@ -1,9 +1,12 @@
 #include "../hpp/main_menu.hpp"
 
-main_menu_class::main_menu_class(Ui::MainWindow *_ui, global_class *_global)
+main_menu_class::main_menu_class(
+    Ui::MainWindow *_ui,
+    global_class *_global)
 {
     ui = _ui;
     global = _global;
+    
     connections();
 }
 
@@ -16,8 +19,8 @@ void main_menu_class::connections()
     // Main Menu-------------------------------------
     // QMenu *fileMenu = new QMenu("&File", this);
     // main_menu->addMenu(fileMenu);
-    // fileMenu->addAction(_general->hideAction);
-    // fileMenu->addAction(_general->quitAction);
+    ui->file_menu->addAction(global->hide_action);
+    ui->file_menu->addAction(global->quit_action);
 
     // QMenu *editMenu = new QMenu("&Edit", this);
     // mainMenu->addMenu(editMenu);
@@ -64,7 +67,6 @@ void main_menu_class::connections()
 
     // QMenu *helpMenu = new QMenu("&Help", this);
     // mainMenu->addMenu(helpMenu);
-    // helpMenu->addAction(_general->aboutAction);
 
     //--------------------------------------------------
 }

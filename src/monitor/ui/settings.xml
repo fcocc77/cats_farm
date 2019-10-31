@@ -1,0 +1,132 @@
+<widget class="QDockWidget" name="settings">
+    <property name="windowTitle">
+        <string>Settings</string>
+    </property>
+    <attribute name="dockWidgetArea">
+        <number>1</number>
+    </attribute>
+    <widget class="QWidget" name="settings_widget">
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+                <widget class="QWidget" name="widget_2" native="true">
+                    <layout class="QHBoxLayout" name="horizontalLayout">
+                        <item>
+                            <widget class="QLabel" name="label">
+                                <property name="text">
+                                    <string>Manager IP:</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QLineEdit" name="settings_ip" />
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+            <item>
+                <widget class="QTabWidget" name="settings_tabs">
+                    <property name="currentIndex">
+                        <number>0</number>
+                    </property>
+                    <widget class="QWidget" name="tab">
+                        <attribute name="title">
+                            <string>Paths</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_paths" />
+                            </item>
+                        </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab">
+                        <attribute name="title">
+                            <string>Maya</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_maya" />
+                            </item>
+                        </layout>
+                    </widget>
+                    <widget class="QWidget" name="Nuke">
+                        <attribute name="title">
+                            <string>Nuke</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_nuke" />
+                            </item>
+                        </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab">
+                        <attribute name="title">
+                            <string>Houdini</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_houdini" />
+                            </item>
+                        </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab">
+                        <attribute name="title">
+                            <string>Cinema 4D</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_cinema" />
+                            </item>
+                        </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab">
+                        <attribute name="title">
+                            <string>Fusion</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_fusion" />
+                            </item>
+                        </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab">
+                        <attribute name="title">
+                            <string>AE</string>
+                        </attribute>
+                        <layout class="QVBoxLayout" name="verticalLayout_3">
+                            <item>
+                                <widget class="QPlainTextEdit" name="settings_ae" />
+                            </item>
+                        </layout>
+                    </widget>
+                </widget>
+            </item>
+            <item>
+                <widget class="QWidget" name="widget" native="true">
+                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                        <item>
+                            <widget class="QPushButton" name="settings_cancel">
+                                <property name="text">
+                                    <string>Cancel</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="settings_apply">
+                                <property name="text">
+                                    <string>Apply</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="settings_ok">
+                                <property name="text">
+                                    <string>OK</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+</widget>

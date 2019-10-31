@@ -1,4 +1,4 @@
-<widget class="QToolBar" name="toolBar">
+<widget class="QToolBar" name="toolbar">
     <property name="windowTitle">
         <string>toolBar</string>
     </property>

@@ -9,11 +9,12 @@ class main_menu_class
 private:
     Ui::MainWindow *ui;
     void connections();
-
+    
     global_class *global;
 
 public:
-    main_menu_class(Ui::MainWindow *_ui, global_class *_global);
+    main_menu_class(Ui::MainWindow *_ui,
+                    global_class *_global);
     ~main_menu_class();
 };
 

@@ -17,6 +17,36 @@
             <string>Edit</string>
         </property>
     </widget>
+    <widget class="QMenu" name="servers_menu">
+        <property name="title">
+            <string>Servers</string>
+        </property>
+    </widget>
+    <widget class="QMenu" name="groups_menu">
+        <property name="title">
+            <string>Groups</string>
+        </property>
+    </widget>
+    <widget class="QMenu" name="jobs_menu">
+        <property name="title">
+            <string>Jobs</string>
+        </property>
+    </widget>
+    <widget class="QMenu" name="tasks_menu">
+        <property name="title">
+            <string>Tasks</string>
+        </property>
+    </widget>
+    <widget class="QMenu" name="extra_menu">
+        <property name="title">
+            <string>Extra</string>
+        </property>
+    </widget>
     <addaction name="file_menu" />
     <addaction name="edit_menu" />
+    <addaction name="servers_menu" />
+    <addaction name="groups_menu" />
+    <addaction name="jobs_menu" />
+    <addaction name="tasks_menu" />
+    <addaction name="extra_menu" />
 </widget>

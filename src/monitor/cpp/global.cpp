@@ -1,7 +1,22 @@
 #include "../hpp/global.hpp"
 
-void global_class::init()
+global_class::global_class(
+	Ui::MainWindow *_ui,
+	QMainWindow *_monitor,
+	shared_variables *_shared)
 {
+
+	// _settings = new settings(_monitor);
+	ui = _ui;
+	monitor = _monitor;
+	shared = _shared;
+	// uiSubmit = _monitor->uiSubmit;
+	// uiJobOptions = _monitor->uiJobOptions;
+	// uiServerOptions = _monitor->uiServerOptions;
+	// log_dock = _monitor->log_dock;
+	// jobsList = _monitor->jobsList;
+	// shared = _monitor->shared;
+
 	// notifyIcon();
 	// style_ui();
 	connections();
@@ -9,35 +24,31 @@ void global_class::init()
 
 void global_class::connections()
 {
-
-	// General Action
 	connect(preferences_action, &QAction::triggered, this, [this]() {
-		// _settings->show();
+		ui->settings->show();
 	});
 
 	preferences_action->setIcon(QIcon(path + "/icons/setting.png"));
 	preferences_action->setShortcut(QString("S"));
 
-
-	/*
-	connect(quitAction, &QAction::triggered, this, [this]() {
+	connect(quit_action, &QAction::triggered, this, [this]() {
 		shared->app_close = true;
 		monitor->close();
 	});
 
-	connect(hideAction, &QAction::triggered, this, [this]() {
+	connect(hide_action, &QAction::triggered, this, [this]() {
 		if (monitor->isVisible())
 			monitor->hide();
 		else
 			monitor->show();
 	});
-	hideAction->setShortcut(QString("Ctrl+Q"));
+	hide_action->setShortcut(QString("Ctrl+Q"));
 
-	connect(showAction, &QAction::triggered, this, [this]() {
+	connect(show_action, &QAction::triggered, this, [this]() {
 		monitor->show();
 	});
 
-	connect(aboutAction, &QAction::triggered, this, &general::show_splash);
+	/*
 
 	connect(panelSubmitAction, &QAction::triggered, this, [this]() {
 		uiSubmit->savePanel = true;
@@ -98,8 +109,8 @@ void global_class::notifyIcon()
 	notify->show();
 
 	QMenu *menu = new QMenu(monitor);
-	menu->addAction(showAction);
-	menu->addAction(quitAction);
+	menu->addAction(show_action);
+	menu->addAction(quit_action);
 
 	notify->setContextMenu(menu);
 

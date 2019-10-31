@@ -1,7 +1,7 @@
 #ifndef GLOBAL_HPP
 #define GLOBAL_HPP
 
-#include "../hpp/includes.hpp"
+#include "includes.hpp"
 
 // Monitor Library
 // #include "ui_jobs_tree.h"
@@ -9,12 +9,12 @@
 // #include "ui_submit.h"
 //----------
 
-
-
 class global_class : public QObject
 {
 private:
- 
+  shared_variables *shared;
+  QMainWindow *monitor;
+  Ui::MainWindow *ui;
 
 public:
   // settings *_settings;
@@ -24,33 +24,22 @@ public:
   // QDockWidget *uiServerOptions;
   // QDockWidget *log_dock;
 
-  // QMainWindow *monitor;
   // ui_jobs_tree *jobsList;
   // shared_variables *shared;
   // QStringList completedJobs;
 
-  global_class(Ui::MainWindow *ui)
-  {
-    // _settings = new settings(_monitor);
-    // monitor = _monitor;
-    // uiSubmit = _monitor->uiSubmit;
-    // uiJobOptions = _monitor->uiJobOptions;
-    // uiServerOptions = _monitor->uiServerOptions;
-    // log_dock = _monitor->log_dock;
-    // jobsList = _monitor->jobsList;
-    // shared = _monitor->shared;
-
-    init();
-  }
+  global_class(
+      Ui::MainWindow *_ui,
+      QMainWindow *_monitor,
+      shared_variables *_shared);
 
   QSystemTrayIcon *notify;
 
   // General Action
   QAction *preferences_action = new QAction("Preferences");
-  QAction *quitAction = new QAction("Quit");
-  QAction *hideAction = new QAction("Hide");
-  QAction *showAction = new QAction("Show App");
-  QAction *aboutAction = new QAction("About");
+  QAction *quit_action = new QAction("Quit");
+  QAction *hide_action = new QAction("Hide");
+  QAction *show_action = new QAction("Show App");
   QAction *panelSubmitAction = new QAction("Submit");
   QAction *hidePanelsAction = new QAction("Hide Panels");
   //------------------------------------------------

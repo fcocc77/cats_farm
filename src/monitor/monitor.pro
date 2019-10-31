@@ -22,6 +22,10 @@ HEADERS += 	./hpp/includes.hpp \
 			./hpp/main_window.hpp \
 			./hpp/shared_variables.hpp \
 			./hpp/global.hpp \
+			./hpp/settings.hpp \
+			./hpp/toolbar.hpp \
+			./hpp/log.hpp \
+			./hpp/options.hpp \
 			../utils/os.h \
 			../utils/tcp.h \
 			../utils/threading.h \
@@ -50,6 +54,10 @@ SOURCES += 	./cpp/main.cpp \
 			./cpp/main_window.cpp \
 			./cpp/update.cpp \
 			./cpp/global.cpp \
+			./cpp/settings.cpp \
+			./cpp/toolbar.cpp \
+			./cpp/log.cpp \
+			./cpp/options.cpp \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \
