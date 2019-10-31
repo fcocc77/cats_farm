@@ -215,9 +215,7 @@ void jobs_class::show_log()
 
 void jobs_class::modify()
 {
-
-    /*
-    uiJobOptions->show();
+    ui->options->show();
 
     // Recive los servers del jobs que estan en el manager
     auto selected = ui->jobs->selectedItems();
@@ -225,7 +223,6 @@ void jobs_class::modify()
 
     if (not selected.empty())
     {
-
         QString job_name = selected.takeLast()->text(0);
 
         QJsonArray send = {QJsonArray({job_name, "options", "read"})};
@@ -233,10 +230,6 @@ void jobs_class::modify()
         QString recv = tcpClient(manager_host, 7000, jats({3, send}));
         QJsonArray pks = jafs(recv);
         //-----------------------------------------
-
-        QStringList serverExist;
-        for (QJsonValue s : pks[0].toArray())
-            serverExist.push_back(s.toString());
 
         QStringList serverGroupExist;
         for (QJsonValue sg : pks[1].toArray())
@@ -250,117 +243,50 @@ void jobs_class::modify()
         int first_frame = pks[7].toInt();
         int last_frame = pks[8].toInt();
 
-       
+        ui->opt_priority->setCurrentIndex(priority);
+        ui->opt_first_frame->setText(QString::number(first_frame));
+        ui->opt_last_frame->setText(QString::number(last_frame));
+        ui->opt_job_name->setText(_job_name);
+        ui->opt_task_size->setText(QString::number(task_size));
+        ui->opt_comments->setText(comment);
+        ui->opt_instances->setText(QString::number(instances));
 
-        uiJobOptions->priority->setCurrentIndex(priority);
-        uiJobOptions->firstFrame->setText(QString::number(first_frame));
-        uiJobOptions->lastFrame->setText(QString::number(last_frame));
-        uiJobOptions->jobName->setText(_job_name);
-        uiJobOptions->taskSize->setText(QString::number(task_size));
-        uiJobOptions->comment->setText(comment);
-        uiJobOptions->instances->setText(QString::number(instances));
-
-        QString jobServerAsignName = job_name;
-
-        uiJobOptions->serverAsign->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        uiJobOptions->serverAsign->setIndentation(0);
-        uiJobOptions->serverAsign->setColumnWidth(0, 100);
-        uiJobOptions->serverAsign->setColumnWidth(1, 50);
-
-        uiJobOptions->serverGroupAsign->setSelectionMode(QAbstractItemView::ExtendedSelection);
-        uiJobOptions->serverGroupAsign->setIndentation(0);
-        uiJobOptions->serverGroupAsign->setColumnWidth(0, 100);
-        uiJobOptions->serverGroupAsign->setColumnWidth(1, 50);
-
-        uiJobOptions->serverAsign->clear();
-        for (int i = 0; i < ui->servers->topLevelItemCount(); ++i)
-        {
-
-            auto _item = ui->servers->topLevelItem(i);
-            QString name = _item->text(0);
-
-            QTreeWidgetItem *item = new QTreeWidgetItem();
-
-            item->setText(0, name);
-
-            item->setCheckState(0, Qt::Unchecked);
-
-            if (serverExist.contains(name))
-            {
-                item->setCheckState(0, Qt::Checked);
-            }
-
-            uiJobOptions->serverAsign->addTopLevelItem(item);
-        }
-
-        uiJobOptions->serverGroupAsign->clear();
+        // Agrega grupos al combobox y establese el item correspondiente
+        ui->opt_server_group->clear();
+        ui->opt_server_group->addItem("None");
+        QString current_group = "None";
         for (int i = 0; i < ui->groups->topLevelItemCount(); ++i)
         {
+            QString name = ui->groups->topLevelItem(i)->text(2);
+            ui->opt_server_group->addItem(name);
 
-            auto _item = ui->groups->topLevelItem(i);
-            QString name = _item->text(2);
-
-            QTreeWidgetItem *item = new QTreeWidgetItem();
-
-            item->setText(0, name);
-
-            item->setCheckState(0, Qt::Unchecked);
             if (serverGroupExist.contains(name))
-            {
-                item->setCheckState(0, Qt::Checked);
-            }
-            uiJobOptions->serverGroupAsign->addTopLevelItem(item);
+                current_group = name;
         }
-
-       
+        ui->opt_server_group->setCurrentText(current_group);
+        // ---------------------------------
     }
-     */
 }
 
 void jobs_class::options_ok()
 {
-
-    /*
-    //Obtiene servideros chekeados para el job seleccionado
-    QJsonArray machines;
-    for (int i = 0; i < uiJobOptions->serverAsign->topLevelItemCount(); ++i)
-    {
-        auto item = uiJobOptions->serverAsign->topLevelItem(i);
-        QString name = item->text(0);
-
-        if (item->checkState(0))
-        {
-            machines.push_back(name);
-        }
-    }
-    //--------------------------------------------
-
-    //Obtiene grupos chekeados para el job seleccionado
+    QJsonArray machines = {};
+    // guarda el grupo del combobox en el array
     QJsonArray group;
-    for (int i = 0; i < uiJobOptions->serverGroupAsign->topLevelItemCount(); ++i)
-    {
-        auto item = uiJobOptions->serverGroupAsign->topLevelItem(i);
-        QString name = item->text(0);
+    QString current_group = ui->opt_server_group->currentText();
+    group.push_back(current_group);
+    // -------------------------------
 
-        if (item->checkState(0))
-        {
-            group.push_back(name);
-        }
-    }
-    //--------------------------------------------
+    int priority = ui->opt_priority->currentIndex();
+    int first_frame = ui->opt_first_frame->text().toInt();
+    int last_frame = ui->opt_last_frame->text().toInt();
+    int task_size = ui->opt_task_size->text().toInt();
+    QString comment = ui->opt_comments->text();
+    QString _job_name = ui->opt_job_name->text();
 
-    int priority = uiJobOptions->priority->currentIndex();
-    int first_frame = uiJobOptions->firstFrame->text().toInt();
-    int last_frame = uiJobOptions->lastFrame->text().toInt();
-    int task_size = uiJobOptions->taskSize->text().toInt();
-    QString comment = uiJobOptions->comment->text();
-    QString _job_name = uiJobOptions->jobName->text();
-
-    int instances = uiJobOptions->instances->text().toInt();
+    int instances = ui->opt_instances->text().toInt();
     if (instances > 16)
-    {
         instances = 16;
-    }
 
     QJsonArray pks;
     auto selected = ui->jobs->selectedItems();
@@ -386,9 +312,8 @@ void jobs_class::options_ok()
     if (reply == QMessageBox::Yes)
     {
         tcpClient(manager_host, 7000, jats({3, pks}));
-        uiJobOptions->hide();
+        ui->options->hide();
     }
-    */
 }
 
 void jobs_class::message(
@@ -455,7 +380,6 @@ void jobs_class::to_action(QString action)
 
 void jobs_class::item_delete()
 {
-
     shared->stopUpdate = true;
 
     QString ask = "Sure you want to delete the job?";
