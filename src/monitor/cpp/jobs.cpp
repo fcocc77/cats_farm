@@ -33,6 +33,28 @@ jobs_class::~jobs_class()
 {
 }
 
+void jobs_class::properties()
+{
+    jobs->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    jobs->setAlternatingRowColors(true);                          // item con color alternativos
+    jobs->setIndentation(0);                                      // elimina el margen del principio
+
+    jobs->setColumnWidth(0, 200); // ajusta el largo de las columnas
+    jobs->setColumnWidth(1, 80);
+    jobs->setColumnWidth(2, 100);
+    jobs->setColumnWidth(3, 200);
+    jobs->setColumnWidth(4, 100);
+    jobs->setColumnWidth(5, 150);
+    jobs->setColumnWidth(6, 150);
+    jobs->setColumnWidth(7, 150);
+    jobs->setColumnWidth(8, 150);
+
+    jobs->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    jobs->setSortingEnabled(true);
+    jobs->sortByColumn(5, Qt::AscendingOrder);
+}
+
 void jobs_class::connections()
 {
 
@@ -82,11 +104,6 @@ void jobs_class::connections()
     });
 
     //-----------------------------------------------------------------------
-}
-
-void jobs_class::properties()
-{
-    jobs->setColumnWidth(2, 200);
 }
 
 void jobs_class::popup()
