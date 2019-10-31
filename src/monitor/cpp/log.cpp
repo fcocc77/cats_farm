@@ -4,9 +4,6 @@ log_class::log_class(
     Ui::MainWindow *_ui)
 {
     ui = _ui;
-
-    code_editor = new kgl::QCodeEditor();
-
     property();
 }
 
@@ -16,6 +13,7 @@ log_class::~log_class()
 
 void log_class::property()
 {
+    kgl::QCodeEditor *code_editor = new kgl::QCodeEditor();
 
     // esto es para que el log tenga colores
     kgl::QCodeEditorDesign design(":/design.xml");
@@ -35,5 +33,5 @@ void log_class::property()
     code_editor->setObjectName("Log");
     ui->log->setWidget(widget);
 
-    // ui->log->hide();
+    ui->log->hide();
 }

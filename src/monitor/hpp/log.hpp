@@ -11,8 +11,6 @@ private:
     Ui::MainWindow *ui;
     void property();
 
-    kgl::QCodeEditor *code_editor;
-
 public:
     log_class(
         Ui::MainWindow *_ui);
