@@ -3,11 +3,15 @@
 
 #include "includes.hpp"
 
+#include "../../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp"
+
 class log_class
 {
 private:
     Ui::MainWindow *ui;
     void property();
+
+    kgl::QCodeEditor *code_editor;
 
 public:
     log_class(

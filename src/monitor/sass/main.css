@@ -258,15 +258,6 @@ QWidget #style1 {
   border: 1px solid #33373d;
   border-radius: 3px; }
 
-QWidget #QCodeEditorLineWidget {
-  background-color: #1c1e21; }
-
-QWidget #Logs {
-  background-color: #23262a;
-  border-color: #ffaa00;
-  border: 1px solid #2e3238;
-  border-radius: 3px; }
-
 * {
   color: #c7cbd1;
   margin: 0;
@@ -283,3 +274,11 @@ QWidget #Logs {
     padding: 5px 10px 5px 10px;
     background-color: #2a2d32;
     border: 0px solid transparent; }
+
+#Log {
+  background-color: #23262a;
+  border-color: #ffaa00;
+  border: 1px solid #2e3238;
+  border-radius: 3px; }
+  #Log #QCodeEditorLineWidget {
+    background-color: #1c1e21; }

@@ -5,6 +5,11 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	ui = new Ui::MainWindow;
 	ui->setupUi(this);
 
+	// estilo de general
+	QString style = fread(path + "/src/monitor/sass/main.css");
+	this->setStyleSheet(style.toStdString().c_str());
+	// ----------------------------
+
 	shared = new shared_variables();
 
 	global = new global_class(ui, this, shared);
@@ -105,28 +110,6 @@ void monitor::tool_bar()
 	//---------------------
 }
 
-void monitor::log_ui()
-{
-	// esto es para que el log tenga colores
-	kgl::QCodeEditorDesign design(":/design.xml");
-	QList<kgl::QSyntaxRule> rules = kgl::QSyntaxRules::loadFromFile(":/rule_cpp.xml", design);
-
-	log_text->setDesign(design);
-	log_text->setRules(rules);
-	log_text->setKeywords({"printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset"});
-	log_text->setReadOnly(true);
-	//------------------------------------------
-
-	QWidget *widget = new QWidget();
-	QVBoxLayout *hbox = new QVBoxLayout();
-	hbox->addWidget(log_text);
-	widget->setLayout(hbox);
-
-	log_text->setObjectName("Logs");
-	log_dock->setObjectName("Logs");
-	log_dock->setWidget(widget);
-	log_dock->hide();
-}
 
 
 */

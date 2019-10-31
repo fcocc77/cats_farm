@@ -75,8 +75,7 @@ public:
   // QToolBar *toolBar = new QToolBar();
 
   //log
-  // kgl::QCodeEditor *log_text = new kgl::QCodeEditor(this);
-  // QDockWidget *log_dock = new QDockWidget("Logs");
+
 
   // declaracion de modulos
   // ui_servers_tree *serverList = new ui_servers_tree(this);

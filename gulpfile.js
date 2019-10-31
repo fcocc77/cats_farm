@@ -18,7 +18,7 @@ gulp.task('ui', shell.task(cmd))
 
 // task default para que este mirando los cambios que se hacen
 exports.default = () => {
-    gulp.watch("src/monitor/sass/*.sass", gulp.series('sass', 'ui'));
+    gulp.watch("src/monitor/sass/*.sass", gulp.series('sass'));
     gulp.watch("src/monitor/ui/*.xml", gulp.series('ui'));
 };
 // ----------------------------------/
