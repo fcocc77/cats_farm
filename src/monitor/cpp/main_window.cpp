@@ -11,19 +11,19 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	// ----------------------------
 
 	shared = new shared_variables();
+	log = new log_class(ui);
 
-	global = new global_class(ui, this, shared);
-
-	menu_bar = new main_menu_class(ui, global);
-	jobs = new jobs_class(ui);
+	jobs = new jobs_class(ui, shared, this, log);
 	servers = new servers_class(ui);
 	tasks = new tasks_class(ui);
 	groups = new groups_class(ui);
 	servers = new servers_class(ui);
 	settings = new settings_class(ui);
 	update = new update_class(ui, shared);
+
+	global = new global_class(ui, this, shared);
+	menu_bar = new main_menu_class(ui, global, jobs);
 	toolbar = new toolbar_class(ui, global);
-	log = new log_class(ui);
 	options = new options_class(ui);
 }
 

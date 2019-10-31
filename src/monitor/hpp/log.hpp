@@ -15,6 +15,8 @@ public:
     log_class(
         Ui::MainWindow *_ui);
     ~log_class();
+
+    kgl::QCodeEditor *code_editor;
 };
 
 #endif // LOG_HPP

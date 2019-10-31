@@ -13,7 +13,7 @@ log_class::~log_class()
 
 void log_class::property()
 {
-    kgl::QCodeEditor *code_editor = new kgl::QCodeEditor();
+    code_editor = new kgl::QCodeEditor();
 
     // esto es para que el log tenga colores
     kgl::QCodeEditorDesign design(":/design.xml");

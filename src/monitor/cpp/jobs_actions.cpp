@@ -6,59 +6,7 @@ void jobs_actions::init()
 	actions();
 }
 
-void jobs_actions::actions()
-{
 
-	// signal del drop a la lista
-	//connect( jobsList, &QTreeWidget::itemDropped, this, submitDrop );
-	//------------------------------------
-
-	connect(jobsList, &QTreeWidget::itemDoubleClicked, this, &jobs_actions::jobModify);
-	connect(jobsList, &QTreeWidget::customContextMenuRequested, this, &jobs_actions::job_popup);
-
-	// Job Acciones
-	connect(deleteAction, &QAction::triggered, this, &jobs_actions::itemDelete);
-
-	deleteAction->setIcon(QIcon(path + "/icons/delete.png"));
-	deleteAction->setShortcut(QString("Del"));
-
-	connect(jobSuspendAction, &QAction::triggered, this, [this]() {
-		QString ask = "Sure you want to suspend the job?";
-		QString tile = "Job Suspend";
-		QString action = "suspend";
-		jobMessage(&jobs_actions::jobAction, action, ask, tile, this);
-	});
-
-	connect(jobRestartAction, &QAction::triggered, this, [this]() {
-		QString ask = "Sure you want to restart the job?";
-		QString tile = "Job Restart";
-		QString action = "restart";
-		jobMessage(&jobs_actions::jobAction, action, ask, tile, this);
-	});
-
-	jobSuspendAction->setIcon(QIcon(path + "/icons/pause.png"));
-
-	connect(jobResumeAction, &QAction::triggered, this, [this]() {
-		jobAction("resume");
-	});
-	jobResumeAction->setIcon(QIcon(path + "/icons/play3.png"));
-
-	connect(jobUnlockServersAction, &QAction::triggered, this, [this]() {
-		jobAction("unlock");
-	});
-
-	connect(jobLogAction, &QAction::triggered, this, &jobs_actions::jobShowLog);
-	jobLogAction->setShortcut(QString("L"));
-
-	connect(jobModifyAction, &QAction::triggered, this, &jobs_actions::jobModify);
-	jobModifyAction->setShortcut(QString("M"));
-
-	connect(uiJobOptions->dialog, &QDialogButtonBox::accepted, this, &jobs_actions::jobOptionsOk);
-	connect(uiJobOptions->dialog, &QDialogButtonBox::rejected, [this]() {
-		uiJobOptions->hide();
-	});
-	//-----------------------------------------------------------------------
-}
 
 void jobs_actions::job_popup()
 {

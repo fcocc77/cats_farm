@@ -38,7 +38,7 @@ using namespace std;
 
 class jobs_actions : public QObject
 {
-  public:
+public:
 	QMainWindow *monitor;
 	ui_jobs_tree *jobsList;
 	ui_servers_tree *serverList;
@@ -69,22 +69,9 @@ class jobs_actions : public QObject
 	}
 
 	//-------------------
-	QTreeWidgetItem *firstJobItem;
 
 	// variables Generales
-	const QString managerHost = fread(path + "/etc/manager_host");
 	//--------------------------------------
-
-	// Job Acciones
-	QAction *deleteAction = new QAction("Delete");
-	QAction *jobSuspendAction = new QAction("Suspend");
-	QAction *jobResumeAction = new QAction("Resume");
-	QAction *jobRestartAction = new QAction("Restart");
-	QAction *jobUnlockServersAction = new QAction("Enable blocked servers");
-	QAction *jobLogAction = new QAction("Show Log");
-	QAction *jobModifyAction = new QAction("Modify");
-	QAction *jobShowRenderFolderAction = new QAction("Show Render Folder");
-	//------------------------------------------------
 
 	// Jobs Funcions
 	void init();

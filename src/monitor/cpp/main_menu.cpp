@@ -2,11 +2,13 @@
 
 main_menu_class::main_menu_class(
     Ui::MainWindow *_ui,
-    global_class *_global)
+    global_class *_global,
+    jobs_class *_jobs)
 {
     ui = _ui;
     global = _global;
-    
+    jobs = _jobs;
+
     connections();
 }
 
@@ -16,20 +18,13 @@ main_menu_class::~main_menu_class()
 
 void main_menu_class::connections()
 {
-    // Main Menu-------------------------------------
-    // QMenu *fileMenu = new QMenu("&File", this);
-    // main_menu->addMenu(fileMenu);
+
     ui->file_menu->addAction(global->hide_action);
     ui->file_menu->addAction(global->quit_action);
 
-    // QMenu *editMenu = new QMenu("&Edit", this);
-    // mainMenu->addMenu(editMenu);
     ui->edit_menu->addAction(global->preferences_action);
-    // ui->edit_menu->addAction(global->panelSubmitAction);
-    // editMenu->addAction(_general->hide_all_panels_action);
+    ui->edit_menu->addAction(global->hide_all_panels_action);
 
-    // QMenu *serverMenu = new QMenu("&Servers", this);
-    // mainMenu->addMenu(serverMenu);
     // serverMenu->addAction(serverActions->serverInactiveAction);
     // serverMenu->addAction(serverActions->serverReactiveAction);
     // serverMenu->addAction(serverActions->deleteAction);
@@ -57,7 +52,7 @@ void main_menu_class::connections()
     // jobMenu->addAction(jobActions->jobShowRenderFolderAction);
     // jobMenu->addSeparator();
     // jobMenu->addAction(jobActions->jobModifyAction);
-    // jobMenu->addAction(jobActions->jobLogAction);
+    ui->jobs_menu->addAction(jobs->job_log_action);
 
     // QMenu *taskMenu = new QMenu("&Tasks", this);
     // mainMenu->addMenu(taskMenu);
