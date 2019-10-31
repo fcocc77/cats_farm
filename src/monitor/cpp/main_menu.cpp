@@ -26,7 +26,7 @@ void main_menu_class::connections()
     // mainMenu->addMenu(editMenu);
     ui->edit_menu->addAction(global->preferences_action);
     // ui->edit_menu->addAction(global->panelSubmitAction);
-    // editMenu->addAction(_general->hidePanelsAction);
+    // editMenu->addAction(_general->hide_all_panels_action);
 
     // QMenu *serverMenu = new QMenu("&Servers", this);
     // mainMenu->addMenu(serverMenu);

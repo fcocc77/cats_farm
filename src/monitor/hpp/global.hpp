@@ -3,12 +3,6 @@
 
 #include "includes.hpp"
 
-// Monitor Library
-// #include "ui_jobs_tree.h"
-// #include "settings.h"
-// #include "ui_submit.h"
-//----------
-
 class global_class : public QObject
 {
 private:
@@ -16,41 +10,27 @@ private:
   QMainWindow *monitor;
   Ui::MainWindow *ui;
 
+  QSystemTrayIcon *notify;
+  QStringList completed_jobs;
+
+  // General Funcions
+  void connections();
+  void notify_icon();
+  //----------------------------
+
 public:
-  // settings *_settings;
-
-  // ui_submit *uiSubmit;
-  // QDockWidget *uiJobOptions;
-  // QDockWidget *uiServerOptions;
-  // QDockWidget *log_dock;
-
-  // ui_jobs_tree *jobsList;
-  // shared_variables *shared;
-  // QStringList completedJobs;
-
   global_class(
       Ui::MainWindow *_ui,
       QMainWindow *_monitor,
       shared_variables *_shared);
 
-  QSystemTrayIcon *notify;
-
   // General Action
-  QAction *preferences_action = new QAction("Preferences");
-  QAction *quit_action = new QAction("Quit");
-  QAction *hide_action = new QAction("Hide");
-  QAction *show_action = new QAction("Show App");
-  QAction *panelSubmitAction = new QAction("Submit");
-  QAction *hidePanelsAction = new QAction("Hide Panels");
+  QAction *preferences_action;
+  QAction *quit_action;
+  QAction *hide_action;
+  QAction *show_action;
+  QAction *hide_all_panels_action;
   //------------------------------------------------
-
-  // General Funcions
-  void init();
-  void connections();
-  void notifyIcon();
-  void style_ui();
-  void show_splash();
-  //----------------------------
 };
 
 #endif //GLOBAL_HPP

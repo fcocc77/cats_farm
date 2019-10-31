@@ -5,20 +5,19 @@ global_class::global_class(
 	QMainWindow *_monitor,
 	shared_variables *_shared)
 {
-
-	// _settings = new settings(_monitor);
 	ui = _ui;
 	monitor = _monitor;
 	shared = _shared;
-	// uiSubmit = _monitor->uiSubmit;
-	// uiJobOptions = _monitor->uiJobOptions;
-	// uiServerOptions = _monitor->uiServerOptions;
-	// log_dock = _monitor->log_dock;
-	// jobsList = _monitor->jobsList;
-	// shared = _monitor->shared;
 
-	// notifyIcon();
-	// style_ui();
+	// General Action
+	preferences_action = new QAction("Preferences");
+	quit_action = new QAction("Quit");
+	hide_action = new QAction("Hide");
+	show_action = new QAction("Show App");
+	hide_all_panels_action = new QAction("Hide Panels");
+	//------------------------------------------------
+
+	notify_icon();
 	connections();
 }
 
@@ -48,46 +47,16 @@ void global_class::connections()
 		monitor->show();
 	});
 
-	/*
-
-	connect(panelSubmitAction, &QAction::triggered, this, [this]() {
-		uiSubmit->savePanel = true;
-		uiSubmit->submitUpdateBox();
-        uiSubmit->submitPanelOpen();
-		uiSubmit->show(); });
-
-	panelSubmitAction->setIcon(QIcon(path + "/icons/submit.png"));
-
-	connect(hidePanelsAction, &QAction::triggered, this, [this]() {
-		uiSubmit->hide();
-		uiJobOptions->hide();
-		uiServerOptions->hide();
-		log_dock->hide();
+	connect(hide_all_panels_action, &QAction::triggered, this, [this]() {
+		ui->options->hide();
+		ui->log->hide();
+		ui->settings->hide();
 	});
-	hidePanelsAction->setShortcut(QString("Esc"));
+	hide_all_panels_action->setShortcut(QString("Esc"));
 	//---------------------------------------------------
-
-	*/
-}
-/*
-void global_class::style_ui()
-{
-
-	monitor->setWindowTitle("VinaRender Monitor");
-
-	QIcon icon(path + "/icons/monitor.png");
-	monitor->setWindowIcon(icon);
-
-	QString style = fread(path + "/src/monitor/sass/main.css");
-
-	// monitor->setStyleSheet(style.toStdString().c_str());
 }
 
-void global_class::show_splash()
-{
-}
-
-void global_class::notifyIcon()
+void global_class::notify_icon()
 {
 	notify = new QSystemTrayIcon(QIcon(path + "/icons/monitor.png"), monitor);
 
@@ -116,31 +85,31 @@ void global_class::notifyIcon()
 
 	// Importa lista de jobs completados
 	for (QJsonValue job : jafs(fread(path + "/log/trayIcon")))
-		completedJobs.push_back(job.toString());
+		completed_jobs.push_back(job.toString());
 	// ----------------------------------------------
 
 	threading([this]() {
 		while (1)
 		{
 			QStringList inListJobs;
-			for (int i = 0; i < jobsList->topLevelItemCount(); i++)
+			for (int i = 0; i < ui->jobs->topLevelItemCount(); i++)
 			{
-				QTreeWidgetItem *item = jobsList->topLevelItem(i);
+				QTreeWidgetItem *item = ui->jobs->topLevelItem(i);
 				QString status = item->text(4);
 				QString name = item->text(0);
 				inListJobs.push_back(name);
 
 				if (status == "Queue" or status == "Rendering...")
-					completedJobs.removeOne(name);
+					completed_jobs.removeOne(name);
 
 				if (status == "Failed" or status == "Completed")
 				{
-					if (not completedJobs.contains(name))
+					if (not completed_jobs.contains(name))
 					{
-						completedJobs.push_back(name);
+						completed_jobs.push_back(name);
 
 						// Guarda lista de jobs completados
-						fwrite(path + "/log/trayIcon", jats(QJsonArray::fromStringList(completedJobs)));
+						fwrite(path + "/log/trayIcon", jats(QJsonArray::fromStringList(completed_jobs)));
 						//---------------------------------
 
 						if (status == "Failed")
@@ -159,13 +128,13 @@ void global_class::notifyIcon()
 			}
 
 			// Borra los job que ya no estan en la jobList
-			for (QString job : completedJobs)
+			for (QString job : completed_jobs)
 			{
 				if (not inListJobs.contains(job))
 				{
-					completedJobs.removeOne(job);
+					completed_jobs.removeOne(job);
 					// Guarda lista de jobs completados
-					fwrite(path + "/log/trayIcon", jats(QJsonArray::fromStringList(completedJobs)));
+					fwrite(path + "/log/trayIcon", jats(QJsonArray::fromStringList(completed_jobs)));
 					//---------------------------------
 				}
 			} //-----------------------------
@@ -173,4 +142,3 @@ void global_class::notifyIcon()
 		}
 	});
 }
-*/
