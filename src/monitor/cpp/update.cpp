@@ -1,15 +1,14 @@
 #include "../hpp/update.hpp"
 
-update_class::update_class(Ui::MainWindow *_ui, shared_variables *_shared)
+update_class::update_class(
+	Ui::MainWindow *_ui,
+	shared_variables *_shared,
+	groups_class *_groups)
 {
 	ui = _ui;
 	shared = _shared;
-	jobs = ui->jobs;
-	servers = ui->servers;
-	tasks_tree = ui->tasks;
-	groups = ui->groups;
+	groups = _groups;
 
-	// groupActions = _monitor->groupActions;
 	connections();
 
 	// Iniciar hilo para tasks
@@ -21,7 +20,7 @@ update_class::update_class(Ui::MainWindow *_ui, shared_variables *_shared)
 
 void update_class::connections()
 {
-	connect(jobs, &QTreeWidget::itemClicked, this, &update_class::get_task);
+	connect(ui->jobs, &QTreeWidget::itemClicked, this, &update_class::get_task);
 }
 
 void update_class::manager_recieve()
@@ -49,7 +48,7 @@ QString update_class::manager_recieve_update(QString _recv, QJsonObject extra)
 			shared->jobs = recv["jobs"].toObject(); // para las tasks
 			update_jobs(recv["jobs"].toObject());
 			update_servers(recv["servers"].toObject());
-			// update_groups(recv["groups"].toObject());
+			update_groups(recv["groups"].toObject());
 		}
 
 		else
@@ -81,10 +80,10 @@ void update_class::update_jobs(QJsonObject recv)
 	};
 	QList<_job_item> job_item;
 
-	for (int i = 0; i < jobs->topLevelItemCount(); ++i)
+	for (int i = 0; i < ui->jobs->topLevelItemCount(); ++i)
 	{
 
-		auto item = jobs->topLevelItem(i);
+		auto item = ui->jobs->topLevelItem(i);
 		QString name = item->text(0);
 		job_list.push_back(name);
 		job_item.push_back({name, item});
@@ -129,7 +128,7 @@ void update_class::update_jobs(QJsonObject recv)
 
 		// si el jobs se borro recientemente no se agrega ni actualiza
 		bool _delete = false;
-		for (QString d : deleteList)
+		for (QString d : delete_list)
 		{
 			if (d == job_name)
 			{
@@ -176,15 +175,15 @@ void update_class::update_jobs(QJsonObject recv)
 				item->setText(8, total_render_time);
 				item->setText(9, comment);
 
-				jobs->addTopLevelItem(item);
-				jobs->setItemWidget(item, 3, widget);
+				ui->jobs->addTopLevelItem(item);
+				ui->jobs->setItemWidget(item, 3, widget);
 			}
 			//-----------------------------------------------------------------------
 
-			for (int i = 0; i < jobs->topLevelItemCount(); ++i)
+			for (int i = 0; i < ui->jobs->topLevelItemCount(); ++i)
 			{
 
-				auto item = jobs->topLevelItem(i);
+				auto item = ui->jobs->topLevelItem(i);
 				QString name = item->text(0);
 				if (name == job_name)
 				{
@@ -192,7 +191,7 @@ void update_class::update_jobs(QJsonObject recv)
 					item->setText(1, priority);
 					item->setText(2, software);
 
-					QProgressBar *taskProgress = jobs->itemWidget(item, 3)->findChild<QProgressBar *>();
+					QProgressBar *taskProgress = ui->jobs->itemWidget(item, 3)->findChild<QProgressBar *>();
 
 					taskProgress->setValue(porcent);
 					taskProgress->setFormat(QString::number(porcent) + "%   (" + QString::number(progres) + "/" + QString::number(tasks) + ")");
@@ -208,7 +207,7 @@ void update_class::update_jobs(QJsonObject recv)
 					{
 
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(70, 100, 120);}";
-						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
+						ui->jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
 						{
@@ -220,7 +219,7 @@ void update_class::update_jobs(QJsonObject recv)
 					{
 
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(50, 120, 70);}";
-						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
+						ui->jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
 						{
@@ -232,7 +231,7 @@ void update_class::update_jobs(QJsonObject recv)
 					{
 
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(200, 0, 0);}";
-						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
+						ui->jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
 						{
@@ -244,7 +243,7 @@ void update_class::update_jobs(QJsonObject recv)
 					{
 
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(120, 100, 120);}";
-						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
+						ui->jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 						taskProgress->setFormat("....Concat....");
 
 						for (int i = 0; i < 10; ++i)
@@ -256,7 +255,7 @@ void update_class::update_jobs(QJsonObject recv)
 					if (status == "Queue")
 					{
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(140, 140, 140);}";
-						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
+						ui->jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
 						{
@@ -268,7 +267,7 @@ void update_class::update_jobs(QJsonObject recv)
 					{
 
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(140, 140, 0);}";
-						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
+						ui->jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
 						{
@@ -285,7 +284,7 @@ void update_class::update_jobs(QJsonObject recv)
 	{
 		if (not job_name_list.contains(ji.name))
 		{
-			auto root = jobs->invisibleRootItem();
+			auto root = ui->jobs->invisibleRootItem();
 			root->removeChild(ji.item);
 		}
 	}
@@ -303,9 +302,9 @@ void update_class::update_servers(QJsonObject recv)
 	};
 	QList<_server_item> server_item;
 
-	for (int i = 0; i < servers->topLevelItemCount(); ++i)
+	for (int i = 0; i < ui->servers->topLevelItemCount(); ++i)
 	{
-		auto item = servers->topLevelItem(i);
+		auto item = ui->servers->topLevelItem(i);
 		QString name = item->text(0);
 		server_list.push_back(name);
 		server_item.push_back({name, item});
@@ -429,7 +428,7 @@ void update_class::update_servers(QJsonObject recv)
 
 		// si el jobs se borro recientemente no se agrega ni actualiza
 		bool _delete = false;
-		for (auto d : deleteList)
+		for (auto d : delete_list)
 			if (d == server_name)
 				_delete = true;
 
@@ -493,20 +492,20 @@ void update_class::update_servers(QJsonObject recv)
 
 					item->setTextAlignment(4, Qt::AlignHCenter);
 
-					servers->addTopLevelItem(item);
+					ui->servers->addTopLevelItem(item);
 
-					servers->setItemWidget(item, 3, cpuWidget);
-					servers->setItemWidget(item, 5, ramWidget);
+					ui->servers->setItemWidget(item, 3, cpuWidget);
+					ui->servers->setItemWidget(item, 5, ramWidget);
 
 					QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(50, 120, 70);}";
-					servers->itemWidget(item, 5)->setStyleSheet(bar_color);
+					ui->servers->itemWidget(item, 5)->setStyleSheet(bar_color);
 				}
 				//-----------------------------------------------------------------------
 
-				for (int i = 0; i < servers->topLevelItemCount(); ++i)
+				for (int i = 0; i < ui->servers->topLevelItemCount(); ++i)
 				{
 
-					auto item = servers->topLevelItem(i);
+					auto item = ui->servers->topLevelItem(i);
 					QString name = item->text(0);
 					if (name == server_name)
 					{
@@ -522,8 +521,8 @@ void update_class::update_servers(QJsonObject recv)
 						item->setText(9, instance_job);
 						item->setText(4, QString::number(temp) + "°C");
 
-						QProgressBar *cpuBar = servers->itemWidget(item, 3)->findChild<QProgressBar *>();
-						QProgressBar *ramBar = servers->itemWidget(item, 5)->findChild<QProgressBar *>();
+						QProgressBar *cpuBar = ui->servers->itemWidget(item, 3)->findChild<QProgressBar *>();
+						QProgressBar *ramBar = ui->servers->itemWidget(item, 5)->findChild<QProgressBar *>();
 
 						cpuBar->setFormat("%p%  (" + QString::number(cpu_cores) + " Cores)");
 						ramBar->setFormat("%p%  (" + QString::number(ram_used) + " GB / " + QString::number(ram_total) + " GB)");
@@ -606,13 +605,13 @@ void update_class::update_servers(QJsonObject recv)
 	{
 		if (not server_name_list.contains(si.name))
 		{
-			auto root = servers->invisibleRootItem();
+			auto root = ui->servers->invisibleRootItem();
 			root->removeChild(si.item);
 		}
 	}
 	//--------------------------------------------
 }
-/*
+
 void update_class::update_groups(QJsonObject recv)
 {
 
@@ -626,9 +625,9 @@ void update_class::update_groups(QJsonObject recv)
 			QTreeWidgetItem *item;
 		};
 		QList<_group_item> group_item;
-		for (int i = 0; i < groupList->topLevelItemCount(); ++i)
+		for (int i = 0; i < ui->groups->topLevelItemCount(); ++i)
 		{
-			auto item = groupList->topLevelItem(i);
+			auto item = ui->groups->topLevelItem(i);
 			QString name = item->text(2);
 
 			group_list.push_back(name);
@@ -647,22 +646,22 @@ void update_class::update_groups(QJsonObject recv)
 
 			// Si el nombre no esta en la lista de la interface, agrega el nuevo grupo.
 			if (not group_list.contains(group_name))
-				groupActions->group_make(group_name, totaMachine, activeMachine, offMachine);
+				groups->group_make(group_name, totaMachine, activeMachine, offMachine);
 
 			//-----------------------------------------------------------------------
-			for (int i = 0; i < groupList->topLevelItemCount(); ++i)
+			for (int i = 0; i < ui->groups->topLevelItemCount(); ++i)
 			{
 
-				auto item = groupList->topLevelItem(i);
+				auto item = ui->groups->topLevelItem(i);
 				QString name = item->text(2);
 				if (name == group_name)
 				{
-					groupActions->make_server(item, machines);
+					groups->make_server(item, machines);
 
 					item->setText(2, group_name);
 
-					QList<QLabel *> labels = groupList->itemWidget(item, 1)->findChildren<QLabel *>();
-					QList<QLabel *> name_label = groupList->itemWidget(item, 0)->findChildren<QLabel *>();
+					QList<QLabel *> labels = ui->groups->itemWidget(item, 1)->findChildren<QLabel *>();
+					QList<QLabel *> name_label = ui->groups->itemWidget(item, 0)->findChildren<QLabel *>();
 
 					labels[1]->setText(QString::number(activeMachine));
 					labels[3]->setText(QString::number(offMachine));
@@ -701,10 +700,10 @@ void update_class::update_groups(QJsonObject recv)
 	}
 	else
 	{
-		groupList->clear();
+		ui->groups->clear();
 	}
 }
-*/
+
 void update_class::get_task()
 {
 
@@ -713,7 +712,7 @@ void update_class::get_task()
 	if (get_task_thread->isRunning())
 		get_task_thread->terminate();
 
-	tasks_tree->clear();
+	ui->tasks->clear();
 
 	update_task(); // actualiza una vez antes del hilo
 	get_task_thread = qthread(&update_class::update_task, this);
@@ -721,7 +720,7 @@ void update_class::get_task()
 
 void update_class::update_task()
 {
-	auto selected = jobs->selectedItems();
+	auto selected = ui->jobs->selectedItems();
 	if (not selected.empty())
 	{
 		auto _item = selected[0];
@@ -818,7 +817,7 @@ void update_class::update_task()
 				QTreeWidgetItem *item = new QTreeWidgetItem();
 				item_set(item, taskName, frameRange, status, server, tiempo);
 
-				tasks_tree->addTopLevelItem(item);
+				ui->tasks->addTopLevelItem(item);
 
 				task_first_add = true;
 			}
@@ -835,9 +834,9 @@ void update_class::update_task()
 						server = task[3],
 						tiempo = task[4];
 
-				for (int i = 0; i < tasks_tree->topLevelItemCount(); ++i)
+				for (int i = 0; i < ui->tasks->topLevelItemCount(); ++i)
 				{
-					auto item = tasks_tree->topLevelItem(i);
+					auto item = ui->tasks->topLevelItem(i);
 					QString name = item->text(0);
 
 					if (name == taskName)
@@ -852,6 +851,6 @@ void update_class::update_task()
 
 	else
 	{
-		tasks_tree->clear();
+		ui->tasks->clear();
 	}
 }

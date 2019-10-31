@@ -18,7 +18,7 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	groups = new groups_class(ui, this, shared);
 	servers = new servers_class(ui, this, shared, log);
 	settings = new settings_class(ui);
-	update = new update_class(ui, shared);
+	update = new update_class(ui, shared, groups);
 
 	global = new global_class(ui, this, shared);
 	main_menu = new main_menu_class(ui, global, jobs, servers, groups, tasks);
@@ -29,10 +29,8 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 monitor::~monitor()
 {
 	QString openMonitor = path + "/etc/openMonitor";
-	fwrite(openMonitor, "0"); // escrebe que el monitor ya esta cerrado
+	fwrite(openMonitor, "0"); // guarda un bool para ver si el monitor ya esta cerrado.
 }
-
-/*
 
 void monitor::closeEvent(QCloseEvent *event)
 {
@@ -44,71 +42,3 @@ void monitor::closeEvent(QCloseEvent *event)
 		this->hide();
 	}
 }
-
-void monitor::init()
-{
-
-	// this->setCentralWidget(jobsList->widget);
-
-	// main_menu();
-	// tool_bar();
-	// log_ui();
-	// assamble();
-
-	// qthread(&monitor::update, this);
-}
-
-void monitor::update()
-{
-	// si el archivo esta en 1 muestra el monitor
-	static QString showMonitor = path + "/etc/showMonitor";
-	if (fread(showMonitor).toInt())
-	{
-		this->show();
-		fwrite(showMonitor, "0");
-	} // ----------------------------
-}
-
-void monitor::assamble()
-{
-	this->setCentralWidget(jobsList->widget);
-	this->addDockWidget(Qt::LeftDockWidgetArea, uiSubmit);
-	this->addDockWidget(Qt::BottomDockWidgetArea, uiServerOptions);
-	this->addDockWidget(Qt::BottomDockWidgetArea, serverList->dock);
-	this->addDockWidget(Qt::BottomDockWidgetArea, groupList->dock);
-	this->addDockWidget(Qt::RightDockWidgetArea, taskList->dock);
-	this->addToolBar(toolBar);
-	this->addDockWidget(Qt::LeftDockWidgetArea, uiJobOptions);
-	this->addDockWidget(Qt::LeftDockWidgetArea, log_dock);
-}
-
-
-
-void monitor::tool_bar()
-{
-	QPushButton *tmpButton = new QPushButton();
-
-	connect(tmpButton, &QPushButton::clicked, this, [this]() {
-		_general->style_ui();
-	});
-
-	// toolBar
-	toolBar->setObjectName("ToolBar");
-	toolBar->addAction(jobActions->jobResumeAction);
-	toolBar->addSeparator();
-	toolBar->addAction(jobActions->jobSuspendAction);
-	toolBar->addSeparator();
-	toolBar->addAction(_general->preferencesAction);
-	toolBar->addSeparator();
-	toolBar->addAction(_general->panelSubmitAction);
-	toolBar->addSeparator();
-	toolBar->addWidget(tmpButton);
-	toolBar->setIconSize(QSize(24, 24));
-	toolBar->setMovable(0);
-	toolBar->setWindowTitle("Tools Bar");
-	//---------------------
-}
-
-
-
-*/

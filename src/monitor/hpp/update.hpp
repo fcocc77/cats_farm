@@ -1,7 +1,8 @@
 #ifndef UPDATE_HPP
 #define UPDATE_HPP
 
-#include "../hpp/includes.hpp"
+#include "includes.hpp"
+#include "groups.hpp"
 
 class update_class : public QObject
 {
@@ -10,12 +11,8 @@ private:
 
   // variables
   shared_variables *shared;
-  QTreeWidget *jobs;
-  QTreeWidget *servers;
-  QTreeWidget *tasks_tree;
-  QTreeWidget *groups;
-  QStringList deleteList;
-  // group_actions *groupActions;
+  groups_class *groups;
+  QStringList delete_list;
   // --------------------
 
   // Tasks
@@ -35,7 +32,10 @@ private:
   // ----------------------
 
 public:
-  update_class(Ui::MainWindow *_ui, shared_variables *_shared);
+  update_class(
+      Ui::MainWindow *_ui,
+      shared_variables *_shared,
+      groups_class *_groups);
 };
 
 #endif //UPDATE_HPP

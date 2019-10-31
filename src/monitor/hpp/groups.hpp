@@ -15,12 +15,6 @@ private:
     void connections();
     void popup();
     void create_window();
-    QTreeWidgetItem *group_make(
-        QString group_name,
-        int totaMachine,
-        int activeMachine,
-        int offMachine);
-    void make_server(QTreeWidgetItem *item, QJsonArray machines);
     void add_machine();
     void group_delete();
     //-----------------
@@ -38,6 +32,13 @@ public:
     QAction *add_machine_action;
     QAction *delete_action;
     //------------------------------------------------
+
+    void make_server(QTreeWidgetItem *item, QJsonArray machines);
+    QTreeWidgetItem *group_make(
+        QString group_name,
+        int totaMachine,
+        int activeMachine,
+        int offMachine);
 };
 
 class ElidedLabel : public QLabel
