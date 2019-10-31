@@ -26,6 +26,7 @@
 #include <QMenu>
 #include <QTreeWidget>
 #include <QSound>
+#include <QSignalMapper>
 //------------------------
 
 #include <iostream>
@@ -36,7 +37,6 @@ using namespace std;
 #include "../../utils/os.h"
 #include "../../manager/structs.h"
 #include "../../utils/tcp.h"
-
 
 #include "shared_variables.hpp"
 

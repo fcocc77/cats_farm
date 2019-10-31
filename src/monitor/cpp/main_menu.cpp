@@ -25,15 +25,15 @@ void main_menu_class::connections()
     ui->edit_menu->addAction(global->preferences_action);
     ui->edit_menu->addAction(global->hide_all_panels_action);
 
-    // serverMenu->addAction(serverActions->serverInactiveAction);
-    // serverMenu->addAction(serverActions->serverReactiveAction);
+    // serverMenu->addAction(serverActions->server_inactive_action);
+    // serverMenu->addAction(serverActions->server_reactive_action);
     // serverMenu->addAction(serverActions->deleteAction);
     // serverMenu->addSeparator();
-    // serverMenu->addAction(serverActions->serverMaxInstancesAction);
+    // serverMenu->addAction(serverActions->server_max_instances_action);
     // serverMenu->addSeparator();
-    // serverMenu->addAction(serverActions->serverShowLog);
-    // serverMenu->addAction(serverActions->serverFreeramAction);
-    // serverMenu->addAction(serverActions->serverSshAction);
+    // serverMenu->addAction(serverActions->server_show_log);
+    // serverMenu->addAction(serverActions->server_free_ram_action);
+    // serverMenu->addAction(serverActions->server_ssh_action);
 
     // QMenu *groupMenu = new QMenu("&Groups", this);
     // mainMenu->addMenu(groupMenu);
