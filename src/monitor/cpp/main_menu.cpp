@@ -56,9 +56,9 @@ void main_menu_class::connections()
 
     // QMenu *taskMenu = new QMenu("&Tasks", this);
     // mainMenu->addMenu(taskMenu);
-    // taskMenu->addAction(taskActions->taskSuspendAction);
+    // taskMenu->addAction(taskActions->suspend_action);
     // taskMenu->addSeparator();
-    // taskMenu->addAction(taskActions->taskRestartAction);
+    // taskMenu->addAction(taskActions->restart_action);
 
     // QMenu *helpMenu = new QMenu("&Help", this);
     // mainMenu->addMenu(helpMenu);

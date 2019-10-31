@@ -14,7 +14,7 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	log = new log_class(ui);
 
 	jobs = new jobs_class(ui, shared, this, log);
-	tasks = new tasks_class(ui);
+	tasks = new tasks_class(ui, this);
 	groups = new groups_class(ui);
 	servers = new servers_class(ui, this, shared, log);
 	settings = new settings_class(ui);
