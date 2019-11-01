@@ -15,6 +15,7 @@
                     {% include 'column.xml' with value="Status"%}
                     {% include 'column.xml' with value="Ins."%}
                     {% include 'column.xml' with value="CPU Usage"%}
+                    {% include 'column.xml' with value="CPU Temp"%}
                     {% include 'column.xml' with value="RAM Usage"%}
                     {% include 'column.xml' with value="System"%}
                     {% include 'column.xml' with value="IP"%}

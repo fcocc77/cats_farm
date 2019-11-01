@@ -1,5 +1,8 @@
 #include "../hpp/jobs.hpp"
 
+#include <QPixmap>
+#include <QtSvg>
+
 jobs_class::jobs_class(
     Ui::MainWindow *_ui,
     shared_variables *_shared,
@@ -79,7 +82,12 @@ void jobs_class::connections()
         message(&jobs_class::to_action, action, ask, tile, this);
     });
 
-    job_suspend_action->setIcon(QIcon(path + "/icons/pause.png"));
+    QString svg_path = path + "/src/monitor/sass/svg/all.svg";
+    QString svg = fread(svg_path);
+
+    // QIcon( QPixmap.fromImage( QImage.fromData() ) );
+
+    // job_suspend_action->setIcon(QIcon(svg_path));
 
     connect(job_resume_action, &QAction::triggered, this, [this]() {
         to_action("resume");

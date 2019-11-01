@@ -291,6 +291,11 @@
 </column>
                     <column>
     <property name="text">
+        <string notr="true">CPU Temp</string>
+    </property>
+</column>
+                    <column>
+    <property name="text">
         <string notr="true">RAM Usage</string>
     </property>
 </column>

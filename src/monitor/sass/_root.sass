@@ -9,4 +9,122 @@
     font: 8pt "Tahoma"
 
 QWidget
-    background: transparent
+    background: $b10
+
+QScrollBar
+    &:horizontal 
+        background-color: $b18
+        height: 10px
+    &:vertical 
+        background-color: $b18
+        width: 10px
+    &::handle
+        &:horizontal, &:vertical 
+            background: $b25
+            min-height: 20px
+            border-radius: 5px
+            margin-left: 11
+            margin-right: 11
+            &:hover
+                background: $base
+    &::add-line, &::sub-line
+        &:horizontal, &:vertical
+            background: $b25
+    &::right-arrow:horizontal 
+        image: url(#{$images}/right_arrow.png)
+        width: 7px
+        height: 7px
+    &::left-arrow:horizontal 
+        image: url(#{$images}/left_arrow.png)
+        width: 7px
+        height: 7px
+    &::up-arrow:vertical 
+        image: url(#{$images}/up_arrow.png)
+        width: 7px
+        height: 7px
+    &::down-arrow:vertical 
+        image: url(#{$images}/down_arrow.png)
+        width: 7px
+        height: 7px
+    &::add-page, &::sub-page
+        &:horizontal, &:vertical
+            background: none
+
+
+
+QMainWindow
+    &::separator 
+        background: $b7
+        width: 4px
+        border-style: outset
+        
+        border-width: 1px    
+        &:hover
+            background: rgba($base,.2)
+            border-color: rgba($base,.5)
+           
+           
+QDockWidget
+    &:floatable 
+        titlebar-close-icon: url(#{$images}/radio_checked.png)
+        titlebar-normal-icon: url(#{$images}/radio_unchecked.png)
+        border: 1px solid red
+    &::focus 
+        background-color: transparent
+    &::close-button
+        border: 10px
+        padding: 2px
+        &:hover 
+            image: url(#{$images}/radio_checked_focus.png)
+    &::float-button 
+        border: 10px
+        padding: 2px
+        &:hover 
+            image: url(#{$images}/radio_unchecked_focus.png)
+    &::title 
+        background-color: $b12
+        padding: 7px
+        text-align: center
+
+@mixin treeitem
+    alternate-background-color: $b18
+    background-color: $b15
+    border: 1px solid $b18
+    QWidget
+        background: transparent
+    &::item 
+        border-bottom: 1px solid $b20
+        border-top: 1px solid transparent
+        height: 30px
+        &:first
+            padding-left: 15px
+
+        &:selected
+            background-color: rgba($base,.1)
+            border-color: rgba($base,.5)
+            color: $b80
+        &:hover
+            background-color: rgba($base,.02)
+            border-color: rgba($base,.5)
+        QProgressBar
+            max-height: 100px
+            &:horizontal 
+                text-align: center
+                &::chunk
+                    &:horizontal 
+                        background: rgba($b30,.2)
+            &::chunk
+                &:horizontal 
+                    border-radius: 2px
+                    background: $blue
+
+
+    QHeaderView
+        &::section 
+            background-color: $b18
+            padding: 5px 10px 5px 10px
+
+            border: 0px solid transparent
+            margin-left: 1px
+            margin-top: 1px
+            margin-bottom: 1px
