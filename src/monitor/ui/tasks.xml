@@ -2,9 +2,11 @@
     <property name="windowTitle">
         <string>Tasks</string>
     </property>
+    <!-- el numero 2 significa que el QDockWidget se situa en la parte derecha -->
     <attribute name="dockWidgetArea">
-        <number>1</number>
+        <number>2</number>
     </attribute>
+    <!-- -->
     <widget class="QWidget" name="dockWidgetContents">
         <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
@@ -14,8 +16,6 @@
                     {% include 'column.xml' with value="Status"%}
                     {% include 'column.xml' with value="Server"%}
                     {% include 'column.xml' with value="Time"%}
-
-
                 </widget>
             </item>
         </layout>

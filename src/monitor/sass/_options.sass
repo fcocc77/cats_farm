@@ -1,0 +1,50 @@
+#options
+    QLabel
+        background: transparent
+        padding: 10px
+    QLineEdit
+        background: $b20
+        border: 1px solid $b20
+        padding: 10px
+        border-radius: 2px
+        &:hover
+            background: $b25
+            border-color: $b30
+        &:focus
+            background: $b25
+            border-color: $base
+    QPushButton
+        background: $b20
+        border: 1px solid $b20
+        padding: 10px
+        border-radius: 3px
+        font-size: 12px
+        &:hover
+            border-color: $base
+            color: $base
+    QComboBox
+        background-color: $b20
+        border: 1px solid $b20
+        padding: 7px
+        border-radius: 2px
+        &:focus 
+            border-color: $b22
+        &::drop-down 
+            background-color: transparent
+        &:hover 
+            background: $b22
+        QAbstractItemView 
+            background-color: $b13
+            border: 1px solid $base
+            border-radius: 27px
+        &:item
+            font-size: 13px
+            &:selected 
+                background-color: $b20
+                color: $base
+                padding-left: 0px
+        &::indicator 
+            background-color: transparent
+    #opt_job_name_widget, #opt_frame_range_widget
+        background: $b15
+        border-radius: 2px

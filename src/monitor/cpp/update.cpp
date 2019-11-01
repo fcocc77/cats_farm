@@ -451,6 +451,7 @@ void update_class::update_servers(QJsonObject recv)
 				{
 
 					QProgressBar *cpuBar = new QProgressBar();
+					cpuBar->setObjectName("cpu_bar");
 					QVBoxLayout *cpuVbox = new QVBoxLayout();
 					cpuVbox->addWidget(cpuBar);
 					cpuVbox->setContentsMargins(0, 0, 0, 0);
@@ -458,6 +459,7 @@ void update_class::update_servers(QJsonObject recv)
 					cpuWidget->setLayout(cpuVbox);
 
 					QProgressBar *ramBar = new QProgressBar();
+					ramBar->setObjectName("ram_bar");
 					QVBoxLayout *ramVbox = new QVBoxLayout();
 					ramVbox->addWidget(ramBar);
 					ramVbox->setContentsMargins(0, 0, 0, 0);
@@ -497,8 +499,6 @@ void update_class::update_servers(QJsonObject recv)
 					ui->servers->setItemWidget(item, 3, cpuWidget);
 					ui->servers->setItemWidget(item, 5, ramWidget);
 
-					QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(50, 120, 70);}";
-					ui->servers->itemWidget(item, 5)->setStyleSheet(bar_color);
 				}
 				//-----------------------------------------------------------------------
 

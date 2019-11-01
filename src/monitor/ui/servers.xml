@@ -2,9 +2,11 @@
     <property name="windowTitle">
         <string>Servers</string>
     </property>
+    <!-- el numero 8 significa que el QDockWidget se situa en la parte inferior -->
     <attribute name="dockWidgetArea">
-        <number>1</number>
+        <number>8</number>
     </attribute>
+    <!-- -->
     <widget class="QWidget" name="dockWidgetContents">
         <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>

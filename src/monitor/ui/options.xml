@@ -9,7 +9,7 @@
     <widget class="QWidget" name="dockWidgetContents">
         <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-                <widget class="QWidget" name="widget" native="true">
+                <widget class="QWidget" name="opt_job_name_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout_2">
                         <item>
                             <widget class="QLabel" name="label">
@@ -25,7 +25,7 @@
                 </widget>
             </item>
             <item>
-                <widget class="QWidget" name="widget_2" native="true">
+                <widget class="QWidget" name="opt_priority_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout_3">
                         <item>
                             <widget class="QLabel" name="label_2">
@@ -67,7 +67,7 @@
                 </widget>
             </item>
             <item>
-                <widget class="QWidget" name="widget_3" native="true">
+                <widget class="QWidget" name="opt_frame_range_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout_4">
                         <item>
                             <widget class="QLabel" name="label_3">
@@ -134,7 +134,7 @@
                 </widget>
             </item>
             <item>
-                <widget class="QWidget" name="widget_7" native="true">
+                <widget class="QWidget" name="opt_server_group_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout_8">
                         <item>
                             <widget class="QLabel" name="label_7">

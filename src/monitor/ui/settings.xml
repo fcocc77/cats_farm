@@ -8,7 +8,7 @@
     <widget class="QWidget" name="settings_widget">
         <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-                <widget class="QWidget" name="widget_2" native="true">
+                <widget class="QWidget" name="settings_ip_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout">
                         <item>
                             <widget class="QLabel" name="label">

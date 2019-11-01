@@ -2,17 +2,17 @@
     <property name="windowTitle">
         <string>Groups</string>
     </property>
+    <!-- el numero 8 significa que el QDockWidget se situa en la parte inferior -->
     <attribute name="dockWidgetArea">
-        <number>1</number>
+        <number>8</number>
     </attribute>
+    <!-- -->
     <widget class="QWidget" name="dockWidgetContents">
         <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
                 <widget class="QTreeWidget" name="groups">
                     {% include 'column.xml' with value="Group Name"%}
                     {% include 'column.xml' with value="Status"%}
-
-
                 </widget>
             </item>
         </layout>
