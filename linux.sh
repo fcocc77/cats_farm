@@ -29,6 +29,8 @@ install() {
     qt5-qtbase-devel \
     qt5-qtmultimedia.x86_64 \
     qt5-qtmultimedia-devel.x86_64 \
+    qt5-qtsvg.x86_64 \
+    qt5-qtsvg-devel.x86_64 \
     mesa-libGL-devel \
     mesa-libGLU-devel \
     pulseaudio-libs-glib2 \

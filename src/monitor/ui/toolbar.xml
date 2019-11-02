@@ -1,11 +1,37 @@
 <widget class="QToolBar" name="toolbar">
-    <property name="windowTitle">
-        <string>toolBar</string>
-    </property>
-    <attribute name="toolBarArea">
-        <enum>TopToolBarArea</enum>
-    </attribute>
-    <attribute name="toolBarBreak">
-        <bool>false</bool>
-    </attribute>
+    <widget class="QWidget" name="toolbarwidget">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+                <widget class="QPushButton" name="tool_resume">
+                    <property name="text">
+                        <string>RESUME JOB</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QPushButton" name="tool_suspend">
+                    <property name="text">
+                        <string>SUSPEND JOB</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QPushButton" name="tool_settings">
+                    <property name="text">
+                        <string>SETTINGS</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="tool_settings">
+                    <property name="text">
+                        <string>ZONE:</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QComboBox" name="tool_zone" />
+            </item>
+        </layout>
+    </widget>
 </widget>

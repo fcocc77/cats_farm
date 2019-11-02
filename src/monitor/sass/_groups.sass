@@ -1,18 +1,29 @@
 #groups
-    // &::item:!has-children,
-    // &::branch::!has-children
-    //     background-color: rgb(39, 39, 39)
-    //     border-bottom: 1px solid rgb(46, 46, 46)
-
-    &::item:selected, &::branch:selected,
-    &::branch:has-children:closed:selected,
-    &::branch:open:selected 
-        background-color: rgb(30, 45, 60)
-        border-bottom: 1px solid rgb(35, 50, 55)
-        color: rgb(200, 200, 200)
-
-    &::item:hover,
-    &::branch:hover,
-    &::branch:has-children:closed:hover
-    // &::branch::!has-children:alternate:hover 
-        background-color: rgb(35, 40, 45)
+    @include treeitem
+    alternate-background-color: $b18
+    &::item
+        height: auto
+        padding-top: 5px
+        padding-bottom: 5px
+        &:has-children
+            background: $b14
+            @include treecolor
+    &::branch 
+        background: transparent
+        border-top: 1px solid transparent
+        border-bottom: 1px solid $b20
+        @include treecolor
+        &:selected
+            background: mix($base,$b15,10)
+        &:hover
+            background: mix($base,$b15,2)
+        &:has-children
+            background: $b14
+            &:selected
+                background: mix($base,$b14,11)
+            &:hover
+                background: mix($base,$b14,3)
+            &:open 
+                image: url(#{$images}/down_arrow.png)
+            &:closed
+                image: url(#{$images}/right_arrow.png)

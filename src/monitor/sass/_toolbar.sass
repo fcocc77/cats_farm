@@ -1,28 +1,24 @@
 QToolBar
-    background: $b15
+    background: $b13
     border-bottom: 1px solid $b7
     border-style: outset
-    padding: 7px
-
-
-    &:top, &:bottom 
-        background-color: $b13
-    &::separator  
-        background-color: $b20
-        width: 1 
-        margin: 7
-    QToolButton 
-        background-color: transparent
-        &::hover 
-            background-color: $b20
-            border: 1px solid $b22
-        // qproperty-icon: url(#{$svg}/all.svg)
-        
-        
-        // background-image: url(#{$svg}/all.svg)
-        background-image: url(#{$images}/close.png)
-        
-        
-        
-        
-        
+    padding: 15px
+    #toolbarwidget
+        background: transparent
+        QPushButton
+            background: transparent
+            margin-right: 20px
+            qproperty-iconSize: 15px
+            font-size: 13px
+            border-right: 1px solid $b30
+            padding-right: 15px
+            &:hover
+                color: $base
+        #tool_resume
+            qproperty-icon: url(#{$svg}/play.svg)
+            &:hover
+                qproperty-icon: url(#{$svg}/pause.svg)
+        #tool_suspend
+            qproperty-icon: url(#{$svg}/pause.svg)
+        #tool_settings
+            qproperty-icon: url(#{$svg}/gear.svg)

@@ -8,7 +8,7 @@ INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 CONFIG -= app_bundle
 RC_ICONS = ../../icons/monitor.ico
 
-QT += core gui widgets multimedia
+QT += core gui svg widgets multimedia
 
 FORMS = ./ui/main.ui
 

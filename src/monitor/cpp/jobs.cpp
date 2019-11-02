@@ -82,12 +82,7 @@ void jobs_class::connections()
         message(&jobs_class::to_action, action, ask, tile, this);
     });
 
-    QString svg_path = path + "/src/monitor/sass/svg/all.svg";
-    QString svg = fread(svg_path);
-
-    // QIcon( QPixmap.fromImage( QImage.fromData() ) );
-
-    // job_suspend_action->setIcon(QIcon(svg_path));
+    job_suspend_action->setIcon(QIcon(path + "/src/monitor/sass/svg/pause.svg"));
 
     connect(job_resume_action, &QAction::triggered, this, [this]() {
         to_action("resume");

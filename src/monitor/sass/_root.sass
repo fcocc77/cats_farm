@@ -7,10 +7,8 @@
     background-color: white
     border: 0px
     font: 8pt "Tahoma"
-
 QWidget
     background: $b10
-
 QScrollBar
     &:horizontal 
         background-color: $b18
@@ -49,21 +47,15 @@ QScrollBar
     &::add-page, &::sub-page
         &:horizontal, &:vertical
             background: none
-
-
-
 QMainWindow
     &::separator 
         background: $b7
         width: 4px
         border-style: outset
-        
         border-width: 1px    
         &:hover
             background: rgba($base,.2)
             border-color: rgba($base,.5)
-           
-           
 QDockWidget
     &:floatable 
         titlebar-close-icon: url(#{$images}/radio_checked.png)
@@ -85,7 +77,14 @@ QDockWidget
         background-color: $b12
         padding: 7px
         text-align: center
-
+@mixin treecolor
+    &:selected
+        background-color: rgba($base,.1)
+        border-color: rgba($base,.5)
+        color: $b80
+    &:hover
+        background-color: rgba($base,.02)
+        border-color: rgba($base,.5)
 @mixin treeitem
     alternate-background-color: $b18
     background-color: $b15
@@ -98,14 +97,7 @@ QDockWidget
         height: 30px
         &:first
             padding-left: 15px
-
-        &:selected
-            background-color: rgba($base,.1)
-            border-color: rgba($base,.5)
-            color: $b80
-        &:hover
-            background-color: rgba($base,.02)
-            border-color: rgba($base,.5)
+        @include treecolor
         QProgressBar
             max-height: 100px
             &:horizontal 
@@ -117,13 +109,10 @@ QDockWidget
                 &:horizontal 
                     border-radius: 2px
                     background: $blue
-
-
     QHeaderView
         &::section 
             background-color: $b18
             padding: 5px 10px 5px 10px
-
             border: 0px solid transparent
             margin-left: 1px
             margin-top: 1px

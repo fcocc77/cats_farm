@@ -6,13 +6,14 @@
 #include "global.hpp"
 #include "jobs.hpp"
 
-class toolbar_class
+class toolbar_class : public QObject
 {
 private:
     Ui::MainWindow *ui;
     global_class *global;
     jobs_class *jobs;
 
+    void connections();
     void property();
 
 public:
