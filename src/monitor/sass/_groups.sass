@@ -2,10 +2,13 @@
     @include treeitem
     alternate-background-color: $b18
     &::item
-        height: auto
+        height: 12px
         padding-top: 5px
         padding-bottom: 5px
+        QLabel
+            padding: 5px
         &:has-children
+            min-height: 200px
             background: $b14
             @include treecolor
     &::branch 
