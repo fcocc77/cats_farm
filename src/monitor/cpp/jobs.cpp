@@ -65,7 +65,6 @@ void jobs_class::connections()
     // Job Acciones
     connect(delete_action, &QAction::triggered, this, &jobs_class::item_delete);
 
-    delete_action->setIcon(QIcon(path + "/icons/delete.png"));
     delete_action->setShortcut(QString("Del"));
 
     connect(job_suspend_action, &QAction::triggered, this, [this]() {
@@ -82,12 +81,9 @@ void jobs_class::connections()
         message(&jobs_class::to_action, action, ask, tile, this);
     });
 
-    job_suspend_action->setIcon(QIcon(path + "/src/monitor/sass/svg/pause.svg"));
-
     connect(job_resume_action, &QAction::triggered, this, [this]() {
         to_action("resume");
     });
-    job_resume_action->setIcon(QIcon(path + "/icons/play3.png"));
 
     connect(job_unlock_servers_action, &QAction::triggered, this, [this]() {
         to_action("unlock");

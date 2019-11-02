@@ -1,6 +1,6 @@
 <widget class="QDockWidget" name="dockWidget">
     <property name="windowTitle">
-        <string>Servers</string>
+        <string>SERVERS</string>
     </property>
     <!-- el numero 8 significa que el QDockWidget se situa en la parte inferior -->
     <attribute name="dockWidgetArea">

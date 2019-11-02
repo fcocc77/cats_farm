@@ -28,10 +28,10 @@ void tasks_class::properties()
     ui->tasks->setAlternatingRowColors(true);                          // item con color alternativos
     ui->tasks->setIndentation(0);                                      // elimina el margen del principio
 
-    ui->tasks->setColumnWidth(0, 70);
-    ui->tasks->setColumnWidth(1, 70);
-    ui->tasks->setColumnWidth(2, 70);
-    ui->tasks->setColumnWidth(3, 140);
+    ui->tasks->setColumnWidth(0, 100);
+    ui->tasks->setColumnWidth(1, 100);
+    ui->tasks->setColumnWidth(2, 100);
+    ui->tasks->setColumnWidth(3, 100);
 
     ui->tasks->setSortingEnabled(true);
     ui->tasks->sortByColumn(0, Qt::AscendingOrder);

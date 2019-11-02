@@ -161,8 +161,6 @@ void update_class::update_jobs(QJsonObject recv)
 				QWidget *widget = new QWidget();
 				widget->setLayout(vbox);
 
-				//widget->setStyleSheet( "QWidget {background: rgba( 0, 0, 0, 0 );}" );
-
 				item->setText(0, job_name);
 				item->setText(1, priority);
 				item->setText(2, software);
@@ -492,7 +490,7 @@ void update_class::update_servers(QJsonObject recv)
 					}
 					item->setForeground(8, QColor(100, 200, 100));
 
-					item->setTextAlignment(4, Qt::AlignHCenter);
+					item->setTextAlignment(4, Qt::AlignCenter);
 
 					ui->servers->addTopLevelItem(item);
 

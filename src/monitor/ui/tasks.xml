@@ -1,6 +1,6 @@
 <widget class="QDockWidget" name="dockWidget">
     <property name="windowTitle">
-        <string>Tasks</string>
+        <string>TASKS</string>
     </property>
     <!-- el numero 2 significa que el QDockWidget se situa en la parte derecha -->
     <attribute name="dockWidgetArea">

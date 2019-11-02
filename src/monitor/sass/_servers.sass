@@ -1,8 +1,13 @@
 #servers
     @include treeitem
-    &::item 
+    &::item
         #ram_bar
             &::chunk
                 &:horizontal 
                     border-radius: 2px
                     background: $green
+        #cpu_bar
+            &::chunk
+                &:horizontal 
+                    border-radius: 2px
+                    background: $blue

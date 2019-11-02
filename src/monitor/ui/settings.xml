@@ -1,6 +1,6 @@
 <widget class="QDockWidget" name="settings">
     <property name="windowTitle">
-        <string>Settings</string>
+        <string>SETTINGS</string>
     </property>
     <attribute name="dockWidgetArea">
         <number>1</number>
