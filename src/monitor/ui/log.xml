@@ -1,7 +1,7 @@
 <widget class="QDockWidget" name="log">
 
     <property name="windowTitle">
-        <string>Log</string>
+        <string>LOG</string>
     </property>
     <attribute name="dockWidgetArea">
         <number>1</number>

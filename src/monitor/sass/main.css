@@ -12,110 +12,120 @@
 QWidget {
   background: #17191c; }
 
-QMainWindow #centralwidget {
-  border: 1px solid transparent; }
-  QMainWindow #centralwidget::hover {
-    border-color: rgba(0, 153, 255, 0.5); }
-
-QMainWindow::separator {
-  background: #101213;
-  width: 4px;
-  border-style: outset;
-  border-width: 1px; }
-  QMainWindow::separator:hover {
-    background: rgba(0, 153, 255, 0.2);
-    border-color: rgba(0, 153, 255, 0.5); }
-
-QMainWindow QScrollBar:horizontal {
-  background-color: #2a2d32;
-  height: 10px; }
-
-QMainWindow QScrollBar:vertical {
-  background-color: #2a2d32;
-  width: 10px; }
-
-QMainWindow QScrollBar::handle:horizontal, QMainWindow QScrollBar::handle:vertical {
-  background: #3a3f45;
-  min-height: 20px;
-  border-radius: 5px;
-  margin-left: 11;
-  margin-right: 11; }
-  QMainWindow QScrollBar::handle:horizontal:hover, QMainWindow QScrollBar::handle:vertical:hover {
-    background: #0099ff; }
-
-QMainWindow QScrollBar::add-line:horizontal, QMainWindow QScrollBar::add-line:vertical, QMainWindow QScrollBar::sub-line:horizontal, QMainWindow QScrollBar::sub-line:vertical {
-  background: #3a3f45; }
-
-QMainWindow QScrollBar::right-arrow:horizontal {
-  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png);
-  width: 7px;
-  height: 7px; }
-
-QMainWindow QScrollBar::left-arrow:horizontal {
-  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/left_arrow.png);
-  width: 7px;
-  height: 7px; }
-
-QMainWindow QScrollBar::up-arrow:vertical {
-  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/up_arrow.png);
-  width: 7px;
-  height: 7px; }
-
-QMainWindow QScrollBar::down-arrow:vertical {
-  image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png);
-  width: 7px;
-  height: 7px; }
-
-QMainWindow QScrollBar::add-page:horizontal, QMainWindow QScrollBar::add-page:vertical, QMainWindow QScrollBar::sub-page:horizontal, QMainWindow QScrollBar::sub-page:vertical {
-  background: none; }
-
-QMainWindow QDockWidget {
-  color: #0099ff;
-  font-weight: bold; }
-  QMainWindow QDockWidget > QWidget {
+QMainWindow {
+  qproperty-windowIcon: url("/home/pancho/Documents/GitHub/vinarender/icons/icon.png"); }
+  QMainWindow #centralwidget {
     border: 1px solid transparent; }
-    QMainWindow QDockWidget > QWidget::hover {
+    QMainWindow #centralwidget::hover {
       border-color: rgba(0, 153, 255, 0.5); }
-  QMainWindow QDockWidget:floatable {
-    titlebar-close-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked.png);
-    titlebar-normal-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked.png); }
-  QMainWindow QDockWidget::close-button {
-    border: 10px;
-    padding: 2px; }
-    QMainWindow QDockWidget::close-button:hover {
-      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked_focus.png); }
-  QMainWindow QDockWidget::float-button {
-    border: 10px;
-    padding: 2px; }
-    QMainWindow QDockWidget::float-button:hover {
-      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked_focus.png); }
-  QMainWindow QDockWidget::title {
-    background-color: #1c1e21;
-    border: 1px solid transparent;
-    padding: 7px;
-    text-align: center; }
+  QMainWindow::separator {
+    background: #101213;
+    width: 4px;
+    border-style: outset;
+    border-width: 1px; }
+    QMainWindow::separator:hover {
+      background: rgba(0, 153, 255, 0.2);
+      border-color: rgba(0, 153, 255, 0.5); }
+  QMainWindow QMessageBox {
+    background: #1e2124; }
+    QMainWindow QMessageBox QLabel {
+      font-size: 13px;
+      background: transparent; }
+    QMainWindow QMessageBox QPushButton {
+      padding: 10px 30px 10px 20px;
+      font-size: 14px;
+      border-radius: 3px;
+      background: #2e3238;
+      border: 1px solid transparent; }
+      QMainWindow QMessageBox QPushButton:hover {
+        border-color: #0099ff;
+        color: #0099ff; }
+  QMainWindow QScrollBar:horizontal {
+    background-color: #2a2d32;
+    height: 10px; }
+  QMainWindow QScrollBar:vertical {
+    background-color: #2a2d32;
+    width: 10px; }
+  QMainWindow QScrollBar::handle:horizontal, QMainWindow QScrollBar::handle:vertical {
+    background: #3a3f45;
+    min-height: 20px;
+    border-radius: 5px;
+    margin-left: 11;
+    margin-right: 11; }
+    QMainWindow QScrollBar::handle:horizontal:hover, QMainWindow QScrollBar::handle:vertical:hover {
+      background: #0099ff; }
+  QMainWindow QScrollBar::add-line:horizontal, QMainWindow QScrollBar::add-line:vertical, QMainWindow QScrollBar::sub-line:horizontal, QMainWindow QScrollBar::sub-line:vertical {
+    background: #3a3f45; }
+  QMainWindow QScrollBar::right-arrow:horizontal {
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png);
+    width: 7px;
+    height: 7px; }
+  QMainWindow QScrollBar::left-arrow:horizontal {
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/left_arrow.png);
+    width: 7px;
+    height: 7px; }
+  QMainWindow QScrollBar::up-arrow:vertical {
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/up_arrow.png);
+    width: 7px;
+    height: 7px; }
+  QMainWindow QScrollBar::down-arrow:vertical {
+    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png);
+    width: 7px;
+    height: 7px; }
+  QMainWindow QScrollBar::add-page:horizontal, QMainWindow QScrollBar::add-page:vertical, QMainWindow QScrollBar::sub-page:horizontal, QMainWindow QScrollBar::sub-page:vertical {
+    background: none; }
+  QMainWindow QDockWidget {
+    color: #0099ff;
+    font-weight: bold; }
+    QMainWindow QDockWidget > QWidget {
+      border: 1px solid transparent; }
+      QMainWindow QDockWidget > QWidget::hover {
+        border-color: rgba(0, 153, 255, 0.5); }
+    QMainWindow QDockWidget:floatable {
+      titlebar-close-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked.png);
+      titlebar-normal-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked.png); }
+    QMainWindow QDockWidget::close-button {
+      border: 10px;
+      padding: 2px; }
+      QMainWindow QDockWidget::close-button:hover {
+        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked_focus.png); }
+    QMainWindow QDockWidget::float-button {
+      border: 10px;
+      padding: 2px; }
+      QMainWindow QDockWidget::float-button:hover {
+        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked_focus.png); }
+    QMainWindow QDockWidget::title {
+      background-color: #1c1e21;
+      border: 1px solid transparent;
+      padding: 7px;
+      text-align: center; }
+  QMainWindow QMenu {
+    background-color: #23262a;
+    font-size: 13px;
+    border: 1px solid rgba(0, 153, 255, 0.4);
+    border-radius: 2px; }
+    QMainWindow QMenu::item {
+      padding: 7px 20px 7px 20px;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      spacing: 20px; }
+      QMainWindow QMenu::item:selected {
+        background-color: rgba(0, 153, 255, 0.1);
+        border-color: rgba(0, 153, 255, 0.4);
+        color: #0099ff; }
+    QMainWindow QMenu::separator {
+      background-color: #2e3238;
+      margin: 5px;
+      height: 1px; }
+    QMainWindow QMenu::indicator {
+      width: 20px;
+      height: 13px; }
 
-QMainWindow QMenu {
-  background-color: #23262a;
-  font-size: 13px;
-  border: 1px solid rgba(0, 153, 255, 0.4);
-  border-radius: 2px; }
-  QMainWindow QMenu::item {
-    padding: 7px 20px 7px 20px;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-    spacing: 20px; }
-    QMainWindow QMenu::item:selected {
-      background-color: rgba(0, 153, 255, 0.1);
-      border-color: rgba(0, 153, 255, 0.4);
-      color: #0099ff; }
-  QMainWindow QMenu::separator {
-    background-color: #2e3238;
-    margin: 5px;
-    height: 1px; }
-  QMainWindow QMenu::indicator {
-    width: 20px;
-    height: 13px; }
+#jobs_title {
+  font-weight: bold;
+  color: #0099ff;
+  qproperty-alignment: AlignCenter;
+  padding: 7px; }
 
 #jobs {
   alternate-background-color: #2a2d32;
@@ -403,56 +413,56 @@ QToolBar {
     border-color: #0099ff;
     color: #0099ff; }
 
-#options QLabel {
-  background: transparent;
-  padding: 10px; }
-
-#options QLineEdit {
-  background: #2e3238;
-  border: 1px solid #2e3238;
-  padding: 10px;
-  border-radius: 2px; }
-  #options QLineEdit:hover {
-    background: #3a3f45;
-    border-color: #464b53; }
-  #options QLineEdit:focus {
-    background: #3a3f45;
-    border-color: #0099ff; }
-
-#options QPushButton {
-  background: #2e3238;
-  border: 1px solid #2e3238;
-  padding: 10px;
-  border-radius: 3px;
-  font-size: 12px; }
-  #options QPushButton:hover {
-    border-color: #0099ff;
-    color: #0099ff; }
-
-#options QComboBox {
-  background-color: #2e3238;
-  border: 1px solid #2e3238;
-  padding: 7px;
-  border-radius: 2px; }
-  #options QComboBox:focus {
-    border-color: #33373d; }
-  #options QComboBox::drop-down {
-    background-color: transparent; }
-  #options QComboBox:hover {
-    background: #33373d; }
-  #options QComboBox QAbstractItemView {
-    background-color: #1e2124;
-    border: 1px solid #0099ff;
-    border-radius: 27px; }
-  #options QComboBox:item {
-    font-size: 13px; }
-    #options QComboBox:item:selected {
-      background-color: #2e3238;
-      color: #0099ff;
-      padding-left: 0px; }
-  #options QComboBox::indicator {
-    background-color: transparent; }
-
-#options #opt_job_name_widget, #options #opt_frame_range_widget {
-  background: #23262a;
-  border-radius: 2px; }
+#options {
+  max-height: 40px; }
+  #options QWidget {
+    background: transparent; }
+  #options QLabel {
+    background: transparent;
+    margin-left: 10px; }
+  #options QLineEdit {
+    margin-right: 10px;
+    background: #2e3238;
+    border: 1px solid #2e3238;
+    padding: 10px;
+    border-radius: 2px; }
+    #options QLineEdit:hover {
+      background: #3a3f45;
+      border-color: #464b53; }
+    #options QLineEdit:focus {
+      background: #3a3f45;
+      border-color: #0099ff; }
+  #options QPushButton {
+    background: #2e3238;
+    border: 1px solid #2e3238;
+    padding: 10px;
+    border-radius: 3px;
+    font-size: 12px; }
+    #options QPushButton:hover {
+      border-color: #0099ff;
+      color: #0099ff; }
+  #options QComboBox {
+    margin-right: 10px;
+    background-color: #2e3238;
+    border: 1px solid #2e3238;
+    padding: 7px;
+    border-radius: 2px; }
+    #options QComboBox:focus {
+      border-color: #33373d; }
+    #options QComboBox::drop-down {
+      background-color: transparent; }
+    #options QComboBox:hover {
+      background: #33373d; }
+    #options QComboBox QAbstractItemView {
+      background-color: #1e2124; }
+    #options QComboBox:item {
+      font-size: 13px; }
+      #options QComboBox:item:selected {
+        background-color: #2e3238;
+        color: #0099ff;
+        padding-left: 0px; }
+    #options QComboBox::indicator {
+      background-color: transparent; }
+  #options #widget_opt_1, #options #widget_opt_2, #options #opt_comment_widget {
+    background: #1e2124;
+    border-radius: 2px; }

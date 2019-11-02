@@ -10,6 +10,7 @@
 QWidget
     background: $b10
 QMainWindow
+    qproperty-windowIcon: url('#{$globalpath}/icons/icon.png')
     #centralwidget
         border: 1px solid transparent
         &::hover
@@ -22,6 +23,20 @@ QMainWindow
         &:hover
             background: rgba($base,.2)
             border-color: rgba($base,.5)
+    QMessageBox
+        background: $b13
+        QLabel
+            font-size: 13px
+            background: transparent
+        QPushButton
+            padding: 10px 30px 10px 20px
+            font-size: 14px
+            border-radius: 3px
+            background: $b20
+            border: 1px solid transparent
+            &:hover
+                border-color: $base
+                color: $base
     QScrollBar
         &:horizontal 
             background-color: $b18

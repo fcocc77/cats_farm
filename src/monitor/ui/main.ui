@@ -7,59 +7,66 @@
         </property>
         <widget class="QWidget" name="centralwidget">
             <layout class="QVBoxLayout" name="verticalLayout">
-                <item>
-                    <widget class="QTreeWidget" name="jobs">
-    <property name="indentation">
-        <number>0</number>
-    </property>
-    <column>
+    <item>
+        <widget class="QLabel" name="jobs_title">
+            <property name="text">
+                <string>JOBS</string>
+            </property>           
+        </widget>
+    </item>
+    <item>
+        <widget class="QTreeWidget" name="jobs">
+            <property name="indentation">
+                <number>0</number>
+            </property>
+            <column>
     <property name="text">
         <string notr="true">Job Name</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Priority</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Software</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Progress</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Status</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Submit Data/Time</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Finished Data/Time</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Total Render Time</string>
     </property>
 </column>
-    <column>
+            <column>
     <property name="text">
         <string notr="true">Comment</string>
     </property>
 </column>
-</widget>
-                </item>
-            </layout>
+        </widget>
+    </item>
+</layout>
         </widget>
         <widget class="QDockWidget" name="settings">
     <property name="windowTitle">
@@ -423,125 +430,146 @@
 </widget>
         <widget class="QDockWidget" name="options">
     <property name="windowTitle">
-        <string>Options</string>
+        <string>OPTIONS</string>
     </property>
     <attribute name="dockWidgetArea">
         <number>1</number>
     </attribute>
-
     <widget class="QWidget" name="dockWidgetContents">
         <layout class="QVBoxLayout" name="verticalLayout">
             <item>
-                <widget class="QWidget" name="opt_job_name_widget" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <widget class="QWidget" name="widget_opt_1">
+                    <layout class="QVBoxLayout" name="layout_opt_1">
                         <item>
-                            <widget class="QLabel" name="label">
-                                <property name="text">
-                                    <string>Job Name</string>
-                                </property>
+                            <widget class="QWidget" name="opt_job_name_widget" native="true">
+                                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                                    <item>
+                                        <widget class="QLabel" name="label">
+                                            <property name="text">
+                                                <string>Job Name</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QLineEdit" name="opt_job_name" />
+                                    </item>
+                                </layout>
                             </widget>
                         </item>
                         <item>
-                            <widget class="QLineEdit" name="opt_job_name" />
+                            <widget class="QWidget" name="opt_priority_widget" native="true">
+                                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                                    <item>
+                                        <widget class="QLabel" name="label_2">
+                                            <property name="text">
+                                                <string>Priority</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QComboBox" name="opt_priority">
+                                            <item>
+                                                <property name="text">
+                                                    <string>Very High</string>
+                                                </property>
+                                            </item>
+                                            <item>
+                                                <property name="text">
+                                                    <string>High</string>
+                                                </property>
+                                            </item>
+                                            <item>
+                                                <property name="text">
+                                                    <string>Normal</string>
+                                                </property>
+                                            </item>
+                                            <item>
+                                                <property name="text">
+                                                    <string>Low</string>
+                                                </property>
+                                            </item>
+                                            <item>
+                                                <property name="text">
+                                                    <string>Very Low</string>
+                                                </property>
+                                            </item>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QLabel" name="label_7">
+                                            <property name="text">
+                                                <string>Server Group</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QComboBox" name="opt_server_group" />
+                                    </item>
+                                </layout>
+                            </widget>
                         </item>
                     </layout>
                 </widget>
             </item>
             <item>
-                <widget class="QWidget" name="opt_priority_widget" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <widget class="QWidget" name="widget_opt_2">
+                    <layout class="QVBoxLayout" name="layout_opt_2">
                         <item>
-                            <widget class="QLabel" name="label_2">
-                                <property name="text">
-                                    <string>Priority</string>
-                                </property>
+                            <widget class="QWidget" name="opt_frame_range_widget" native="true">
+                                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                                    <item>
+                                        <widget class="QLabel" name="label_3">
+                                            <property name="text">
+                                                <string>Frame Range</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QLineEdit" name="opt_first_frame" />
+                                    </item>
+                                    <item>
+                                        <widget class="QLineEdit" name="opt_last_frame" />
+                                    </item>
+                                </layout>
                             </widget>
                         </item>
                         <item>
-                            <widget class="QComboBox" name="opt_priority">
-                                <item>
-                                    <property name="text">
-                                        <string>Very High</string>
-                                    </property>
-                                </item>
-                                <item>
-                                    <property name="text">
-                                        <string>High</string>
-                                    </property>
-                                </item>
-                                <item>
-                                    <property name="text">
-                                        <string>Normal</string>
-                                    </property>
-                                </item>
-                                <item>
-                                    <property name="text">
-                                        <string>Low</string>
-                                    </property>
-                                </item>
-                                <item>
-                                    <property name="text">
-                                        <string>Very Low</string>
-                                    </property>
-                                </item>
+                            <widget class="QWidget" name="widget_4" native="true">
+                                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                                    <item>
+                                        <widget class="QLabel" name="label_4">
+                                            <property name="text">
+                                                <string>Task Size</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QLineEdit" name="opt_task_size" />
+                                    </item>
+                                </layout>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QWidget" name="widget_5" native="true">
+                                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                                    <item>
+                                        <widget class="QLabel" name="label_5">
+                                            <property name="text">
+                                                <string>Instances</string>
+                                            </property>
+                                        </widget>
+                                    </item>
+                                    <item>
+                                        <widget class="QLineEdit" name="opt_instances" />
+                                    </item>
+                                </layout>
                             </widget>
                         </item>
                     </layout>
                 </widget>
             </item>
             <item>
-                <widget class="QWidget" name="opt_frame_range_widget" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_4">
-                        <item>
-                            <widget class="QLabel" name="label_3">
-                                <property name="text">
-                                    <string>Frame Range</string>
-                                </property>
-                            </widget>
-                        </item>
-                        <item>
-                            <widget class="QLineEdit" name="opt_first_frame" />
-                        </item>
-                        <item>
-                            <widget class="QLineEdit" name="opt_last_frame" />
-                        </item>
-                    </layout>
-                </widget>
-            </item>
-            <item>
-                <widget class="QWidget" name="widget_4" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_5">
-                        <item>
-                            <widget class="QLabel" name="label_4">
-                                <property name="text">
-                                    <string>Task Size</string>
-                                </property>
-                            </widget>
-                        </item>
-                        <item>
-                            <widget class="QLineEdit" name="opt_task_size" />
-                        </item>
-                    </layout>
-                </widget>
-            </item>
-            <item>
-                <widget class="QWidget" name="widget_5" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_6">
-                        <item>
-                            <widget class="QLabel" name="label_5">
-                                <property name="text">
-                                    <string>Instances</string>
-                                </property>
-                            </widget>
-                        </item>
-                        <item>
-                            <widget class="QLineEdit" name="opt_instances" />
-                        </item>
-                    </layout>
-                </widget>
-            </item>
-            <item>
-                <widget class="QWidget" name="widget_6" native="true">
+                <widget class="QWidget" name="opt_comment_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout_7">
                         <item>
                             <widget class="QLabel" name="label_6">
@@ -552,22 +580,6 @@
                         </item>
                         <item>
                             <widget class="QLineEdit" name="opt_comments" />
-                        </item>
-                    </layout>
-                </widget>
-            </item>
-            <item>
-                <widget class="QWidget" name="opt_server_group_widget" native="true">
-                    <layout class="QHBoxLayout" name="horizontalLayout_8">
-                        <item>
-                            <widget class="QLabel" name="label_7">
-                                <property name="text">
-                                    <string>Server Group</string>
-                                </property>
-                            </widget>
-                        </item>
-                        <item>
-                            <widget class="QComboBox" name="opt_server_group" />
                         </item>
                     </layout>
                 </widget>
@@ -592,14 +604,13 @@
                     </layout>
                 </widget>
             </item>
-
         </layout>
     </widget>
 </widget>
         <widget class="QDockWidget" name="log">
 
     <property name="windowTitle">
-        <string>Log</string>
+        <string>LOG</string>
     </property>
     <attribute name="dockWidgetArea">
         <number>1</number>

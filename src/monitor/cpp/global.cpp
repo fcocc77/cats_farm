@@ -70,7 +70,7 @@ void global_class::style()
 
 void global_class::notify_icon()
 {
-	notify = new QSystemTrayIcon(QIcon(path + "/icons/monitor.png"), monitor);
+	notify = new QSystemTrayIcon(QIcon(path + "/icons/icon.png"), monitor);
 
 	connect(notify, &QSystemTrayIcon::messageClicked, this, [this]() {
 		monitor->show();

@@ -6,7 +6,7 @@ TARGET = "vmonitor"
 CONFIG += c++11
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 CONFIG -= app_bundle
-RC_ICONS = ../../icons/monitor.ico
+RC_ICONS = ../../icons/icon.ico
 
 QT += core gui svg widgets multimedia
 

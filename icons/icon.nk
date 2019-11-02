@@ -1,0 +1,237 @@
+#! /usr/local/Nuke10.5v8/libnuke-10.5.8.so -nx
+#write_info Write1 file:"[file dirname [value root.name]]/icon.png" format:"512 512 1" chans:":rgba.red:rgba.green:rgba.blue:rgba.alpha:" framerange:"1 1" fps:"0" colorspace:"default (sRGB)" datatype:"8 bit" transfer:"unknown" views:"main" colorManagement:"Nuke"
+version 10.5 v8
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="0" w="2560" h="1408" screen="0">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1889" stretch="1"/>
+            <splitter orientation="2">
+                <split size="794"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="558"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+            </splitter>
+            <split size="615"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /home/pancho/Documents/GitHub/vinarender/icons/icon.nk
+ last_frame 1
+ format "512 512 0 0 512 512 1 square_512"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+Roto {
+ inputs 0
+ cliptype none
+ curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097152}
+    {t x43800000 x43800000 0 x42d20000 0 0 0 0 x42340000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {curvegroup Rectangle2 512 bezier
+     {{cc
+       {f 8192}
+       {px 1
+        {0 xc3295554}
+        {x43059994 x43bf0000}
+        {x43295555 0}
+        {xc3295554 0}
+        {x44206665 x43bf0000}
+        {0 xc3295554}
+        {0 x43295555}
+        {x44206665 xc2fc0000}
+        {xc3295554 0}
+        {x43295555 0}
+        {x43059994 xc2fc0000}
+        {0 x43295555}}}     idem}
+     {tx 1 x43810000 x437e0000}
+     {a osw x41200000 osf 0 str 1 spx x43800000 spy x43800000 sb 1 tt x41000000 a 0 b 0 g 0 r 0}}
+    {curvegroup Rectangle1 512 bezier
+     {{cc
+       {f 8192}
+       {px 1
+        {0 xc3295554}
+        {x40800000 x43fe0000}
+        {x43295555 0}
+        {xc3295554 0}
+        {x44000000 x43fe0000}
+        {0 xc3295554}
+        {0 x43295555}
+        {x44000000 0}
+        {xc3295554 0}
+        {x43295555 0}
+        {x40800000 0}
+        {0 x43295555}}}     idem}
+     {tx 1 x43810000 x437e0000}
+     {a osw x41200000 osf 0 str 1 spx x43800000 spy x43800000 sb 1 tt x41000000}}}}}}
+ toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 tt 8 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {256 256}
+ color 0
+ colorOverlay {0 0 0 0}
+ lifetime_type "all frames"
+ view {}
+ motionblur_on true
+ motionblur_shutter_offset_type centred
+ source_black_outside true
+ name Roto1
+ xpos -150
+ ypos -302
+}
+Roto {
+ cliptype none
+ curves {{{v x3f99999a}
+  {f 0}
+  {n
+   {layer Root
+    {f 2097664}
+    {t x43800000 x43800000 0 x43b87333 0 0 0 0 x42340000}
+    {a pt1x 0 pt1y 0 pt2x 0 pt2y 0 pt3x 0 pt3y 0 pt4x 0 pt4y 0 ptex00 0 ptex01 0 ptex02 0 ptex03 0 ptex10 0 ptex11 0 ptex12 0 ptex13 0 ptex20 0 ptex21 0 ptex22 0 ptex23 0 ptex30 0 ptex31 0 ptex32 0 ptex33 0 ptof1x 0 ptof1y 0 ptof2x 0 ptof2y 0 ptof3x 0 ptof3y 0 ptof4x 0 ptof4y 0 pterr 0 ptrefset 0 ptmot x40800000 ptref 0}
+    {curvegroup Rectangle2 512 bezier
+     {{cc
+       {f 8192}
+       {px 1
+        {0 xc3295554}
+        {x43059994 x43bf0000}
+        {x43295555 0}
+        {xc3295554 0}
+        {x44206665 x43bf0000}
+        {0 xc3295554}
+        {0 x43295555}
+        {x44206665 xc2fc0000}
+        {xc3295554 0}
+        {x43295555 0}
+        {x43059994 xc2fc0000}
+        {0 x43295555}}}     idem}
+     {tx 1 x43810000 x437e0000}
+     {a osw x41200000 osf 0 str 1 spx x43800000 spy x43800000 sb 1 tt x41000000 a 0 b 0 g 0 r 0}}
+    {curvegroup Rectangle1 512 bezier
+     {{cc
+       {f 8192}
+       {px 1
+        {0 xc3295554}
+        {x40800000 x43fe0000}
+        {x43295555 0}
+        {xc3295554 0}
+        {x44000000 x43fe0000}
+        {0 xc3295554}
+        {0 x43295555}
+        {x44000000 0}
+        {xc3295554 0}
+        {x43295555 0}
+        {x40800000 0}
+        {0 x43295555}}}     idem}
+     {tx 1 x43810000 x437e0000}
+     {a osw x41200000 osf 0 str 1 spx x43800000 spy x43800000 sb 1 tt x41000000 g x3e800000 r 0}}}}}}
+ toolbox {selectAll {
+  { selectAll str 1 ssx 1 ssy 1 sf 1 }
+  { createBezier str 1 ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBezierCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createBSpline str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createEllipse str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { createRectangle str 1 ssx 1 ssy 1 sf 1 sb 1 tt 8 }
+  { createRectangleCusped str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { brush str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 str 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {256 256}
+ color {0 0.25 1 1}
+ colorOverlay {0 0 0 0}
+ lifetime_type "all frames"
+ motionblur_shutter_offset_type centred
+ source_black_outside true
+ name Roto2
+ xpos -150
+ ypos -276
+}
+Transform {
+ translate {70 2}
+ rotate 180
+ scale {0.7 0.7269999981}
+ center {256 256}
+ name Transform1
+ xpos -150
+ ypos -250
+}
+Crop {
+ box {0 67 512 451.5}
+ name Crop1
+ xpos -150
+ ypos -224
+}
+Unpremult {
+ name Unpremult1
+ xpos -150
+ ypos -198
+}
+Write {
+ channels rgba
+ file "\[file dirname \[value root.name]]/icon.png"
+ file_type png
+ checkHashOnRead false
+ version 2
+ name Write1
+ selected true
+ xpos -150
+ ypos -172
+}
+Viewer {
+ frame_range 1-1
+ name Viewer1
+ xpos -154
+ ypos -122
+}

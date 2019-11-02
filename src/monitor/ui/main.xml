@@ -6,11 +6,7 @@
             <string>VinaRender Monitor</string>
         </property>
         <widget class="QWidget" name="centralwidget">
-            <layout class="QVBoxLayout" name="verticalLayout">
-                <item>
-                    {% include 'jobs.xml'%}
-                </item>
-            </layout>
+            {% include 'jobs.xml'%}
         </widget>
         {% include 'settings.xml'%}
         {% include 'main_menu.xml'%}

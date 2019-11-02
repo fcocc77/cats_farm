@@ -1,8 +1,13 @@
 #options
+    max-height: 40px
+    QWidget
+        background: transparent
+        // padding: 20px
     QLabel
         background: transparent
-        padding: 10px
+        margin-left: 10px
     QLineEdit
+        margin-right: 10px
         background: $b20
         border: 1px solid $b20
         padding: 10px
@@ -23,6 +28,7 @@
             border-color: $base
             color: $base
     QComboBox
+        margin-right: 10px
         background-color: $b20
         border: 1px solid $b20
         padding: 7px
@@ -35,8 +41,6 @@
             background: $b22
         QAbstractItemView 
             background-color: $b13
-            border: 1px solid $base
-            border-radius: 27px
         &:item
             font-size: 13px
             &:selected 
@@ -45,6 +49,8 @@
                 padding-left: 0px
         &::indicator 
             background-color: transparent
-    #opt_job_name_widget, #opt_frame_range_widget
-        background: $b15
+    #widget_opt_1, #widget_opt_2, #opt_comment_widget
+        // padding-top: 20px
+        // height: auto
+        background: $b13
         border-radius: 2px
