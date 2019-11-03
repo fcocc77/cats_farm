@@ -253,7 +253,7 @@ void servers_class::to_log()
         QString host = (selected[0]->text(7));
 
         QJsonArray send = {host, QJsonArray({1, true})};
-        QString result = tcpClient(managerHost, 7000, jats({5, send}));
+        QString result = tcpClient(shared->manager_host, 7000, jats({5, send}));
 
         log->code_editor->setPlainText(result);
         ui->log->show();
@@ -280,7 +280,7 @@ void servers_class::ssh_client()
     QString linux_sshpass = "sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip;
 
     if (_win32)
-        cmd = "cmd.exe /K start cmd.exe /K " + ssh + " -tt " + disable_ask + sshUser + "@" + managerHost + " \"" + linux_sshpass + "\"";
+        cmd = "cmd.exe /K start cmd.exe /K " + ssh + " -tt " + disable_ask + sshUser + "@" + shared->manager_host + " \"" + linux_sshpass + "\"";
     else
         cmd = "gnome-terminal -e '" + linux_sshpass + "'";
     os::back(cmd);
@@ -351,7 +351,7 @@ QString servers_class::to_action(QString action, QString info)
     }
     pks = {"serverAction", pks};
 
-    QString recv = tcpClient(managerHost, 7000, jats({3, pks}));
+    QString recv = tcpClient(shared->manager_host, 7000, jats({3, pks}));
 
     return recv;
 }
@@ -366,7 +366,7 @@ void servers_class::send_to_vserver(QString action, QString info)
         QString host = item->text(7);
 
         QJsonArray send = {host, QJsonArray({4, {{action, info}}})};
-        tcpClient(managerHost, 7000, jats({5, send}));
+        tcpClient(shared->manager_host, 7000, jats({5, send}));
     }
     //-------------------------------------
 }

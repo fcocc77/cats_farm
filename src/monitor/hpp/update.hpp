@@ -3,6 +3,7 @@
 
 #include "includes.hpp"
 #include "groups.hpp"
+#include "settings.hpp"
 
 class update_class : public QObject
 {
@@ -13,6 +14,8 @@ private:
   shared_variables *shared;
   groups_class *groups;
   QStringList delete_list;
+  tcp_client_widget<update_class> *manager;
+  settings_class *settings;
   // --------------------
 
   // Tasks
@@ -21,7 +24,6 @@ private:
   // ----------------------
 
   // funciones
-  void manager_recieve();
   QString manager_recieve_update(QString recv, QJsonObject extra);
   void update_jobs(QJsonObject recv);
   void update_servers(QJsonObject recv);
@@ -35,7 +37,11 @@ public:
   update_class(
       Ui::MainWindow *_ui,
       shared_variables *_shared,
-      groups_class *_groups);
+      groups_class *_groups,
+      settings_class *_settings);
+
+  void zone_change(QString zone);
+  void update(QString host);
 };
 
 #endif //UPDATE_HPP

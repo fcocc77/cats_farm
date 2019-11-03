@@ -4,7 +4,7 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 {
 	ui = new Ui::MainWindow;
 	ui->setupUi(this);
-
+	// ui->tool_zone->addItem("ip");
 	shared = new shared_variables();
 	log = new log_class(ui);
 
@@ -13,12 +13,13 @@ monitor::monitor(QWidget *parent) : QMainWindow(parent)
 	groups = new groups_class(ui, this, shared);
 	servers = new servers_class(ui, this, shared, log);
 	settings = new settings_class(ui);
-	update = new update_class(ui, shared, groups);
+	update = new update_class(ui, shared, groups, settings);
 
 	global = new global_class(ui, this, shared);
 	main_menu = new main_menu_class(ui, global, jobs, servers, groups, tasks);
-	toolbar = new toolbar_class(ui, global, jobs);
+	toolbar = new toolbar_class(ui, global, jobs, update);
 	options = new options_class(ui);
+	
 }
 
 monitor::~monitor()

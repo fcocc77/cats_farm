@@ -3,19 +3,18 @@
 update_class::update_class(
 	Ui::MainWindow *_ui,
 	shared_variables *_shared,
-	groups_class *_groups)
+	groups_class *_groups,
+	settings_class *_settings)
 {
 	ui = _ui;
 	shared = _shared;
 	groups = _groups;
-
+	settings = _settings;
 	connections();
 
 	// Iniciar hilo para tasks
 	get_task_thread = new QThread();
 	// -----------------------
-
-	manager_recieve();
 }
 
 void update_class::connections()
@@ -23,17 +22,30 @@ void update_class::connections()
 	connect(ui->jobs, &QTreeWidget::itemClicked, this, &update_class::get_task);
 }
 
-void update_class::manager_recieve()
+void update_class::zone_change(QString zone)
 {
+	manager->kill();
+	this->update(zone);
+}
 
-	QString host = fread(path + "/etc/manager_host");
-	print(host);
+void update_class::update(QString host)
+{
+	shared->manager_host = host;
+
+	ui->groups->clear();
+	ui->servers->clear();
+	ui->jobs->clear();
+	ui->tasks->clear();
+
+	// actualiza los datos de settings dependiendo de la zona
+	settings->update(host);
+	// ------------------------------
 
 	// actualiza una ves antes del loop.
 	QString recv = tcpClient(host, 7000, jats({2, "none"}));
 	manager_recieve_update(recv, {});
 	//--------------------------------------
-	tcpClient(host, 7000, &update_class::manager_recieve_update, this, true);
+	manager = tcpClient(host, 7000, &update_class::manager_recieve_update, this, true);
 }
 
 QString update_class::manager_recieve_update(QString _recv, QJsonObject extra)
@@ -496,7 +508,6 @@ void update_class::update_servers(QJsonObject recv)
 
 					ui->servers->setItemWidget(item, 3, cpuWidget);
 					ui->servers->setItemWidget(item, 5, ramWidget);
-
 				}
 				//-----------------------------------------------------------------------
 

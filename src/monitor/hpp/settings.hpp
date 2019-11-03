@@ -11,6 +11,7 @@ private:
     void connections();
     void path_read();
     void path_write();
+    void ok();
 
     QString manager_host;
 
@@ -18,6 +19,7 @@ public:
     settings_class(
         Ui::MainWindow *_ui);
     ~settings_class();
+    void update(QString host);
 };
 
 #endif // SETTING_HPP

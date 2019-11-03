@@ -144,74 +144,6 @@ protected:
 	}
 };
 
-template <class T>
-class tcp_client_widget : public QThread
-{
-public:
-	T *_class;
-	QString (T::*func)(QString, QJsonObject);
-	QTimer *qtimer;
-	bool widget;
-	QJsonObject extra;
-
-	QString *update_send;
-	QString *update_recv;
-	QMutex *mutex;
-
-	// Constructor client loop
-	tcp_client_widget(QString (T::*_func)(QString, QJsonObject), T *__class, QString *_update_send, QString *_update_recv,
-					  QMutex *_mutex, bool _widget, QJsonObject _extra) : QThread(__class)
-	{
-		_class = __class;
-		func = _func;
-		update_send = _update_send;
-		update_recv = _update_recv;
-		widget = _widget;
-		extra = _extra;
-		mutex = _mutex;
-
-		// hilo loop para widget, se inicia por fuera
-		qtimer = new QTimer();
-		connect(qtimer, &QTimer::timeout, this, &tcp_client_widget::widget_update);
-		qtimer->moveToThread(this);
-
-		widget_update();
-		//----------------------------------
-	} //--------------------------
-
-	void run()
-	{
-		// si es que el la funcion actualiza con los widget de QT, usa un QTimer para que no se pegue,
-		// si no usa un hilo normal
-		if (widget)
-		{
-			qtimer->start(1000);
-			exec();
-		}
-
-		else
-		{
-			while (1)
-			{
-				widget_update();
-				sleep(1);
-			}
-		}
-		//-----------------------------------------------------------------
-	}
-
-	void widget_update()
-	{
-		/* mutex es para que en las variables compartidas no den error de memoria,
-		esto pasa cuando se intercambian los datos entre client y client_widget */
-		mutex->lock();
-		QString _send = *update_send;
-		*update_recv = (_class->*func)(_send, extra);
-		mutex->unlock();
-		// ---------------------------
-	}
-};
-
 class tcp_client : public QThread
 {
 public:
@@ -338,6 +270,77 @@ public:
 };
 
 template <class T>
+class tcp_client_widget : public QThread
+{
+public:
+	T *_class;
+	QString (T::*func)(QString, QJsonObject);
+	QTimer *qtimer;
+	bool widget;
+	QJsonObject extra;
+
+	tcp_client *client;
+
+	// Constructor client loop
+	tcp_client_widget(QString (T::*_func)(QString, QJsonObject), T *__class, tcp_client *_client, bool _widget, QJsonObject _extra) : QThread(__class)
+	{
+		_class = __class;
+		func = _func;
+		client = _client;
+		widget = _widget;
+		extra = _extra;
+
+		// hilo loop para widget, se inicia por fuera
+		qtimer = new QTimer();
+		connect(qtimer, &QTimer::timeout, this, &tcp_client_widget::widget_update);
+		qtimer->moveToThread(this);
+
+		widget_update();
+		//----------------------------------
+	} //--------------------------
+
+	void run()
+	{
+		// si es que el la funcion actualiza con los widget de QT, usa un QTimer para que no se pegue,
+		// si no usa un hilo normal
+		if (widget)
+		{
+			qtimer->start(1000);
+			exec();
+		}
+
+		else
+		{
+			while (1)
+			{
+				widget_update();
+				sleep(1);
+			}
+		}
+		//-----------------------------------------------------------------
+	}
+
+	void widget_update()
+	{
+		/* mutex es para que en las variables compartidas no den error de memoria,
+		esto pasa cuando se intercambian los datos entre client y client_widget */
+		client->mutex.lock();
+		QString _send = client->update_send;
+		client->update_recv = (_class->*func)(_send, extra);
+		client->mutex.unlock();
+		// ---------------------------
+	}
+
+	void kill()
+	{
+		// termina los 2 hilos de client
+		client->terminate();
+		this->terminate();
+		// -----------------------
+	}
+};
+
+template <class T>
 void tcpServer(int _port, QString (T::*_func)(QString), T *_class)
 {
 	tcp_server<T> *_server = new tcp_server<T>(_port, _func, _class);
@@ -345,7 +348,7 @@ void tcpServer(int _port, QString (T::*_func)(QString), T *_class)
 }
 
 template <class T>
-void tcpClient(QString _host, int _port, QString (T::*_func)(QString, QJsonObject), T *_class, bool widget = false, QJsonObject extra = {})
+tcp_client_widget<T> *tcpClient(QString _host, int _port, QString (T::*_func)(QString, QJsonObject), T *_class, bool widget = false, QJsonObject extra = {})
 {
 	// inicia thread de tcp socket
 	tcp_client *_client = new tcp_client(_host, _port, _class);
@@ -354,11 +357,12 @@ void tcpClient(QString _host, int _port, QString (T::*_func)(QString, QJsonObjec
 	//-------------------------------------
 
 	// inicia thread de update widget
-	tcp_client_widget<T> *_widget = new tcp_client_widget<T>(_func, _class, &_client->update_send,
-															 &_client->update_recv, &_client->mutex, widget, extra);
+	tcp_client_widget<T> *_widget = new tcp_client_widget<T>(_func, _class, _client, widget, extra);
 	_widget->exit();
 	_widget->start();
 	//-------------------------------------
+
+	return _widget;
 }
 
 template <class T>

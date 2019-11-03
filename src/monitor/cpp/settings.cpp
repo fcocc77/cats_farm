@@ -4,11 +4,9 @@ settings_class::settings_class(
 	Ui::MainWindow *_ui)
 {
 	ui = _ui;
-	manager_host = fread(path + "/etc/manager_host");
 
 	property();
 	connections();
-	path_read();
 }
 
 settings_class::~settings_class()
@@ -27,15 +25,34 @@ void settings_class::connections()
 		ui->settings->hide();
 	});
 	connect(ui->settings_apply, &QPushButton::clicked, this, [this]() {
-		path_write();
+		this->ok();
 	});
 	connect(ui->settings_ok, &QPushButton::clicked, this, [this]() {
-		QString _manager_ip = ui->settings_ip->text();
-		fwrite(path + "/etc/manager_host", _manager_ip);
-
-		path_write();
+		this->ok();
 		ui->settings->hide();
 	});
+}
+
+void settings_class::update(QString host)
+{
+	manager_host = host;
+	path_read();
+}
+
+void settings_class::ok()
+{
+	QString hosts = ui->settings_ip->text();
+	fwrite(path + "/etc/manager_host", hosts);
+
+	QStringList ips = hosts.split(",");
+
+	// agrega las ips al combobox de zonas
+	ui->tool_zone->clear();
+	for (QString ip : ips)
+		ui->tool_zone->addItem(ip);
+	// -------------------------
+
+	path_write();
 }
 
 void settings_class::path_read()
@@ -78,7 +95,9 @@ void settings_class::path_read()
 		ui->settings_cinema->setPlainText(cinema);
 		ui->settings_fusion->setPlainText(fusion);
 		ui->settings_ae->setPlainText(ae);
-		ui->settings_ip->setText(manager_host);
+
+		QString host = fread(path + "/etc/manager_host");
+		ui->settings_ip->setText(host);
 	}
 }
 

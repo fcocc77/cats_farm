@@ -12,6 +12,7 @@ struct shared_variables
     QJsonArray servers;
     bool stopUpdate;
     bool app_close;
+    QString manager_host;
 };
 
 #endif //SHARED_VARIABLES_HPP

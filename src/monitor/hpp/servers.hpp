@@ -35,8 +35,6 @@ private:
 
     QTreeWidgetItem *firstServerItem;
 
-    const QString managerHost = fread(path + "/etc/manager_host");
-
 public:
     servers_class(
         Ui::MainWindow *_ui,

@@ -34,7 +34,6 @@ private:
     void item_delete();
     //-----------------------------
     QTreeWidgetItem *first_job_item;
-    QString manager_host;
 
     // log
     QString log_server;
