@@ -11,8 +11,8 @@ toolbar_class::toolbar_class(
 	jobs = _jobs;
 	update = _update;
 	property();
-	connections();
 	load_zones();
+	connections();
 }
 
 toolbar_class::~toolbar_class()
@@ -46,9 +46,8 @@ void toolbar_class::load_zones()
 {
 	QStringList zones = fread(path + "/etc/manager_host").split(",");
 	// agrega todas las zonas guardadas al combobox
-	// for (QString zone : zones)
-	// ui->tool_zone->clear();
-	// ui->tool_zone->addItem("zone");
+	for (QString zone : zones)
+		ui->tool_zone->addItem(zone);
 	// ---------------------------
 	// establece por defecto la primera zona
 	update->update(zones[0]);

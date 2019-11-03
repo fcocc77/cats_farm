@@ -34,16 +34,6 @@
                     <property name="sizeAdjustPolicy">
                         <enum>QComboBox::AdjustToContents</enum>
                     </property>
-                    <item>
-                        <property name="text">
-                            <string>192.168.1.77</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>192.168.1.40</string>
-                        </property>
-                    </item>
                 </widget>
             </item>
             <item>
