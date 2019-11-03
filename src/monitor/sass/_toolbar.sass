@@ -14,6 +14,10 @@ QToolBar
             padding-right: 15px
             &:hover
                 color: $base
+        QComboBox
+            @include combobox
+        QLabel
+            background: transparent
         #tool_resume
             qproperty-icon: url(#{$svg}/play.svg)
             &:hover
@@ -22,3 +26,8 @@ QToolBar
             qproperty-icon: url(#{$svg}/pause.svg)
         #tool_settings
             qproperty-icon: url(#{$svg}/gear.svg)
+
+
+        #tool_count
+            font-size: 15px
+            color: $base

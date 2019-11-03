@@ -1,0 +1,65 @@
+@mixin combobox
+    margin-right: 10px
+    background-color: $b20
+    border: 1px solid $b20
+    padding: 7px
+    border-radius: 2px
+    &::down-arrow
+        image: url(#{$images}/down_arrow.png)
+    &:focus 
+        border-color: $b22
+    &::drop-down 
+        width: 20px
+        background-color: $b25
+    &:hover 
+        background: $b22
+    QAbstractItemView 
+        background-color: $b13
+    &:item
+        font-size: 13px
+        &:selected 
+            background-color: $b20
+            color: $base
+            padding-left: 0px
+    &::indicator 
+        background-color: transparent  
+@mixin treecolor
+    &:selected
+        background-color: rgba($base,.1)
+        border-color: rgba($base,.5)
+        color: $b80
+    &:hover
+        background-color: rgba($base,.02)
+        border-color: rgba($base,.5)
+@mixin treeitem
+    alternate-background-color: $b18
+    background-color: $b15
+    border: 1px solid $b18
+    QWidget
+        background: transparent
+    &::item 
+        border-bottom: 1px solid $b20
+        border-top: 1px solid transparent
+        height: 30px
+        &:first
+            padding-left: 15px
+        @include treecolor
+        QProgressBar
+            max-height: 100px
+            &:horizontal 
+                text-align: center
+                &::chunk
+                    &:horizontal 
+                        background: rgba($b30,.2)
+            &::chunk
+                &:horizontal 
+                    border-radius: 2px
+                    background: $blue
+    QHeaderView
+        &::section 
+            background-color: $b18
+            padding: 5px 10px 5px 10px
+            border: 0px solid transparent
+            margin-left: 1px
+            margin-top: 1px
+            margin-bottom: 1px

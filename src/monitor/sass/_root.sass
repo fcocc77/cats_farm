@@ -38,11 +38,10 @@ QMainWindow
                 border-color: $base
                 color: $base
     QScrollBar
-        &:horizontal 
-            background-color: $b18
+
+        &::horizontal 
             height: 10px
         &:vertical 
-            background-color: $b18
             width: 10px
         &::handle
             &:horizontal, &:vertical 
@@ -53,6 +52,7 @@ QMainWindow
                 margin-right: 11
                 &:hover
                     background: $base
+                    
         &::add-line, &::sub-line
             &:horizontal, &:vertical
                 background: $b25
@@ -121,43 +121,3 @@ QMainWindow
         &::indicator 
             width: 20px
             height: 13px
-@mixin treecolor
-    &:selected
-        background-color: rgba($base,.1)
-        border-color: rgba($base,.5)
-        color: $b80
-    &:hover
-        background-color: rgba($base,.02)
-        border-color: rgba($base,.5)
-@mixin treeitem
-    alternate-background-color: $b18
-    background-color: $b15
-    border: 1px solid $b18
-    QWidget
-        background: transparent
-    &::item 
-        border-bottom: 1px solid $b20
-        border-top: 1px solid transparent
-        height: 30px
-        &:first
-            padding-left: 15px
-        @include treecolor
-        QProgressBar
-            max-height: 100px
-            &:horizontal 
-                text-align: center
-                &::chunk
-                    &:horizontal 
-                        background: rgba($b30,.2)
-            &::chunk
-                &:horizontal 
-                    border-radius: 2px
-                    background: $blue
-    QHeaderView
-        &::section 
-            background-color: $b18
-            padding: 5px 10px 5px 10px
-            border: 0px solid transparent
-            margin-left: 1px
-            margin-top: 1px
-            margin-bottom: 1px

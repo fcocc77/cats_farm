@@ -284,7 +284,35 @@
                 </widget>
             </item>
             <item>
-                <widget class="QComboBox" name="tool_zone" />
+                <widget class="QComboBox" name="tool_zone">
+                    <property name="sizeAdjustPolicy">
+                        <enum>QComboBox::AdjustToContents</enum>
+                    </property>
+                    <item>
+                        <property name="text">
+                            <string>192.168.1.40</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>192.168.1.77</string>
+                        </property>
+                    </item>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="tool_count_label">
+                    <property name="text">
+                        <string>QUEUE JOBS:</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="tool_count">
+                    <property name="text">
+                        <string>20 jobs.</string>
+                    </property>
+                </widget>
             </item>
         </layout>
     </widget>
@@ -468,6 +496,9 @@
                                     </item>
                                     <item>
                                         <widget class="QComboBox" name="opt_priority">
+                                            <property name="sizeAdjustPolicy">
+                                                <enum>QComboBox::AdjustToContents</enum>
+                                            </property>
                                             <item>
                                                 <property name="text">
                                                     <string>Very High</string>
@@ -503,7 +534,11 @@
                                         </widget>
                                     </item>
                                     <item>
-                                        <widget class="QComboBox" name="opt_server_group" />
+                                        <widget class="QComboBox" name="opt_server_group">
+                                            <property name="sizeAdjustPolicy">
+                                                <enum>QComboBox::AdjustToContents</enum>
+                                            </property>
+                                        </widget>
                                     </item>
                                 </layout>
                             </widget>

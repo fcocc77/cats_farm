@@ -40,11 +40,9 @@ QMainWindow {
       QMainWindow QMessageBox QPushButton:hover {
         border-color: #0099ff;
         color: #0099ff; }
-  QMainWindow QScrollBar:horizontal {
-    background-color: #2a2d32;
+  QMainWindow QScrollBar::horizontal {
     height: 10px; }
   QMainWindow QScrollBar:vertical {
-    background-color: #2a2d32;
     width: 10px; }
   QMainWindow QScrollBar::handle:horizontal, QMainWindow QScrollBar::handle:vertical {
     background: #3a3f45;
@@ -271,6 +269,33 @@ QToolBar {
       padding-right: 15px; }
       QToolBar #toolbarwidget QPushButton:hover {
         color: #0099ff; }
+    QToolBar #toolbarwidget QComboBox {
+      margin-right: 10px;
+      background-color: #2e3238;
+      border: 1px solid #2e3238;
+      padding: 7px;
+      border-radius: 2px; }
+      QToolBar #toolbarwidget QComboBox::down-arrow {
+        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
+      QToolBar #toolbarwidget QComboBox:focus {
+        border-color: #33373d; }
+      QToolBar #toolbarwidget QComboBox::drop-down {
+        width: 20px;
+        background-color: #3a3f45; }
+      QToolBar #toolbarwidget QComboBox:hover {
+        background: #33373d; }
+      QToolBar #toolbarwidget QComboBox QAbstractItemView {
+        background-color: #1e2124; }
+      QToolBar #toolbarwidget QComboBox:item {
+        font-size: 13px; }
+        QToolBar #toolbarwidget QComboBox:item:selected {
+          background-color: #2e3238;
+          color: #0099ff;
+          padding-left: 0px; }
+      QToolBar #toolbarwidget QComboBox::indicator {
+        background-color: transparent; }
+    QToolBar #toolbarwidget QLabel {
+      background: transparent; }
     QToolBar #toolbarwidget #tool_resume {
       qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/play.svg); }
       QToolBar #toolbarwidget #tool_resume:hover {
@@ -279,6 +304,9 @@ QToolBar {
       qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/pause.svg); }
     QToolBar #toolbarwidget #tool_settings {
       qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/gear.svg); }
+    QToolBar #toolbarwidget #tool_count {
+      font-size: 15px;
+      color: #0099ff; }
 
 #Log {
   background-color: #23262a;
@@ -414,7 +442,7 @@ QToolBar {
     color: #0099ff; }
 
 #options {
-  max-height: 40px; }
+  max-height: 550px; }
   #options QWidget {
     background: transparent; }
   #options QLabel {
@@ -447,10 +475,13 @@ QToolBar {
     border: 1px solid #2e3238;
     padding: 7px;
     border-radius: 2px; }
+    #options QComboBox::down-arrow {
+      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
     #options QComboBox:focus {
       border-color: #33373d; }
     #options QComboBox::drop-down {
-      background-color: transparent; }
+      width: 20px;
+      background-color: #3a3f45; }
     #options QComboBox:hover {
       background: #33373d; }
     #options QComboBox QAbstractItemView {

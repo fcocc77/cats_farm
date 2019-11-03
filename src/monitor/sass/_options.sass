@@ -1,5 +1,5 @@
 #options
-    max-height: 40px
+    max-height: 550px
     QWidget
         background: transparent
         // padding: 20px
@@ -28,27 +28,7 @@
             border-color: $base
             color: $base
     QComboBox
-        margin-right: 10px
-        background-color: $b20
-        border: 1px solid $b20
-        padding: 7px
-        border-radius: 2px
-        &:focus 
-            border-color: $b22
-        &::drop-down 
-            background-color: transparent
-        &:hover 
-            background: $b22
-        QAbstractItemView 
-            background-color: $b13
-        &:item
-            font-size: 13px
-            &:selected 
-                background-color: $b20
-                color: $base
-                padding-left: 0px
-        &::indicator 
-            background-color: transparent
+        @include combobox
     #widget_opt_1, #widget_opt_2, #opt_comment_widget
         // padding-top: 20px
         // height: auto
