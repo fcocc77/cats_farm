@@ -33,13 +33,40 @@ QMainWindow {
       background: transparent; }
     QMainWindow QMessageBox QPushButton {
       padding: 10px 30px 10px 20px;
-      font-size: 14px;
+      font-size: 13px;
       border-radius: 3px;
       background: #2e3238;
       border: 1px solid transparent; }
       QMainWindow QMessageBox QPushButton:hover {
         border-color: #0099ff;
         color: #0099ff; }
+  QMainWindow QInputDialog {
+    background: #202327;
+    width: 500px; }
+    QMainWindow QInputDialog QLabel {
+      background: transparent;
+      font-size: 13px; }
+    QMainWindow QInputDialog QPushButton {
+      padding: 10px 30px 10px 20px;
+      font-size: 13px;
+      border-radius: 3px;
+      background: #2e3238;
+      border: 1px solid transparent; }
+      QMainWindow QInputDialog QPushButton:hover {
+        border-color: #0099ff;
+        color: #0099ff; }
+    QMainWindow QInputDialog QLineEdit {
+      background: #2e3238;
+      border: 1px solid #2e3238;
+      padding: 10px;
+      border-radius: 2px;
+      margin-bottom: 20px; }
+      QMainWindow QInputDialog QLineEdit:hover {
+        background: #3a3f45;
+        border-color: #464b53; }
+      QMainWindow QInputDialog QLineEdit:focus {
+        background: #3a3f45;
+        border-color: #0099ff; }
   QMainWindow QScrollBar::horizontal {
     height: 10px; }
   QMainWindow QScrollBar:vertical {
@@ -401,11 +428,17 @@ QToolBar {
     background: transparent;
     margin: 10px; }
   #settings #settings_ip_widget QLineEdit {
-    background: #3a3f45;
+    background: #2e3238;
+    border: 1px solid #2e3238;
     padding: 10px;
-    border: 1px solid #464b53;
-    border-radius: 2px; }
+    border-radius: 2px;
+    background: #3a3f45;
+    border-color: #464b53; }
+    #settings #settings_ip_widget QLineEdit:hover {
+      background: #3a3f45;
+      border-color: #464b53; }
     #settings #settings_ip_widget QLineEdit:focus {
+      background: #3a3f45;
       border-color: #0099ff; }
 
 #settings #settings_tabs QWidget {
@@ -431,13 +464,12 @@ QToolBar {
   border: 1px solid #33373d; }
 
 #settings QPushButton {
-  background-color: #2a2d32;
-  border: 1px solid #2a2d32;
-  border-radius: 2px;
-  padding: 10px;
-  font-size: 12px; }
-  #settings QPushButton::hover {
-    background-color: #33373d;
+  padding: 10px 30px 10px 20px;
+  font-size: 13px;
+  border-radius: 3px;
+  background: #2e3238;
+  border: 1px solid transparent; }
+  #settings QPushButton:hover {
     border-color: #0099ff;
     color: #0099ff; }
 
@@ -449,11 +481,11 @@ QToolBar {
     background: transparent;
     margin-left: 10px; }
   #options QLineEdit {
-    margin-right: 10px;
     background: #2e3238;
     border: 1px solid #2e3238;
     padding: 10px;
-    border-radius: 2px; }
+    border-radius: 2px;
+    margin-right: 10px; }
     #options QLineEdit:hover {
       background: #3a3f45;
       border-color: #464b53; }

@@ -13,7 +13,6 @@ groups_class::groups_class(
     add_machine_action = new QAction("Add Machine");
     delete_action = new QAction("Delete Group");
     //------------------------------------------------
-    managerHost = fread(path + "/etc/manager_host");
     properties();
     connections();
 }
@@ -96,7 +95,7 @@ void groups_class::create_window()
         QJsonArray group = {group_name, machines_send.size(), 0, machines_send};
         QJsonArray pks = {"groupCreate", group};
 
-        tcpClient(managerHost, 7000, jats({3, pks}));
+        tcpClient(shared->manager_host, 7000, jats({3, pks}));
 
         QTreeWidgetItem *item = group_make(group_name, machines.size(), 0, 0);
 
@@ -383,7 +382,7 @@ void groups_class::add_machine()
     QJsonArray groups = {"group_list", group_machine, "addMachine"};
     QJsonArray pks = {"groupAction", groups};
 
-    tcpClient(managerHost, 7000, jats({3, pks}));
+    tcpClient(shared->manager_host, 7000, jats({3, pks}));
 }
 
 void groups_class::group_delete()
@@ -431,7 +430,7 @@ void groups_class::group_delete()
             QJsonArray groups = {group_list, group_machine, "delete"};
 
             QJsonArray pks = {"groupAction", groups};
-            tcpClient(managerHost, 7000, jats({3, pks}));
+            tcpClient(shared->manager_host, 7000, jats({3, pks}));
         }
     }
 }

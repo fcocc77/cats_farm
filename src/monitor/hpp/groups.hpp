@@ -18,7 +18,6 @@ private:
     void add_machine();
     void group_delete();
     //-----------------
-    QString managerHost;
 
 public:
     groups_class(

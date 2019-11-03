@@ -29,16 +29,19 @@ QMainWindow
             font-size: 13px
             background: transparent
         QPushButton
-            padding: 10px 30px 10px 20px
-            font-size: 14px
-            border-radius: 3px
-            background: $b20
-            border: 1px solid transparent
-            &:hover
-                border-color: $base
-                color: $base
+            @include button
+    QInputDialog
+        background: $b14
+        width: 500px
+        QLabel
+            background: transparent
+            font-size: 13px
+        QPushButton
+            @include button
+        QLineEdit
+            @include textedit
+            margin-bottom: 20px
     QScrollBar
-
         &::horizontal 
             height: 10px
         &:vertical 
@@ -52,7 +55,6 @@ QMainWindow
                 margin-right: 11
                 &:hover
                     background: $base
-                    
         &::add-line, &::sub-line
             &:horizontal, &:vertical
                 background: $b25

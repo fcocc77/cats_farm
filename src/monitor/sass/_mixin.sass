@@ -63,3 +63,23 @@
             margin-left: 1px
             margin-top: 1px
             margin-bottom: 1px
+@mixin button
+    padding: 10px 30px 10px 20px
+    font-size: 13px
+    border-radius: 3px
+    background: $b20
+    border: 1px solid transparent
+    &:hover
+        border-color: $base
+        color: $base
+@mixin textedit
+    background: $b20
+    border: 1px solid $b20
+    padding: 10px
+    border-radius: 2px
+    &:hover
+        background: $b25
+        border-color: $b30
+    &:focus
+        background: $b25
+        border-color: $base
