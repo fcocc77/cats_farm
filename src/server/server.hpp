@@ -14,19 +14,19 @@ using namespace std;
 #include <QFileInfo>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMutex>
 
 #include "render.hpp"
 
 class server : public QObject
 {
 public:
-	render *_render = new render();
+	render_class *render;
+	QMutex mutex;
 
-	void init();
+	server();
 	QString send_resources(QString recv, QJsonObject extra);
 	QString recieveManager(QString data);
-
-	const QString managerHost = fread(path + "/etc/manager_host");
 };
 
 #endif // SERVER_HPP

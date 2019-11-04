@@ -1,10 +1,36 @@
 #include "render.hpp"
 
-QString render::render_task(QJsonArray recv)
+render_class::render_class(QMutex *_mutex)
+{
+	mutex = _mutex;
+	// inicializar instancias 16 veces
+	for (int i = 0; i < 15; ++i)
+	{
+		first_frame.push_back(0);
+		last_frame.push_back(0);
+		pid.push_back(0);
+
+		taskKill.push_back(false);
+		renderInstance.push_back(false);
+
+		project.push_back("none");
+		jobSystem.push_back("none");
+		extra.push_back("none");
+		renderNode.push_back("none");
+		vmSoftware.push_back("none");
+		src_path.push_back("none");
+		dst_path.push_back("none");
+	} //-------------------------------------------
+
+	threading(&render_class::suspend_vbox, this);
+}
+
+QString render_class::render_task(QJsonArray recv)
 {
 	// comvierte lista de json en variables usables
 	QString status;
 
+	mutex->lock();
 	int ins = recv[2].toInt();
 	QString software = recv[1].toString();
 	project[ins] = recv[0].toString();
@@ -14,7 +40,7 @@ QString render::render_task(QJsonArray recv)
 	extra[ins] = recv[6].toString();
 	renderNode[ins] = recv[7].toString();
 	//------------------------------------------------------------
-
+	
 	// si alguna de las instancias ya esta en render no renderea
 	bool renderNow = false;
 
@@ -24,9 +50,10 @@ QString render::render_task(QJsonArray recv)
 		renderNow = true;
 	}
 	//-----------------------------------------------------------------
-
+	mutex->unlock();
 	if (renderNow)
 	{
+		mutex->lock();
 		//obtiene ruta correcta
 		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 
@@ -34,6 +61,7 @@ QString render::render_task(QJsonArray recv)
 		src_path[ins] = correctPath[0];
 		dst_path[ins] = correctPath[1];
 		//------------------------------------------------------
+		mutex->unlock();
 
 		// ---------- rendering softwares -----------------
 		bool renderOK = false;
@@ -53,6 +81,7 @@ QString render::render_task(QJsonArray recv)
 
 		QString log_file = path + "/log/render_log_" + QString::number(ins);
 
+		mutex->lock();
 		if (taskKill[ins])
 		{
 			taskKill[ins] = false;
@@ -72,11 +101,12 @@ QString render::render_task(QJsonArray recv)
 		// Habilita las instancia que ya termino, para que pueda renderear
 		renderInstance[ins] = false;
 		//---------------------------------------------------------------------
+		mutex->unlock();
 	}
 
 	return status;
 }
-QList<QString> render::find_correct_path(QJsonArray system_path, QString _path)
+QList<QString> render_class::find_correct_path(QJsonArray system_path, QString _path)
 {
 	//obtiene ruta correcta
 	QString proj;
@@ -104,7 +134,7 @@ QList<QString> render::find_correct_path(QJsonArray system_path, QString _path)
 	return {src, dst};
 }
 
-QString render::qprocess(QString cmd, int ins)
+QString render_class::qprocess(QString cmd, int ins)
 {
 	QProcess proc;
 	proc.start(cmd);
@@ -117,7 +147,7 @@ QString render::qprocess(QString cmd, int ins)
 	return output;
 }
 
-void render::vbox_turn(bool turn)
+void render_class::vbox_turn(bool turn)
 {
 
 	QString vm;
@@ -143,7 +173,7 @@ void render::vbox_turn(bool turn)
 	}
 }
 
-bool render::vbox_working()
+bool render_class::vbox_working()
 {
 	// Virtual Machin status
 
@@ -167,7 +197,7 @@ bool render::vbox_working()
 	//------------------------------------------
 }
 
-void render::suspend_vbox()
+void render_class::suspend_vbox()
 {
 
 	// checkea si el Cinama 4D esta en render y si no se apaga la maquina virtual
@@ -191,7 +221,7 @@ void render::suspend_vbox()
 	} //-----------------------------------------------------------------------
 }
 
-bool render::nuke(int ins)
+bool render_class::nuke(int ins)
 {
 	// Ecuentra ruta del write y la remplaza por la ruta correcta segun OS
 	QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
@@ -291,7 +321,7 @@ bool render::nuke(int ins)
 		return false;
 }
 
-bool render::maya(int ins)
+bool render_class::maya(int ins)
 {
 
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
@@ -329,7 +359,7 @@ bool render::maya(int ins)
 	// --------------------------
 }
 
-bool render::cinema(int ins)
+bool render_class::cinema(int ins)
 {
 
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
@@ -435,7 +465,7 @@ bool render::cinema(int ins)
 	//---------------------------
 }
 
-bool render::houdini(int ins)
+bool render_class::houdini(int ins)
 {
 
 	//Obtiene el excecutable que existe en este sistema
@@ -475,7 +505,7 @@ bool render::houdini(int ins)
 	// ----------------------------------
 }
 
-bool render::fusion(int ins)
+bool render_class::fusion(int ins)
 {
 
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
@@ -534,7 +564,7 @@ bool render::fusion(int ins)
 	//-----------------------------------------------
 }
 
-bool render::ae(int ins)
+bool render_class::ae(int ins)
 {
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
 	os::remove(log_file);

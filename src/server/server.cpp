@@ -1,18 +1,24 @@
 #include "server.hpp"
 
-void server::init()
+server::server()
 {
-	tcpClient(managerHost, 7000, &server::send_resources, this);
+	QStringList manager_hosts = fread(path + "/etc/manager_host").split(",");
+	QString host = manager_hosts[0];
+	
+	render = new render_class(&mutex);
+
+	tcpClient(host, 7000, &server::send_resources, this);
 	tcpServer(7001, &server::recieveManager, this);
 }
 
 QString server::send_resources(QString recv, QJsonObject extra)
 {
-
 	if (not recv.isEmpty())
 	{
-		_render->preferences = jofs(recv);
-		jwrite(path + "/etc/preferences_s.json", _render->preferences);
+		mutex.lock();
+		render->preferences = jofs(recv);
+		mutex.unlock();
+		jwrite(path + "/etc/preferences_s.json", render->preferences);
 	}
 
 	QString system;
@@ -53,7 +59,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
 							  os::ramPercent(),
 							  os::cpuTemp(),
 							  system,
-							  _render->vbox_working(),
+							  render->vbox_working(),
 							  os::ramTotal(),
 							  os::ramUsed(),
 							  os::cpuCount(),
@@ -74,7 +80,7 @@ QString server::recieveManager(QString _recv)
 	QString send;
 
 	if (input == 0)
-		send = _render->render_task(recv);
+		send = render->render_task(recv);
 
 	if (input == 1)
 	{
@@ -86,13 +92,14 @@ QString server::recieveManager(QString _recv)
 	}
 
 	if (input == 3)
-	{
+	{	
+		mutex.lock();
 		for (auto i : recv)
 		{
-			int pid = _render->pid[i.toInt()];
+			int pid = render->pid[i.toInt()];
 			if (pid)
 			{
-				_render->taskKill[i.toInt()] = true;
+				render->taskKill[i.toInt()] = true;
 				os::kill(pid);
 			}
 		}
@@ -109,6 +116,7 @@ QString server::recieveManager(QString _recv)
 			}
 		}
 		// -------------------------------------------
+		mutex.unlock();
 	}
 
 	if (input == 4)

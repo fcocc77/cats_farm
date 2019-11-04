@@ -89,7 +89,6 @@ void manager::render_job()
 										{
 											instance->status = 1;
 											threading(&manager::render_task, this, server, instance, job); // this es que es un hilo dentro de una classe
-											usleep(200000);												   //0.2 sec
 										}
 									}
 								}
@@ -171,7 +170,6 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			QJsonArray pks = {project, software, instance->index, first_frame, last_frame, jobSystem, extra, render};
 
 			QString result = tcpClient(server->host, 7001, jats({0, pks}));
-
 
 			if (not(result == "ok"))
 			{
