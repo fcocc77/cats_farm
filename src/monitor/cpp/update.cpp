@@ -102,8 +102,12 @@ void update_class::update_jobs(QJsonObject recv)
 	}
 	//-----------------------------
 
-	QStringList job_name_list;
+	// actualiza el contador de jobs de toolbar
+	int count = recv.size();
+	ui->tool_count->setText(QString::number(count) + " jobs.");
+	// ----------------------------
 
+	QStringList job_name_list;
 	for (QJsonValue j : recv)
 	{
 		QJsonObject job = j.toObject();
