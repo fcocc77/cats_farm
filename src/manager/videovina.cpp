@@ -133,7 +133,9 @@ QString manager::videovina(QJsonArray recv)
 
     };
 
+    mutex.lock();
     make_job(data);
-
+    mutex.unlock();
+    
     return "";
 }

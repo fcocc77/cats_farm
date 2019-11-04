@@ -4,6 +4,7 @@ void manager::render_job()
 {
 	while (1)
 	{
+		mutex.lock();
 		reset_render = false;
 
 		// lee las listas del trabajo creadas y las ordena segun prioridad
@@ -108,6 +109,7 @@ void manager::render_job()
 				break;
 		}
 
+		mutex.unlock();
 		sleep(1);
 	}
 }
@@ -131,15 +133,16 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 	// renderea las tareas por cada trabajo, solo si status es igual a waiting
 	for (auto task : job->task)
 	{
-
 		auto first_frame = task->first_frame;
 		auto last_frame = task->last_frame;
 
 		auto status = task->status;
 
+		mutex.lock();
 		// pone en la instancia que job se esta rendereando
 		instance->job_task = job->name + " : " + task->name;
 		//-------------------------------------------------
+		mutex.unlock();
 
 		if (instance->reset)
 		{
@@ -151,10 +154,10 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			break;
 		}
 		//-----------------------------------------
-
 		// envia la tarea al servidor para que la procese, si es que el status es waiting
 		if (status == "waiting")
 		{
+			mutex.lock();
 			//pone en activo la tarea
 			task->status = "active";
 			job->active_task++;
@@ -162,17 +165,19 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			int time1 = time(0);
 			//------------------------------
 			job->status = "Rendering...";
+			mutex.unlock();
 
 			// Envia a renderar la tarea al servidor que le corresponde
 			QJsonArray pks = {project, software, instance->index, first_frame, last_frame, jobSystem, extra, render};
 
 			QString result = tcpClient(server->host, 7001, jats({0, pks}));
 
+
 			if (not(result == "ok"))
 			{
 				if (result == "kill")
 				{
-
+					mutex.lock();
 					int active_task = job->active_task - 1;
 					if (active_task >= 0)
 					{
@@ -182,14 +187,14 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 					task->status = "waiting";
 					task->time = "...";
 					task->server = "...";
-
+					mutex.unlock();
 					break;
 				}
 
 				else
 				{ // if failed
 					result == "failed";
-
+					mutex.lock();
 					job->vetoed_servers.push_back(server->name);
 
 					job->failed_task = 1;
@@ -201,16 +206,19 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 					}
 
 					task->status = "failed";
+					mutex.unlock();
 					sleep(4);
+					mutex.lock();
 					task->status = "waiting";
 					task->time = "...";
 					task->server = "...";
+					mutex.unlock();
 
 					break;
 				}
 			}
 			//-------------------------------------------------------------
-
+			mutex.lock();
 			int active_task = job->active_task - 1;
 			if (active_task >= 0)
 			{
@@ -242,11 +250,12 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			{
 				Completed = true;
 			}
+			mutex.unlock();
 		}
 	}
 
 	reset_render = true;
-
+	mutex.lock();
 	if (result == "failed")
 	{
 		instance->status = 3;
@@ -262,7 +271,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			instance->job_task = "...";
 		}
 	}
-
+	mutex.unlock();
 	if (Completed)
 	{
 		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
@@ -339,7 +348,9 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 
 		QString submit_finish = "tiempo"; // time.strftime("%Y-%m-%d   %H:%M:%S")
 
+		mutex.lock();
 		job->submit_finish = submit_finish;
 		job->status = "Completed";
+		mutex.unlock();
 	}
 }

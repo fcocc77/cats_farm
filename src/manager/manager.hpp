@@ -31,8 +31,6 @@ public:
 	vector<group_struct *> groups;
 	QJsonObject preferences = jread(path + "/etc/preferences.json");
 	bool reset_render;
-	bool preferences_idle = true;
-	bool jots_idle = true;
 	QMutex mutex;
 
 	// rutas generales para videovina

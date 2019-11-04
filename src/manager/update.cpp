@@ -3,11 +3,13 @@
 void manager::update_all()
 {
 	while (1)
-	{
+	{	
+		mutex.lock();
 		update_jobs();
 		container_save();
 		update_server();
 		update_group();
+		mutex.unlock();
 
 		sleep(1);
 	}
@@ -27,7 +29,7 @@ void manager::container_save()
 }
 
 QString manager::update_server_thread(QJsonArray recv)
-{
+{	
 	if (not recv.empty())
 	{
 		QString name = recv[0].toString();
@@ -100,15 +102,12 @@ QString manager::update_server_thread(QJsonArray recv)
 		}
 	}
 
-	// se usan dos bool para que cuando se este generando el json no se este
+	// se usa mutex para que cuando se este generando el json no se este
 	// copiando informacion en "preferences" si no el programa se cae
 	QString ret;
-	if (preferences_idle)
-	{
-		jots_idle = false;
-		ret = jots(preferences);
-		jots_idle = true;
-	}
+	
+	ret = jots(preferences);
+
 	return ret;
 	//---------------------------------------------------------------
 }
@@ -187,12 +186,7 @@ void manager::update_server()
 		//-----------------------------
 	}
 
-	if (jots_idle)
-	{
-		preferences_idle = false;
-		preferences["servers"] = serverList;
-		preferences_idle = true;
-	}
+	preferences["servers"] = serverList;
 }
 
 bool manager::iTime(QString schedule)
@@ -286,12 +280,7 @@ void manager::update_group()
 		group->activeMachine = activeMachine;
 	}
 
-	if (jots_idle)
-	{
-		preferences_idle = false;
-		preferences["groups"] = grouplist;
-		preferences_idle = true;
-	}
+	preferences["groups"] = grouplist;
 }
 
 void manager::update_jobs()

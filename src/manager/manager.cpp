@@ -22,22 +22,26 @@ QString manager::server_tcp(QString _recv)
 	int input = recv[0].toInt();
 	QJsonArray pks = recv[1].toArray();
 
-	if (input == 1)
-		return update_server_thread(pks);
-	if (input == 2)
-		return sendToMonitor_thread();
-	if (input == 3)
-		return recieve_monitor_thread(pks);
-	if (input == 4)
-		return make_job(pks);
-	if (input == 5)
-		return pivot_to_server(pks);
-	if (input == 6)
-		return sendToLogger();
-	if (input == 7)
-		return videovina(pks);
+	QString send;
 
-	return "";
+	mutex.lock();
+	if (input == 1)
+		send = update_server_thread(pks);
+	else if (input == 2)
+		send = sendToMonitor_thread();
+	else if (input == 3)
+		send = recieve_monitor_thread(pks);
+	else if (input == 4)
+		send = make_job(pks);
+	else if (input == 5)
+		send = pivot_to_server(pks);
+	else if (input == 6)
+		send = sendToLogger();
+	mutex.unlock();
+	if (input == 7)
+		send = videovina(pks);
+
+	return send;
 }
 
 // Envia  informacion de jobs al logger
@@ -561,6 +565,7 @@ job_struct *manager::findJob(QString name)
 			return job;
 	return jobs[0];
 }
+
 server_struct *manager::findServer(QString name)
 {
 	for (auto server : servers)
@@ -568,6 +573,7 @@ server_struct *manager::findServer(QString name)
 			return server;
 	return servers[0];
 }
+
 group_struct *manager::findGroup(QString name)
 {
 	for (auto group : groups)
