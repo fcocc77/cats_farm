@@ -1,5 +1,5 @@
-#ifndef MANAGER_H
-#define MANAGER_H
+#ifndef MANAGER_HPP
+#define MANAGER_HPP
 
 #include <iostream>
 #include <vector>
@@ -17,11 +17,11 @@ using namespace std;
 #include <QMutex>
 
 #include "structs.hpp"
-#include "../utils/video.h"
-#include "../utils/util.h"
-#include "../utils/tcp.h"
-#include "../utils/os.h"
-#include "../utils/threading.h"
+#include "../utils/video.hpp"
+#include "../utils/util.hpp"
+#include "../utils/tcp.hpp"
+#include "../utils/os.hpp"
+#include "../utils/threading.hpp"
 
 class manager : public QObject
 {
@@ -107,4 +107,4 @@ public:
 	}
 };
 
-#endif //MANAGER_H
+#endif //MANAGER_HPP

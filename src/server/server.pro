@@ -1,7 +1,7 @@
 # disable unsused variables warning
 QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 #---------------------------------
-RC_ICONS = ../../icons/server.ico
+RC_ICONS = ../../icons/icon.ico
 
 TEMPLATE = app
 TARGET = "vserver"
@@ -11,14 +11,14 @@ CONFIG -= app_bundle
 
 QT += core gui multimedia widgets
 
-HEADERS += 	./server.h \
-			./render.h \
-			../manager/structs.h \
-			../utils/os.h \
-			../utils/tcp.h \
-			../utils/threading.h \
-			../utils/util.h \
-			../utils/video.h \
+HEADERS += 	./server.hpp \
+			./render.hpp \
+			../manager/structs.hpp \
+			../utils/os.hpp \
+			../utils/tcp.hpp \
+			../utils/threading.hpp \
+			../utils/util.hpp \
+			../utils/video.hpp \
 
 SOURCES += 	./main.cpp \
 			./server.cpp \  

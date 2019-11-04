@@ -1,12 +1,12 @@
-#ifndef UTIL_h
-#define UTIL_h
+#ifndef UTIL_HPP
+#define UTIL_HPP
 #include <iostream>
 #include <fstream>   // ifstream
 #include <vector>    //
 #include <sstream>   // istringstream
 #include <algorithm> //sort , find
 #include <typeinfo>
-#include "os.h"
+#include "os.hpp"
 #include <ctime> // time_t
 #include <QDebug>
 #include <QString>
@@ -38,4 +38,4 @@ QJsonArray jafs(QString data);  // jafs =  json array from string
 
 const QString path = getPath();
 
-#endif //UTIL_h
+#endif //UTIL_HPP

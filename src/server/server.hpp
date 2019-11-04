@@ -1,12 +1,12 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SERVER_HPP
+#define SERVER_HPP
 
 #include <iostream>
 using namespace std;
 #include <thread>
 
-#include "../utils/util.h"
-#include "../utils/tcp.h"
+#include "../utils/util.hpp"
+#include "../utils/tcp.hpp"
 
 #include <QCoreApplication>
 #include <QProcess>
@@ -15,7 +15,7 @@ using namespace std;
 #include <QJsonObject>
 #include <QJsonArray>
 
-#include "render.h"
+#include "render.hpp"
 
 class server : public QObject
 {
@@ -29,4 +29,4 @@ public:
 	const QString managerHost = fread(path + "/etc/manager_host");
 };
 
-#endif // SERVER_H
+#endif // SERVER_HPP

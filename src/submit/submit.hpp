@@ -1,11 +1,11 @@
-#ifndef SUBMIT_H
-#define SUBMIT_H
+#ifndef SUBMIT_HPP
+#define SUBMIT_HPP
 
 #include <QObject>
 #include <iostream>
 using namespace std;
-#include "../utils/tcp.h"
-#include "../utils/util.h"
+#include "../utils/tcp.hpp"
+#include "../utils/util.hpp"
 
 class submit : public QObject
 {
@@ -13,4 +13,4 @@ class submit : public QObject
 	void init(int argc, char const *argv[]);
 };
 
-#endif //SUBMIT_H
+#endif //SUBMIT_HPP

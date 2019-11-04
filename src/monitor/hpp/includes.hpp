@@ -34,11 +34,11 @@
 #include <iostream>
 using namespace std;
 
-#include "../../utils/threading.h"
-#include "../../utils/util.h"
-#include "../../utils/os.h"
-#include "../../manager/structs.h"
-#include "../../utils/tcp.h"
+#include "../../utils/threading.hpp"
+#include "../../utils/util.hpp"
+#include "../../utils/os.hpp"
+#include "../../manager/structs.hpp"
+#include "../../utils/tcp.hpp"
 
 #include "shared_variables.hpp"
 

@@ -1,9 +1,9 @@
-#ifndef TPC_H
-#define TPC_H
+#ifndef TCP_HPP
+#define TCP_HPP
 
 #include <iostream>
 using namespace std;
-#include "util.h"
+#include "util.hpp"
 
 // QT5 Library
 #include <unistd.h>
@@ -373,4 +373,4 @@ QString tcpClient(T _host, int _port, QString _pks)
 	return _client->client();
 }
 
-#endif //TPC_H
+#endif //TCP_HPP

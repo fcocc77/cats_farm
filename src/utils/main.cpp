@@ -1,8 +1,8 @@
-#include "../utils/util.h"
-#include "../utils/os.h"
-#include "../utils/tcp.h"
-#include "../utils/video.h"
-#include "../utils/threading.h"
+#include "../utils/util.hpp"
+#include "../utils/os.hpp"
+#include "../utils/tcp.hpp"
+#include "../utils/video.hpp"
+#include "../utils/threading.hpp"
 
 #include <QDebug>
 #include <QString>

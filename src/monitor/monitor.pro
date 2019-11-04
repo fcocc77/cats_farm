@@ -26,12 +26,12 @@ HEADERS += 	./hpp/includes.hpp \
 			./hpp/toolbar.hpp \
 			./hpp/log.hpp \
 			./hpp/options.hpp \
-			../utils/os.h \
-			../utils/tcp.h \
-			../utils/threading.h \
-			../utils/util.h \
-			../utils/video.h \
-			../manager/structs.h \
+			../utils/os.hpp \
+			../utils/tcp.hpp \
+			../utils/threading.hpp \
+			../utils/util.hpp \
+			../utils/video.hpp \
+			../manager/structs.hpp \
 			# QCodeEditor 
 			../external/QCodeEditor/include/KGL/Design/QCodeEditorDesign.hpp \
 			../external/QCodeEditor/include/KGL/Design/QCodeEditorSheets.hpp \

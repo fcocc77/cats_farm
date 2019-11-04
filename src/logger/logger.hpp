@@ -1,13 +1,13 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
 
 #include <iostream>
 using namespace std;
 #include <thread>
 
-#include "../utils/util.h"
-#include "../utils/tcp.h"
-#include "../utils/os.h"
+#include "../utils/util.hpp"
+#include "../utils/tcp.hpp"
+#include "../utils/os.hpp"
 
 #include <QCoreApplication>
 #include <QProcess>
@@ -24,4 +24,4 @@ public:
     QString get(QString recv, QJsonObject extra);
 };
 
-#endif // LOGGER_H
+#endif // LOGGER_HPP

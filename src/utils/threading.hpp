@@ -1,4 +1,4 @@
-/* threading.h : VinaRender 2.0
+/* threading.hpp : VinaRender 2.0
 
 Esta clase funciona con el QThread, y solo funciona dentro de classes,
 se ponen muchos constructores con diferentes cantidades de argumentos,

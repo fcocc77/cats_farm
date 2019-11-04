@@ -2,8 +2,8 @@
 
 using namespace std;
 
-#include "util.h"
-#include "os.h"
+#include "util.hpp"
+#include "os.hpp"
 void concat(QString folder)
 {
 	QString ffmpeg, logMetod, dirMovie, list, concat, movie, movie_list, name, cmd, null;

@@ -1,5 +1,5 @@
-#ifndef OS_H
-#define OS_H
+#ifndef OS_HPP
+#define OS_HPP
 
 #include <iostream>
 using namespace std;
@@ -16,7 +16,7 @@ using namespace std;
 #include <QFile>
 #include <QProcess>
 //librerias propias
-#include "util.h"
+#include "util.hpp"
 //--------------------
 
 #ifdef _WIN32
@@ -77,4 +77,4 @@ void copymove(QString src, QString dst, bool copy);
 #endif
 //----------------------------
 
-#endif //OS_H
+#endif //OS_HPP

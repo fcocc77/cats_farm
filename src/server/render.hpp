@@ -1,8 +1,8 @@
-#ifndef RENDER_H
-#define RENDER_H
+#ifndef RENDER_HPP
+#define RENDER_HPP
 
-#include "../utils/util.h"
-#include "../utils/threading.h"
+#include "../utils/util.hpp"
+#include "../utils/threading.hpp"
 
 class render : public QObject
 {
@@ -54,4 +54,4 @@ class render : public QObject
 	bool ae(int ins);
 };
 
-#endif // RENDER_H
+#endif // RENDER_HPP

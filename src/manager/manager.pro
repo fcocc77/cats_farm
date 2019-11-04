@@ -4,17 +4,17 @@ QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
 
 TEMPLATE = app
 TARGET = "vmanager"
-RC_ICONS = ../../icons/manager.ico
+RC_ICONS = ../../icons/icon.ico
 
 CONFIG += console c++11
 CONFIG -= app_bundle
 QT += core gui multimedia widgets
 
-HEADERS +=  ../utils/os.h \
-			../utils/tcp.h \
-			../utils/threading.h \ 
-			../utils/util.h \
-			../utils/video.h \
+HEADERS +=  ../utils/os.hpp \
+			../utils/tcp.hpp \
+			../utils/threading.hpp \ 
+			../utils/util.hpp \
+			../utils/video.hpp \
 			./manager.hpp \
 			./structs.hpp \
 

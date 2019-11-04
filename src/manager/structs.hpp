@@ -1,5 +1,5 @@
-#ifndef STRUCT_H
-#define STRUCT_H
+#ifndef STRUCT_HPP
+#define STRUCT_HPP
 
 struct task_struct
 {
@@ -114,4 +114,4 @@ struct makejob_struct
 	QString render;
 };
 
-#endif //STRUCT_H
+#endif //STRUCT_HPP

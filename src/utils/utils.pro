@@ -6,6 +6,6 @@ QT += core gui multimedia widgets
 CONFIG -= app_bundle
 
 
-HEADERS += 	util.h os.h video.h tcp.h threading.h
+HEADERS += 	util.hpp os.hpp video.hpp tcp.hpp threading.hpp
 
 SOURCES += 	main.cpp util.cpp os.cpp video.cpp 
