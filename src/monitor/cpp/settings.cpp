@@ -41,6 +41,8 @@ void settings_class::update(QString host)
 
 void settings_class::ok()
 {
+	path_write();
+
 	QString hosts = ui->settings_ip->text();
 	fwrite(path + "/etc/manager_host", hosts);
 
@@ -51,42 +53,33 @@ void settings_class::ok()
 	for (QString ip : ips)
 		ui->tool_zone->addItem(ip);
 	// -------------------------
-
-	path_write();
 }
 
 void settings_class::path_read()
 {
-
 	QJsonArray send = {"preferences", QJsonArray({"read", "none"})};
 	QString recv = tcpClient(manager_host, 7000, jats({3, send}));
 	QJsonObject preferences = jofs(recv);
+
+	auto array_to_string = [this](QJsonArray array) {
+		QString ret;
+		for (QJsonValue value : array)
+			ret += value.toString() + "\n";
+		return ret.left(ret.length() - 1); // borra la ultima linea
+	};
 
 	if (not preferences.empty())
 	{
 		QJsonObject paths = preferences["paths"].toObject();
 		QString system, nuke, maya, houdini, cinema, fusion, ae;
 
-		for (QJsonValue p : paths["system"].toArray())
-			system += p.toString() + "\n";
-
-		for (QJsonValue p : paths["nuke"].toArray())
-			nuke += p.toString() + "\n";
-
-		for (QJsonValue p : paths["houdini"].toArray())
-			houdini += p.toString() + "\n";
-
-		for (QJsonValue p : paths["cinema"].toArray())
-			cinema += p.toString() + "\n";
-
-		for (QJsonValue p : paths["fusion"].toArray())
-			fusion += p.toString() + "\n";
-
-		for (QJsonValue p : paths["maya"].toArray())
-			maya += p.toString() + "\n";
-
-		for (QJsonValue p : paths["ae"].toArray())
-			ae += p.toString() + "\n";
+		system = array_to_string(paths["system"].toArray());
+		nuke = array_to_string(paths["nuke"].toArray());
+		houdini = array_to_string(paths["houdini"].toArray());
+		cinema = array_to_string(paths["cinema"].toArray());
+		fusion = array_to_string(paths["fusion"].toArray());
+		maya = array_to_string(paths["maya"].toArray());
+		ae = array_to_string(paths["ae"].toArray());
 
 		ui->settings_paths->setPlainText(system);
 		ui->settings_nuke->setPlainText(nuke);
@@ -138,8 +131,11 @@ void settings_class::path_write()
 
 	QJsonArray ae;
 	for (auto l : ui->settings_ae->toPlainText().split("\n"))
+	{
 		ae.push_back(l);
+	}
 	paths["ae"] = ae;
+	print(QString::number(ae.size()));
 
 	tcpClient(manager_host, 7000, jats({3, {{"preferences", {{"write", paths}}}}}));
 }
