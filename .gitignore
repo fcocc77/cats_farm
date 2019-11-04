@@ -19,8 +19,7 @@ src/*/utils
 src/*/videovina
 src/*/ui_main.h
 bin
-etc/info.json*
-log/bugs.txt
+log*
 qt/*/*zip
 qt/*/*tar.gz
 .vscode
@@ -30,4 +29,8 @@ qt/*/*tar.gz
 modules/ae/*.gz
 node_modules
 
-
+# archivos de etc
+etc/*.json*
+!etc/preferences.json
+etc/manager_host
+# --------------------
