@@ -125,16 +125,10 @@ void global_class::notify_icon()
 						//---------------------------------
 
 						if (status == "Failed")
-						{
 							notify->showMessage("VinaRender", name + "  has failed");
-							QSound(path + "/sound/angry_cat.wav", this).play();
-						}
 
 						if (status == "Completed")
-						{
 							notify->showMessage("VinaRender", name + "  has finished");
-							QSound(path + "/sound/meaw_cat.wav", this).play();
-						}
 					}
 				}
 			}
