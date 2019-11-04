@@ -2,8 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-	//qputenv("QT_SCALE_FACTOR", "1.1");
-
 	QString showMonitor = path + "/etc/showMonitor";
 
 	// si el monitor esta abierto no lo abre
