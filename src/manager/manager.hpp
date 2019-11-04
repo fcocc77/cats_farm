@@ -14,8 +14,9 @@ using namespace std;
 #include <QObject>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMutex>
 
-#include "structs.h"
+#include "structs.hpp"
 #include "../utils/video.h"
 #include "../utils/util.h"
 #include "../utils/tcp.h"
@@ -32,6 +33,7 @@ public:
 	bool reset_render;
 	bool preferences_idle = true;
 	bool jots_idle = true;
+	QMutex mutex;
 
 	// rutas generales para videovina
 	QJsonObject env_videovina = jread(path + "/etc/videovina.json");
@@ -41,7 +43,8 @@ public:
 	QString vv_local_folder = env_videovina["local"].toString();
 	// -------------------------------
 
-	void init();
+	manager();
+
 	QString make_job(QJsonArray recv);
 	QString pivot_to_server(QJsonArray recv);
 	vector<task_struct *> make_task(int first_frame, int last_frame, int task_size);

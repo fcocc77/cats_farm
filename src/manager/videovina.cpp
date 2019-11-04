@@ -1,4 +1,4 @@
-#include "manager.h"
+#include "manager.hpp"
 
 QString manager::videovina(QJsonArray recv)
 {

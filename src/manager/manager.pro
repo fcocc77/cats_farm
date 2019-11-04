@@ -15,8 +15,8 @@ HEADERS +=  ../utils/os.h \
 			../utils/threading.h \ 
 			../utils/util.h \
 			../utils/video.h \
-			./manager.h \
-			./structs.h \
+			./manager.hpp \
+			./structs.hpp \
 
 SOURCES += 	./main.cpp \
 			./manager.cpp \  

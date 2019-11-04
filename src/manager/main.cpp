@@ -1,11 +1,10 @@
-#include "manager.h"
+#include "manager.hpp"
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
 
 	manager _manager;
-	_manager.init();
 
 	return app.exec();
 }

@@ -1,4 +1,4 @@
-#include "manager.h"
+#include "manager.hpp"
 
 // Recive la informacion del monitor
 void manager::resetAllServer()

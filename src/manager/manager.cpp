@@ -1,23 +1,17 @@
-#include "manager.h"
+#include "manager.hpp"
 
-void manager::init()
+manager::manager()
 {
 	// Carga la informacion guardada de Jobs, Servers y Groups
-
 	QJsonObject info = jread(path + "/etc/info.json");
 	if (not info.empty())
-	{
 		json_to_struct(info);
-	}
-
 	//-----------------------------------------------
 	reactive_all();
 	// Recive la informacion del suministrador y crea un jobs con sus tareas
 
 	tcpServer(7000, &manager::server_tcp, this);
-
 	threading(&manager::update_all, this);
-
 	threading(&manager::render_job, this);
 }
 

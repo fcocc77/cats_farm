@@ -1,10 +1,9 @@
-#include "manager.h"
+#include "manager.hpp"
 
 void manager::update_all()
 {
 	while (1)
 	{
-
 		update_jobs();
 		container_save();
 		update_server();
@@ -16,7 +15,6 @@ void manager::update_all()
 
 void manager::container_save()
 {
-
 	static int sec;
 	sec++;
 
@@ -30,7 +28,6 @@ void manager::container_save()
 
 QString manager::update_server_thread(QJsonArray recv)
 {
-
 	if (not recv.empty())
 	{
 		QString name = recv[0].toString();
@@ -51,7 +48,6 @@ QString manager::update_server_thread(QJsonArray recv)
 
 		if (not is_struct(servers, name))
 		{
-
 			QList<inst_struct *> instances;
 
 			for (int i = 0; i < 16; ++i)
