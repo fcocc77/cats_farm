@@ -60,7 +60,8 @@ public:
 
 			//3
 			qsocket->write("ok");
-			qsocket->waitForBytesWritten(wait);
+			if (not qsocket->error())
+				qsocket->waitForBytesWritten(wait);
 			//
 
 			// 6 recive paquete
@@ -83,7 +84,8 @@ public:
 			// 7 - envia tamanio de paquete
 			// cuando el cliente de desconecta da un error, si no da el error, espera los byte escritos
 			qsocket->write(QString::number(send.size()).toStdString().c_str());
-			qsocket->waitForBytesWritten(wait);
+			if (not qsocket->error())
+				qsocket->waitForBytesWritten(wait);
 			//-------------------------------------------------
 
 			//10 recive info de loop
@@ -93,7 +95,8 @@ public:
 			//print(send);
 			// 11 envia paquete
 			qsocket->write(send.toStdString().c_str());
-			qsocket->waitForBytesWritten(wait);
+			if (not qsocket->error())
+				qsocket->waitForBytesWritten(wait);
 			//-------------------------------------
 
 			if (loop == "false")
@@ -210,7 +213,8 @@ public:
 
 				// 1 - envia tamanio de paquete
 				socket->write(to_string(send.size()).c_str());
-				socket->waitForBytesWritten(wait);
+				if (not socket->error())
+					socket->waitForBytesWritten(wait);
 				//-------------------------------------------------
 
 				//4
@@ -219,7 +223,8 @@ public:
 
 				// 5 envia paquete
 				socket->write(send.toStdString().c_str());
-				socket->waitForBytesWritten(wait);
+				if (not socket->error())
+					socket->waitForBytesWritten(wait);
 				//-------------------------------------
 
 				// 8 recive tamanio de paquete
@@ -233,7 +238,8 @@ public:
 					socket->write("true");
 				else
 					socket->write("false");
-				socket->waitForBytesWritten(wait);
+				if (not socket->error())
+					socket->waitForBytesWritten(wait);
 				//-------------------------------------------------
 
 				// 12 recive paquete
