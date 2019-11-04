@@ -11,22 +11,36 @@ logger::logger()
         QString ip = zones[key].toString();
         tcpClient(ip, 7000, &logger::get, this, false, {{"zone", key}});
     }
+
+    // guarda un json cada 1 segundo
+    threading(&logger::save, this);
+    // -------------------------
+}
+
+void logger::save()
+{
+    while (1)
+    {
+        mutex.lock();
+        jwrite(path + "/etc/zones_jobs.json", zones_jobs);
+        mutex.unlock();
+
+        sleep(1);
+    }
 }
 
 QString logger::get(QString _recv, QJsonObject extra)
 {
     QString zone = extra["zone"].toString();
-    QString zones_dir = path + "/etc/zones";
-
-    if (!os::isdir(zones_dir))
-        os::makedirs(zones_dir);
 
     QJsonObject jobs = jofs(_recv);
     QJsonObject zone_data = {
         {"count", jobs.count()},
-        {"jobs", jobs}
-    };
+        {"jobs", jobs}};
 
-    jwrite(zones_dir + "/" + zone + ".json", zone_data);
+    mutex.lock();
+    zones_jobs[zone] = zone_data;
+    mutex.unlock();
+
     return jats({6});
 }
