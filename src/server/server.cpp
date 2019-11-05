@@ -103,7 +103,8 @@ QString server::recieveManager(QString _recv)
 				os::kill(pid);
 			}
 		}
-
+		mutex.unlock();
+		
 		// Mata las pid a partir del nombre "d" (es el after effect render de wine)
 		QStringList ps = os::sh("ps cax").split("\n");
 		for (QString line : ps)
@@ -116,7 +117,6 @@ QString server::recieveManager(QString _recv)
 			}
 		}
 		// -------------------------------------------
-		mutex.unlock();
 	}
 
 	if (input == 4)
