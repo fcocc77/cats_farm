@@ -1,15 +1,18 @@
 #!/usr/bin/env sh
-path="$( cd "$(dirname "$0")" ; pwd -P )"
+path="$(
+    cd "$(dirname "$0")"
+    pwd -P
+)"
 
 # ruta de instalacion
 dst="/opt/vinarender"
 # ------------------
 # IP del manager
-ip="192.168.1.40"
+ip="192.168.1.77"
 # ------------------
 manager_start=true
 server_start=true
-
+logger_start=true
 
 compile() {
     folder=$path/src/$1
@@ -18,27 +21,27 @@ compile() {
     make
     bin=$path/bin
     mkdir -p $bin
-    mv $folder/$2 $bin 
+    mv $folder/$2 $bin
 }
 
 install() {
     # Instalacion de Dependencias
     yum -y install epel-release http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
     yum -y install \
-    qt5-qtbase \
-    qt5-qtbase-devel \
-    qt5-qtmultimedia.x86_64 \
-    qt5-qtmultimedia-devel.x86_64 \
-    qt5-qtsvg.x86_64 \
-    qt5-qtsvg-devel.x86_64 \
-    mesa-libGL-devel \
-    mesa-libGLU-devel \
-    pulseaudio-libs-glib2 \
-    ffmpeg \
-    lm_sensors \
-    gcc-c++ \
-    sshpass \
-    psmisc #fuser
+        qt5-qtbase \
+        qt5-qtbase-devel \
+        qt5-qtmultimedia.x86_64 \
+        qt5-qtmultimedia-devel.x86_64 \
+        qt5-qtsvg.x86_64 \
+        qt5-qtsvg-devel.x86_64 \
+        mesa-libGL-devel \
+        mesa-libGLU-devel \
+        pulseaudio-libs-glib2 \
+        ffmpeg \
+        lm_sensors \
+        gcc-c++ \
+        sshpass \
+        psmisc #fuser
 
     yum -y group install "Development Tools"
     # ----------------------
@@ -47,21 +50,27 @@ install() {
     compile server vserver
     compile manager vmanager
     compile monitor vmonitor
-    compile submit submit 
-    compile videovina videovina 
+    compile submit submit
+    compile videovina videovina
+    compile logger logger
     # ----------------------
 
-    echo $ip > $path"/etc/manager_host"
+    echo $ip >$path"/etc/manager_host"
 
     # Creacion de servicios
     cp $path/os/linux/init/vserver.service /etc/systemd/system
     cp $path/os/linux/init/vmanager.service /etc/systemd/system
+    cp $path/os/linux/init/vlogger.service /etc/systemd/system
+
+    sed -i "s|{{path}}|$dst|g" /etc/systemd/system/vserver.service
+    sed -i "s|{{path}}|$dst|g" /etc/systemd/system/vmanager.service
+    sed -i "s|{{path}}|$dst|g" /etc/systemd/system/vlogger.service
+
     systemctl daemon-reload
     # -----------------------------
 
     # los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
-    sed -i -e 's/\r//g' $path/os/linux/init/vserver.sh
-    sed -i -e 's/\r//g' $path/os/linux/init/vmanager.sh
+    sed -i -e 's/\r//g' $path/os/linux/init/service.sh
     # --------------------------------------------------------------------------------
 
     mkdir $dst
@@ -73,11 +82,14 @@ install() {
     cp -rf "$path/etc" $dst
     cp -rf "$path/icons" $dst
     cp -rf "$path/log" $dst
+    cp -rf "$path/src" $dst
     cp -rf "$path/os/linux" $dst/os
-    cp -rf "$path/sound" $dst
     cp -rf "$path/modules" $dst
-    cp -rf "$path/theme" $dst
     # # ------------------------
+
+    # guarda ruta de instalacion en etc del sistema operativo
+    echo $dst >/etc/vinarender
+    # -----------------------
 
     chmod 755 -R $dst
 
@@ -91,24 +103,31 @@ install() {
         systemctl start vmanager
         systemctl enable vmanager
     fi
+    if $logger_start; then
+        systemctl start vlogger
+        systemctl enable vlogger
+    fi
     # -----------------------------
 
     # Acceso directo
     echo "[Desktop Entry]
     Name=VinaRender Monitor
-    Exec=/opt/vinarender/bin/vmonitor
-    Icon=/opt/vinarender/icons/monitor.png
+    Exec=$dst/bin/vmonitor
+    Icon=$dst/icons/icon.png
     Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
-    Type=Application" > "/usr/share/applications/VinaRender.desktop"
+    Type=Application" >"/usr/share/applications/VinaRender.desktop"
     # ---------------
 }
 
 uninstall() {
     systemctl stop vmanager
     systemctl stop vserver
+    systemctl stop vlogger
+    pkill -9 vmonitor
 
     rm /etc/systemd/system/vmanager.service
     rm /etc/systemd/system/vserver.service
+    rm /etc/systemd/system/vlogger.service
 
     rm "/usr/share/applications/VinaRender.desktop"
     rm -rf $dst

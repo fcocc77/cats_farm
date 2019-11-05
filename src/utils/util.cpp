@@ -195,24 +195,8 @@ void print(QString input)
 
 QString getPath()
 {
-	if (_win32)
-		return "C:/vinarender";
-	else if (_darwin)
-		return "/usr/local/vinarender";
-	else
-		// return "/opt/vinarender";
-		return "/home/pancho/Documents/GitHub/vinarender";
+	// este archivo es generado en la instalacion, 
+	// con la ruta donde se instala el vinarender
+	return fread("/etc/vinarender");
+	// --------------------------
 }
-
-/*
-
-void sorted( vector <QString>& _vector ){
-	sort( _vector.begin(), _vector.end() );
-}
-
-bool in_vector( QString word, vector <QString> _vector ){ 
-	if ( find(_vector.begin(), _vector.end(), word) == _vector.end() ){ return false; }
-	else { return true; }
-}
-
-*/

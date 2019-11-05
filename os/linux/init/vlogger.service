@@ -1,0 +1,13 @@
+[Unit]
+Description=Service VinaRender Logger
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/bin/sh -c "{{path}}/os/linux/init/service.sh start logger none"
+ExecStop=/bin/sh -c "{{path}}/os/linux/init/service.sh stop logger none"
+Restart=always
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

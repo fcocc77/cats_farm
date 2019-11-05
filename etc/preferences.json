@@ -1,8 +1,13 @@
 {
     "groups": [
-        "maya"
+        "CAsas",
+        "Nuke",
+        "videovina"
     ],
     "paths": {
+        "ae": [
+            "C:/Program Files (x86)/Adobe/Adobe After Effects 7.0/Support Files/aerender.exe"
+        ],
         "cinema": [
             "C:/Program Files/MAXON/Cinema 4D R19/CINEMA 4D.exe",
             "/usr/local/Applications/MAXON/CINEMA 4D R19/CINEMA 4D.app/Contents/MacOS/CINEMA 4D",
@@ -23,9 +28,6 @@
             "C:/Program Files/Autodesk/Maya2017/bin/Render.exe",
             "/usr/local/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render",
             "/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render"
-        ],
-        "ae": [
-            "C:/Program Files (x86)/Adobe/Adobe After Effects 7.0/Support Files/aerender.exe"
         ],
         "nuke": [
             "/usr/local/Nuke10.5v8/Nuke10.5",
@@ -49,6 +51,7 @@
         ]
     },
     "servers": [
-        "jumpcats-01"
+        "pancho",
+        "server1"
     ]
 }
