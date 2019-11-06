@@ -274,15 +274,15 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 	{
 		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 		//obtiene ruta correcta
-		QString src_path, dst_path, extra;
+		QString src_path, dst_path, aux;
 		for (QJsonValue p1 : system_path)
 		{
 			for (QJsonValue p2 : system_path)
 			{
-				extra = project;
-				extra.replace(p1.toString(), p2.toString());
+				aux = project;
+				aux.replace(p1.toString(), p2.toString());
 
-				if (os::isfile(extra))
+				if (os::isfile(aux))
 				{
 					src_path = p1.toString();
 					dst_path = p2.toString();
@@ -290,25 +290,25 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 				}
 			}
 
-			if (os::isfile(extra))
+			if (os::isfile(aux))
 				break;
 		}
 		//--------------------------------------
-
 		if (software == "Nuke")
 		{
-			QString ext = extra.split(".").last();
+			QString ext = job->extra.split(".").last();
 			if (ext == "mov")
 			{
 				job->status = "Concatenate";
 
 				// obtiene nombre de carpeta de renders
-				QString _dirname = os::dirname(extra);
-				QString _basename = os::basename(extra);
+				QString _dirname = os::dirname(job->extra);
+				QString _basename = os::basename(job->extra);
 				_basename.replace(".mov", "");
 				//-----------------------------------------
 
 				_dirname.replace(src_path, dst_path);
+
 				if (os::isdir(_dirname))
 					concat(_dirname + "/" + _basename);
 			}
@@ -320,7 +320,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			folderRender.replace(src_path, dst_path);
 			//-----------------------------------------
 			if (os::isdir(folderRender))
-				concat(folderRender);
+				concat(folderRender, "mp4");
 
 			// cuando termina el render, lee el proyecto videovina para reconstruir las rutas
 			// y asi copiar el video renderizado al la carpeta publica de s3 del usuario.

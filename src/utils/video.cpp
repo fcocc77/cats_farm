@@ -4,7 +4,7 @@ using namespace std;
 
 #include "util.hpp"
 #include "os.hpp"
-void concat(QString folder)
+void concat(QString folder, QString format = "mov")
 {
 	QString ffmpeg, logMetod, dirMovie, list, concat, movie, movie_list, name, cmd, null;
 
@@ -39,7 +39,7 @@ void concat(QString folder)
 	//----------------------------------
 
 	// crea ruta del exportacion
-	movie = dirMovie + "/" + name + ".mp4";
+	movie = dirMovie + "/" + name + "." + format;
 	//-----------------------------------------
 
 	if (_win32)
@@ -54,6 +54,7 @@ void concat(QString folder)
 
 	// borra carpeta de los videos separados
 	if (os::isfile(movie))
-		os::remove(folder);
+		;
+	// os::remove(folder);
 	//---------------------------------------
 }
