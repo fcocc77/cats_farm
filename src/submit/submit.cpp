@@ -51,13 +51,18 @@ void submit::init(int argc, char const *argv[])
 					   _suspend, comment, software, project, extra, system, instances.toInt(), render};
 
 	QString _path = os::dirname(os::dirname(os::dirname(argv[0])));
-	QString managerHost;
+	QString host;
 
 	if (ip.isEmpty())
-		managerHost = fread(_path + "/etc/manager_host");
+	{
+		QStringList manager_hosts = fread(path + "/etc/manager_host").split(",");
+		host = manager_hosts[0];
+	}
 	else
-		managerHost = ip;
-	
+	{
+		host = ip;
+	}
+
 	if (argc > 2)
-		tcpClient(managerHost, 7000, jats({4, info}));
+		tcpClient(host, 7000, jats({4, info}));
 }

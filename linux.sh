@@ -24,6 +24,40 @@ compile() {
     mv $folder/$2 $bin
 }
 
+nuke() {
+    nuke_path="/usr/local/Nuke10.5v8"
+    plugins=$nuke_path"/plugins"
+    menu_py=$plugins"/menu.py"
+
+    line1="import nukeVinaRender"
+    line2="nuke.menu("Nuke")"
+    line3="menu_bar.addCommand('J_Script/SendToVinaRender...', 'nukeVinaRender.VinaRenderSend()', 'Ctrl+r')"
+
+    if [ $1 == install ]; then
+        # copia modulos al directorio de plugins de nuke
+        cp $dst"/modules/nuke/util.py" $plugins
+        cp $dst"/modules/nuke/nukeVinaRender.py" $plugins
+        # ------------------------------
+
+        # Agrega accesos directo a vinarender
+        echo $line1 >>$menu_py
+        echo $line2 >>$menu_py
+        echo $line3 >>$menu_py
+        # ---------------
+    fi
+    if [ $1 == uninstall ]; then
+        # borra los modulos de nuke
+        rm $plugins"/util.py"
+        rm $plugins"/nukeVinaRender.py"
+        # -----------------
+        # borra todas las lineas de vinarender
+        sed -i "/$line1/d" $menu_py
+        sed -i "/$line2/d" $menu_py
+        sed -i "/SendToVinaRender/d" $menu_py
+        # -----------------------
+    fi
+}
+
 install() {
     # Instalacion de Dependencias
     yum -y install epel-release http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
@@ -117,6 +151,8 @@ install() {
     Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
     Type=Application" >"/usr/share/applications/VinaRender.desktop"
     # ---------------
+
+    nuke install
 }
 
 uninstall() {
@@ -131,6 +167,8 @@ uninstall() {
 
     rm "/usr/share/applications/VinaRender.desktop"
     rm -rf $dst
+
+    nuke uninstall
 }
 
 if [ $1 == install ]; then

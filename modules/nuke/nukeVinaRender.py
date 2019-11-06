@@ -1,24 +1,11 @@
+from util import *
 import sys
 from sys import platform
 import nuke
 
-# detecta el sistema operativo
-if platform == "win32":
-    system = "Windows"
-    path = "C:/vinarender"
-    bin = path + "/bin/win"
-elif platform == "darwin":
-    system = "Mac"
-    path = "/usr/local/vinarender"
-    bin = path + "/bin/mac"
-else:
-    system = "Linux"
-    path = "/opt/vinarender"
-    bin = path + "/bin/linux"
-# -------------------------------------------------------
+system = "Linux"
+path = fread("/etc/vinarender")
 
-sys.path.insert(0, path + '/modules')
-from util import *
 
 class VinaRenderSend():
     def __init__(self):
@@ -48,7 +35,7 @@ class VinaRenderSend():
         # ------------------------------------------------
 
         # Crea Panel y botones
-        p = nuke.Panel('Send To Backburner')
+        p = nuke.Panel('VinaRender')
         p.addSingleLineInput('Job Name', scriptName)
 
         p.addSingleLineInput('Frame Range', writeFirstFrame+"-"+writeLastFrame)
@@ -58,7 +45,8 @@ class VinaRenderSend():
             'Priority', "Normal Very\\ Low Low High Very\\ High")
 
         # posiciona los grupos con Nuke Name al inicio
-        preferences = jread(path+"/etc/preferences_s.json")
+        preferences = jread(path + "/etc/preferences_s.json")
+
         nukeGroups = ["NUKE", "nuke", "Nuke"]
         serverGroups = []
         for s in preferences["groups"]:
@@ -174,7 +162,7 @@ class VinaRenderSend():
             serverGroup = serverGroup.replace("none", "None")
             # ---------------------------------
 
-            cmd = (bin + "/submit.exe " +
+            cmd = (path + "/bin/submit " +
                    "-jobName " + jobName +
                    " -server " + "none" +
                    " -serverGroup " + serverGroup +
@@ -186,7 +174,7 @@ class VinaRenderSend():
                    " -comment " + "Nuke Render" +
                    " -software " + "Nuke" +
                    " -project " + '"' + script_save + '"' +
-                   " -extra " + writFile + 
+                   " -extra " + writFile +
                    " -system " + system +
                    " -instances " + instances +
                    " -render " + render)
