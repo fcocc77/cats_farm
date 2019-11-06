@@ -54,7 +54,6 @@ void concat(QString folder, QString format = "mov")
 
 	// borra carpeta de los videos separados
 	if (os::isfile(movie))
-		;
-	// os::remove(folder);
+		os::remove(folder);
 	//---------------------------------------
 }
