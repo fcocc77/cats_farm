@@ -17,20 +17,9 @@
 
 int main()
 {
-
-    // Mata las pid a partir del nombre "d" (es el after effect render)
-    QStringList ps = os::sh("ps cax").split("\n");
-    for (QString line : ps)
-    {
-        QString lastWord = line.split(" ").back();
-        if (lastWord == "d")
-        {
-            int pid = line.split(" ")[0].toInt();
-            os::kill(pid);
-        }
-    }
-    // -------------------------------------------
-
+    short hola = 40000;
+    print(QString::number(hola));
+    // qDebug() << "ok";
 
 
 }

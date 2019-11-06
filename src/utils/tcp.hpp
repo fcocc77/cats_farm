@@ -31,7 +31,11 @@ public:
 	QTcpSocket *qsocket;
 	int socketDescriptor;
 
-	tcp_socket(int _socketDescriptor, int _port, QString (T::*_func)(QString), T *__class)
+	tcp_socket(
+		int _socketDescriptor,
+		int _port,
+		QString (T::*_func)(QString),
+		T *__class)
 	{
 		port = _port;
 		func = _func;
@@ -120,7 +124,10 @@ public:
 	QTcpServer *qserver;
 
 	// Constructor para servidor ( siempre esta en loop y con qthread )
-	tcp_server(int _port, QString (T::*_func)(QString), T *__class) : QTcpServer(__class)
+	tcp_server(
+		int _port,
+		QString (T::*_func)(QString),
+		T *__class) : QTcpServer(__class)
 	{
 		port = _port;
 		func = _func;
@@ -354,7 +361,13 @@ void tcpServer(int _port, QString (T::*_func)(QString), T *_class)
 }
 
 template <class T>
-tcp_client_widget<T> *tcpClient(QString _host, int _port, QString (T::*_func)(QString, QJsonObject), T *_class, bool widget = false, QJsonObject extra = {})
+tcp_client_widget<T> *tcpClient(
+	QString _host,
+	int _port,
+	QString (T::*_func)(QString, QJsonObject),
+	T *_class,
+	bool widget = false,
+	QJsonObject extra = {})
 {
 	// inicia thread de tcp socket
 	tcp_client *_client = new tcp_client(_host, _port, _class);
