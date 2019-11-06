@@ -30,7 +30,7 @@ nuke() {
     menu_py=$plugins"/menu.py"
 
     line1="import nukeVinaRender"
-    line2="nuke.menu("Nuke")"
+    line2="menu_bar = nuke.menu('Nuke')"
     line3="menu_bar.addCommand('J_Script/SendToVinaRender...', 'nukeVinaRender.VinaRenderSend()', 'Ctrl+r')"
 
     if [ $1 == install ]; then

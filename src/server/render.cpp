@@ -40,7 +40,7 @@ QString render_class::render_task(QJsonArray recv)
 	extra[ins] = recv[6].toString();
 	renderNode[ins] = recv[7].toString();
 	//------------------------------------------------------------
-	
+
 	// si alguna de las instancias ya esta en render no renderea
 	bool renderNow = false;
 
@@ -223,6 +223,7 @@ void render_class::suspend_vbox()
 
 bool render_class::nuke(int ins)
 {
+	mutex->lock();
 	// Ecuentra ruta del write y la remplaza por la ruta correcta segun OS
 	QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 	auto correctPath = find_correct_path(system_path, os::dirname(extra[ins]));
@@ -241,6 +242,7 @@ bool render_class::nuke(int ins)
 
 	// crea la carpeta donde se renderearan los archivos
 	QString dirFile = extra[ins].replace(correctPath[0], correctPath[1]);
+	mutex->unlock();
 
 	QString dirRender = os::dirname(dirFile);
 	QString fileRender = os::basename(dirFile);
@@ -249,13 +251,13 @@ bool render_class::nuke(int ins)
 	fileRender = fileRender.split(".")[0];
 	QString pad = fileRender.split("_").last();
 
-	QString folder;
+	QString folder_name;
 	if (ext == "mov")
-		folder = fileRender;
+		folder_name = fileRender;
 	else
-		folder = fileRender.replace("_" + pad, "");
+		folder_name = fileRender.replace("_" + pad, "");
 
-	QString folderRender = dirRender + "/" + folder;
+	QString folderRender = dirRender + "/" + folder_name;
 
 	if (not os::isdir(folderRender))
 	{
@@ -270,7 +272,7 @@ bool render_class::nuke(int ins)
 	if (not nuke_r)
 		xi = "-xi";
 	// ----------------------------------
-
+	mutex->lock();
 	QString args = "-f " + xi + " -X " + renderNode[ins] + " \"" + tmpProj + "\" " + QString::number(first_frame[ins]) + "-" + QString::number(last_frame[ins]);
 	// remapeo rutas de Nuke
 	QString nukeRemap = " -remap \"" + src_path[ins] + "," + dst_path[ins] + "\" ";
@@ -286,6 +288,7 @@ bool render_class::nuke(int ins)
 		if (os::isfile(exe))
 			break;
 	}
+	mutex->unlock();
 	//-----------------------------------------------
 
 	QString cmd = '"' + exe + '"' + args;
@@ -313,7 +316,9 @@ bool render_class::nuke(int ins)
 	os::remove(tmpProj);
 	// -----------------------------
 
+	mutex->lock();
 	int total_frame = last_frame[ins] - first_frame[ins] + 1;
+	mutex->unlock();
 
 	if (log.count("Frame ") == total_frame)
 		return true;

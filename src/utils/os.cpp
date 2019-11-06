@@ -389,8 +389,7 @@ QString dirname(QString file)
 
 QString basename(QString file)
 {
-	QFileInfo _file(file);
-	return _file.baseName();
+	return file.split("/").last();
 }
 
 bool isfile(QString file)
