@@ -45,7 +45,8 @@ void servers_class::properties()
 
     ui->servers->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
     ui->servers->setIndentation(0);                                      // elimina el margen del principio
-    ui->servers->setAlternatingRowColors(true);                          // item con color alternativos
+    ui->servers->setAlternatingRowColors(true);      
+    ui->servers->setFocusPolicy(Qt::NoFocus);                    // item con color alternativos
 
     ui->servers->setGeometry(1000, 1000, 1000, 1000);
 

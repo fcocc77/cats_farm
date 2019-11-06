@@ -26,7 +26,8 @@ void tasks_class::properties()
 {
     ui->tasks->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
     ui->tasks->setAlternatingRowColors(true);                          // item con color alternativos
-    ui->tasks->setIndentation(0);                                      // elimina el margen del principio
+    ui->tasks->setIndentation(0);           
+    ui->tasks->setFocusPolicy(Qt::NoFocus);                           // elimina el margen del principio
 
     ui->tasks->setColumnWidth(0, 100);
     ui->tasks->setColumnWidth(1, 100);

@@ -52,6 +52,7 @@ void jobs_class::properties()
     jobs->setContextMenuPolicy(Qt::CustomContextMenu);
 
     jobs->setSortingEnabled(true);
+    jobs->setFocusPolicy(Qt::NoFocus);
     jobs->sortByColumn(5, Qt::AscendingOrder);
 }
 
