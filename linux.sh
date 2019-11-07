@@ -11,8 +11,8 @@ dst="/opt/vinarender"
 ip="192.168.1.77"
 # ------------------
 # PORTs
-manager_port=7000
-server_port=7001
+manager_port=771
+server_port=772
 # -----------------
 manager_start=true
 server_start=true

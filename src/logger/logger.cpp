@@ -2,6 +2,8 @@
 
 logger::logger()
 {
+    int port = jread(path + "/etc/settings.json")["manager"].toObject()["port"].toInt();
+
     // el json zones.json es generado al iniciar el servior de django,
     // esta informacion esta declarada en general.py render_zones.
     zones = jread(path + "/etc/zones.json");
@@ -9,7 +11,7 @@ logger::logger()
     for (QString key : zones.keys())
     {
         QString ip = zones[key].toString();
-        tcpClient(ip, 7000, &logger::get, this, false, {{"zone", key}});
+        tcpClient(ip, port, &logger::get, this, false, {{"zone", key}});
     }
 
     // guarda un json cada 1 segundo
