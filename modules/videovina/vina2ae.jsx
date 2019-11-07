@@ -233,17 +233,21 @@ function photosSorted() {
 
 function photosLoads(index) {
     var photo = photos[index].name;
+    var basename = fileBreak(photo).base;
 
-    //elimina la foto si ya esta importada
-    if (getItem(photo))
-        getItem(photo).remove();
+    // establece nombre y ruta, dependiendo si es proxy o no 
+    if (project.proxy)
+        var name = basename + "_proxy.jpg";
+    else
+        var name = basename + ".jpg";
+    var file = path + "/footage/" + name;
     // ---------------------------------
 
-    var file = path + "/footage/" + photo;
-    if (project.proxy) {
-        _file = fileBreak(file);
-        file = _file.base + "_proxy." + _file.ext;
-    }
+    //elimina la foto si ya esta importada
+    if (getItem(name))
+        getItem(name).remove();
+    // ---------------------------------
+
     // Carga las photos al proyecto after effect
     var imgComp = getComp("Image " + index);
     var io = new ImportOptions(File(file));

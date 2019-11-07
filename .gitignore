@@ -28,7 +28,11 @@ qt/*/*tar.gz
 *.swo
 modules/ae/*.gz
 node_modules
-
+# os
+os/linux/init/vserver_pid
+os/linux/init/vmanager_pid
+os/linux/init/logger_pid
+# ------------------
 # archivos de etc
 etc/*.json*
 !etc/preferences.json
