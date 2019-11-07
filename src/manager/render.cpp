@@ -66,8 +66,7 @@ void manager::render_job()
 						{
 							if (job->status == "Queue" or job->status == "Rendering..." or job->status == "Failed")
 							{
-
-								// Veta  los servers que fallaron mas de dos veces
+								// Veta los servers que fallaron mas de dos veces
 								int vetoed_times = 0;
 								for (auto s : job->vetoed_servers)
 								{
@@ -79,7 +78,7 @@ void manager::render_job()
 								//------------------------------------------
 
 								if (not(vetoed_times >= 3))
-								{ // este numero es la cantidad de veces que puede fallar el servidor antes que de bloquee
+								{ // este numero es la cantidad de veces que puede fallar el servidor antes que se bloquee
 
 									if (job->waiting_task)
 									{
