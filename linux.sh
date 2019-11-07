@@ -112,7 +112,7 @@ install() {
     systemctl daemon-reload
     # -----------------------------
 
-    # los servicios son muy estrictos asi esto corrige el servicio si de modifico mal
+    # los servicios son muy estrictos asi que esto corrige el servicio, si este se modifico mal
     sed -i -e 's/\r//g' $path/os/linux/init/service.sh
     # --------------------------------------------------------------------------------
 

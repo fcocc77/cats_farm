@@ -46,11 +46,11 @@ void settings_class::ok()
 	path_write();
 
 	QString hosts = ui->settings_ip->text();
-	QStringList ips = hosts.split(",");
-	// guarda lista de ips de string a un array json
+
+	// guarda lista de ips de QString a un json, y borra los espacios
 	QJsonArray json_hosts;
-	for (QString host : ips)
-		json_hosts.push_back(host);
+	for (QString host : hosts.split(","))
+		json_hosts.push_back(host.replace(" ", ""));
 
 	shared->settings["hosts"] = json_hosts;
 	// -----------------------------
@@ -58,8 +58,8 @@ void settings_class::ok()
 
 	// agrega las ips al combobox de zonas
 	ui->tool_zone->clear();
-	for (QString ip : ips)
-		ui->tool_zone->addItem(ip);
+	for (QJsonValue ip : json_hosts)
+		ui->tool_zone->addItem(ip.toString());
 	// -------------------------
 }
 
@@ -101,7 +101,7 @@ void settings_class::path_read()
 		QString hosts;
 		for (QJsonValue host : shared->settings["hosts"].toArray())
 			hosts += host.toString() + ", ";
-		hosts.left(hosts.length() - 2);
+		hosts = hosts.left(hosts.length() - 2);
 
 		ui->settings_ip->setText(hosts);
 		// ------------------------------
@@ -145,11 +145,9 @@ void settings_class::path_write()
 
 	QJsonArray ae;
 	for (auto l : ui->settings_ae->toPlainText().split("\n"))
-	{
 		ae.push_back(l);
-	}
+
 	paths["ae"] = ae;
-	print(QString::number(ae.size()));
 
 	tcpClient(shared->manager_host, shared->manager_port, jats({3, {{"preferences", {{"write", paths}}}}}));
 }
