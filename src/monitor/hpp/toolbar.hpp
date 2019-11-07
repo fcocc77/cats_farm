@@ -6,6 +6,7 @@
 #include "global.hpp"
 #include "jobs.hpp"
 #include "update.hpp"
+#include "shared_variables.hpp"
 
 class toolbar_class : public QObject
 {
@@ -14,6 +15,7 @@ private:
     global_class *global;
     jobs_class *jobs;
     update_class *update;
+    shared_variables *shared;
 
     void connections();
     void property();
@@ -24,7 +26,8 @@ public:
         Ui::MainWindow *_ui,
         global_class *_global,
         jobs_class *_jobs,
-        update_class *_update);
+        update_class *_update,
+        shared_variables *_shared);
     ~toolbar_class();
 };
 

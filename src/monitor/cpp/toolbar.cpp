@@ -4,12 +4,14 @@ toolbar_class::toolbar_class(
 	Ui::MainWindow *_ui,
 	global_class *_global,
 	jobs_class *_jobs,
-	update_class *_update)
+	update_class *_update,
+	shared_variables *_shared)
 {
 	ui = _ui;
 	global = _global;
 	jobs = _jobs;
 	update = _update;
+	shared = _shared;
 	property();
 	load_zones();
 	connections();
@@ -44,12 +46,17 @@ void toolbar_class::connections()
 
 void toolbar_class::load_zones()
 {
-	QStringList zones = fread(path + "/etc/manager_host").split(",");
+	QJsonArray zones = shared->settings["hosts"].toArray();
+	QString manager_ip = shared->settings["manager"].toObject()["ip"].toString();
+
 	// agrega todas las zonas guardadas al combobox
-	for (QString zone : zones)
+	for (QJsonValue value : zones)
+	{
+		QString zone = value.toString();
 		ui->tool_zone->addItem(zone);
+	}
 	// ---------------------------
 	// establece por defecto la primera zona
-	update->update(zones[0]);
+	update->update(manager_ip);
 	// ----------------------
 }

@@ -198,7 +198,7 @@ void jobs_class::show_log()
                 }
 
                 QJsonArray send = {_host, QJsonArray({1, failed})};
-                QString result = tcpClient(shared->manager_host, 7000, jats({5, send}));
+                QString result = tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
 
                 log->code_editor->setPlainText(_name + " Log:\n\n" + result);
                 break;
@@ -225,7 +225,7 @@ void jobs_class::modify()
 
         QJsonArray send = {QJsonArray({job_name, "options", "read"})};
         send = {"jobOptions", send};
-        QString recv = tcpClient(shared->manager_host, 7000, jats({3, send}));
+        QString recv = tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
         QJsonArray pks = jafs(recv);
         //-----------------------------------------
 
@@ -309,7 +309,7 @@ void jobs_class::options_ok()
     reply = QMessageBox::question(monitor, "Job Options", ask, QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
-        tcpClient(shared->manager_host, 7000, jats({3, pks}));
+        tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
         ui->options->hide();
     }
 }
@@ -356,7 +356,7 @@ void jobs_class::delete_start(QString action)
 
     pks = {"jobAction", pks};
 
-    tcpClient(shared->manager_host, 7000, jats({3, pks}));
+    tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
 }
 
 void jobs_class::to_action(QString action)
@@ -373,7 +373,7 @@ void jobs_class::to_action(QString action)
     }
     pks = {"jobAction", pks};
 
-    tcpClient(shared->manager_host, 7000, jats({3, pks}));
+    tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
 }
 
 void jobs_class::item_delete()

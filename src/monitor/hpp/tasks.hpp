@@ -2,6 +2,7 @@
 #define TASKS_HPP
 
 #include "includes.hpp"
+#include "shared_variables.hpp"
 
 class tasks_class : public QObject
 {
@@ -18,12 +19,13 @@ private:
     void to_action(QString action);
     void connections();
     //-----------------
-    QString manager_host;
+    shared_variables *shared;
 
 public:
     tasks_class(
         Ui::MainWindow *_ui,
-        QMainWindow *_monitor);
+        QMainWindow *_monitor,
+        shared_variables *_shared);
     ~tasks_class();
 
     // Task Action

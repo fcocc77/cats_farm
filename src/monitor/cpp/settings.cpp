@@ -1,9 +1,11 @@
 #include "../hpp/settings.hpp"
 
 settings_class::settings_class(
-	Ui::MainWindow *_ui)
+	Ui::MainWindow *_ui,
+	shared_variables *_shared)
 {
 	ui = _ui;
+	shared = _shared;
 
 	property();
 	connections();
@@ -35,7 +37,7 @@ void settings_class::connections()
 
 void settings_class::update(QString host)
 {
-	manager_host = host;
+	shared->manager_host = host;
 	path_read();
 }
 
@@ -44,9 +46,15 @@ void settings_class::ok()
 	path_write();
 
 	QString hosts = ui->settings_ip->text();
-	fwrite(path + "/etc/manager_host", hosts);
-
 	QStringList ips = hosts.split(",");
+	// guarda lista de ips de string a un array json
+	QJsonArray json_hosts;
+	for (QString host : ips)
+		json_hosts.push_back(host);
+
+	shared->settings["hosts"] = json_hosts;
+	// -----------------------------
+	jwrite(path + "/etc/settings.json", shared->settings);
 
 	// agrega las ips al combobox de zonas
 	ui->tool_zone->clear();
@@ -58,7 +66,7 @@ void settings_class::ok()
 void settings_class::path_read()
 {
 	QJsonArray send = {"preferences", QJsonArray({"read", "none"})};
-	QString recv = tcpClient(manager_host, 7000, jats({3, send}));
+	QString recv = tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
 	QJsonObject preferences = jofs(recv);
 
 	auto array_to_string = [this](QJsonArray array) {
@@ -89,8 +97,14 @@ void settings_class::path_read()
 		ui->settings_fusion->setPlainText(fusion);
 		ui->settings_ae->setPlainText(ae);
 
-		QString host = fread(path + "/etc/manager_host");
-		ui->settings_ip->setText(host);
+		// setea los hosts guardados
+		QString hosts;
+		for (QJsonValue host : shared->settings["hosts"].toArray())
+			hosts += host.toString() + ", ";
+		hosts.left(hosts.length() - 2);
+
+		ui->settings_ip->setText(hosts);
+		// ------------------------------
 	}
 }
 
@@ -137,5 +151,5 @@ void settings_class::path_write()
 	paths["ae"] = ae;
 	print(QString::number(ae.size()));
 
-	tcpClient(manager_host, 7000, jats({3, {{"preferences", {{"write", paths}}}}}));
+	tcpClient(shared->manager_host, shared->manager_port, jats({3, {{"preferences", {{"write", paths}}}}}));
 }

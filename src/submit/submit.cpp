@@ -50,19 +50,13 @@ void submit::init(int argc, char const *argv[])
 	QJsonArray info = {jobName, server, serverGroup, firstFrame.toInt(), lastFrame.toInt(), taskSize.toInt(), priority.toInt(),
 					   _suspend, comment, software, project, extra, system, instances.toInt(), render};
 
-	QString _path = os::dirname(os::dirname(os::dirname(argv[0])));
-	QString host;
+	QJsonObject settings = jread(path + "/etc/settings.json");
+	int port = settings["manager"].toObject()["port"].toInt();
+	QString host = settings["manager"].toObject()["host"].toString();
 
-	if (ip.isEmpty())
-	{
-		QStringList manager_hosts = fread(path + "/etc/manager_host").split(",");
-		host = manager_hosts[0];
-	}
-	else
-	{
+	if (!ip.isEmpty())
 		host = ip;
-	}
 
 	if (argc > 2)
-		tcpClient(host, 7000, jats({4, info}));
+		tcpClient(host, port, jats({4, info}));
 }

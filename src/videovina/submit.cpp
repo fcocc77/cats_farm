@@ -1,4 +1,4 @@
-#include "submit.h"
+#include "submit.hpp"
 
 void submit::init(int argc, char const *argv[])
 {
@@ -12,9 +12,11 @@ void submit::init(int argc, char const *argv[])
 	proxy = argv[6];
 
 	QJsonArray info = {user, user_id, type, name, proxy};
+	QJsonObject settings = jread(path + "/etc/settings.json");
+	int port = settings["manager"].toObject()["port"].toInt();
 
 	if (argc > 2)
-		tcpClient(ip, 7000, jats({7, info}));
+		tcpClient(ip, port, jats({7, info}));
 	else
 		qDebug() << "Without arguments.";
 }

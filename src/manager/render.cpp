@@ -169,7 +169,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			// Envia a renderar la tarea al servidor que le corresponde
 			QJsonArray pks = {project, software, instance->index, first_frame, last_frame, jobSystem, extra, render};
 
-			QString result = tcpClient(server->host, 7001, jats({0, pks}));
+			QString result = tcpClient(server->host, server_port, jats({0, pks}));
 
 			if (not(result == "ok"))
 			{

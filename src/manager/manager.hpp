@@ -32,6 +32,8 @@ public:
 	QJsonObject preferences = jread(path + "/etc/preferences.json");
 	bool reset_render;
 	QMutex mutex;
+	QJsonObject settings;
+	int server_port;
 
 	// rutas generales para videovina
 	QJsonObject env_videovina = jread(path + "/etc/videovina.json");

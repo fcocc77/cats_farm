@@ -2,13 +2,17 @@
 
 server::server()
 {
-	QStringList manager_hosts = fread(path + "/etc/manager_host").split(",");
-	QString host = manager_hosts[0];
-	
 	render = new render_class(&mutex);
 
-	tcpClient(host, 7000, &server::send_resources, this);
-	tcpServer(7001, &server::recieveManager, this);
+	// obtiene los puertos del manager y server
+	QJsonObject settings = jread(path + "/etc/settings.json");
+	QString manager_host = settings["manager"].toObject()["ip"].toString();
+	int manager_port = settings["manager"].toObject()["port"].toInt();
+	int server_port = settings["server"].toObject()["port"].toInt();
+	// -------------------------------
+
+	tcpClient(manager_host, manager_port, &server::send_resources, this);
+	tcpServer(server_port, &server::recieveManager, this);
 }
 
 QString server::send_resources(QString recv, QJsonObject extra)
@@ -92,7 +96,7 @@ QString server::recieveManager(QString _recv)
 	}
 
 	if (input == 3)
-	{	
+	{
 		mutex.lock();
 		for (auto i : recv)
 		{
@@ -104,7 +108,7 @@ QString server::recieveManager(QString _recv)
 			}
 		}
 		mutex.unlock();
-		
+
 		// Mata las pid a partir del nombre "d" (es el after effect render de wine)
 		QStringList ps = os::sh("ps cax").split("\n");
 		for (QString line : ps)

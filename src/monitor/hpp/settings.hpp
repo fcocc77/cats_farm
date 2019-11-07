@@ -13,11 +13,12 @@ private:
     void path_write();
     void ok();
 
-    QString manager_host;
+    shared_variables *shared;
 
 public:
     settings_class(
-        Ui::MainWindow *_ui);
+        Ui::MainWindow *_ui,
+        shared_variables *_shared);
     ~settings_class();
     void update(QString host);
 };

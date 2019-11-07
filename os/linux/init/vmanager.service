@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/bin/sh -c "{{path}}/os/linux/init/service.sh start vmanager 7000"
-ExecStop=/bin/sh -c "{{path}}/os/linux/init/service.sh stop vmanager 7000"
+ExecStart=/bin/sh -c "{{path}}/os/linux/init/service.sh start vmanager {{port}}"
+ExecStop=/bin/sh -c "{{path}}/os/linux/init/service.sh stop vmanager {{port}}"
 Restart=always
 TimeoutStartSec=0
 

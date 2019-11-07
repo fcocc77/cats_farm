@@ -2,11 +2,12 @@
 
 tasks_class::tasks_class(
     Ui::MainWindow *_ui,
-    QMainWindow *_monitor)
+    QMainWindow *_monitor,
+    shared_variables *_shared)
 {
     ui = _ui;
     monitor = _monitor;
-    manager_host = fread(path + "/etc/manager_host");
+    shared = _shared;
 
     // Task Action
     suspend_action = new QAction("Suspend");
@@ -128,5 +129,5 @@ void tasks_class::to_action(QString action)
 
     pks = {"taskAction", pks};
 
-    tcpClient(manager_host, 7000, jats({3, pks}));
+    tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
 }

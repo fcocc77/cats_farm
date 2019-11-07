@@ -77,7 +77,7 @@ void manager::kill_tasks(job_struct *job, bool _delete)
 	for (auto server : servers)
 	{
 		if (active_server.contains(server->name))
-			tcpClient(server->host, 7001, jats({3, kill_ins}));
+			tcpClient(server->host, server_port, jats({3, kill_ins}));
 	}
 }
 
@@ -324,7 +324,7 @@ void manager::serverSetState(server_struct *server, bool state)
 			kill_ins.push_back(i);
 		}
 
-		tcpClient(server->host, 7001, jats({3, kill_ins}));
+		tcpClient(server->host, server_port, jats({3, kill_ins}));
 	}
 }
 

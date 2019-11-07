@@ -10,6 +10,10 @@ dst="/opt/vinarender"
 # IP del manager
 ip="192.168.1.77"
 # ------------------
+# PORTs
+manager_port=7000
+server_port=7001
+# -----------------
 manager_start=true
 server_start=true
 logger_start=true
@@ -89,16 +93,21 @@ install() {
     compile logger logger
     # ----------------------
 
-    echo $ip >$path"/etc/manager_host"
-
     # Creacion de servicios
-    cp $path/os/linux/init/vserver.service /etc/systemd/system
-    cp $path/os/linux/init/vmanager.service /etc/systemd/system
-    cp $path/os/linux/init/vlogger.service /etc/systemd/system
+    vserver="/etc/systemd/system/vserver.service"
+    vmanager="/etc/systemd/system/vmanager.service"
+    vlogger="/etc/systemd/system/vlogger.service"
 
-    sed -i "s|{{path}}|$dst|g" /etc/systemd/system/vserver.service
-    sed -i "s|{{path}}|$dst|g" /etc/systemd/system/vmanager.service
-    sed -i "s|{{path}}|$dst|g" /etc/systemd/system/vlogger.service
+    cp $path/os/linux/init/vserver.service $vserver
+    cp $path/os/linux/init/vmanager.service $vmanager
+    cp $path/os/linux/init/vlogger.service $vlogger
+
+    sed -i "s|{{port}}|$server_port|g" $vserver
+    sed -i "s|{{port}}|$manager_port|g" $vmanager
+
+    for service in $vserver $vmanager $vlogger; do
+        sed -i "s|{{path}}|$dst|g" $service
+    done
 
     systemctl daemon-reload
     # -----------------------------
@@ -124,6 +133,13 @@ install() {
     # guarda ruta de instalacion en etc del sistema operativo
     echo $dst >/etc/vinarender
     # -----------------------
+
+    # guarda ip del manager y puertos en el settings
+    settings=$dst"/etc/settings.json"
+    sed -i "s|{{server_port}}|$server_port|g" $settings
+    sed -i "s|{{manager_port}}|$manager_port|g" $settings
+    sed -i "s|{{manager_ip}}|$ip|g" $settings
+    # -------------------------------------------
 
     chmod 755 -R $dst
 
