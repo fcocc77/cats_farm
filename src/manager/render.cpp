@@ -88,7 +88,7 @@ void manager::render_job()
 										if (not active)
 										{
 											instance->status = 1;
-											threading(&manager::render_task, this, server, instance, job); // this es que es un hilo dentro de una classe
+											threading(&manager::render_task, this, server, instance, job);
 										}
 									}
 								}
@@ -132,31 +132,25 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 	// renderea las tareas por cada trabajo, solo si status es igual a waiting
 	for (auto task : job->task)
 	{
-		auto first_frame = task->first_frame;
-		auto last_frame = task->last_frame;
-
-		auto status = task->status;
-
 		mutex.lock();
+		int first_frame = task->first_frame;
+		int last_frame = task->last_frame;
+		QString status = task->status;
+
 		// pone en la instancia que job se esta rendereando
 		instance->job_task = job->name + " : " + task->name;
 		//-------------------------------------------------
-		mutex.unlock();
 
-		if (instance->reset)
+		if (instance->reset || server->status == "absent")
 		{
+			mutex.unlock();
 			break;
 		}
-		//----------------------------------------
-		if (server->status == "absent")
-		{
-			break;
-		}
+
 		//-----------------------------------------
 		// envia la tarea al servidor para que la procese, si es que el status es waiting
 		if (status == "waiting")
 		{
-			mutex.lock();
 			//pone en activo la tarea
 			task->status = "active";
 			job->active_task++;
@@ -248,6 +242,10 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			{
 				Completed = true;
 			}
+			mutex.unlock();
+		}
+		else
+		{
 			mutex.unlock();
 		}
 	}
