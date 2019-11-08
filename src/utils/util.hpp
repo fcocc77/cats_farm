@@ -29,12 +29,31 @@ const QString currentDateTime(int num);
 const QString secToTime(float sec);
 QJsonObject jread(QString path);
 void jwrite(QString path, QJsonObject data);
-void print(QString input);
 QString getPath();
 QString jats(QJsonArray data);  // jats =  json array to string
 QString jots(QJsonObject data); // jots =  json object to string
 QJsonObject jofs(QString data); // jofs =  json object from string
 QJsonArray jafs(QString data);  // jafs =  json array from string
+
+// print para 1, 2 y 3 argumentos
+template <class T>
+void print(T input)
+{
+    qDebug().nospace().noquote() << input;
+}
+
+template <class T1, class T2>
+void print(T1 input1, T2 input2)
+{
+    qDebug().nospace().noquote() << input1 << " " << input2;
+}
+
+template <class T1, class T2, class T3>
+void print(T1 input1, T2 input2, T3 input3)
+{
+    qDebug().nospace().noquote() << input1 << " " << input2 << " " << input3;
+}
+// ----------------------------
 
 const QString path = getPath();
 

@@ -187,12 +187,6 @@ const QString currentDateTime(int num)
 	return buf;
 }
 
-void print(QString input)
-{
-	os::system("echo " + input);
-	//qDebug().nospace().noquote() << input;
-}
-
 QString getPath()
 {
 	// este archivo es generado en la instalacion, 
