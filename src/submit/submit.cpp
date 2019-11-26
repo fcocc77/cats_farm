@@ -52,8 +52,7 @@ void submit::init(int argc, char const *argv[])
 
 	QJsonObject settings = jread(path + "/etc/settings.json");
 	int port = settings["manager"].toObject()["port"].toInt();
-	QString host = settings["manager"].toObject()["host"].toString();
-
+	QString host = settings["current_manager"].toString();
 	if (!ip.isEmpty())
 		host = ip;
 
