@@ -2,9 +2,8 @@ path=$(cat /etc/vinarender)
 name=$2
 port=$3
 
-pid_file=$path'/os/linux/init/'$name'_pid'
 log_file=$path'/log/$name crash - '$(date)'.log'
-debug=$(cat $path'/etc/debug')
+debug=false
 
 run() {
 	# mata el pid a partir del puerto de vinarender
@@ -20,21 +19,21 @@ run() {
 }
 
 start() {
-	pid=$(cat $pid_file)
+	pscax=$(ps cax | grep $name)
 
-	if ! kill -0 $pid >/dev/null 2>&1; then
+	if [[ $pscax != *"$name"* ]]; then
 		echo "VinaRender $name has started."
 		export DISPLAY=:1 && export QT_QPA_PLATFORM=offscreen && cd $path'/bin' && run &>/dev/null &
-		echo $! >$pid_file
 	else
 		echo "VinaRender $name is running now."
 	fi
 }
 
 stop() {
-	cpid=$(cat $pid_file)
-	if kill -0 $cpid >/dev/null 2>&1; then
-		fuser -k $port/tcp
+	pscax=$(ps cax | grep $name)
+
+	if [[ $pscax == *"$name"* ]]; then
+		pkill -9 $name
 		echo "VinaRender $name has stopped."
 	else
 		echo "Is not running."

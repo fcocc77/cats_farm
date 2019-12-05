@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET = utils
-CONFIG += console c++11 debug
+CONFIG += console c++11
 
 QT += core gui multimedia widgets 
 CONFIG -= app_bundle
