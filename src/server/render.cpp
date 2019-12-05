@@ -595,7 +595,7 @@ bool render_class::ae(int ins)
 	QString tmp = extra[ins] + "_" + nameNumber + "_tmp.mov";
 	os::remove(output); // borra el mov antes del render
 
-	QString args = "\"" + renderNode[ins] + "\" \"" + project[ins] + "\" \"" + output + "\" \"" + log_file + "\" " + firstFrame + " " + lastFrame;
+	QString args = "\"" + renderNode[ins] + "\" \"" + project[ins] + "\" \"" + output + "\" \"" + log_file + "\" " + firstFrame + " " + lastFrame + " " + QString::number(ins);
 
 	args = args.replace(src_path[ins], dst_path[ins]);
 
