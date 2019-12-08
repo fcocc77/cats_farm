@@ -26,6 +26,8 @@ servers_class::servers_class(
     server_reactive_action = new QAction("Enable");
     server_max_instances_action = new QAction("Max Instances");
     server_free_ram_action = new QAction("Free Ram");
+    server_turn_on_action = new QAction("Turn ON");
+    server_turn_off_action = new QAction("Turn OFF");
     server_ssh_action = new QAction("SSH");
     server_show_log = new QAction("Show Log");
     server_vnc_action = new QAction("VNC");
@@ -45,8 +47,8 @@ void servers_class::properties()
 
     ui->servers->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
     ui->servers->setIndentation(0);                                      // elimina el margen del principio
-    ui->servers->setAlternatingRowColors(true);      
-    ui->servers->setFocusPolicy(Qt::NoFocus);                    // item con color alternativos
+    ui->servers->setAlternatingRowColors(true);
+    ui->servers->setFocusPolicy(Qt::NoFocus); // item con color alternativos
 
     ui->servers->setGeometry(1000, 1000, 1000, 1000);
 
@@ -177,6 +179,16 @@ void servers_class::connections()
     connect(server_free_ram_action, &QAction::triggered, this, [this]() {
         send_to_vserver("freeram", "none");
     });
+
+    connect(server_turn_on_action, &QAction::triggered, this, &servers_class::turn_on);
+    connect(server_turn_off_action, &QAction::triggered, this, [this]() {
+        QString ask = "Are you sure to want turn off this server?";
+        QString tile = "Server OFF";
+        QString action = "off";
+
+        message(&servers_class::send_to_vserver, action, ask, tile, "None", this);
+    });
+
     connect(server_ssh_action, &QAction::triggered, this, &servers_class::ssh_client);
     connect(server_show_log, &QAction::triggered, this, &servers_class::to_log);
     server_show_log->setShortcut(QString("Ctrl+L"));
@@ -218,6 +230,8 @@ void servers_class::server_popup()
         //-------------------------------------------------
 
         menu->addAction(server_free_ram_action);
+        menu->addAction(server_turn_on_action);
+        menu->addAction(server_turn_off_action);
         menu->addSeparator();
         menu->addAction(server_ssh_action);
         menu->addAction(server_vnc_action);
@@ -287,6 +301,17 @@ void servers_class::ssh_client()
     os::back(cmd);
 }
 
+void servers_class::turn_on()
+{
+    QList<QTreeWidgetItem *> selected = ui->servers->selectedItems();
+
+    for (auto item : selected)
+    {
+        QString mac = item->text(8);
+        os::sh("ether-wake " + mac);
+    }
+}
+
 void servers_class::vnc_client()
 {
 
@@ -333,13 +358,8 @@ void servers_class::message(
     }
 }
 
-void servers_class::message_action()
-{
-}
-
 QString servers_class::to_action(QString action, QString info)
 {
-
     QJsonArray pks;
     auto selected = ui->servers->selectedItems();
     for (auto item : selected)
@@ -357,9 +377,8 @@ QString servers_class::to_action(QString action, QString info)
     return recv;
 }
 
-void servers_class::send_to_vserver(QString action, QString info)
+QString servers_class::send_to_vserver(QString action, QString info)
 {
-
     QList<QTreeWidgetItem *> selected = ui->servers->selectedItems();
 
     for (auto item : selected)
@@ -370,4 +389,5 @@ void servers_class::send_to_vserver(QString action, QString info)
         tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
     }
     //-------------------------------------
+    return "none";
 }

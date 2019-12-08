@@ -126,56 +126,15 @@ QString server::recieveManager(QString _recv)
 
 	if (input == 4)
 	{
-
 		QString action = recv[0].toString();
 		QString info = recv[1].toString();
 
 		if (action == "freeram")
-		{
 			if (_linux)
-			{
 				os::sh("sync && sysctl -w vm.drop_caches=3");
-			}
-		}
 
-		if (action == "vmstart")
-		{
-			QString vm;
-			if (_linux)
-			{
-				vm = "'VBoxManage startvm win2016 --type headless'";
-				vm = "runuser -l " + os::user() + " -c " + vm;
-			}
-			else if (_win32)
-			{
-				vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" startvm win2016 --type headless";
-			}
-
-			os::sh(vm);
-		}
-
-		if (action == "vmstop")
-		{
-
-			QString vm;
-			if (_linux)
-			{
-				vm = "'VBoxManage controlvm win2016 savestate'";
-				vm = "runuser -l " + os::user() + " -c " + vm;
-			}
-			else if (_win32)
-			{
-				vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
-			}
-
-			os::sh(vm);
-			fwrite(path + "/log/vbox", "0");
-		}
-
-		if (action == "cpu_limit")
-		{
-			fwrite(path + "/etc/cpu_limit", info);
-		}
+		if (action == "off")
+			os::system("shutdown now");
 	}
 
 	return send;

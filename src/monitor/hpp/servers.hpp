@@ -20,6 +20,7 @@ private:
     void cpu_limit(int limit);
     void to_log();
     void ssh_client();
+    void turn_on();
     void vnc_client();
     void message(
         QString (servers_class::*funtion)(QString, QString),
@@ -28,9 +29,8 @@ private:
         QString tile,
         QString info,
         servers_class *_class);
-    void message_action();
     QString to_action(QString action, QString info);
-    void send_to_vserver(QString action, QString info);
+    QString send_to_vserver(QString action, QString info);
     //----------------
 
     QTreeWidgetItem *firstServerItem;
@@ -58,6 +58,8 @@ public:
     QAction *server_reactive_action;
     QAction *server_max_instances_action;
     QAction *server_free_ram_action;
+    QAction *server_turn_on_action;
+    QAction *server_turn_off_action;
     QAction *server_ssh_action;
     QAction *server_show_log;
     QAction *server_vnc_action;
