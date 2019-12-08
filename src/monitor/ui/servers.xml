@@ -19,7 +19,7 @@
                     {% include 'column.xml' with value="RAM Usage"%}
                     {% include 'column.xml' with value="System"%}
                     {% include 'column.xml' with value="IP"%}
-                    {% include 'column.xml' with value="VM"%}
+                    {% include 'column.xml' with value="MAC Address"%}
                     {% include 'column.xml' with value="Job Rendered"%}
                 </widget>
             </item>

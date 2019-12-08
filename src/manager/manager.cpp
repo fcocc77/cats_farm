@@ -376,7 +376,7 @@ void manager::json_to_struct(QJsonObject info)
 		_server->ram_used = server["ram_used"].toDouble();
 		_server->ram_total = server["ram_total"].toInt();
 		_server->temp = server["temp"].toInt();
-		_server->vbox = server["vbox"].toBool();
+		_server->mac = server["mac"].toString();
 		_server->response_time = server["response_time"].toInt();
 
 		for (QJsonValue i : server["instances"].toArray())
@@ -515,7 +515,7 @@ QJsonObject manager::struct_to_json()
 		s["ram_used"] = server->ram_used;
 		s["ram_total"] = server->ram_total;
 		s["temp"] = server->temp;
-		s["vbox"] = server->vbox;
+		s["mac"] = server->mac;
 		s["response_time"] = server->response_time;
 		// --------------------------------
 		QJsonArray _instances;

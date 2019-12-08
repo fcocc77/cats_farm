@@ -57,19 +57,20 @@ QString server::send_resources(QString recv, QJsonObject extra)
 		usr = true;
 	} //------------------------------------------
 
-	QJsonArray server_info = {os::hostName(),
-							  os::ip(),
-							  os::cpuUsed(),
-							  os::ramPercent(),
-							  os::cpuTemp(),
-							  system,
-							  render->vbox_working(),
-							  os::ramTotal(),
-							  os::ramUsed(),
-							  os::cpuCount(),
-							  "log",
-							  username,
-							  userpass};
+	QJsonArray server_info = {
+		os::hostName(),
+		os::ip(),
+		os::cpuUsed(),
+		os::ramPercent(),
+		os::cpuTemp(),
+		system,
+		os::mac(),
+		os::ramTotal(),
+		os::ramUsed(),
+		os::cpuCount(),
+		"log",
+		username,
+		userpass};
 
 	return jats({1, server_info});
 }

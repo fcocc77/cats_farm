@@ -51,6 +51,7 @@ QStringList listdir(QString folder, bool onlyname = 0);
 QString sh(QString cmd);
 const QString hostName();
 const QString ip();
+const QString mac();
 const QString user();
 void back(QString cmd);
 void rename(QString src, QString dst);

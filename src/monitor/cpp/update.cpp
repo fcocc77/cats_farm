@@ -393,7 +393,7 @@ void update_class::update_servers(QJsonObject recv)
 		int cpu = server["cpu"].toInt();
 		int ram = server["ram"].toInt();
 		int temp = server["temp"].toInt();
-		bool vbox_status = server["vbox"].toBool();
+		QString mac = server["mac"].toString();
 		int ram_total = server["ram_total"].toInt();
 		float ram_used = server["ram_used"].toDouble();
 		int cpu_cores = server["cpu_cores"].toInt();
@@ -494,16 +494,9 @@ void update_class::update_servers(QJsonObject recv)
 					item->setText(4, QString::number(temp));
 					item->setText(6, system);
 					item->setText(7, host);
+					item->setText(8, mac);
 					item->setText(9, instance_job);
 
-					if (vbox_status)
-					{
-						item->setText(8, "VM is running.");
-					}
-					else
-					{
-						item->setText(8, "");
-					}
 					item->setForeground(8, QColor(100, 200, 100));
 
 					item->setTextAlignment(4, Qt::AlignCenter);
@@ -541,30 +534,13 @@ void update_class::update_servers(QJsonObject recv)
 						ramBar->setFormat("%p%  (" + QString::number(ram_used) + " GB / " + QString::number(ram_total) + " GB)");
 
 						if (status == "absent")
-						{
 							item->setForeground(4, QColor(200, 200, 200));
-						}
 						else if (temp < 60)
-						{
 							item->setForeground(4, QColor(100, 200, 100));
-						}
 						else if (temp < 85)
-						{
 							item->setForeground(4, QColor(200, 200, 0));
-						}
 						else
-						{
 							item->setForeground(4, QColor(200, 0, 0));
-						}
-
-						if (vbox_status)
-						{
-							item->setText(8, "VM is running.");
-						}
-						else
-						{
-							item->setText(8, "");
-						}
 
 						if (status == "absent")
 						{

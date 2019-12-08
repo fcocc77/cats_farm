@@ -17,9 +17,6 @@
 
 int main()
 {
-    short hola = 40000;
-    print(QString::number(hola));
-    // qDebug() << "ok";
 
-
+    print(os::mac());
 }

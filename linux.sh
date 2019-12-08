@@ -7,16 +7,16 @@ path="$(
 # ruta de instalacion
 dst="/opt/vinarender"
 # ------------------
-# IP del manager
-ip="192.168.1.77"
+# IPs
+manager_ip="192.168.10.10"
 # ------------------
 # PORTs
 manager_port=771
 server_port=772
 # -----------------
-manager_start=true
+manager_start=false
 server_start=true
-logger_start=true
+logger_start=false
 
 compile() {
     folder=$path/src/$1
@@ -79,6 +79,7 @@ install() {
         lm_sensors \
         gcc-c++ \
         sshpass \
+        net-tools \
         psmisc #fuser
 
     yum -y group install "Development Tools"
@@ -138,7 +139,7 @@ install() {
     settings=$dst"/etc/settings.json"
     sed -i "s|{{server_port}}|$server_port|g" $settings
     sed -i "s|{{manager_port}}|$manager_port|g" $settings
-    sed -i "s|{{manager_ip}}|$ip|g" $settings
+    sed -i "s|{{manager_ip}}|$manager_ip|g" $settings
     # -------------------------------------------
 
     chmod 755 -R $dst

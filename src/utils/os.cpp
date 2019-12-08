@@ -284,7 +284,8 @@ void copy(QString src, QString dst)
 	QFile::copy(src, dst);
 }
 
-void copydir(QString src, QString dst){
+void copydir(QString src, QString dst)
+{
 	os::system("cp -rf " + src + " " + dst);
 }
 
@@ -539,6 +540,28 @@ const QString ip()
 			return _ip;
 		i++;
 	}
+	return "";
+}
+
+const QString mac()
+{
+	for (QNetworkInterface interface : QNetworkInterface::allInterfaces())
+	{
+		QString _mac = interface.hardwareAddress();
+		QString _ip;
+
+		// encuentra la ip correspondiente a la interface
+		QList<QNetworkAddressEntry> address = interface.addressEntries();
+		if (!address.empty())
+			_ip = address[0].ip().toString();
+		// -----------------------
+
+		// retorna la direccion mac que corresponde a la ip
+		if (_ip == ip())
+			return _mac;
+		// ------------------------
+	}
+
 	return "";
 }
 

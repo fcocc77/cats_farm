@@ -67,7 +67,7 @@ struct server_struct
 	float ram_used;
 	int ram_total;
 	int temp;
-	bool vbox;
+	QString mac;
 	int response_time;
 	QList<inst_struct *> instances;
 	int max_instances;

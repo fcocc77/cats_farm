@@ -38,7 +38,7 @@ QString manager::update_server_thread(QJsonArray recv)
 		int ram = recv[3].toInt();
 		int temp = recv[4].toInt();
 		QString system = recv[5].toString();
-		bool vbox = recv[6].toBool();
+		QString mac = recv[6].toString();
 		int ram_total = recv[7].toInt();
 		float ram_used = recv[8].toDouble();
 		int cpu_cores = recv[9].toInt();
@@ -74,7 +74,7 @@ QString manager::update_server_thread(QJsonArray recv)
 			server->ram_used = ram_used;
 			server->ram_total = ram_total;
 			server->temp = temp;
-			server->vbox = vbox;
+			server->mac = mac;
 			server->response_time = response_time;
 			server->instances = instances;
 			server->max_instances = 1;
@@ -96,7 +96,6 @@ QString manager::update_server_thread(QJsonArray recv)
 			server->ram = ram;
 			server->temp = temp;
 			server->host = host;
-			server->vbox = vbox;
 			server->log = log;
 			server->response_time = response_time;
 		}

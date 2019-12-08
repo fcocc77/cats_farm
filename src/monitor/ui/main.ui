@@ -362,7 +362,7 @@
 </column>
                     <column>
     <property name="text">
-        <string notr="true">VM</string>
+        <string notr="true">MAC Address</string>
     </property>
 </column>
                     <column>
