@@ -497,7 +497,7 @@ void update_class::update_servers(QJsonObject recv)
 					item->setText(8, mac);
 					item->setText(9, instance_job);
 
-					item->setForeground(8, QColor(100, 200, 100));
+					item->setForeground(8, QColor(100, 150, 200));
 
 					item->setTextAlignment(4, Qt::AlignCenter);
 
@@ -544,10 +544,8 @@ void update_class::update_servers(QJsonObject recv)
 
 						if (status == "absent")
 						{
-
 							item->setForeground(0, QColor(255, 30, 30));
 							item->setForeground(1, QColor(255, 30, 30));
-							item->setText(8, "");
 
 							cpuBar->setValue(0);
 							ramBar->setValue(0);

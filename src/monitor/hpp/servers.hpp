@@ -20,7 +20,6 @@ private:
     void cpu_limit(int limit);
     void to_log();
     void ssh_client();
-    void turn_on();
     void vnc_client();
     void message(
         QString (servers_class::*funtion)(QString, QString),

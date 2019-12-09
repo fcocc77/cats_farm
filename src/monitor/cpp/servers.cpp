@@ -180,7 +180,9 @@ void servers_class::connections()
         send_to_vserver("freeram", "none");
     });
 
-    connect(server_turn_on_action, &QAction::triggered, this, &servers_class::turn_on);
+    connect(server_turn_on_action, &QAction::triggered, this, [this]() {
+        to_action("turn_on", "none");
+    });
     connect(server_turn_off_action, &QAction::triggered, this, [this]() {
         QString ask = "Are you sure to want turn off this server?";
         QString tile = "Server OFF";
@@ -299,17 +301,6 @@ void servers_class::ssh_client()
     else
         cmd = "gnome-terminal -e '" + linux_sshpass + "'";
     os::back(cmd);
-}
-
-void servers_class::turn_on()
-{
-    QList<QTreeWidgetItem *> selected = ui->servers->selectedItems();
-
-    for (auto item : selected)
-    {
-        QString mac = item->text(8);
-        os::sh("ether-wake " + mac);
-    }
 }
 
 void servers_class::vnc_client()

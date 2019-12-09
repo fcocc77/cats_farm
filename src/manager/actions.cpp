@@ -71,9 +71,9 @@ void manager::kill_tasks(job_struct *job, bool _delete)
 	}
 
 	QJsonArray kill_ins;
-	for(int i = 0; i < 15; i++)
+	for (int i = 0; i < 15; i++)
 		kill_ins.push_back(i);
-	
+
 	for (auto server : servers)
 	{
 		if (active_server.contains(server->name))
@@ -275,6 +275,9 @@ QString manager::serverAction(QJsonArray pks)
 		QString server_action = _server[1].toString();
 		int instances = _server[2].toString().toInt();
 		auto server = findServer(name);
+
+		if (server_action == "turn_on")
+			os::sh("ether-wake " + server->mac);
 
 		if (server_action == "max_instances")
 			server->max_instances = instances;
