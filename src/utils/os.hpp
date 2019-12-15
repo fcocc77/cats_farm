@@ -48,7 +48,7 @@ bool isdir(QString dir);
 void makedirs(QString dir);
 void kill(int pid);
 QStringList listdir(QString folder, bool onlyname = 0);
-QString sh(QString cmd);
+QString sh(QString cmd, bool error = true);
 const QString hostName();
 const QString ip();
 const QString mac();

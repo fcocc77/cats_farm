@@ -75,7 +75,8 @@ QString manager::videovina(QJsonArray recv)
     QString afterfx = vinarender + "/modules/ae/afterfx.sh";
     QString cmd = "sh " + afterfx + " " + project + " " + vina2ae;
     print("start project");
-    os::sh(cmd);
+    QString log = os::sh(cmd, false);
+    fwrite(vinarender + "/log/render_log_0", log);
     print("end.");
     // ---------------------------------------------------
 
@@ -136,6 +137,6 @@ QString manager::videovina(QJsonArray recv)
     mutex.lock();
     make_job(data);
     mutex.unlock();
-    
+
     return "";
 }

@@ -512,12 +512,17 @@ QStringList listdir(QString folder, bool onlyname)
 	return list_dir;
 }
 
-QString sh(QString cmd)
+QString sh(QString cmd, bool error)
 {
 	QProcess proc;
 	proc.start(cmd);
 	proc.waitForFinished(-1);
-	QString output = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
+	QString output;
+	if (error)
+		output = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
+	else
+		output = proc.readAllStandardOutput();
+
 	proc.close();
 
 	return output;
