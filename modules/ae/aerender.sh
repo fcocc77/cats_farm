@@ -18,8 +18,12 @@ Xvfb :7 &
 export DISPLAY=:7
 # ------------------------------
 
+# desabilita el log de wine, para que solo este el log del aerender
+export WINEDEBUG=-all
+# ------------------------------
+
 # establece el wine dependiendo de la instancia, esto es para aprobechar los cpus
 export WINEPREFIX="/root/wine$instance"
 # -------------------------------
 
-wine "$aerender" -project "$project" -comp "$comp" -output "$output" -log "$log" -s $firstFrame -e $lastFrame
+wine "$aerender" -mem_usage 25 1000 -project "$project" -comp "$comp" -output "$output" -log "$log" -s $firstFrame -e $lastFrame
