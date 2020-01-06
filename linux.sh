@@ -169,6 +169,12 @@ install() {
     Type=Application" >"/usr/share/applications/VinaRender.desktop"
     # ---------------
 
+    # modifica los permisos de los directorios etc y log para
+    # que el vmonitor tenga acceso ya que se ejecuta en usuario.
+    chmod 777 -R "$dst/etc"
+    chmod 777 -R "$dst/log"
+    # ---------------------------
+
     nuke install
 }
 
