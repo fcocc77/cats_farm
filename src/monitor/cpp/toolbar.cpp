@@ -47,7 +47,7 @@ void toolbar_class::connections()
 void toolbar_class::load_zones()
 {
 	QJsonArray zones = shared->settings["hosts"].toArray();
-	QString manager_ip = shared->settings["manager"].toObject()["ip"].toString();
+	QString current_manager = shared->settings["current_manager"].toString();
 
 	// agrega todas las zonas guardadas al combobox
 	for (QJsonValue value : zones)
@@ -56,7 +56,11 @@ void toolbar_class::load_zones()
 		ui->tool_zone->addItem(zone);
 	}
 	// ---------------------------
+
+	// check zona actual en el combobox
+	ui->tool_zone->setCurrentText(current_manager);
+	// ----------------------
 	// establece por defecto la primera zona
-	update->update(manager_ip);
+	update->update(current_manager);
 	// ----------------------
 }

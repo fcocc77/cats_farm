@@ -421,23 +421,23 @@ QToolBar {
       #groups::branch:has-children:closed {
         image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png); }
 
-#settings #settings_ip_widget {
+#settings #settings_zones_widget, #settings #settings_host_widget {
   background: #2a2d32;
   border-radius: 2px; }
-  #settings #settings_ip_widget QLabel {
+  #settings #settings_zones_widget QLabel, #settings #settings_host_widget QLabel {
     background: transparent;
     margin: 10px; }
-  #settings #settings_ip_widget QLineEdit {
+  #settings #settings_zones_widget QLineEdit, #settings #settings_host_widget QLineEdit {
     background: #2e3238;
     border: 1px solid #2e3238;
     padding: 10px;
     border-radius: 2px;
     background: #3a3f45;
     border-color: #464b53; }
-    #settings #settings_ip_widget QLineEdit:hover {
+    #settings #settings_zones_widget QLineEdit:hover, #settings #settings_host_widget QLineEdit:hover {
       background: #3a3f45;
       border-color: #464b53; }
-    #settings #settings_ip_widget QLineEdit:focus {
+    #settings #settings_zones_widget QLineEdit:focus, #settings #settings_host_widget QLineEdit:focus {
       background: #3a3f45;
       border-color: #0099ff; }
 

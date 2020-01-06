@@ -36,5 +36,6 @@ os/linux/init/logger_pid
 # archivos de etc
 etc/*.json*
 !etc/preferences.json
+!etc/settings.json
 etc/manager_host
 # --------------------

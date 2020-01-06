@@ -25,6 +25,13 @@ void update_class::connections()
 void update_class::zone_change(QString zone)
 {
 	manager->kill();
+
+	// guarda la zona actual en settings, para que cuando
+	// abramos nuevamente el vmonitor inicie con esa zona
+	shared->settings["current_manager"] = zone;
+	jwrite(path + "/etc/settings.json", shared->settings);
+	// ------------------------------
+
 	this->update(zone);
 }
 

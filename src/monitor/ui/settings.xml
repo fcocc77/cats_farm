@@ -8,17 +8,33 @@
     <widget class="QWidget" name="settings_widget">
         <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-                <widget class="QWidget" name="settings_ip_widget" native="true">
+                <widget class="QWidget" name="settings_zones_widget" native="true">
                     <layout class="QHBoxLayout" name="horizontalLayout">
                         <item>
                             <widget class="QLabel" name="label">
                                 <property name="text">
-                                    <string>Manager IP:</string>
+                                    <string>Manager ZONES:</string>
                                 </property>
                             </widget>
                         </item>
                         <item>
-                            <widget class="QLineEdit" name="settings_ip" />
+                            <widget class="QLineEdit" name="settings_zones" />
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+            <item>
+                <widget class="QWidget" name="settings_host_widget" native="true">
+                    <layout class="QHBoxLayout" name="horizontalLayout">
+                        <item>
+                            <widget class="QLabel" name="label">
+                                <property name="text">
+                                    <string>Manager HOST:</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QLineEdit" name="settings_host" />
                         </item>
                     </layout>
                 </widget>

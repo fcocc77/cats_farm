@@ -1,0 +1,12 @@
+{   "current_manager": "{{manager_ip}}",
+    "manager": {
+        "ip": "{{manager_ip}}",
+        "port": {{manager_port}}
+    },
+    "server": {
+        "port": {{server_port}}
+    },
+    "hosts": [
+        "{{manager_ip}}"
+    ]
+}

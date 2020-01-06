@@ -45,12 +45,17 @@ void settings_class::ok()
 {
 	path_write();
 
-	QString hosts = ui->settings_ip->text();
+	// guarda host del manager
+	QJsonObject manager = shared->settings["manager"].toObject();
+	manager["ip"] = ui->settings_host->text();
+	shared->settings["manager"] = manager;
+	// ---------------------------
 
 	// guarda lista de ips de QString a un json, y borra los espacios
+	QString zones = ui->settings_zones->text();
 	QJsonArray json_hosts;
-	for (QString host : hosts.split(","))
-		json_hosts.push_back(host.replace(" ", ""));
+	for (QString zone : zones.split(","))
+		json_hosts.push_back(zone.replace(" ", ""));
 
 	shared->settings["hosts"] = json_hosts;
 	// -----------------------------
@@ -103,8 +108,13 @@ void settings_class::path_read()
 			hosts += host.toString() + ", ";
 		hosts = hosts.left(hosts.length() - 2);
 
-		ui->settings_ip->setText(hosts);
+		ui->settings_zones->setText(hosts);
 		// ------------------------------
+
+		// setea el host del manager
+		QString host = shared->settings["manager"].toObject()["ip"].toString();
+		ui->settings_host->setText(host);
+		// ------------------
 	}
 }
 
