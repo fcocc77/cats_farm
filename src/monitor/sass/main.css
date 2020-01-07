@@ -293,7 +293,7 @@ QToolBar {
       qproperty-iconSize: 15px;
       font-size: 13px;
       border-right: 1px solid #464b53;
-      padding-right: 15px; }
+      padding-right: 30px; }
       QToolBar #toolbarwidget QPushButton:hover {
         color: #0099ff; }
     QToolBar #toolbarwidget QComboBox {
@@ -334,6 +334,11 @@ QToolBar {
     QToolBar #toolbarwidget #tool_count {
       font-size: 15px;
       color: #0099ff; }
+    QToolBar #toolbarwidget #tool_conection {
+      border-right: 1px solid #464b53;
+      color: red;
+      padding-right: 15px;
+      margin-right: 15px; }
 
 #Log {
   background-color: #23262a;

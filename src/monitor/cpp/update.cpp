@@ -45,9 +45,13 @@ void update_class::update(QString host)
 
 	// nmap checkea si el puerto esta esta abierto, si no retorna, esto
 	// se hace para que no se quede pegado en el tcpClient
+	ui->tool_conection->setText("");
 	QString nmap = os::sh("nmap -Pn " + host + " -p " + QString::number(shared->manager_port));
 	if (!nmap.contains("open"))
+	{
+		ui->tool_conection->setText("Connection failed: " + host);
 		return;
+	}
 	// -----------------------------
 
 	// actualiza los datos de settings dependiendo de la zona
