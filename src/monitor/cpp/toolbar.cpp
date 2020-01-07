@@ -60,7 +60,7 @@ void toolbar_class::load_zones()
 	// check zona actual en el combobox
 	ui->tool_zone->setCurrentText(current_manager);
 	// ----------------------
-	// establece por defecto la primera zona
+	// establece por defecto la ultima zona guardada
 	update->update(current_manager);
 	// ----------------------
 }
