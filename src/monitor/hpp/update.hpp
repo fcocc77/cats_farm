@@ -16,6 +16,7 @@ private:
   QStringList delete_list;
   tcp_client_widget<update_class> *manager;
   settings_class *settings;
+  bool update_started = false;
   // --------------------
 
   // Tasks
@@ -40,7 +41,6 @@ public:
       groups_class *_groups,
       settings_class *_settings);
 
-  void zone_change(QString zone);
   void update(QString host);
 };
 

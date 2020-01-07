@@ -41,7 +41,7 @@ void toolbar_class::connections()
 		jobs->job_resume_action->triggered();
 	});
 
-	connect(ui->tool_zone, &QComboBox::currentTextChanged, update, &update_class::zone_change);
+	connect(ui->tool_zone, &QComboBox::currentTextChanged, update, &update_class::update);
 }
 
 void toolbar_class::load_zones()

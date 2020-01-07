@@ -80,6 +80,7 @@ install() {
         gcc-c++ \
         sshpass \
         net-tools \
+        nmap \
         psmisc #fuser
 
     yum -y group install "Development Tools"

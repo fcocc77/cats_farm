@@ -22,21 +22,20 @@ void update_class::connections()
 	connect(ui->jobs, &QTreeWidget::itemClicked, this, &update_class::get_task);
 }
 
-void update_class::zone_change(QString zone)
+void update_class::update(QString host)
 {
-	manager->kill();
+	// mata la actualizacion solo si el update inicializo una vez,
+	// esto es para que no crashee si es que el manager no esta inicializado.
+	if (update_started)
+		manager->kill();
+	// ----------------------------------
 
 	// guarda la zona actual en settings, para que cuando
 	// abramos nuevamente el vmonitor inicie con esa zona
-	shared->settings["current_manager"] = zone;
+	shared->settings["current_manager"] = host;
 	jwrite(path + "/etc/settings.json", shared->settings);
 	// ------------------------------
 
-	this->update(zone);
-}
-
-void update_class::update(QString host)
-{
 	shared->manager_host = host;
 
 	ui->groups->clear();
@@ -60,6 +59,7 @@ void update_class::update(QString host)
 	manager_recieve_update(recv, {});
 	//--------------------------------------
 	manager = tcpClient(host, shared->manager_port, &update_class::manager_recieve_update, this, true);
+	update_started = true;
 }
 
 QString update_class::manager_recieve_update(QString _recv, QJsonObject extra)
