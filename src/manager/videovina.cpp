@@ -3,7 +3,7 @@
 QString manager::videovina(QJsonArray recv)
 {
     QString slideshow = assets + "/slideshows";
-    QString music_dir = assets + "/music";
+    QString song_dir = assets + "/music";
 
     // Datos recividos del servidor principal
     QString user = recv[0].toString();
@@ -32,9 +32,26 @@ QString manager::videovina(QJsonArray recv)
 
     print("copiando footage...");
 
-    // Cambia la ruta de la musica y la guarda el el project.json
-    QString song = vv_project["song"].toString() + ".mp3";
-    vv_project["songPath"] = music_dir + "/" + song;
+    // song :
+    QString song_name = vv_project["song"].toString();
+
+    // checkea si la cancion es una subida por el usuario o pertenece a la libreria de videovina
+    bool user_song = false;
+    for (QJsonValue value : vv_project["songsUser"].toArray())
+    {
+        QString name = value.toObject()["name"].toString();
+        if (song_name == name)
+            user_song = true;
+    }
+    // -----------------------------------
+
+    // Cambia la ruta de la cancion y la guarda el el project.json
+    QString song_path;
+    if (user_song)
+        song_path = vv_project_dir + "/songs/" + song_name + ".mp3";
+    else
+        song_path = song_dir + "/" + song_name + ".mp3";
+    vv_project["songPath"] = song_path;
     // -----------------------------------
 
     // guarda ruta de los proyectos slideshows
