@@ -129,7 +129,7 @@ QString manager::videovina(QJsonArray recv)
     if (proxy)
         instances = 7;
     else
-        instances = 3;
+        instances = 5;
     QString render = "Final comp";
 
     QJsonArray data = {
