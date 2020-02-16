@@ -28,6 +28,7 @@ qt/*/*tar.gz
 *.swo
 modules/ae/*.gz
 node_modules
+temp
 # os
 os/linux/init/vserver_pid
 os/linux/init/vmanager_pid

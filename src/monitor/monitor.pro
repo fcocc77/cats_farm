@@ -10,6 +10,12 @@ RC_ICONS = ../../icons/icon.ico
 
 QT += core gui svg widgets multimedia
 
+DESTDIR = release
+OBJECTS_DIR = release/.obj
+MOC_DIR = release/.moc
+RCC_DIR = release/.rcc
+UI_DIR = release/.ui
+
 FORMS = ./ui/main.ui
 
 HEADERS += 	./hpp/includes.hpp \
