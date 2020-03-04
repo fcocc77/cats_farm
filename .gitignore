@@ -26,6 +26,7 @@ qt/*/*tar.gz
 .DS_Store
 *.swp
 *.swo
+*.pyc
 modules/ae/*.gz
 node_modules
 temp
@@ -40,3 +41,7 @@ etc/*.json*
 !etc/settings.json
 etc/manager_host
 # --------------------
+
+# natron
+apis/natron/**/*.lock
+apis/natron/**/*.mov
