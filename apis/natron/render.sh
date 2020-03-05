@@ -3,7 +3,7 @@ project='./project/test.ntp'
 
 write='Write2'
 
-api='./vina_to_natron.py'
+api='./render.py'
 
 first_frame=1
 last_frame=45
