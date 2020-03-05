@@ -6,7 +6,7 @@ write='Write2'
 api='./vina_to_natron.py'
 
 first_frame=1
-last_frame=10
+last_frame=45
 
 # python3 $api
 
