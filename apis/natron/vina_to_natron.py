@@ -37,6 +37,7 @@ def main():
 def fit_texts(slide):
     x = 1920
     y = 1080
+    max_height = y / 2
 
     def font_resize(text):
         # re escala el tamaño de la fuente hasta que quede
@@ -45,23 +46,33 @@ def fit_texts(slide):
 
         size = 0
         width = 0
-        while(width < x):
+        height = 0
+        while(width < x and height < max_height):
             size += 1
             text.size.setValue(size)
             width = text.getRegionOfDefinition(1, 1).x2
+            height = text.getRegionOfDefinition(1, 1).y2
 
-        return text.getRegionOfDefinition(1, 1).y2
+        return [width, height]
 
-    title_height = font_resize(slide.title)
-    subtitle_height = font_resize(slide.subtitle)
+    title_x, title_y = font_resize(slide.title)
+    subtitle_x, subtitle_y = font_resize(slide.subtitle)
 
     # calcula el alto total, para poder centrar los 2 textos al cuadro
-    height = title_height + subtitle_height
+    height = title_y + subtitle_y
     move_up = (y - height) / 2
 
     # ajusta los textos verticalmente
-    slide.title_position.translate.setValue(subtitle_height + move_up, 1)
+    slide.title_position.translate.setValue(subtitle_y + move_up, 1)
     slide.subtitle_position.translate.setValue(move_up, 1)
+
+    # centra los textos horizontalmente
+    slide.title_position.translate.setValue(
+        (x / 2) - (title_x / 2), 0
+    )
+    slide.subtitle_position.translate.setValue(
+        (x / 2) - (subtitle_x / 2), 0
+    )
 
 
 def texts():
