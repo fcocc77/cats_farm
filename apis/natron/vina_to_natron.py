@@ -40,7 +40,7 @@ def fit_texts(slide):
     max_height = y / 2
 
     def font_resize(text):
-        # re escala el tamaño de la fuente hasta que quede
+        # reescala la fuente hasta que quede
         # del ancho del cuadro
         text.size.setValue(0)
 
@@ -83,6 +83,7 @@ def texts():
         if text:
             slide.title.text.setValue(text.title)
             slide.subtitle.text.setValue(text.subtitle)
+            fit_texts(slide)
         else:
             slide.title.text.setValue('')
             slide.subtitle.text.setValue('')
