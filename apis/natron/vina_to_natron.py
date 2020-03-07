@@ -6,11 +6,7 @@ from argparse import Namespace
 from util import *
 
 path = "/home/pancho/Documents/GitHub/vinarender/apis/natron"
-# sys.path.insert(0, path)
-# import vina_to_natron
-# reload(vina_to_natron)
-# vina_to_natron.app = app1
-# vina_to_natron.main()
+
 
 project_dir = "/mnt/server_01/videovina/as3/private/pancho/projects/test"
 project_json = project_dir + "/project.json"
@@ -31,16 +27,66 @@ def main():
     update()
     images_connect()
 
+    texts()
+
     color.setValue(project.color[0] / 255.0, 0)
     color.setValue(project.color[1] / 255.0, 1)
     color.setValue(project.color[2] / 255.0, 2)
+
+
+def fit_texts(slide):
+    x = 1920
+    y = 1080
+
+    def font_resize(text):
+        # re escala el tamaño de la fuente hasta que quede
+        # del ancho del cuadro
+        text.size.setValue(0)
+
+        size = 0
+        width = 0
+        while(width < x):
+            size += 1
+            text.size.setValue(size)
+            width = text.getRegionOfDefinition(1, 1).x2
+
+        return text.getRegionOfDefinition(1, 1).y2
+
+    title_height = font_resize(slide.title)
+    subtitle_height = font_resize(slide.subtitle)
+
+    # calcula el alto total, para poder centrar los 2 textos al cuadro
+    height = title_height + subtitle_height
+    move_up = (y - height) / 2
+
+    # ajusta los textos verticalmente
+    slide.title_position.translate.setValue(subtitle_height + move_up, 1)
+    slide.subtitle_position.translate.setValue(move_up, 1)
+
+
+def texts():
+    for index, slide in enumerate(get_all_slide()):
+        index = str(index + 1)
+        text = getattr(project.texts, 'text' + index, None)
+
+        if text:
+            slide.title.text.setValue(text.title)
+            slide.subtitle.text.setValue(text.subtitle)
+        else:
+            slide.title.text.setValue('')
+            slide.subtitle.text.setValue('')
+
+        # cambia el nombre, ya que natron da problemas de cache, al
+        # tener el mismo nombre en los nodos title y subtitle
+        slide.title.setScriptName('title' + index)
+        slide.subtitle.setScriptName('subtitle' + index)
 
 
 def images_connect():
     for photo in project.photos:
         _photo = project_dir + '/footage/' + photo.name
         reader = app.createReader(_photo)
-        get_slide(photo.index).connectInput(0, reader)
+        get_slide(photo.index + 1).connectInput(0, reader)
 
 
 def get_all_slide():
@@ -62,10 +108,9 @@ def get_slide(index):
     return slide
 
 
-def update_slide(slide, index):
+def slide_range(slide, index):
     # acualiza el tiempo del los nodos hijos
 
-    slide.vIndex.setValue(index)
     time = app.Control.vTime.getValue()
 
     first_frame = (time * index) + 1
@@ -80,4 +125,4 @@ def update_slide(slide, index):
 def update():
     for index, slide in enumerate(get_all_slide()):
         # actualiza todas las slide
-        update_slide(slide, index)
+        slide_range(slide, index)

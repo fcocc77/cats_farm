@@ -1,16 +1,13 @@
 renderer='/opt/Natron2/NatronRenderer'
-project='./project/test.ntp'
-
-write='Write2'
+natron='/opt/Natron2/Natron'
 
 api='./render.py'
 
 first_frame=1
-last_frame=45
+last_frame=120
 
-# python3 $api
+# crea el proyecto
+$natron -b './convert.py'
 
-$renderer $api $first_frame-$last_frame
-
-# $renderer -w $write $first_frame-$last_frame $project
-
+# renderea el proyecto creado
+$renderer --clear-cache --no-settings $api $first_frame-$last_frame
