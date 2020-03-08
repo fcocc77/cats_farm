@@ -6,6 +6,7 @@ from argparse import Namespace
 from util import *
 
 path = "/home/pancho/Documents/GitHub/vinarender/apis/natron"
+fonts = "/home/pancho/Documents/GitHub/videovina/static/fonts"
 
 
 project_dir = "/mnt/server_01/videovina/as3/private/pancho/projects/test"
@@ -18,6 +19,7 @@ project = Namespace(
     color=proj.states.app.color,
     photos=proj.states.app.timeline,
     texts=proj.states.edit_items,
+    font="Great Vibes"
 )
 
 
@@ -83,7 +85,21 @@ def texts():
         if text:
             slide.title.text.setValue(text.title)
             slide.subtitle.text.setValue(text.subtitle)
+
+            # cambiar fuente
+            font_file = fonts + "/great-vibes/" + project.font + ".otf"
+
+            option = project.font[0] + '/' + project.font
+
+            slide.title.custom.setValue(font_file)
+            slide.title.name.set(option)
+
+            slide.subtitle.custom.setValue(font_file)
+            slide.subtitle.name.set(option)
+
+            # ajusta los textos al cuadro
             fit_texts(slide)
+
         else:
             slide.title.text.setValue('')
             slide.subtitle.text.setValue('')
