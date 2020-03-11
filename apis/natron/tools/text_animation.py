@@ -20,7 +20,12 @@ def createNode(name, group=app):
 
 
 def deleteNodes():
-    app.setSelection(created_nodes)
+    for node in created_nodes:
+        node.destroy()
+    for node in created_nodes:
+        node.destroy()
+
+    del created_nodes[:]
 
 
 def create_letter(letter, position, index):
@@ -87,9 +92,8 @@ def create_word():
 def update_callback(thisParam, thisNode, thisGroup, app, userEdited):
     button_name = thisParam.getScriptName()
     if button_name == 'update':
-        create_word()
-    if button_name == 'delete':
         deleteNodes()
+        create_word()
 
 
 textAnimation = app.TextAnimation
