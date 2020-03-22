@@ -3,6 +3,7 @@
 import NatronEngine
 import sys
 from util import *
+from natron import *
 
 
 def getPluginID():
@@ -29,55 +30,27 @@ def getPluginDescription():
     return 'Animacion de Textos'
 
 
-def createInstance(_app, group):
+def createInstance(app, group):
     group.controls = group.createPageParam("controls", "Controls")
 
-    def createParam(name, _type=None, _range=[0, 100]):
-        # funcion para crear parametros mas facilmente
+    createParam(group, 'text', 'string')
 
-        # creacion de parametro
-        if _type == 'float':
-            param = group.createDoubleParam(name + '_param', name.capitalize())
-        elif _type == 'int':
-            param = group.createIntParam(name + '_param', name.capitalize())
-        elif _type == 'string':
-            param = group.createStringParam(name + '_param', name.capitalize())
-        elif name == 'separator':
-            param = group.createSeparatorParam("sep_" + hash_generator(5), "")
-        elif _type == 'button':
-            param = group.createButtonParam(name + '_param', name.capitalize())
+    createParam(group, 'separator')
+    createParam(group, 'delay', 'float')
 
-        # establece el rango de la slide
-        allowed = ['float', 'int']
-        if _type in allowed:
-            param.setMinimum(_range[0], 0)
-            param.setMaximum(_range[1], 0)
-            param.setDisplayMinimum(_range[0], 0)
-            param.setDisplayMaximum(_range[1], 0)
-        # ----------------------
+    createParam(group, 'separator')
+    createParam(group, 'scale', 'float', [1, 100])
+    createParam(group, 'position_y', 'int', [0, 1920])
+    createParam(group, 'position_x', 'int', [0, 1080])
+    createParam(group, 'rotate', 'float', [0, 360])
+    createParam(group, 'opcity', 'float', [0, 1])
 
-        # agrega el parametro a la pestania
-        group.controls.addParam(param)
-        # ----------------------
+    createParam(group, 'separator')
+    createParam(group, 'blur_x', 'float', [0, 100])
+    createParam(group, 'blur_y', 'float', [0, 100])
 
-    createParam('text', 'string')
-
-    createParam('separator')
-    createParam('delay', 'float')
-
-    createParam('separator')
-    createParam('scale', 'float', [1, 100])
-    createParam('position_y', 'int', [0, 1920])
-    createParam('position_x', 'int', [0, 1080])
-    createParam('rotate', 'float', [0, 360])
-    createParam('opcity', 'float', [0, 1])
-
-    createParam('separator')
-    createParam('blur_x', 'float', [0, 100])
-    createParam('blur_y', 'float', [0, 100])
-
-    createParam('separator')
-    createParam('update', 'button')
+    createParam(group, 'separator')
+    createParam(group, 'update', 'button')
 
     group.onParamChanged.set('vvtext.update_button')
 
