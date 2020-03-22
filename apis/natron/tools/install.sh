@@ -9,7 +9,6 @@ mkdir -p $plugins
 # copia plugins de python a natron
 cp '../util.py' $natron_plugins
 cp $plugins'/vvtext.py' $natron_plugins
-cp $plugins'/vvtext_core.py' $natron_plugins
 
 # copia el init a natron
 cp $core'/init.py' $natron_core

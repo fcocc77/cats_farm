@@ -29,8 +29,7 @@ def getPluginDescription():
     return 'Animacion de Textos'
 
 
-def createInstance(app, group):
-
+def createInstance(_app, group):
     group.controls = group.createPageParam("controls", "Controls")
 
     def createParam(name, _type=None, _range=[0, 100]):
@@ -38,15 +37,15 @@ def createInstance(app, group):
 
         # creacion de parametro
         if _type == 'float':
-            param = group.createDoubleParam(name + 'Param', name.capitalize())
+            param = group.createDoubleParam(name + '_param', name.capitalize())
         elif _type == 'int':
-            param = group.createIntParam(name + 'Param', name.capitalize())
+            param = group.createIntParam(name + '_param', name.capitalize())
         elif _type == 'string':
-            param = group.createStringParam(name + 'Param', name.capitalize())
+            param = group.createStringParam(name + '_param', name.capitalize())
         elif name == 'separator':
             param = group.createSeparatorParam("sep_" + hash_generator(5), "")
         elif _type == 'button':
-            param = group.createButtonParam(name + 'Param', name.capitalize())
+            param = group.createButtonParam(name + '_param', name.capitalize())
 
         # establece el rango de la slide
         allowed = ['float', 'int']
@@ -80,9 +79,113 @@ def createInstance(app, group):
     createParam('separator')
     createParam('update', 'button')
 
-    group.onParamChanged.set('vvtext_update')
+    group.onParamChanged.set('vvtext.update_button')
 
     # cambia el orden de la primera pestania y actualiza
     group.setPagesOrder(['controls', 'Node'])
     group.refreshUserParamsGUI()
     # ----------------------
+
+
+created_nodes = []
+
+
+def createNode(name):
+    nodes = {
+        'blur': 'net.sf.cimg.CImgBlur',
+        'text': 'net.fxarena.openfx.Text',
+        'transform': 'net.sf.openfx.TransformPlugin',
+        'merge': 'net.sf.openfx.MergePlugin',
+        'output': 'fr.inria.built-in.Output'
+    }
+
+    node_name = _app.createNode(nodes[name], -1, _thisNode).getScriptName()
+
+    node = getattr(_thisNode, node_name)
+    created_nodes.append(node)
+    return node
+
+
+def deleteNodes():
+    for node in created_nodes:
+        node.destroy()
+    for node in created_nodes:
+        node.destroy()
+
+    del created_nodes[:]
+
+
+def create_letter(letter, position, index):
+
+    def expression(field, name, index, dimension=0, add=0):
+        exp = 'value = thisGroup.' + name + \
+            '.curve(frame - ' + str(index) + '*thisGroup.delayParam.get());'
+        exp += 'ret = value + ' + str(add)
+
+        field.setExpression(exp, False, dimension)
+
+    # create text
+    text = createNode('text')
+    text.autoSize.set(True)
+    text.text.set(letter)
+    # Opacity expression
+    for i in range(3):
+        expression(text.color, 'opacity_param', index, i)
+    # ------------------------
+
+    # Blur
+    blur = createNode('blur')
+    blur.cropToFormat.set(False)
+    blur.connectInput(0, text)
+    expression(blur.size, 'blur_x_param', index, 0)
+    expression(blur.size, 'blur_y_param', index, 1)
+    # ------------------
+
+    letter_width = text.getRegionOfDefinition(1, 1).x2
+
+    transform = createNode('transform')
+
+    # Transform expression
+    expression(transform.translate, 'position_x_param', index, 0, position)
+    expression(transform.translate, 'position_y_param', index, 1)
+    expression(transform.rotate, 'rotate_param', index)
+    expression(transform.scale, 'scale_param', index, 0)
+    expression(transform.scale, 'scale_param', index, 1)
+    # -----------------------
+
+    transform.connectInput(0, blur)
+
+    return [transform, letter_width]
+
+
+def create_word():
+    merge = createNode('merge')
+    output = createNode('output')
+    output.connectInput(0, merge)
+
+    pos = 0
+    word = _thisNode.text_param.get()
+    for index, letter in enumerate(word):
+        transform, letter_width = create_letter(letter.strip(), pos, index)
+
+        # la entrada numero 2 pertenece a la maskara, asi que la omite
+        if index >= 2:
+            index += 1
+
+        merge.connectInput(index, transform)
+        pos += letter_width
+
+
+def update_button(thisParam, thisNode, thisGroup, app, userEdited):
+    # defina la app y el nodo como variables globales,
+    # para poder acceder de otras funcciones
+    global _app
+    global _thisNode
+    _app = app
+    _thisNode = thisNode
+    # ----------------------
+
+    button_name = thisParam.getScriptName()
+    if button_name == 'update_param':
+        deleteNodes()
+        create_word()
