@@ -1,6 +1,8 @@
 import json
 import os
 from argparse import Namespace
+import random
+import string
 
 
 def fwrite(file, date):
@@ -53,3 +55,11 @@ def jwrite(file, data):
     )
 
     fwrite(file, info)
+
+
+def hash_generator(keyLen):
+    def base_str():
+        return (string.ascii_letters + string.digits)
+
+    keylist = [random.choice(base_str()) for i in range(keyLen)]
+    return ("".join(keylist))
