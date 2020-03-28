@@ -43,5 +43,4 @@ etc/manager_host
 # --------------------
 
 # natron
-apis/natron/**/*.lock
-apis/natron/**/*.mov
+apis/natron/project
