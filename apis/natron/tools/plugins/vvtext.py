@@ -6,6 +6,7 @@ import NatronEngine
 import sys
 from util import *
 from natron import *
+import os
 
 
 def getPluginID():
@@ -107,7 +108,7 @@ def create_letter(letter, position, index):
     for i in range(3):
         expression(text.color, 'opacity_param', index, i)
     # ------------------------
-
+    debug(text)
     # Blur
     blur = createNode('blur')
     blur.cropToFormat.set(False)
@@ -164,3 +165,5 @@ def update_button(thisParam, thisNode, thisGroup, app, userEdited):
     if button_name == 'update_param':
         deleteNodes()
         create_word()
+
+    debug_show()
