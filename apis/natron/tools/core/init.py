@@ -21,7 +21,7 @@ def reload_nodes():
 
             plugin = plugin.split('.')[0]
             reload(eval(plugin))
-            print('Reload OK')
+            print(plugin + ': has updated.')
 
 
 NatronGui.natron.addMenuCommand('videovina/Reload Nodes', 'reload_nodes',
