@@ -30,7 +30,7 @@ public:
 	bool maya(int ins);
 	bool houdini(int ins);
 	bool cinema(int ins);
-	bool fusion(int ins);
+	bool natron(int ins);
 	bool ae(int ins);
 };
 

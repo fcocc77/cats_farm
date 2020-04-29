@@ -84,13 +84,13 @@ void settings_class::path_read()
 	if (not preferences.empty())
 	{
 		QJsonObject paths = preferences["paths"].toObject();
-		QString system, nuke, maya, houdini, cinema, fusion, ae;
+		QString system, nuke, maya, houdini, cinema, natron, ae;
 
 		system = array_to_string(paths["system"].toArray());
 		nuke = array_to_string(paths["nuke"].toArray());
 		houdini = array_to_string(paths["houdini"].toArray());
 		cinema = array_to_string(paths["cinema"].toArray());
-		fusion = array_to_string(paths["fusion"].toArray());
+		natron = array_to_string(paths["natron"].toArray());
 		maya = array_to_string(paths["maya"].toArray());
 		ae = array_to_string(paths["ae"].toArray());
 
@@ -99,7 +99,7 @@ void settings_class::path_read()
 		ui->settings_maya->setPlainText(maya);
 		ui->settings_houdini->setPlainText(houdini);
 		ui->settings_cinema->setPlainText(cinema);
-		ui->settings_fusion->setPlainText(fusion);
+		ui->settings_natron->setPlainText(natron);
 		ui->settings_ae->setPlainText(ae);
 
 		// setea los hosts guardados
@@ -148,10 +148,10 @@ void settings_class::path_write()
 		cinema.push_back(l);
 	paths["cinema"] = cinema;
 
-	QJsonArray fusion;
-	for (auto l : ui->settings_fusion->toPlainText().split("\n"))
-		fusion.push_back(l);
-	paths["fusion"] = fusion;
+	QJsonArray natron;
+	for (auto l : ui->settings_natron->toPlainText().split("\n"))
+		natron.push_back(l);
+	paths["natron"] = natron;
 
 	QJsonArray ae;
 	for (auto l : ui->settings_ae->toPlainText().split("\n"))

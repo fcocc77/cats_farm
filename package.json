@@ -13,7 +13,7 @@
     "scripts": {
         "d": "npx webpack -d",
         "w": "npx webpack -d --watch",
-        "monitor": "cd src/monitor && qmake-qt5 && make &"
+        "build": "sh scripts/build.sh"
     },
     "keywords": [],
     "author": "Francisco José Contreras Cuevas",

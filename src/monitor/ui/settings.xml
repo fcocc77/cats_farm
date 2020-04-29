@@ -96,11 +96,11 @@
                     </widget>
                     <widget class="QWidget" name="tab">
                         <attribute name="title">
-                            <string>Fusion</string>
+                            <string>Natron</string>
                         </attribute>
                         <layout class="QVBoxLayout" name="verticalLayout_3">
                             <item>
-                                <widget class="QPlainTextEdit" name="settings_fusion" />
+                                <widget class="QPlainTextEdit" name="settings_natron" />
                             </item>
                         </layout>
                     </widget>

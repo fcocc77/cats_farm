@@ -71,8 +71,8 @@ QString render_class::render_task(QJsonArray recv)
 			renderOK = houdini(ins);
 		if (software == "Maya")
 			renderOK = maya(ins);
-		if (software == "Fusion")
-			renderOK = fusion(ins);
+		if (software == "Natron")
+			renderOK = natron(ins);
 		if (software == "Cinema4D")
 			renderOK = cinema(ins);
 		if (software == "AE")
@@ -510,59 +510,71 @@ bool render_class::houdini(int ins)
 	// ----------------------------------
 }
 
-bool render_class::fusion(int ins)
+bool render_class::natron(int ins)
 {
-
-	QString log_file = path + "/log/render_log_" + QString::number(ins);
-	os::remove(log_file);
-
-	project[ins] = project[ins].replace(src_path[ins], dst_path[ins]);
-
-	if (_win32)
-	{
-		project[ins] = project[ins].replace("/", "\\");
-		log_file = log_file.replace("/", "\\");
-	}
-
-	// replmaza rutas internas del .comp
-	QString inside_project = fread(project[ins]);
-	if (_linux)
-		inside_project = inside_project.replace("\\\\", "/");
-	inside_project = inside_project.replace(src_path[ins], dst_path[ins]);
-	QString new_project = path + "/etc/fusion_render_" + QString::number(ins) + ".comp";
-	fwrite(new_project, inside_project);
-	//------------------------------------------------------------------------
-
-	QString args = " " + new_project + " --verbose --render --start " + QString::number(first_frame[ins]) + " --end " + QString::number(last_frame[ins]) + " -log " + log_file;
+	mutex->lock();
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
-	for (auto e : preferences["paths"].toObject()["fusion"].toArray())
+	for (auto e : preferences["paths"].toObject()["natron"].toArray())
 	{
 		exe = e.toString();
 		if (os::isfile(exe))
-		{
 			break;
-		}
 	}
 	//-----------------------------------------------
+	QString firstFrame = QString::number(first_frame[ins]);
+	QString lastFrame = QString::number(last_frame[ins]);
 
-	QString cmd;
-	if (_win32)
-		cmd = '"' + exe + '"' + args;
-	if (_linux)
+	QString natron_module = path + "/modules/natron/render.sh";
+
+	// crea la carpeta donde se renderearan los archivos
+	QString output_file = extra[ins];
+
+	QString output_dir = os::dirname(output_file);
+	QString output_name = os::basename(output_file);
+
+	QString ext = output_name.split(".").last();
+
+	QString output_render;
+	QString output;
+	if (ext == "mov")
 	{
-		os::sh("chmod 777 -R " + path + "/log");						 // al renderear en user no tiene los permisos de root en el log asi le da permisos
-		cmd = "runuser -l " + os::user() + " -c \"" + exe + args + "\""; // se ejecuta en usuario por que nececita X11 DISPLAY
+		output_name = output_name.split(".")[0];
+		output_render = output_dir + "/" + output_name;
+
+		// crea numero con ceros para el nombre a partir del primer cuadro
+		QString num = "0000000000" + firstFrame;
+		QStringRef nameNumber(&num, num.length() - 10, 10);
+		// -------------------------------------
+
+		output = output_render + "/" + output_name + "_" + nameNumber + ".mov";
 	}
-	// rendering ...
-	// ----------------------------------
-	qprocess(cmd, ins);
-	// ----------------------------------
+	else
+	{
+		output_render = output_dir + "/" + output_name.split("_")[0];
+		output = output_render + "/" + output_name;
+	}
+
+	if (not os::isdir(output_render))
+	{
+		os::mkdir(output_render);
+		if (_linux)
+			os::system("chmod 777 -R " + output_render);
+	}
+	//---------------------------------------------------
+
+	QString cmd = "sh " + natron_module + " " + exe + " \"" + project[ins] + "\" " + renderNode[ins] + " \"" + output + "\" " + firstFrame + " " + lastFrame;
+
+	mutex->unlock();
+
+	QString log;
+	log = qprocess(cmd, ins);
+	QString log_file = path + "/log/render_log_" + QString::number(ins);
+	fwrite(log_file, log);
 
 	// post render
-	QString log = fread(log_file);
-	if (log.contains("Render completed successfully"))
+	if (log.contains("Rendering finished"))
 		return true;
 	else
 		return false;

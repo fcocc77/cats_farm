@@ -339,6 +339,28 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			erase_by_name(jobs, job->name);
 			// ---------------------
 		}
+		if (software == "Natron")
+		{
+			QString output_file = job->extra;
+			QString ext = output_file.split(".").last();
+
+			if (ext == "mov")
+			{
+				QString output_dir = os::dirname(output_file);
+				QString output_name = os::basename(output_file);
+				output_name = output_name.split(".")[0];
+
+				QString output_render = output_dir + "/" + output_name;
+
+				job->status = "Concatenate";
+
+				output_render.replace(src_path, dst_path);
+				//-----------------------------------------
+
+				if (os::isdir(output_render))
+					concat(output_render);
+			}
+		}
 		//------------------------------------------------------------
 
 		QString submit_finish = "tiempo"; // time.strftime("%Y-%m-%d   %H:%M:%S")

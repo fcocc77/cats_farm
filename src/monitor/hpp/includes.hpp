@@ -1,7 +1,7 @@
 #ifndef INCLUDES_HPP
 #define INCLUDES_HPP
 
-#include "../ui_main.h"
+#include "../release/.ui/ui_main.h"
 // QT5 Library
 #include <QAction>
 #include <QApplication>

@@ -6,6 +6,11 @@ TARGET = "vmonitor"
 CONFIG += c++11
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
 CONFIG -= app_bundle
+
+# "silent" solo muestra el nombre del cpp y no todos los includes en la conpilacion
+CONFIG += silent
+# ----------------------------
+
 RC_ICONS = ../../icons/icon.ico
 
 QT += core gui svg widgets multimedia

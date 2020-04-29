@@ -13,9 +13,8 @@
             "/usr/local/Applications/MAXON/CINEMA 4D R19/CINEMA 4D.app/Contents/MacOS/CINEMA 4D",
             "/Applications/MAXON/CINEMA 4D R19/CINEMA 4D.app/Contents/MacOS/CINEMA 4D"
         ],
-        "fusion": [
-            "/opt/BlackmagicDesign/FusionRenderNode9/FusionRenderNode",
-            "C:/Program Files/Blackmagic Design/Fusion Render Node 9/FusionConsoleNode.exe"
+        "natron": [
+            "/opt/Natron2/NatronRenderer"
         ],
         "houdini": [
             "/opt/hfs16.5.439/bin/hython",
