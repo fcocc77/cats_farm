@@ -4,6 +4,8 @@ After=network.target
 
 [Service]
 Type=forking
+User=root
+Group=root
 ExecStart=/bin/sh -c "{{path}}/os/linux/init/service.sh start logger none"
 ExecStop=/bin/sh -c "{{path}}/os/linux/init/service.sh stop logger none"
 Restart=always

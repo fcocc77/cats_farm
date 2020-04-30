@@ -1,13 +1,11 @@
-# disable unsused variables warning
-QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-#---------------------------------
+include(../../config/config.pro)
+
 RC_ICONS = ../../icons/icon.ico
 
 TEMPLATE = app
 TARGET = "logger"
 
-CONFIG += console c++11 
-CONFIG -= app_bundle
+CONFIG += console
 
 QT += core gui multimedia widgets
 

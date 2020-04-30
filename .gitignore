@@ -3,9 +3,7 @@ src/*/debug
 src/*/*.o
 src/*/moc_*
 src/*/qrc_res.cpp
-src/*/Makefile*
 src/*/object_script*
-src/*/.qmake.stash
 src/*/VinaRender*
 src/*/*.exe
 src/*/*.app
@@ -18,6 +16,8 @@ src/*/logger
 src/*/utils
 src/*/videovina
 src/*/ui_main.h
+*.qmake.stash
+Makefile*
 bin
 log*
 qt/*/*zip

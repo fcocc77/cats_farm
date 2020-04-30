@@ -549,20 +549,19 @@ bool render_class::natron(int ins)
 		// -------------------------------------
 
 		output = output_render + "/" + output_name + "_" + nameNumber + ".mov";
+
+		if (not os::isdir(output_render))
+		{
+			os::mkdir(output_render);
+			if (_linux)
+				os::system("chmod 777 -R " + output_render);
+		}
+		//---------------------------------------------------
 	}
 	else
 	{
-		output_render = output_dir + "/" + output_name.split("_")[0];
-		output = output_render + "/" + output_name;
+		output = output_file;
 	}
-
-	if (not os::isdir(output_render))
-	{
-		os::mkdir(output_render);
-		if (_linux)
-			os::system("chmod 777 -R " + output_render);
-	}
-	//---------------------------------------------------
 
 	QString cmd = "sh " + natron_module + " " + exe + " \"" + project[ins] + "\" " + renderNode[ins] + " \"" + output + "\" " + firstFrame + " " + lastFrame;
 

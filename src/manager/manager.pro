@@ -1,17 +1,11 @@
-# disable unsused variables warning
-QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-#---------------------------------
+include(../../config/config.pro)
 
 TEMPLATE = app
 TARGET = "vmanager"
 
-# "silent" solo muestra el nombre del cpp y no todos los includes en la conpilacion
-CONFIG += silent
-
 RC_ICONS = ../../icons/icon.ico
 
-CONFIG += console c++11
-CONFIG -= app_bundle
+CONFIG += console
 QT += core gui multimedia widgets
 
 HEADERS +=  ../utils/os.hpp \

@@ -1,20 +1,19 @@
 #!/usr/bin/env sh
-path="$(
-    cd "$(dirname "$0")"
-    pwd -P
-)"
+cd "$(dirname "$0")"
+cd ..
+path=$(pwd)
 
 # ruta de instalacion
 dst="/opt/vinarender"
 # ------------------
 # IPs
-manager_ip="192.168.10.10"
+manager_ip="192.168.1.77"
 # ------------------
 # PORTs
 manager_port=771
 server_port=772
 # -----------------
-manager_start=false
+manager_start=true
 server_start=true
 logger_start=false
 
@@ -25,7 +24,7 @@ compile() {
     make
     bin=$path/bin
     mkdir -p $bin
-    mv $folder/$2 $bin
+    mv "$folder/release/$2" $bin
 }
 
 nuke() {

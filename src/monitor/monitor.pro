@@ -1,25 +1,12 @@
-# disable unsused variables warning
-QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter
-#---------------------------------
+include(../../config/config.pro)
+
 TEMPLATE = app
 TARGET = "vmonitor"
-CONFIG += c++11
 INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
-CONFIG -= app_bundle
-
-# "silent" solo muestra el nombre del cpp y no todos los includes en la conpilacion
-CONFIG += silent
-# ----------------------------
 
 RC_ICONS = ../../icons/icon.ico
 
 QT += core gui svg widgets multimedia
-
-DESTDIR = release
-OBJECTS_DIR = release/.obj
-MOC_DIR = release/.moc
-RCC_DIR = release/.rcc
-UI_DIR = release/.ui
 
 FORMS = ./ui/main.ui
 
