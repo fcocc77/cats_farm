@@ -17,6 +17,7 @@ src/*/utils
 src/*/videovina
 src/*/ui_main.h
 *.qmake.stash
+*lock.json
 Makefile*
 bin
 log*

@@ -8,12 +8,15 @@ class global_class : public QObject
 private:
   shared_variables *shared;
   QMainWindow *monitor;
-  Ui::MainWindow *ui;
 
   QSystemTrayIcon *notify;
   QStringList completed_jobs;
+  QDockWidget *settings_dock;
+  QDockWidget *options_dock;
+  QDockWidget *log_dock;
 
   // General Funcions
+  void setup_ui();
   void connections();
   void notify_icon();
   void style();
@@ -21,9 +24,11 @@ private:
 
 public:
   global_class(
-      Ui::MainWindow *_ui,
       QMainWindow *_monitor,
-      shared_variables *_shared);
+      shared_variables *_shared,
+      QDockWidget *_settings_dock,
+      QDockWidget *_options_dock,
+      QDockWidget *_log_dock);
 
   // General Action
   QAction *preferences_action;

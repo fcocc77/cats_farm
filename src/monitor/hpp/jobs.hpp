@@ -3,20 +3,25 @@
 
 #include "includes.hpp"
 #include "log.hpp"
+#include "servers.hpp"
+#include "options.hpp"
+#include "groups.hpp"
 
-class jobs_class : public QObject
+class jobs_class : public QTreeWidget
 {
 private:
-    Ui::MainWindow *ui;
     QTreeWidget *jobs;
     shared_variables *shared;
     QMainWindow *monitor;
     log_class *log;
-    void properties();
+    servers_class *servers;
+    options_class *options;
+    groups_class *groups;
     void connections();
     // virtual void mousePressEvent(QMouseEvent *event);
 
     // Jobs Funcions
+    void setup_ui();
     void popup();
     void show_log();
     void modify();
@@ -41,10 +46,12 @@ private:
 
 public:
     jobs_class(
-        Ui::MainWindow *_ui,
         shared_variables *_shared,
         QMainWindow *_monitor,
-        log_class *_log);
+        log_class *_log,
+        servers_class *_servers,
+        options_class *_options,
+        groups_class *_groups);
     ~jobs_class();
 
     // Job Acciones

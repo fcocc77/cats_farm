@@ -31,11 +31,11 @@ public:
   ~monitor();
   //---------------------------
 
-  Ui::MainWindow *ui;
-
   // Variables
   shared_variables *shared;
   // ----------------------------
+
+  void setup_ui();
 
   // Modulos
   main_menu_class *main_menu;

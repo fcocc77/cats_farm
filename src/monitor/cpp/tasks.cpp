@@ -1,13 +1,13 @@
 #include "../hpp/tasks.hpp"
 
 tasks_class::tasks_class(
-    Ui::MainWindow *_ui,
     QMainWindow *_monitor,
-    shared_variables *_shared)
+    shared_variables *_shared,
+    jobs_class *_jobs)
 {
-    ui = _ui;
     monitor = _monitor;
     shared = _shared;
+    jobs = _jobs;
 
     // Task Action
     suspend_action = new QAction("Suspend");
@@ -15,7 +15,7 @@ tasks_class::tasks_class(
     render_server_action = new QAction("Select server tasks");
     //------------------------------------------------
 
-    properties();
+    setup_ui();
     connections();
 }
 
@@ -23,41 +23,45 @@ tasks_class::~tasks_class()
 {
 }
 
-void tasks_class::properties()
+void tasks_class::setup_ui()
 {
-    ui->tasks->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    ui->tasks->setAlternatingRowColors(true);                          // item con color alternativos
-    ui->tasks->setIndentation(0);           
-    ui->tasks->setFocusPolicy(Qt::NoFocus);                           // elimina el margen del principio
+    this->setObjectName("tasks");
 
-    ui->tasks->setColumnWidth(0, 100);
-    ui->tasks->setColumnWidth(1, 100);
-    ui->tasks->setColumnWidth(2, 100);
-    ui->tasks->setColumnWidth(3, 100);
+    QStringList columns = {"Task", "Frame Range", "Status", "Server", "Task Time"};
+    this->setColumnCount(5);
+    this->setHeaderLabels(columns); // pone el nombre de las columnas
 
-    ui->tasks->setSortingEnabled(true);
-    ui->tasks->sortByColumn(0, Qt::AscendingOrder);
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setAlternatingRowColors(true);                          // item con color alternativos
+    this->setIndentation(0);
+    this->setFocusPolicy(Qt::NoFocus); // elimina el margen del principio
 
-    ui->tasks->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->setColumnWidth(0, 100);
+    this->setColumnWidth(1, 100);
+    this->setColumnWidth(2, 100);
+    this->setColumnWidth(3, 100);
+
+    this->setSortingEnabled(true);
+    this->sortByColumn(0, Qt::AscendingOrder);
+
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void tasks_class::connections()
 {
-
-    connect(ui->tasks, &QTreeWidget::customContextMenuRequested, this, &tasks_class::popup);
+    connect(this, &QTreeWidget::customContextMenuRequested, this, &tasks_class::popup);
 
     // Task Action
     connect(suspend_action, &QAction::triggered, this, [this]() { to_action("suspend"); });
     connect(restart_action, &QAction::triggered, this, &tasks_class::restart);
 
     connect(render_server_action, &QAction::triggered, this, &tasks_class::render_server);
-
     //-----------------------------------------------------
 }
 
 void tasks_class::popup()
 {
-    auto selected = ui->tasks->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
         QMenu *menu = new QMenu(monitor);
@@ -81,13 +85,13 @@ void tasks_class::restart()
 
 void tasks_class::render_server()
 {
-    auto selected = ui->tasks->selectedItems();
+    auto selected = this->selectedItems();
     QString _server = selected[0]->text(3);
     _server = _server.split(":")[0];
 
-    for (int i = 0; i < ui->tasks->topLevelItemCount(); ++i)
+    for (int i = 0; i < this->topLevelItemCount(); ++i)
     {
-        auto item = ui->tasks->topLevelItem(i);
+        auto item = this->topLevelItem(i);
 
         QString server = item->text(3);
         server = server.split(":")[0];
@@ -99,7 +103,7 @@ void tasks_class::render_server()
 void tasks_class::message(QString action, QString ask, QString tile)
 {
 
-    auto selected = ui->tasks->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
 
@@ -116,11 +120,11 @@ void tasks_class::to_action(QString action)
 {
 
     QJsonArray pks;
-    for (auto item_job : ui->jobs->selectedItems())
+    for (auto item_job : jobs->selectedItems())
     {
         QString job_name = item_job->text(0);
 
-        for (auto item_task : ui->tasks->selectedItems())
+        for (auto item_task : this->selectedItems())
         {
             QString task_name = item_task->text(0);
             pks.push_back({{job_name, task_name, action}});

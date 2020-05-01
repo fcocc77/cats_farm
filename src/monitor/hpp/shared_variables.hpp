@@ -16,6 +16,9 @@ struct shared_variables
     QString manager_host;
     int manager_port;
     int server_port;
+    QComboBox *zone_box;
+    QLabel *conection;
+    QLabel *jobs_count;
 };
 
 #endif //SHARED_VARIABLES_HPP

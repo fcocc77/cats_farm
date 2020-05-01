@@ -3,15 +3,15 @@
 
 #include "includes.hpp"
 #include "shared_variables.hpp"
+#include "jobs.hpp"
 
-class tasks_class : public QObject
+class tasks_class : public QTreeWidget
 {
 private:
-    Ui::MainWindow *ui;
     QMainWindow *monitor;
 
     // Task Funtions
-    void properties();
+    void setup_ui();
     void popup();
     void restart();
     void render_server();
@@ -20,12 +20,13 @@ private:
     void connections();
     //-----------------
     shared_variables *shared;
+    jobs_class *jobs;
 
 public:
     tasks_class(
-        Ui::MainWindow *_ui,
         QMainWindow *_monitor,
-        shared_variables *_shared);
+        shared_variables *_shared,
+        jobs_class *_jobs);
     ~tasks_class();
 
     // Task Action

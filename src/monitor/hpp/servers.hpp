@@ -4,17 +4,16 @@
 #include "includes.hpp"
 #include "log.hpp"
 
-class servers_class : public QObject
+class servers_class : public QTreeWidget
 {
     Q_OBJECT
 private:
-    Ui::MainWindow *ui;
     QMainWindow *monitor;
     shared_variables *shared;
     log_class *log;
 
     // Server Funcions
-    void properties();
+    void setup_ui();
     void connections();
     void server_popup();
     void cpu_limit(int limit);
@@ -36,7 +35,6 @@ private:
 
 public:
     servers_class(
-        Ui::MainWindow *_ui,
         QMainWindow *_monitor,
         shared_variables *_shared,
         log_class *_log);

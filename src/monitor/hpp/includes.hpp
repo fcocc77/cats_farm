@@ -1,7 +1,6 @@
 #ifndef INCLUDES_HPP
 #define INCLUDES_HPP
 
-#include "../release/.ui/ui_main.h"
 // QT5 Library
 #include <QAction>
 #include <QApplication>
@@ -24,11 +23,14 @@
 #include <QList>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QMenuBar>
 #include <QTreeWidget>
 #include <QSound>
 #include <QSignalMapper>
 #include <QPainter>
 #include <QInputDialog>
+#include <QComboBox>
+#include <QPushButton>
 //------------------------
 
 #include <iostream>

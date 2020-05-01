@@ -1,13 +1,17 @@
 #include "../hpp/global.hpp"
 
 global_class::global_class(
-	Ui::MainWindow *_ui,
 	QMainWindow *_monitor,
-	shared_variables *_shared)
+	shared_variables *_shared,
+	QDockWidget *_settings_dock,
+	QDockWidget *_options_dock,
+	QDockWidget *_log_dock)
 {
-	ui = _ui;
 	monitor = _monitor;
 	shared = _shared;
+	settings_dock = _settings_dock;
+	options_dock = _options_dock;
+	log_dock = _log_dock;
 
 	// General Action
 	preferences_action = new QAction("Preferences");
@@ -26,7 +30,7 @@ global_class::global_class(
 void global_class::connections()
 {
 	connect(preferences_action, &QAction::triggered, this, [this]() {
-		ui->settings->show();
+		settings_dock->show();
 	});
 
 	preferences_action->setIcon(QIcon(path + "/icons/setting.png"));
@@ -50,9 +54,9 @@ void global_class::connections()
 	});
 
 	connect(hide_all_panels_action, &QAction::triggered, this, [this]() {
-		ui->options->hide();
-		ui->log->hide();
-		ui->settings->hide();
+		options_dock->hide();
+		log_dock->hide();
+		settings_dock->hide();
 	});
 	hide_all_panels_action->setShortcut(QString("Esc"));
 
@@ -63,7 +67,7 @@ void global_class::connections()
 void global_class::style()
 {
 	// estilo de general
-	QString style = fread(path + "/src/monitor/sass/main.css");
+	QString style = fread("/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/main.css");
 	monitor->setStyleSheet(style.toStdString().c_str());
 	// ----------------------------
 }

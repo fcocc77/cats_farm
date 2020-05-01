@@ -3,8 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
     entry: {
-        monitor: "./src/monitor/sass/main.sass",
-        ui: "./src/monitor/ui/main.xml",
+        monitor: "./src/monitor/sass/main.sass"
     },
     output: {
         path: __dirname + "/",
@@ -15,9 +14,6 @@ module.exports = {
             filename: "src/monitor/sass/main.css"
         }),
     ],
-    resolveLoader: {
-        modules: ['node_modules', __dirname + '/loaders']
-    },
     module: {
         rules: [
             {
@@ -27,15 +23,6 @@ module.exports = {
                     "css-loader",
                     "sass-loader"
                 ]
-            },
-            {
-                test: /\.xml/,
-                use: {
-                    loader: 'ui_loader',
-                    options: {
-                        filename: "src/monitor/ui/main.ui"
-                    }
-                }
             }
         ]
     }

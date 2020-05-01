@@ -2,16 +2,17 @@
 #define GROUPS_HPP
 
 #include "includes.hpp"
+#include "servers.hpp"
 
-class groups_class : public QObject
+class groups_class : public QTreeWidget
 {
 private:
-    Ui::MainWindow *ui;
     QMainWindow *monitor;
     shared_variables *shared;
-    void properties();
+    servers_class *servers;
 
     // Groups Funtions
+    void setup_ui();
     void connections();
     void popup();
     void create_window();
@@ -21,9 +22,9 @@ private:
 
 public:
     groups_class(
-        Ui::MainWindow *_ui,
         QMainWindow *_monitor,
-        shared_variables *_shared);
+        shared_variables *_shared,
+        servers_class *_servers);
     ~groups_class();
 
     // Group Action

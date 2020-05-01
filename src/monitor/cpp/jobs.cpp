@@ -4,16 +4,19 @@
 #include <QtSvg>
 
 jobs_class::jobs_class(
-    Ui::MainWindow *_ui,
     shared_variables *_shared,
     QMainWindow *_monitor,
-    log_class *_log)
+    log_class *_log,
+    servers_class *_servers,
+    options_class *_options,
+    groups_class *_groups)
 {
-    ui = _ui;
-    jobs = ui->jobs;
     shared = _shared;
     monitor = _monitor;
     log = _log;
+    servers = _servers;
+    options = _options;
+    groups = _groups;
 
     // Job Acciones
     delete_action = new QAction("Delete");
@@ -25,7 +28,7 @@ jobs_class::jobs_class(
     job_modify_action = new QAction("Modify");
     //------------------------------------------------
 
-    properties();
+    setup_ui();
     connections();
 }
 
@@ -33,33 +36,40 @@ jobs_class::~jobs_class()
 {
 }
 
-void jobs_class::properties()
+void jobs_class::setup_ui()
 {
-    jobs->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    jobs->setAlternatingRowColors(true);                          // item con color alternativos
-    jobs->setIndentation(0);                                      // elimina el margen del principio
+    this->setObjectName("jobs");
+    this->setColumnCount(10);
+    QStringList columns{"Job Name", "Priority", "Software", "Task Progress", "Status",
+                        "Submit Data/Time", "Finished Data/Time", "Estimated Time", "Total Render Time", "Comment"};
 
-    jobs->setColumnWidth(0, 200); // ajusta el largo de las columnas
-    jobs->setColumnWidth(1, 80);
-    jobs->setColumnWidth(2, 100);
-    jobs->setColumnWidth(3, 200);
-    jobs->setColumnWidth(4, 100);
-    jobs->setColumnWidth(5, 150);
-    jobs->setColumnWidth(6, 150);
-    jobs->setColumnWidth(7, 150);
-    jobs->setColumnWidth(8, 150);
+    this->setHeaderLabels(columns);
 
-    jobs->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setAlternatingRowColors(true);                          // item con color alternativos
+    this->setIndentation(0);                                      // elimina el margen del principio
 
-    jobs->setSortingEnabled(true);
-    jobs->setFocusPolicy(Qt::NoFocus);
-    jobs->sortByColumn(5, Qt::AscendingOrder);
+    this->setColumnWidth(0, 200); // ajusta el largo de las columnas
+    this->setColumnWidth(1, 80);
+    this->setColumnWidth(2, 100);
+    this->setColumnWidth(3, 200);
+    this->setColumnWidth(4, 100);
+    this->setColumnWidth(5, 150);
+    this->setColumnWidth(6, 150);
+    this->setColumnWidth(7, 150);
+    this->setColumnWidth(8, 150);
+
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    this->setSortingEnabled(true);
+    this->setFocusPolicy(Qt::NoFocus);
+    this->sortByColumn(5, Qt::AscendingOrder);
 }
 
 void jobs_class::connections()
 {
-    connect(ui->jobs, &QTreeWidget::itemDoubleClicked, this, &jobs_class::modify);
-    connect(ui->jobs, &QTreeWidget::customContextMenuRequested, this, &jobs_class::popup);
+    connect(this, &QTreeWidget::itemDoubleClicked, this, &jobs_class::modify);
+    connect(this, &QTreeWidget::customContextMenuRequested, this, &jobs_class::popup);
 
     // Job Acciones
     connect(delete_action, &QAction::triggered, this, &jobs_class::item_delete);
@@ -94,21 +104,18 @@ void jobs_class::connections()
     connect(job_modify_action, &QAction::triggered, this, &jobs_class::modify);
     job_modify_action->setShortcut(QString("M"));
 
-    connect(ui->opt_ok, &QPushButton::clicked, this, &jobs_class::options_ok);
-    connect(ui->opt_cancel, &QPushButton::clicked, [this]() {
-        ui->options->hide();
+    connect(options->ok_button, &QPushButton::clicked, this, &jobs_class::options_ok);
+    connect(options->cancel_button, &QPushButton::clicked, [this]() {
+        options->parentWidget()->hide();
     });
-
     //-----------------------------------------------------------------------
 }
 
 void jobs_class::popup()
 {
-
-    auto selected = ui->jobs->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
-
         QMenu *menu = new QMenu(monitor);
 
         menu->addAction(job_suspend_action);
@@ -130,7 +137,7 @@ void jobs_class::popup()
 void jobs_class::show_log()
 {
 
-    auto selected = ui->jobs->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
 
@@ -160,9 +167,9 @@ void jobs_class::show_log()
                 QStringList all_host;
                 QStringList all_name;
 
-                for (int i = 0; i < ui->servers->topLevelItemCount(); ++i)
+                for (int i = 0; i < servers->topLevelItemCount(); ++i)
                 {
-                    auto item = ui->servers->topLevelItem(i);
+                    auto item = servers->topLevelItem(i);
                     QString name = item->text(0);
                     QString _host = item->text(7);
 
@@ -207,16 +214,16 @@ void jobs_class::show_log()
                 log->code_editor->setPlainText("The jobs has not yet rendered");
         }
 
-        ui->log->show();
+        log->parentWidget()->show();
     }
 }
 
 void jobs_class::modify()
 {
-    ui->options->show();
+    options->parentWidget()->show();
 
     // Recive los servers del jobs que estan en el manager
-    auto selected = ui->jobs->selectedItems();
+    auto selected = this->selectedItems();
     first_job_item = selected[0];
 
     if (not selected.empty())
@@ -241,27 +248,27 @@ void jobs_class::modify()
         int first_frame = pks[7].toInt();
         int last_frame = pks[8].toInt();
 
-        ui->opt_priority->setCurrentIndex(priority);
-        ui->opt_first_frame->setText(QString::number(first_frame));
-        ui->opt_last_frame->setText(QString::number(last_frame));
-        ui->opt_job_name->setText(_job_name);
-        ui->opt_task_size->setText(QString::number(task_size));
-        ui->opt_comments->setText(comment);
-        ui->opt_instances->setText(QString::number(instances));
+        options->priority_combobox->setCurrentIndex(priority);
+        options->first_frame_edit->setText(QString::number(first_frame));
+        options->last_frame_edit->setText(QString::number(last_frame));
+        options->job_name_edit->setText(_job_name);
+        options->task_size_edit->setText(QString::number(task_size));
+        options->comment_edit->setText(comment);
+        options->instances_edit->setText(QString::number(instances));
 
         // Agrega grupos al combobox y establese el item correspondiente
-        ui->opt_server_group->clear();
-        ui->opt_server_group->addItem("None");
+        options->group_combobox->clear();
+        options->group_combobox->addItem("None");
         QString current_group = "None";
-        for (int i = 0; i < ui->groups->topLevelItemCount(); ++i)
+        for (int i = 0; i < groups->topLevelItemCount(); ++i)
         {
-            QString name = ui->groups->topLevelItem(i)->text(2);
-            ui->opt_server_group->addItem(name);
+            QString name = groups->topLevelItem(i)->text(2);
+            options->group_combobox->addItem(name);
 
             if (serverGroupExist.contains(name))
                 current_group = name;
         }
-        ui->opt_server_group->setCurrentText(current_group);
+        options->group_combobox->setCurrentText(current_group);
         // ---------------------------------
     }
 }
@@ -271,23 +278,23 @@ void jobs_class::options_ok()
     QJsonArray machines = {};
     // guarda el grupo del combobox en el array
     QJsonArray group;
-    QString current_group = ui->opt_server_group->currentText();
+    QString current_group = options->group_combobox->currentText();
     group.push_back(current_group);
     // -------------------------------
 
-    int priority = ui->opt_priority->currentIndex();
-    int first_frame = ui->opt_first_frame->text().toInt();
-    int last_frame = ui->opt_last_frame->text().toInt();
-    int task_size = ui->opt_task_size->text().toInt();
-    QString comment = ui->opt_comments->text();
-    QString _job_name = ui->opt_job_name->text();
+    int priority = options->priority_combobox->currentIndex();
+    int first_frame = options->first_frame_edit->text().toInt();
+    int last_frame = options->last_frame_edit->text().toInt();
+    int task_size = options->task_size_edit->text().toInt();
+    QString comment = options->comment_edit->text();
+    QString _job_name = options->job_name_edit->text();
 
-    int instances = ui->opt_instances->text().toInt();
+    int instances = options->instances_edit->text().toInt();
     if (instances > 16)
         instances = 16;
 
     QJsonArray pks;
-    auto selected = ui->jobs->selectedItems();
+    auto selected = this->selectedItems();
     selected.push_front(first_job_item);
 
     QStringList repeatItem;
@@ -310,7 +317,7 @@ void jobs_class::options_ok()
     if (reply == QMessageBox::Yes)
     {
         tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
-        ui->options->hide();
+        options->parentWidget()->hide();
     }
 }
 
@@ -321,7 +328,7 @@ void jobs_class::message(
     QString tile,
     jobs_class *_class)
 {
-    auto selected = ui->jobs->selectedItems();
+    auto selected = this->selectedItems();
 
     if (not selected.empty())
     {
@@ -338,8 +345,8 @@ void jobs_class::message(
 void jobs_class::delete_start(QString action)
 {
 
-    auto root = ui->jobs->invisibleRootItem();
-    auto selected = ui->jobs->selectedItems();
+    auto root = this->invisibleRootItem();
+    auto selected = this->selectedItems();
 
     QJsonArray pks;
 
@@ -363,7 +370,7 @@ void jobs_class::to_action(QString action)
 {
     shared->stopUpdate = true;
 
-    auto selected = ui->jobs->selectedItems();
+    auto selected = this->selectedItems();
 
     QJsonArray pks;
     for (auto item : selected)

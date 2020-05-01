@@ -285,56 +285,56 @@ QToolBar {
   border-bottom: 1px solid #101213;
   border-style: outset;
   padding: 15px; }
-  QToolBar #toolbarwidget {
+  QToolBar #barwidget {
     background: transparent; }
-    QToolBar #toolbarwidget QPushButton {
+    QToolBar #barwidget QPushButton {
       background: transparent;
       margin-right: 20px;
       qproperty-iconSize: 15px;
       font-size: 13px;
       border-right: 1px solid #464b53;
       padding-right: 30px; }
-      QToolBar #toolbarwidget QPushButton:hover {
+      QToolBar #barwidget QPushButton:hover {
         color: #0099ff; }
-    QToolBar #toolbarwidget QComboBox {
+    QToolBar #barwidget QComboBox {
       margin-right: 10px;
       background-color: #2e3238;
       border: 1px solid #2e3238;
       padding: 7px;
       border-radius: 2px; }
-      QToolBar #toolbarwidget QComboBox::down-arrow {
+      QToolBar #barwidget QComboBox::down-arrow {
         image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
-      QToolBar #toolbarwidget QComboBox:focus {
+      QToolBar #barwidget QComboBox:focus {
         border-color: #33373d; }
-      QToolBar #toolbarwidget QComboBox::drop-down {
+      QToolBar #barwidget QComboBox::drop-down {
         width: 20px;
         background-color: #3a3f45; }
-      QToolBar #toolbarwidget QComboBox:hover {
+      QToolBar #barwidget QComboBox:hover {
         background: #33373d; }
-      QToolBar #toolbarwidget QComboBox QAbstractItemView {
+      QToolBar #barwidget QComboBox QAbstractItemView {
         background-color: #1e2124; }
-      QToolBar #toolbarwidget QComboBox:item {
+      QToolBar #barwidget QComboBox:item {
         font-size: 13px; }
-        QToolBar #toolbarwidget QComboBox:item:selected {
+        QToolBar #barwidget QComboBox:item:selected {
           background-color: #2e3238;
           color: #0099ff;
           padding-left: 0px; }
-      QToolBar #toolbarwidget QComboBox::indicator {
+      QToolBar #barwidget QComboBox::indicator {
         background-color: transparent; }
-    QToolBar #toolbarwidget QLabel {
+    QToolBar #barwidget QLabel {
       background: transparent; }
-    QToolBar #toolbarwidget #tool_resume {
+    QToolBar #barwidget #resume {
       qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/play.svg); }
-      QToolBar #toolbarwidget #tool_resume:hover {
+      QToolBar #barwidget #resume:hover {
         qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/pause.svg); }
-    QToolBar #toolbarwidget #tool_suspend {
+    QToolBar #barwidget #suspend {
       qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/pause.svg); }
-    QToolBar #toolbarwidget #tool_settings {
+    QToolBar #barwidget #settings {
       qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/gear.svg); }
-    QToolBar #toolbarwidget #tool_count {
+    QToolBar #barwidget #jobs_count {
       font-size: 15px;
       color: #0099ff; }
-    QToolBar #toolbarwidget #tool_conection {
+    QToolBar #barwidget #conection {
       border-right: 1px solid #464b53;
       color: red;
       padding-right: 15px;
@@ -426,44 +426,44 @@ QToolBar {
       #groups::branch:has-children:closed {
         image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png); }
 
-#settings #settings_zones_widget, #settings #settings_host_widget {
+#settings #zones_knobs, #settings #host_knobs {
   background: #2a2d32;
   border-radius: 2px; }
-  #settings #settings_zones_widget QLabel, #settings #settings_host_widget QLabel {
+  #settings #zones_knobs QLabel, #settings #host_knobs QLabel {
     background: transparent;
     margin: 10px; }
-  #settings #settings_zones_widget QLineEdit, #settings #settings_host_widget QLineEdit {
+  #settings #zones_knobs QLineEdit, #settings #host_knobs QLineEdit {
     background: #2e3238;
     border: 1px solid #2e3238;
     padding: 10px;
     border-radius: 2px;
     background: #3a3f45;
     border-color: #464b53; }
-    #settings #settings_zones_widget QLineEdit:hover, #settings #settings_host_widget QLineEdit:hover {
+    #settings #zones_knobs QLineEdit:hover, #settings #host_knobs QLineEdit:hover {
       background: #3a3f45;
       border-color: #464b53; }
-    #settings #settings_zones_widget QLineEdit:focus, #settings #settings_host_widget QLineEdit:focus {
+    #settings #zones_knobs QLineEdit:focus, #settings #host_knobs QLineEdit:focus {
       background: #3a3f45;
       border-color: #0099ff; }
 
-#settings #settings_tabs QWidget {
+#settings #third_knobs QWidget {
   background: #2a2d32;
   padding: 10px;
   border-radius: 2px; }
 
-#settings #settings_tabs QTabBar {
+#settings #third_knobs QTabBar {
   background: transparent; }
-  #settings #settings_tabs QTabBar::tab {
+  #settings #third_knobs QTabBar::tab {
     background: #23262a;
     padding: 8px;
     margin-right: 5px; }
-    #settings #settings_tabs QTabBar::tab:hover {
+    #settings #third_knobs QTabBar::tab:hover {
       color: #0099ff; }
-    #settings #settings_tabs QTabBar::tab:selected {
+    #settings #third_knobs QTabBar::tab:selected {
       background: #2a2d32;
       color: #0099ff; }
 
-#settings #settings_tabs QPlainTextEdit {
+#settings #third_knobs QPlainTextEdit {
   background: #23262a;
   border-radius: 2px;
   border: 1px solid #33373d; }
@@ -531,7 +531,7 @@ QToolBar {
         padding-left: 0px; }
     #options QComboBox::indicator {
       background-color: transparent; }
-  #options #widget_opt_1, #options #widget_opt_2, #options #opt_comment_widget {
+  #options #first_knobs, #options #second_knobs, #options #third_knobs {
     background: #1e2124;
     border-radius: 2px; }
 

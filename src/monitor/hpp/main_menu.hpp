@@ -8,10 +8,9 @@
 #include "groups.hpp"
 #include "tasks.hpp"
 
-class main_menu_class
+class main_menu_class : public QMenuBar
 {
 private:
-    Ui::MainWindow *ui;
     void connections();
 
     global_class *global;
@@ -22,7 +21,6 @@ private:
 
 public:
     main_menu_class(
-        Ui::MainWindow *_ui,
         global_class *_global,
         jobs_class *_jobs,
         servers_class *_servers,

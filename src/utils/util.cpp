@@ -67,6 +67,7 @@ QJsonObject jofs(QString data)
 { // jofs =  json object from string
 	return QJsonDocument::fromJson(data.toUtf8()).object();
 }
+
 QJsonArray jafs(QString data)
 { // jafs =  json array from string
 	return QJsonDocument::fromJson(data.toUtf8()).array();
@@ -187,9 +188,32 @@ const QString currentDateTime(int num)
 	return buf;
 }
 
+QLayout *qlayout(QLayout *parent, QString direction, QString name)
+{
+	// crea un widget y layout en uno, para que el disenio no tenga tango codigo
+	QWidget *widget = new QWidget();
+	if (!name.isEmpty())
+		widget->setObjectName(name);
+
+	parent->addWidget(widget);
+
+	if (direction == "h")
+	{
+		QHBoxLayout *hlayout = new QHBoxLayout();
+		widget->setLayout(hlayout);
+		return hlayout;
+	}
+	else
+	{
+		QVBoxLayout *vlayout = new QVBoxLayout();
+		widget->setLayout(vlayout);
+		return vlayout;
+	}
+}
+
 QString getPath()
 {
-	// este archivo es generado en la instalacion, 
+	// este archivo es generado en la instalacion,
 	// con la ruta donde se instala el vinarender
 	return fread("/etc/vinarender");
 	// --------------------------

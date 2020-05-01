@@ -16,6 +16,10 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QList>
+#include <QLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QWidget>
 
 using namespace std;
 
@@ -34,6 +38,7 @@ QString jats(QJsonArray data);  // jats =  json array to string
 QString jots(QJsonObject data); // jots =  json object to string
 QJsonObject jofs(QString data); // jofs =  json object from string
 QJsonArray jafs(QString data);  // jafs =  json array from string
+QLayout *qlayout(QLayout *parent, QString direction, QString name = "");
 
 // print para 1, 2 y 3 argumentos
 template <class T>

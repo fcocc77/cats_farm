@@ -1,12 +1,10 @@
 #include "../hpp/servers.hpp"
 
 servers_class::servers_class(
-    Ui::MainWindow *_ui,
     QMainWindow *_monitor,
     shared_variables *_shared,
     log_class *_log)
 {
-    ui = _ui;
     monitor = _monitor;
     shared = _shared;
     log = _log;
@@ -34,41 +32,48 @@ servers_class::servers_class(
     delete_action = new QAction("Delete Server");
     //------------------------------------------------
 
-    properties();
     connections();
+    setup_ui();
 }
 
 servers_class::~servers_class()
 {
 }
 
-void servers_class::properties()
+void servers_class::setup_ui()
 {
+    this->setObjectName("servers");
 
-    ui->servers->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    ui->servers->setIndentation(0);                                      // elimina el margen del principio
-    ui->servers->setAlternatingRowColors(true);
-    ui->servers->setFocusPolicy(Qt::NoFocus); // item con color alternativos
+    QStringList columns{"Server Name", "Status", "Ins.", "CPU Usage", "CPU Temp",
+                        "RAM Usage", "System", "IP", "MAC Address", "Job Rendered"};
+    this->setHeaderLabels(columns);
 
-    ui->servers->setGeometry(1000, 1000, 1000, 1000);
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setIndentation(0);                                      // elimina el margen del principio
+    this->setAlternatingRowColors(true);
+    this->setFocusPolicy(Qt::NoFocus); // item con color alternativos
+
+    this->setGeometry(1000, 1000, 1000, 1000);
 
     // ajusta el largo de las columnas
-    ui->servers->setColumnWidth(0, 150);
-    ui->servers->setColumnWidth(1, 50);
-    ui->servers->setColumnWidth(2, 50);
-    ui->servers->setColumnWidth(3, 177);
-    ui->servers->setColumnWidth(4, 100);
-    ui->servers->setColumnWidth(5, 177);
-    ui->servers->setColumnWidth(6, 100);
+    this->setColumnWidth(0, 150);
+    this->setColumnWidth(1, 50);
+    this->setColumnWidth(2, 50);
+    this->setColumnWidth(3, 177);
+    this->setColumnWidth(4, 100);
+    this->setColumnWidth(5, 177);
+    this->setColumnWidth(6, 100);
     //-------------------------------
 
-    ui->servers->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    ui->servers->setSortingEnabled(true);
-    ui->servers->sortByColumn(0, Qt::AscendingOrder);
+    this->setSortingEnabled(true);
+    this->sortByColumn(0, Qt::AscendingOrder);
 
     // Menus de display de servidores
-    QMenuBar *menuBar = new QMenuBar();
+    return;
+
+    QMenuBar *menuBar = new QMenuBar(this);
     menuBar->addMenu("File");
     menuBar->addMenu("Edit");
 
@@ -87,16 +92,6 @@ void servers_class::properties()
     display->addAction(display_linux_action);
     display->addAction(display_mac_action);
     //------------------------------------------
-
-    // QWidget *widget = new QWidget();
-    // QVBoxLayout *vbox = new QVBoxLayout();
-    // vbox->addWidget(menuBar);
-    // vbox->addWidget(ui->servers);
-
-    // widget->setLayout(vbox);
-
-    // dock->setObjectName("Server");
-    // dock->setWidget(widget);
 }
 
 void servers_class::connections()
@@ -154,7 +149,7 @@ void servers_class::connections()
 
     // Server List Connections
 
-    connect(ui->servers, &QTreeWidget::customContextMenuRequested, this, &servers_class::server_popup);
+    connect(this, &QTreeWidget::customContextMenuRequested, this, &servers_class::server_popup);
 
     // Server Action
 
@@ -200,7 +195,7 @@ void servers_class::connections()
 
 void servers_class::server_popup()
 {
-    auto selected = ui->servers->selectedItems();
+    auto selected = this->selectedItems();
 
     QMenu *menu = new QMenu(monitor);
     if (not selected.empty())
@@ -264,7 +259,7 @@ void servers_class::cpu_limit(int limit)
 void servers_class::to_log()
 {
 
-    auto selected = ui->servers->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
         QString host = (selected[0]->text(7));
@@ -273,7 +268,7 @@ void servers_class::to_log()
         QString result = tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
 
         log->code_editor->setPlainText(result);
-        ui->log->show();
+        log->parentWidget()->show();
     }
 }
 
@@ -320,7 +315,7 @@ void servers_class::vnc_client()
         tigervnc = path + "/os/mac/vnc/vncviewer";
     }
 
-    for (auto item : ui->servers->selectedItems())
+    for (auto item : this->selectedItems())
     {
         QString ip = item->text(7);
         QString arg = "\"" + tigervnc + "\" " + ip + ":7";
@@ -336,7 +331,7 @@ void servers_class::message(
     QString info,
     servers_class *_class)
 {
-    auto selected = ui->servers->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
 
@@ -352,7 +347,7 @@ void servers_class::message(
 QString servers_class::to_action(QString action, QString info)
 {
     QJsonArray pks;
-    auto selected = ui->servers->selectedItems();
+    auto selected = this->selectedItems();
     for (auto item : selected)
     {
         QString server_name = item->text(0);
@@ -370,7 +365,7 @@ QString servers_class::to_action(QString action, QString info)
 
 QString servers_class::send_to_vserver(QString action, QString info)
 {
-    QList<QTreeWidgetItem *> selected = ui->servers->selectedItems();
+    QList<QTreeWidgetItem *> selected = this->selectedItems();
 
     for (auto item : selected)
     {

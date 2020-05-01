@@ -3,7 +3,7 @@ QToolBar
     border-bottom: 1px solid $b7
     border-style: outset
     padding: 15px
-    #toolbarwidget
+    #barwidget
         background: transparent
         QPushButton
             background: transparent
@@ -18,18 +18,18 @@ QToolBar
             @include combobox
         QLabel
             background: transparent
-        #tool_resume
+        #resume
             qproperty-icon: url(#{$svg}/play.svg)
             &:hover
                 qproperty-icon: url(#{$svg}/pause.svg)
-        #tool_suspend
+        #suspend
             qproperty-icon: url(#{$svg}/pause.svg)
-        #tool_settings
+        #settings
             qproperty-icon: url(#{$svg}/gear.svg)
-        #tool_count
+        #jobs_count
             font-size: 15px
             color: $base
-        #tool_conection
+        #conection
             border-right: 1px solid $b30
             color: red
             padding-right: 15px

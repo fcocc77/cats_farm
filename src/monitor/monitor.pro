@@ -8,8 +8,6 @@ RC_ICONS = ../../icons/icon.ico
 
 QT += core gui svg widgets multimedia
 
-FORMS = ./ui/main.ui
-
 HEADERS += 	./hpp/includes.hpp \
 			./hpp/main_menu.hpp \
 			./hpp/jobs.hpp \

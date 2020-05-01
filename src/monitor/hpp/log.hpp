@@ -5,15 +5,13 @@
 
 #include "../../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp"
 
-class log_class
+class log_class : public QWidget
 {
 private:
-    Ui::MainWindow *ui;
-    void property();
+    void setup_ui();
 
 public:
-    log_class(
-        Ui::MainWindow *_ui);
+    log_class();
     ~log_class();
 
     kgl::QCodeEditor *code_editor;

@@ -1,47 +1,53 @@
 #include "../hpp/groups.hpp"
 
 groups_class::groups_class(
-    Ui::MainWindow *_ui,
     QMainWindow *_monitor,
-    shared_variables *_shared)
+    shared_variables *_shared,
+    servers_class *_servers)
 {
-    ui = _ui;
     monitor = _monitor;
     shared = _shared;
+    servers = _servers;
     // Group Action
     create_action = new QAction("Create Group");
     add_machine_action = new QAction("Add Machine");
     delete_action = new QAction("Delete Group");
     //------------------------------------------------
-    properties();
     connections();
+    setup_ui();
 }
 
 groups_class::~groups_class()
 {
 }
 
-void groups_class::properties()
+void groups_class::setup_ui()
 {
-    ui->groups->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setObjectName("groups");
 
-    ui->groups->setColumnHidden(2, true);
+    QStringList columns = {"Group Name", "Status"};
+    this->setColumnCount(3);
+    this->setHeaderLabels(columns); // pone el nombre de las columnas
+
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+
+    this->setColumnHidden(2, true);
 
     // ajusta el largo de las columnas
-    ui->groups->setColumnWidth(0, 150);
-    ui->groups->setColumnWidth(1, 70);
-    ui->groups->setColumnWidth(2, 70);
+    this->setColumnWidth(0, 150);
+    this->setColumnWidth(1, 70);
+    this->setColumnWidth(2, 70);
     //----------------------------------
 
-    ui->groups->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    ui->groups->setSortingEnabled(true);
+    this->setSortingEnabled(true);
 }
 
 void groups_class::connections()
 {
 
-    connect(ui->groups, &QTreeWidget::customContextMenuRequested, this, &groups_class::popup);
+    connect(this, &QTreeWidget::customContextMenuRequested, this, &groups_class::popup);
 
     // Group Action
     connect(create_action, &QAction::triggered, this, &groups_class::create_window);
@@ -55,13 +61,11 @@ void groups_class::connections()
 
 void groups_class::popup()
 {
-
-    auto selected = ui->groups->selectedItems();
+    auto selected = this->selectedItems();
 
     QMenu *menu = new QMenu(monitor);
     if (not selected.empty())
     {
-
         menu->addAction(add_machine_action);
         menu->addSeparator();
         menu->addAction(delete_action);
@@ -81,7 +85,7 @@ void groups_class::create_window()
     auto groupCreate = [this](QString group_name) {
         qDebug() << group_name;
         shared->stopUpdate = true;
-        auto selected = ui->servers->selectedItems();
+        auto selected = servers->selectedItems();
 
         QJsonArray machines_send;
         QJsonArray machines;
@@ -232,9 +236,9 @@ QTreeWidgetItem *groups_class::group_make(
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(2, group_name);
 
-    ui->groups->addTopLevelItem(item);
-    ui->groups->setItemWidget(item, 0, name_widget);
-    ui->groups->setItemWidget(item, 1, status_widget);
+    this->addTopLevelItem(item);
+    this->setItemWidget(item, 0, name_widget);
+    this->setItemWidget(item, 1, status_widget);
 
     return item;
 }
@@ -298,7 +302,7 @@ void groups_class::make_server(
     {
         if (not newChildName.contains(child.name))
         {
-            auto root = ui->groups->invisibleRootItem();
+            auto root = this->invisibleRootItem();
             root->removeChild(child.item);
             child.item->parent()->removeChild(child.item);
         }
@@ -340,7 +344,7 @@ void groups_class::add_machine()
 
     // Obtiene server seleccionados
     QJsonArray server_list;
-    for (auto item : ui->servers->selectedItems())
+    for (auto item : servers->selectedItems())
     {
         QString server_name = item->text(0);
         server_list.push_back(server_name);
@@ -349,7 +353,7 @@ void groups_class::add_machine()
     //-----------------------------------------------
 
     QJsonArray group_machine;
-    for (auto item : ui->groups->selectedItems())
+    for (auto item : this->selectedItems())
     {
         QString group_name = item->text(2);
 
@@ -379,8 +383,8 @@ void groups_class::add_machine()
         group_machine.push_back({{group_name, server_list}});
     }
 
-    QJsonArray groups = {"group_list", group_machine, "addMachine"};
-    QJsonArray pks = {"groupAction", groups};
+    QJsonArray _groups = {"group_list", group_machine, "addMachine"};
+    QJsonArray pks = {"groupAction", _groups};
 
     tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
 }
@@ -388,7 +392,7 @@ void groups_class::add_machine()
 void groups_class::group_delete()
 {
 
-    auto selected = ui->groups->selectedItems();
+    auto selected = this->selectedItems();
     if (not selected.empty())
     {
 
@@ -402,11 +406,11 @@ void groups_class::group_delete()
 
             shared->stopUpdate = true;
 
-            auto root = ui->groups->invisibleRootItem();
+            auto root = this->invisibleRootItem();
 
             QJsonArray group_machine, group_list;
 
-            for (auto item : ui->groups->selectedItems())
+            for (auto item : this->selectedItems())
             {
 
                 if (item->parent())
@@ -427,9 +431,9 @@ void groups_class::group_delete()
                 }
             }
 
-            QJsonArray groups = {group_list, group_machine, "delete"};
+            QJsonArray _groups = {group_list, group_machine, "delete"};
 
-            QJsonArray pks = {"groupAction", groups};
+            QJsonArray pks = {"groupAction", _groups};
             tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
         }
     }

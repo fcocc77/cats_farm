@@ -1,17 +1,14 @@
 #include "../hpp/log.hpp"
 
-log_class::log_class(
-    Ui::MainWindow *_ui)
+log_class::log_class()
 {
-    ui = _ui;
-    property();
+    setup_ui();
 }
 
 log_class::~log_class()
 {
 }
-
-void log_class::property()
+void log_class::setup_ui()
 {
     code_editor = new kgl::QCodeEditor();
 
@@ -25,13 +22,9 @@ void log_class::property()
     code_editor->setReadOnly(true);
     //------------------------------------------
 
-    QWidget *widget = new QWidget();
     QVBoxLayout *hbox = new QVBoxLayout();
     hbox->addWidget(code_editor);
-    widget->setLayout(hbox);
+    this->setLayout(hbox);
 
     code_editor->setObjectName("Log");
-    ui->log->setWidget(widget);
-
-    ui->log->hide();
 }
