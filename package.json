@@ -14,7 +14,12 @@
         "d": "npx webpack -d",
         "w": "npx webpack -d --watch",
         "build": "sh scripts/build.sh",
-        "push": "git push gh dev"
+        "setup": "sh scripts/setup.sh",
+        "install": "sh scripts/linux.sh install",
+        "reinstall": "sh scripts/linux.sh reinstall",
+        "uninstall": "sh scripts/linux.sh uninstall",
+        "push": "git push gh dev",
+        "clean": "git clean -fdx"
     },
     "keywords": [],
     "author": "Francisco José Contreras Cuevas",

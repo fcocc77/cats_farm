@@ -363,7 +363,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 		}
 		//------------------------------------------------------------
 
-		QString submit_finish = "tiempo"; // time.strftime("%Y-%m-%d   %H:%M:%S")
+		QString submit_finish = currentDateTime(0);
 
 		mutex.lock();
 		job->submit_finish = submit_finish;
