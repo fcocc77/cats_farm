@@ -32,7 +32,7 @@ QMainWindow {
       font-size: 13px;
       background: transparent; }
     QMainWindow QMessageBox QPushButton {
-      padding: 10px 30px 10px 20px;
+      padding: 10px 15px 10px 15px;
       font-size: 13px;
       border-radius: 3px;
       background: #2e3238;
@@ -47,7 +47,7 @@ QMainWindow {
       background: transparent;
       font-size: 13px; }
     QMainWindow QInputDialog QPushButton {
-      padding: 10px 30px 10px 20px;
+      padding: 10px 15px 10px 15px;
       font-size: 13px;
       border-radius: 3px;
       background: #2e3238;
@@ -58,7 +58,7 @@ QMainWindow {
     QMainWindow QInputDialog QLineEdit {
       background: #2e3238;
       border: 1px solid #2e3238;
-      padding: 10px;
+      padding: 3px;
       border-radius: 2px;
       margin-bottom: 20px; }
       QMainWindow QInputDialog QLineEdit:hover {
@@ -191,7 +191,8 @@ QMainWindow {
 #tasks {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
-  border: 1px solid #2a2d32; }
+  border: 1px solid #2a2d32;
+  margin: 10px; }
   #tasks QWidget {
     background: transparent; }
   #tasks::item {
@@ -229,7 +230,8 @@ QMainWindow {
 #servers {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
-  border: 1px solid #2a2d32; }
+  border: 1px solid #2a2d32;
+  margin: 10px; }
   #servers QWidget {
     background: transparent; }
   #servers::item {
@@ -284,7 +286,7 @@ QToolBar {
   background: #1e2124;
   border-bottom: 1px solid #101213;
   border-style: outset;
-  padding: 15px; }
+  padding: 5px; }
   QToolBar #barwidget {
     background: transparent; }
     QToolBar #barwidget QPushButton {
@@ -300,7 +302,7 @@ QToolBar {
       margin-right: 10px;
       background-color: #2e3238;
       border: 1px solid #2e3238;
-      padding: 7px;
+      padding: 5px;
       border-radius: 2px; }
       QToolBar #barwidget QComboBox::down-arrow {
         image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
@@ -352,6 +354,7 @@ QToolBar {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
   border: 1px solid #2a2d32;
+  margin: 10px;
   alternate-background-color: #2a2d32; }
   #groups QWidget {
     background: transparent; }
@@ -435,7 +438,7 @@ QToolBar {
   #settings #zones_knobs QLineEdit, #settings #host_knobs QLineEdit {
     background: #2e3238;
     border: 1px solid #2e3238;
-    padding: 10px;
+    padding: 3px;
     border-radius: 2px;
     background: #3a3f45;
     border-color: #464b53; }
@@ -469,7 +472,7 @@ QToolBar {
   border: 1px solid #33373d; }
 
 #settings QPushButton {
-  padding: 10px 30px 10px 20px;
+  padding: 10px 15px 10px 15px;
   font-size: 13px;
   border-radius: 3px;
   background: #2e3238;
@@ -488,7 +491,7 @@ QToolBar {
   #options QLineEdit {
     background: #2e3238;
     border: 1px solid #2e3238;
-    padding: 10px;
+    padding: 3px;
     border-radius: 2px;
     margin-right: 10px; }
     #options QLineEdit:hover {
@@ -510,7 +513,7 @@ QToolBar {
     margin-right: 10px;
     background-color: #2e3238;
     border: 1px solid #2e3238;
-    padding: 7px;
+    padding: 5px;
     border-radius: 2px; }
     #options QComboBox::down-arrow {
       image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }

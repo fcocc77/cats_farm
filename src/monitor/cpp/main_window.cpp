@@ -42,7 +42,14 @@ void monitor::setup_ui()
 	this->addDockWidget(Qt::BottomDockWidgetArea, group_dock);
 
 	jobs = new jobs_class(shared, this, log, servers, options, groups);
-	this->setCentralWidget(jobs);
+	QWidget *jobs_container = new QWidget;
+	QVBoxLayout *jobs_container_layout = new QVBoxLayout();
+	jobs_container->setLayout(jobs_container_layout);
+	QLabel *jobs_label = new QLabel("Jobs");
+	jobs_label->setObjectName("jobs_title");
+	jobs_container_layout->addWidget(jobs_label);
+	jobs_container_layout->addWidget(jobs);
+	this->setCentralWidget(jobs_container);
 
 	tasks = new tasks_class(this, shared, jobs);
 	QDockWidget *tasks_dock = new QDockWidget("Tasks");

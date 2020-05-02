@@ -25,6 +25,7 @@ void toolbar_class::setup_ui()
 {
 	QWidget *widget = new QWidget();
 	widget->setObjectName("barwidget");
+	widget->setContentsMargins(0,0,0,0);
 	QHBoxLayout *main_layout = new QHBoxLayout();
 	widget->setLayout(main_layout);
 
