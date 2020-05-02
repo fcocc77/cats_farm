@@ -35,7 +35,7 @@ void remove(QString _file);
 void system(QString cmd);
 int cpuUsed();
 int ramPercent();
-int ramTotal();
+float ramTotal();
 float ramUsed();
 int cpuTemp();
 int cpuCount();

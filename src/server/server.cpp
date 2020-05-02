@@ -27,15 +27,11 @@ QString server::send_resources(QString recv, QJsonObject extra)
 
 	QString system;
 	if (_linux)
-	{
 		system = "Linux";
-	}
 	else if (_win32)
 		system = "Windows";
 	else
-	{
 		system = "Mac";
-	}
 
 	//get ssh user
 	bool usr = false;

@@ -416,7 +416,7 @@ void update_class::update_servers(QJsonObject recv)
 		int ram = server["ram"].toInt();
 		int temp = server["temp"].toInt();
 		QString mac = server["mac"].toString();
-		int ram_total = server["ram_total"].toInt();
+		float ram_total = server["ram_total"].toDouble();
 		float ram_used = server["ram_used"].toDouble();
 		int cpu_cores = server["cpu_cores"].toInt();
 

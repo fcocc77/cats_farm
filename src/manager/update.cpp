@@ -39,7 +39,7 @@ QString manager::update_server_thread(QJsonArray recv)
 		int temp = recv[4].toInt();
 		QString system = recv[5].toString();
 		QString mac = recv[6].toString();
-		int ram_total = recv[7].toInt();
+		float ram_total = recv[7].toDouble();
 		float ram_used = recv[8].toDouble();
 		int cpu_cores = recv[9].toInt();
 		QString log = recv[10].toString();

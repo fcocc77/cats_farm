@@ -133,10 +133,9 @@ void system(QString cmd)
 	std::system(cmd.toStdString().c_str());
 }
 
-int ramTotal()
+float ramTotal()
 {
-
-	static int total_ram;
+	static float total_ram;
 
 	if (not total_ram)
 	{
@@ -144,13 +143,12 @@ int ramTotal()
 		{
 			QString mem = os::sh("cat /proc/meminfo");
 			long long _total = mem.split("MemTotal:")[1].split("kB")[0].toLongLong();
-			total_ram = (_total * 1024 * 1024) / 1000000000000;
+			total_ram = ( _total / 1024.0 ) / 1024.0;
 		}
 		else if (_win32)
 		{
 			total_ram = ram()[0];
 		}
-
 		else
 		{
 			QString _ram = os::sh("sysctl hw.memsize");
@@ -160,7 +158,7 @@ int ramTotal()
 		}
 	}
 
-	return total_ram;
+	return roundf(total_ram * 10) / 10; // roundf limita los decimales
 }
 
 float ramUsed()

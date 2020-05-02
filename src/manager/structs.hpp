@@ -65,7 +65,7 @@ struct server_struct
 	int cpu_cores;
 	int ram;
 	float ram_used;
-	int ram_total;
+	float ram_total;
 	int temp;
 	QString mac;
 	int response_time;

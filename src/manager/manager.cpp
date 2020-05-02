@@ -374,7 +374,7 @@ void manager::json_to_struct(QJsonObject info)
 		_server->cpu_cores = server["cpu_cores"].toInt();
 		_server->ram = server["ram"].toInt();
 		_server->ram_used = server["ram_used"].toDouble();
-		_server->ram_total = server["ram_total"].toInt();
+		_server->ram_total = server["ram_total"].toDouble();
 		_server->temp = server["temp"].toInt();
 		_server->mac = server["mac"].toString();
 		_server->response_time = server["response_time"].toInt();
