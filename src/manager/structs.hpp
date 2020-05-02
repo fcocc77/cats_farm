@@ -22,12 +22,12 @@ struct job_struct
 	QString comment;
 	QString submit_start;
 	QString submit_finish;
-	QString timer;
-	QString timer2;
+	int time_elapsed;
+	int last_time;
+	int estimated_time_ms;
+	bool time_elapsed_running;
 	QString total_render_time;
 	QString estimated_time;
-	float estimated_time_second;
-	bool timer_last_active;
 	QString software;
 	QString project;
 	QString system;

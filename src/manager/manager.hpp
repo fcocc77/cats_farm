@@ -15,6 +15,7 @@ using namespace std;
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMutex>
+#include <QTime>
 
 #include "structs.hpp"
 #include "../utils/video.hpp"

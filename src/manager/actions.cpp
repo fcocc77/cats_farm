@@ -128,8 +128,8 @@ void manager::jobAction(QJsonArray pks)
 			job->progres = 0;
 			job->suspended_task = 0;
 			job->active_task = 0;
-			job->timer = "...";
-			job->timer2 = "...";
+			job->time_elapsed = 0;
+			job->last_time = 0;
 			job->submit_finish = "...";
 			job->total_render_time = "...";
 			job->vetoed_servers.clear();
