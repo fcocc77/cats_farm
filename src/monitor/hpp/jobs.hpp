@@ -18,7 +18,7 @@ private:
     options_class *options;
     groups_class *groups;
     void connections();
-    // virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
 
     // Jobs Funcions
     void setup_ui();

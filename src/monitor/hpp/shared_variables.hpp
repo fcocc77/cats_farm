@@ -19,6 +19,7 @@ struct shared_variables
     QComboBox *zone_box;
     QLabel *conection;
     QLabel *jobs_count;
+    QTreeWidget *tasks_tree;
 };
 
 #endif //SHARED_VARIABLES_HPP

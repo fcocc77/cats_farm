@@ -393,13 +393,13 @@ void jobs_class::item_delete()
     message(&jobs_class::delete_start, action, ask, tile, this);
 }
 
-// void jobs_class::mousePressEvent(QMouseEvent *event)
-// {
-//     QTreeView::mousePressEvent(event);
+void jobs_class::mousePressEvent(QMouseEvent *event)
+{
+    QTreeView::mousePressEvent(event);
 
-//     bool selected = selectionModel()->isSelected(indexAt(event->pos()));
-//     // si se clickea no en un item, borra las tareas de la lista
-//     if (not selected)
-//         ui->tasks->clear();
-//     //----------------------------------------------------
-// }
+    bool selected = selectionModel()->isSelected(indexAt(event->pos()));
+    // si se clickea no en un item, borra las tareas de la lista
+    if (not selected)
+        shared->tasks_tree->clear();
+    //----------------------------------------------------
+}

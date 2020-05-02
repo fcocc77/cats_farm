@@ -15,6 +15,9 @@ tasks_class::tasks_class(
     render_server_action = new QAction("Select server tasks");
     //------------------------------------------------
 
+    tree = new QTreeWidget();
+    shared->tasks_tree = tree;
+
     setup_ui();
     connections();
 }
@@ -25,31 +28,31 @@ tasks_class::~tasks_class()
 
 void tasks_class::setup_ui()
 {
-    this->setObjectName("tasks");
+    tree->setObjectName("tasks");
 
     QStringList columns = {"Task", "Frame Range", "Status", "Server", "Task Time"};
-    this->setColumnCount(5);
-    this->setHeaderLabels(columns); // pone el nombre de las columnas
+    tree->setColumnCount(5);
+    tree->setHeaderLabels(columns); // pone el nombre de las columnas
 
-    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    this->setAlternatingRowColors(true);                          // item con color alternativos
-    this->setIndentation(0);
-    this->setFocusPolicy(Qt::NoFocus); // elimina el margen del principio
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    tree->setAlternatingRowColors(true);                          // item con color alternativos
+    tree->setIndentation(0);
+    tree->setFocusPolicy(Qt::NoFocus); // elimina el margen del principio
 
-    this->setColumnWidth(0, 100);
-    this->setColumnWidth(1, 100);
-    this->setColumnWidth(2, 100);
-    this->setColumnWidth(3, 100);
+    tree->setColumnWidth(0, 100);
+    tree->setColumnWidth(1, 100);
+    tree->setColumnWidth(2, 100);
+    tree->setColumnWidth(3, 100);
 
-    this->setSortingEnabled(true);
-    this->sortByColumn(0, Qt::AscendingOrder);
+    tree->setSortingEnabled(true);
+    tree->sortByColumn(0, Qt::AscendingOrder);
 
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    tree->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void tasks_class::connections()
 {
-    connect(this, &QTreeWidget::customContextMenuRequested, this, &tasks_class::popup);
+    connect(tree, &QTreeWidget::customContextMenuRequested, this, &tasks_class::popup);
 
     // Task Action
     connect(suspend_action, &QAction::triggered, this, [this]() { to_action("suspend"); });
@@ -61,7 +64,7 @@ void tasks_class::connections()
 
 void tasks_class::popup()
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
         QMenu *menu = new QMenu(monitor);
@@ -85,13 +88,13 @@ void tasks_class::restart()
 
 void tasks_class::render_server()
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     QString _server = selected[0]->text(3);
     _server = _server.split(":")[0];
 
-    for (int i = 0; i < this->topLevelItemCount(); ++i)
+    for (int i = 0; i < tree->topLevelItemCount(); ++i)
     {
-        auto item = this->topLevelItem(i);
+        auto item = tree->topLevelItem(i);
 
         QString server = item->text(3);
         server = server.split(":")[0];
@@ -103,7 +106,7 @@ void tasks_class::render_server()
 void tasks_class::message(QString action, QString ask, QString tile)
 {
 
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
 
@@ -118,13 +121,12 @@ void tasks_class::message(QString action, QString ask, QString tile)
 
 void tasks_class::to_action(QString action)
 {
-
     QJsonArray pks;
     for (auto item_job : jobs->selectedItems())
     {
         QString job_name = item_job->text(0);
 
-        for (auto item_task : this->selectedItems())
+        for (auto item_task : tree->selectedItems())
         {
             QString task_name = item_task->text(0);
             pks.push_back({{job_name, task_name, action}});

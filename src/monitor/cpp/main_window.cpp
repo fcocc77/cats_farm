@@ -53,7 +53,7 @@ void monitor::setup_ui()
 
 	tasks = new tasks_class(this, shared, jobs);
 	QDockWidget *tasks_dock = new QDockWidget("Tasks");
-	tasks_dock->setWidget(tasks);
+	tasks_dock->setWidget(tasks->tree);
 	this->addDockWidget(Qt::RightDockWidgetArea, tasks_dock);
 
 	settings = new settings_class(shared);
@@ -62,7 +62,7 @@ void monitor::setup_ui()
 	settings_dock->setWidget(settings);
 	this->addDockWidget(Qt::LeftDockWidgetArea, settings_dock);
 
-	update = new update_class(shared, groups, jobs, servers, tasks, settings);
+	update = new update_class(shared, groups, jobs, servers, tasks->tree, settings);
 	global = new global_class(this, shared, settings_dock, options_dock, log_dock);
 
 	main_menu = new main_menu_class(global, jobs, servers, groups, tasks);

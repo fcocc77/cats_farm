@@ -5,14 +5,14 @@ update_class::update_class(
 	groups_class *_groups,
 	jobs_class *_jobs,
 	servers_class *_servers,
-	tasks_class *_tasks,
+	QTreeWidget *_tasks_tree,
 	settings_class *_settings)
 {
 	shared = _shared;
 	groups = _groups;
 	jobs = _jobs;
 	servers = _servers;
-	tasks = _tasks;
+	tasks = _tasks_tree;
 	settings = _settings;
 	connections();
 

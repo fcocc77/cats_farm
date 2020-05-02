@@ -5,7 +5,7 @@
 #include "shared_variables.hpp"
 #include "jobs.hpp"
 
-class tasks_class : public QTreeWidget
+class tasks_class : public QObject
 {
 private:
     QMainWindow *monitor;
@@ -33,7 +33,10 @@ public:
     QAction *suspend_action;
     QAction *restart_action;
     QAction *render_server_action;
-    //------------------------------------------------
+    //-----------------------------
+
+    QTreeWidget *tree;
+
 };
 
 #endif //TASKS_HPP

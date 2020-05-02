@@ -4,7 +4,6 @@
 #include "includes.hpp"
 #include "groups.hpp"
 #include "servers.hpp"
-#include "tasks.hpp"
 #include "jobs.hpp"
 #include "settings.hpp"
 
@@ -17,7 +16,7 @@ private:
   groups_class *groups;
   jobs_class *jobs;
   servers_class *servers;
-  tasks_class *tasks;
+  QTreeWidget *tasks;
   QStringList delete_list;
   tcp_client_widget<update_class> *manager;
   settings_class *settings;
@@ -45,7 +44,7 @@ public:
       groups_class *_groups,
       jobs_class *_jobs,
       servers_class *_servers,
-      tasks_class *_tasks,
+      QTreeWidget *_tasks_tree,
       settings_class *_settings);
 
   void update(QString host);
