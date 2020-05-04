@@ -449,7 +449,7 @@ void KillProcessTree(DWORD myprocID)
 }
 #endif
 
-void kill(int pid)
+void kill(int pid, bool force)
 {
 	if (_linux)
 	{
@@ -493,9 +493,10 @@ void kill(int pid)
 		}
 
 		for (auto p : pids)
-		{
-			sh("kill " + QString::number(p));
-		}
+			if(force)
+				sh("kill -9 " + QString::number(p));
+			else
+				sh("kill " + QString::number(p));
 	}
 
 #ifdef _WIN32

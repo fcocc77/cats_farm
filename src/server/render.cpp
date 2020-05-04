@@ -377,7 +377,7 @@ void render_class::natron_monitoring(int ins)
 		{
 			// si se congela el NatronRenderer despues que ya termino el render, mata el proceso
 			// para asegurarnos que no quede el proceso activo y consumiendo RAM.
-			os::kill(natron_renderer_pid);
+			os::kill(natron_renderer_pid, true);
 			return;
 		}
 
@@ -393,7 +393,7 @@ void render_class::natron_monitoring(int ins)
 		// si NatronRenderer estubo 4 veces bajo del 30 en cpu,
 		// significa que se colgo, y mata el proceso de NatronRenderer.
 		if (natron_active >= 4)
-			os::kill(natron_renderer_pid);
+			os::kill(natron_renderer_pid, true);
 		// ---------------------------
 
 		sleep(5);
