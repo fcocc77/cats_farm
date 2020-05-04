@@ -21,6 +21,11 @@ render_class::render_class(QMutex *_mutex)
 		src_path.push_back("none");
 		dst_path.push_back("none");
 	} //-------------------------------------------
+
+	// evita que quede alguna instancia de natron corriendo
+	// si es que se llega a caer vserver.
+	os::sh("pkill -9 NatronRenderer");
+	// --------------------------
 }
 
 QString render_class::render_task(QJsonArray recv)
