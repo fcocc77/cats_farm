@@ -74,6 +74,18 @@ int cpuUsed()
 	return usage;
 }
 
+int processCpuUsed(int pid){
+	// obtiene el uso de la cpu de 1 solo proceso
+	QString out_top = os::sh("sh -c \"echo $(top -b -n 1 -p " + QString::number( pid ) +  " | tail -n 1)\"");
+	QStringList separate = out_top.split(" ");
+
+	int usage = 0;
+	if (separate.size() >= 8)
+		usage = out_top.split(" ")[8].toFloat();
+
+	return usage;
+}
+
 QList<float> ram()
 {
 

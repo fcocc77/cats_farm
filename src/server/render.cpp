@@ -21,8 +21,6 @@ render_class::render_class(QMutex *_mutex)
 		src_path.push_back("none");
 		dst_path.push_back("none");
 	} //-------------------------------------------
-
-	threading(&render_class::suspend_vbox, this);
 }
 
 QString render_class::render_task(QJsonArray recv)
@@ -98,14 +96,19 @@ QString render_class::render_task(QJsonArray recv)
 			}
 		}
 
+		// deja la pid en 0
+		pid[ins] = 0;
+		// --------------
+
 		// Habilita las instancia que ya termino, para que pueda renderear
 		renderInstance[ins] = false;
-		//---------------------------------------------------------------------
+		//----------------------------------
 		mutex->unlock();
 	}
 
 	return status;
 }
+
 QList<QString> render_class::find_correct_path(QJsonArray system_path, QString _path)
 {
 	//obtiene ruta correcta
@@ -134,91 +137,21 @@ QList<QString> render_class::find_correct_path(QJsonArray system_path, QString _
 	return {src, dst};
 }
 
-QString render_class::qprocess(QString cmd, int ins)
+QString render_class::qprocess(QString cmd, int ins, int timeout)
 {
 	QProcess proc;
 	proc.start(cmd);
 	if (ins > -1)
 		pid[ins] = proc.processId();
-	proc.waitForFinished(-1);
+
+	if (timeout != -1)
+		timeout *= 1000;
+
+	proc.waitForFinished(timeout);
 	QString output = proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
 	proc.close();
 
 	return output;
-}
-
-void render_class::vbox_turn(bool turn)
-{
-
-	QString vm;
-	if (turn)
-	{
-		if (_linux)
-			vm = "VBoxManage startvm win2016 --type headless";
-		if (_win32)
-			vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" startvm win2016 --type headless";
-
-		os::back(vm);
-	}
-	else
-	{
-		if (_linux)
-			vm = "VBoxManage controlvm win2016 savestate";
-		if (_win32)
-			vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" controlvm win2016 savestate";
-
-		os::back(vm);
-
-		fwrite(path + "/log/vbox", "0");
-	}
-}
-
-bool render_class::vbox_working()
-{
-	// Virtual Machin status
-
-	QString vm;
-	if (_linux)
-		vm = "VBoxManage list runningvms";
-
-	if (_win32)
-		vm = "\"C:/Program Files/Oracle/VirtualBox/VBoxManage.exe\" list runningvms";
-
-	QString running = os::sh(vm).split(" ")[0];
-
-	if (running == "\"win2016\"")
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-	//------------------------------------------
-}
-
-void render_class::suspend_vbox()
-{
-
-	// checkea si el Cinama 4D esta en render y si no se apaga la maquina virtual
-	VMCinemaRunningTimes = 0;
-	while (1)
-	{
-		if (not VMCinemaActive)
-		{
-			VMCinemaRunningTimes++;
-			if (VMCinemaRunningTimes > 10)
-			{ // si no se esta usando Cinema4D, al numero 10 se apaga la maquina
-				if (vbox_working() and VMCinemaTurn)
-				{ // solo si esta prendida y si la prendio vinarender
-					vbox_turn(false);
-					VMCinemaTurn = false;
-				}
-				VMCinemaRunningTimes = 0;
-			}
-		}
-		sleep(1);
-	} //-----------------------------------------------------------------------
 }
 
 bool render_class::nuke(int ins)
@@ -366,108 +299,6 @@ bool render_class::maya(int ins)
 
 bool render_class::cinema(int ins)
 {
-
-	QString log_file = path + "/log/render_log_" + QString::number(ins);
-	QString log, cmd;
-
-	if (_linux)
-	{ // en linux se usa una maquina virtual
-		VMCinemaActive = true;
-		//Obtiene el excecutable de cinema de windows
-		QString exe_windows;
-		for (auto e : preferences["paths"].toObject()["cinema"].toArray())
-		{
-			exe_windows = e.toString();
-			if (exe_windows.contains("C:/"))
-				break;
-		}
-		//-----------------------------------------------
-
-		// replaza las rutas para virtualbox
-		for (auto s : preferences["paths"].toObject()["system"].toArray())
-			project[ins] = project[ins].replace(s.toString(), "//VBOXSVR/server_01");
-		//-------------------------------------------------------------------------
-
-		// con este commando se puede enviar comandos a la maquina virtual y te regresa un resultado
-		QString guestcontrol = "VBoxManage --nologo guestcontrol win2016 run --username Administrator --password Jump77cats --exe ";
-		VMSH = guestcontrol + "C:\\\\Windows\\\\system32\\\\cmd.exe -- C:\\\\Windows\\\\SysWOW64\\\\cmd.exe \"/c\" ";
-		// --------------------------------------------------------------
-
-		QString args = "\"-frame\" \"" + QString::number(first_frame[ins]) + "\" \"" + QString::number(last_frame[ins]) + "\" \"-nogui\" \"-render\" \"" + project[ins] + "\"";
-		cmd = guestcontrol + "\"" + exe_windows + "\" -- 0 " + args; // 0 es el primer argumento que seria el excecutable que esta en -exe
-
-		// inicia virtual machine
-		if (not vbox_working())
-		{
-			vbox_turn(true);
-			VMCinemaTurn = true;
-		}
-
-		// checkea si la maquina esta lista para renderear
-		QString check = VMSH + "\"echo vm_is_ready\"";
-
-		int i = 0;
-		bool problem = false;
-		while (not qprocess(check).contains("vm_is_ready"))
-		{ // espera que la maquina este lista
-			sleep(1);
-			if (i > 200)
-			{
-				problem = true;
-				log = "The Virtual Machine has a problem.";
-				break;
-			}
-		}
-		//--------------------------------
-
-		// rendering ...
-		// ----------------------------------
-		if (not problem)
-			log = qprocess(cmd, ins);
-		//-------------------------------
-		fwrite(log_file, log);
-
-		//para que se apague la maquina virtual si no se uas
-		VMCinemaActive = false;
-		VMCinemaRunningTimes = 0;
-		//----------------------------
-	}
-
-	else
-	{
-
-		project[ins] = project[ins].replace(src_path[ins], dst_path[ins]);
-
-		QString args = " -nogui -render \"" + project[ins] + "\" g_logfile=\"" + log_file + "\"" +
-					   " -frame " + QString::number(first_frame[ins]) + " " + QString::number(last_frame[ins]);
-
-		//Obtiene el excecutable que existe en este sistema
-		QString exe;
-		for (auto e : preferences["paths"].toObject()["cinema"].toObject())
-		{
-			exe = e.toString();
-			if (os::isfile(exe))
-			{
-				break;
-			}
-		}
-		//-----------------------------------------------
-
-		cmd = '"' + exe + '"' + args;
-
-		// rendering ...
-		// ----------------------------------
-		qprocess(cmd, ins);
-		log = fread(log_file);
-		//----------------------
-	}
-
-	// post render
-	if (log.contains("Rendering successful: "))
-		return true;
-	else
-		return false;
-	//---------------------------
 }
 
 bool render_class::houdini(int ins)
@@ -508,6 +339,65 @@ bool render_class::houdini(int ins)
 	else
 		return false;
 	// ----------------------------------
+}
+
+void render_class::natron_monitoring(int ins)
+{
+	// Chequea si NatronRenderer se cuelga:
+	// si NatronRenderer tiene la cpu bajo los 30 ya esta conjelado,
+	// y cada 5 segundos checkea esto y si esta bajo mata el proceso.
+
+	// espera que el pid del instance este lista
+	int _pid = 0;
+	while (!_pid)
+	{
+		if (QThread::currentThread()->isInterruptionRequested())
+			return;
+
+		mutex->lock();
+		_pid = pid[ins];
+		mutex->unlock();
+
+		sleep(1);
+	}
+
+	// espera 1 segundo por si a caso, para que el "qprocess" cargue NatronRenderer
+	sleep(1);
+	// ------------------
+
+	// obtiene la id del NatronRenderer
+	QString child_out = os::sh("pgrep -P " + QString::number(_pid));
+	int natron_renderer_pid = child_out.toInt();
+	// ---------------------
+
+	int natron_active = 0;
+	while (1)
+	{
+		if (QThread::currentThread()->isInterruptionRequested())
+		{
+			// si se congela el NatronRenderer despues que ya termino el render, mata el proceso
+			// para asegurarnos que no quede el proceso activo y consumiendo RAM.
+			os::kill(natron_renderer_pid);
+			return;
+		}
+
+		int usage = os::processCpuUsed(natron_renderer_pid);
+
+		// si la cpu esta bajo 30 suma 1 a la actividad de natron
+		if (usage < 30)
+			natron_active += 1;
+		else
+			natron_active = 0;
+		// ------------------------
+
+		// si NatronRenderer estubo 4 veces bajo del 30 en cpu,
+		// significa que se colgo, y mata el proceso de NatronRenderer.
+		if (natron_active >= 4)
+			os::kill(natron_renderer_pid);
+		// ---------------------------
+
+		sleep(5);
+	}
 }
 
 bool render_class::natron(int ins)
@@ -567,14 +457,32 @@ bool render_class::natron(int ins)
 
 	mutex->unlock();
 
+	QThread *thread = new QThread;
+	connect(thread, &QThread::started, [=]() {
+		natron_monitoring(ins);
+	});
+	thread->start();
+
 	QString log;
-	log = qprocess(cmd, ins);
+
+	// si NatronRenderer se congelo con la cpu al 100%, se soluciona,
+	// dandole un timeout al render de 7 minutos, si esta pegado
+	// a los 7 minutos mata el proceso.
+	log = qprocess(cmd, ins, 420);
+	// ------------------
+
+	thread->quit();
+	thread->requestInterruption();
+
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
 	fwrite(log_file, log);
 
 	// post render
 	if (log.contains("Rendering finished"))
-		return true;
+		if (log.contains("Render aborted"))
+			return false;
+		else
+			return true;
 	else
 		return false;
 	//-----------------------------------------------

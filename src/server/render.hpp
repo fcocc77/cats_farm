@@ -22,14 +22,12 @@ public:
 
 	QString render_task(QJsonArray recv);
 	QList<QString> find_correct_path(QJsonArray system_path, QString _path);
-	QString qprocess(QString cmd, int ins = -1);
-	void vbox_turn(bool turn);
-	bool vbox_working();
-	void suspend_vbox();
+	QString qprocess(QString cmd, int ins = -1, int timeout = -1);
 	bool nuke(int ins);
 	bool maya(int ins);
 	bool houdini(int ins);
 	bool cinema(int ins);
+	void natron_monitoring(int ins);
 	bool natron(int ins);
 	bool ae(int ins);
 };

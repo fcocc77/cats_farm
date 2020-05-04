@@ -34,6 +34,7 @@ void move(QString src, QString dst);
 void remove(QString _file);
 void system(QString cmd);
 int cpuUsed();
+int processCpuUsed(int pid);
 int ramPercent();
 float ramTotal();
 float ramUsed();
