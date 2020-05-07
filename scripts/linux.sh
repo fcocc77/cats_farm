@@ -7,7 +7,7 @@ path=$(pwd)
 dst="/opt/vinarender"
 # ------------------
 # IPs
-manager_ip="192.168.1.77"
+manager_ip="192.168.10.77"
 # ------------------
 # PORTs
 manager_port=771

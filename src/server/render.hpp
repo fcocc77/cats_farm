@@ -12,10 +12,6 @@ public:
 	QList<int> first_frame, last_frame, pid;
 	QList<QString> project, jobSystem, extra, renderNode, vmSoftware, src_path, dst_path;
 	QList<bool> taskKill, renderInstance;
-	bool VMCinemaActive;
-	bool VMCinemaTurn;
-	int VMCinemaRunningTimes;
-	QString VMSH;
 	QMutex *mutex;
 
 	render_class(QMutex *_mutex);

@@ -18,5 +18,5 @@
 int main()
 {
 
-    print(os::mac());
+   os::sh("sh -c \"sync && sysctl -w vm.drop_caches=3\"");
 }

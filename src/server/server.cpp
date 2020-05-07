@@ -127,8 +127,7 @@ QString server::recieveManager(QString _recv)
 
 		if (action == "freeram")
 			if (_linux)
-				os::sh("sync && sysctl -w vm.drop_caches=3");
-
+				os::sh("sh -c \"sync && sysctl -w vm.drop_caches=3\"");
 		if (action == "off")
 			os::system("shutdown now");
 	}
