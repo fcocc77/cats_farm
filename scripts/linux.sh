@@ -7,15 +7,15 @@ path=$(pwd)
 dst="/opt/vinarender"
 # ------------------
 # IPs
-manager_ip="192.168.10.77"
+manager_ip="$2"
 # ------------------
 # PORTs
 manager_port=771
 server_port=772
 # -----------------
-manager_start=true
-server_start=true
-logger_start=false
+manager_start=$3
+server_start=$4
+logger_start=$5
 
 compile() {
     folder=$path/src/$1
