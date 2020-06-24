@@ -455,6 +455,13 @@ bool render_class::natron(int ins)
 	}
 	else
 	{
+		if (not os::isdir(output_dir))
+		{
+			os::mkdir(output_dir);
+			if (_linux)
+				os::system("chmod 777 -R " + output_dir);
+		}
+
 		output = output_file;
 	}
 
