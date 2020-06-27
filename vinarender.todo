@@ -2,17 +2,19 @@ manager:
     ☐ hacer que siga funcionando la cola de render al desconectarse, por un corte de luz o baja del internet, y si demora mas de 2 minutos en volver, transferir todos los trabajos a otra zona
     ✔ corregir tiempo estimado y tiempo total @done (5/28/2020, 9:48:00 AM)
     ☐ al exportar un solo frame, cuando termina a veces queda en 'queue', pasa cuando exportamos con Natron los frame de referencia.
-
+    ☐ hacer un script que valla matando el proceso de manager cada cierto tiempo, para probar que los archivos json, no se corrompan, y que siga el render
 render:
     ☐ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios
 
 monitor:
     ☐ el over del puntero de la tableta, que da pegado en los bordes
     ☐ que tenga control-z
+    ☐ columna de errores; contador de errores
     jobs:
         ☐ no funciona el ctrl-a para seleccionar todos
         ☐ al borrar un jobs incompleto, que borre tambien la carpeta que se creo
     servers:
         ☐ al seleccionar y borrar con suprimir, no se borran los servidores sino los jobs
+        ☐ uso de ram a veces queda negativo, ponerle un abc()
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
