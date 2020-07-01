@@ -23,6 +23,7 @@ writer.getParam('formatType').setValue(0)
 # 2 = apcn Apple ProRess 422
 if ext == 'mov':
     writer.getParam('codec').setValue(2)
+    writer.getParam("fps").set(30)
 # ------------------
 
 writer.connectInput(0, node)
