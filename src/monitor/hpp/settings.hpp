@@ -21,7 +21,7 @@ private:
     QPlainTextEdit *maya_text;
     QPlainTextEdit *nuke_text;
     QPlainTextEdit *houdini_text;
-    QPlainTextEdit *cinema_text;
+    QPlainTextEdit *ntp_text;
     QPlainTextEdit *natron_text;
     QPlainTextEdit *ae_text;
 

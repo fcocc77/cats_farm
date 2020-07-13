@@ -76,8 +76,8 @@ QString render_class::render_task(QJsonArray recv)
 			renderOK = maya(ins);
 		if (software == "Natron")
 			renderOK = natron(ins);
-		if (software == "Cinema4D")
-			renderOK = cinema(ins);
+		if (software == "Ntp")
+			renderOK = ntp(ins);
 		if (software == "AE")
 			renderOK = ae(ins);
 		// -------------------------------------------------
@@ -302,7 +302,7 @@ bool render_class::maya(int ins)
 	// --------------------------
 }
 
-bool render_class::cinema(int ins)
+bool render_class::ntp(int ins)
 {
 }
 

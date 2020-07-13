@@ -61,8 +61,8 @@ void settings_class::setup_ui()
 				houdini_text = new QPlainTextEdit();
 				addTab("Houdini", houdini_text);
 
-				cinema_text = new QPlainTextEdit();
-				addTab("Cinema 4D", cinema_text);
+				ntp_text = new QPlainTextEdit();
+				addTab("Natron Ntp", ntp_text);
 
 				natron_text = new QPlainTextEdit();
 				addTab("Natron", natron_text);
@@ -152,12 +152,12 @@ void settings_class::path_read()
 	if (not preferences.empty())
 	{
 		QJsonObject paths = preferences["paths"].toObject();
-		QString system, nuke, maya, houdini, cinema, natron, ae;
+		QString system, nuke, maya, houdini, ntp, natron, ae;
 
 		system = array_to_string(paths["system"].toArray());
 		nuke = array_to_string(paths["nuke"].toArray());
 		houdini = array_to_string(paths["houdini"].toArray());
-		cinema = array_to_string(paths["cinema"].toArray());
+		ntp = array_to_string(paths["ntp"].toArray());
 		natron = array_to_string(paths["natron"].toArray());
 		maya = array_to_string(paths["maya"].toArray());
 		ae = array_to_string(paths["ae"].toArray());
@@ -166,7 +166,7 @@ void settings_class::path_read()
 		nuke_text->setPlainText(nuke);
 		maya_text->setPlainText(maya);
 		houdini_text->setPlainText(houdini);
-		cinema_text->setPlainText(cinema);
+		ntp_text->setPlainText(ntp);
 		natron_text->setPlainText(natron);
 		ae_text->setPlainText(ae);
 
@@ -211,10 +211,10 @@ void settings_class::path_write()
 		houdini.push_back(l);
 	paths["houdini"] = houdini;
 
-	QJsonArray cinema;
-	for (auto l : cinema_text->toPlainText().split("\n"))
-		cinema.push_back(l);
-	paths["cinema"] = cinema;
+	QJsonArray ntp;
+	for (auto l : ntp_text->toPlainText().split("\n"))
+		ntp.push_back(l);
+	paths["ntp"] = ntp;
 
 	QJsonArray natron;
 	for (auto l : natron_text->toPlainText().split("\n"))
