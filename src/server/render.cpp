@@ -302,10 +302,6 @@ bool render_class::maya(int ins)
 	// --------------------------
 }
 
-bool render_class::ntp(int ins)
-{
-}
-
 bool render_class::houdini(int ins)
 {
 
@@ -498,6 +494,33 @@ bool render_class::natron(int ins)
 	else
 		return false;
 	//-----------------------------------------------
+}
+
+bool render_class::ntp(int ins)
+{
+	int slide_index = first_frame[ins];
+	QJsonArray slides = jafs(extra[ins]);
+	QJsonObject slide = slides[slide_index].toObject();
+
+	slide["project"] = project[ins];
+	slide["output_folder"] = renderNode[ins];
+
+	//Obtiene el excecutable que existe en este sistema
+	QString exe;
+	for (auto e : preferences["paths"].toObject()["ntp"].toArray())
+	{
+		exe = e.toString();
+		if (os::isfile(exe))
+			break;
+	}
+	//-----------------------------------------------
+
+	QString ntp_module = path + "/modules/natron/ntp.py";
+	QString cmd = exe + " " + ntp_module + " \"" + jots(slide).replace("\"", "'") + "\"";
+
+	QString log = qprocess(cmd, ins);
+
+	return true;
 }
 
 bool render_class::ae(int ins)
