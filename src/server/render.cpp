@@ -371,6 +371,9 @@ void render_class::natron_monitoring(int ins)
 	int natron_renderer_pid = child_out.toInt();
 	// ---------------------
 
+	if (natron_renderer_pid == 0)
+		return;
+
 	int natron_active = 0;
 	while (1)
 	{
