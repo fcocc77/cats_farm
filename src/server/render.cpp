@@ -538,7 +538,12 @@ bool render_class::ntp(int ins)
 	thread->quit();
 	thread->requestInterruption();
 
-	return true;
+	// post render
+	if (log.contains("Testing Error: 0"))
+		return true;
+	else
+		return false;
+	//---------------------------
 }
 
 bool render_class::ae(int ins)
