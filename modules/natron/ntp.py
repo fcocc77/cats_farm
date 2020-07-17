@@ -36,7 +36,7 @@ app.loadProject(base_project)
 # da conflicto al usar la funcion 'generate_production_slides' por eso
 # se hace un mutex de archivo, cuando se esta usando el archivo tiene un '1'
 # si no se esta ejectutando es '0'
-# mutex = '/tmp/mutex'
+mutex = '/tmp/mutex'
 while(True):
     if not fread(mutex) == '1':
         fwrite(mutex, '1')
