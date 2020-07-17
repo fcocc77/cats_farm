@@ -519,6 +519,7 @@ bool render_class::ntp(int ins)
 	QString cmd = exe + " " + ntp_module + " \"" + jots(slide).replace("\"", "'") + "\"";
 
 	QString log = qprocess(cmd, ins);
+	print(log);
 
 	return true;
 }
