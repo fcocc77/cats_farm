@@ -498,6 +498,7 @@ bool render_class::natron(int ins)
 
 bool render_class::ntp(int ins)
 {
+	mutex->lock();
 	int slide_index = first_frame[ins];
 	QJsonArray slides = jafs(extra[ins]);
 	QJsonObject slide = slides[slide_index].toObject();
@@ -515,11 +516,24 @@ bool render_class::ntp(int ins)
 	}
 	//-----------------------------------------------
 
-	QString ntp_module = path + "/modules/natron/ntp.py";
-	QString cmd = exe + " " + ntp_module + " \"" + jots(slide).replace("\"", "'") + "\"";
+	QString ntp_module = path + "/modules/natron/ntp.sh";
+	QString cmd = "sh " + ntp_module + " \"" + exe + "\" \"" + jots(slide).replace("\"", "'") + "\"";
+
+	mutex->unlock();
+
+	QThread *thread = new QThread;
+	connect(thread, &QThread::started, [=]() {
+		natron_monitoring(ins);
+	});
+	thread->start();
 
 	QString log = qprocess(cmd, ins);
-	print(log);
+
+	QString log_file = path + "/log/render_log_" + QString::number(ins);
+	fwrite(log_file, log);
+
+	thread->quit();
+	thread->requestInterruption();
 
 	return true;
 }

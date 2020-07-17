@@ -10,7 +10,7 @@ from production import generate_production_slides
 from vina import get_videovina
 
 # datos de vinarender
-data = json.loads(argv[2].replace("'", '"'))
+data = json.loads(argv[3].replace("'", '"'))
 base_project = data['project']
 frame_range = data['frames']
 slides_range = data['slides']
@@ -37,12 +37,17 @@ app.loadProject(base_project)
 # se hace un mutex de archivo, cuando se esta usando el archivo tiene un '1'
 # si no se esta ejectutando es '0'
 mutex = '/tmp/mutex'
-while(True):
+timeout = 3  # segundos
+current = 0
+while(current < timeout):
     if not fread(mutex) == '1':
-        fwrite(mutex, '1')
-        generate_production_slides(None, app, app, slides_range, force=True)
-        fwrite(mutex, '0')
         break
+
     sleep(0.1)
+    current += 0.1
+
+fwrite(mutex, '1')
+generate_production_slides(None, app, app, slides_range, force=True)
+fwrite(mutex, '0')
 
 app.saveProjectAs(project)
