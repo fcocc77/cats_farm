@@ -417,7 +417,7 @@ bool render_class::natron(int ins)
 	QString firstFrame = QString::number(first_frame[ins]);
 	QString lastFrame = QString::number(last_frame[ins]);
 
-	QString natron_module = "/usr/share/Natron/Plugins/vinarender/render.sh";
+	QString natron_module = path + "/modules/natron/render.sh";
 
 	// crea la carpeta donde se renderearan los archivos
 	QString output_file = extra[ins];
@@ -516,7 +516,7 @@ bool render_class::ntp(int ins)
 	}
 	//-----------------------------------------------
 
-	QString ntp_module = "/usr/share/Natron/Plugins/vinarender/ntp.sh";
+	QString ntp_module = path + "/modules/natron/ntp.sh";
 	QString cmd = "sh " + ntp_module + " \"" + exe + "\" \"" + jots(slide).replace("\"", "'") + "\"";
 
 	mutex->unlock();
