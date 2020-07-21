@@ -546,6 +546,9 @@ bool render_class::natron(int ins)
 		{
 			if (_log.contains("Render aborted"))
 				errors++;
+
+			if (_log.contains("Rendering Failed"))
+				errors++;
 		}
 		else
 			errors++;
