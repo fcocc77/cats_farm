@@ -417,13 +417,15 @@ bool render_class::natron(int ins)
 			break;
 	}
 	//-----------------------------------------------
+	QJsonObject _extra = jofs(extra[ins]);
+
 	QString firstFrame = QString::number(first_frame[ins]);
 	QString lastFrame = QString::number(last_frame[ins]);
 
 	QString natron_module = path + "/modules/natron/render.sh";
 
 	// crea la carpeta donde se renderearan los archivos
-	QString output_file = extra[ins];
+	QString output_file = _extra["output"].toString();
 
 	QString output_dir = os::dirname(output_file);
 	QString output_name = os::basename(output_file);
@@ -467,6 +469,56 @@ bool render_class::natron(int ins)
 	QString cmd = "sh " + natron_module + " " + exe + " \"" + project[ins] + "\" " + renderNode[ins] + " \"" + output + "\" " + firstFrame + " " + lastFrame;
 
 	mutex->unlock();
+
+	// para poder renderizar, cuando hay muchos proyectos con diferentes frames,
+	// se necesita identificar que proyectos contienen el rango de frames de la tarea a renderizar,
+	// con esto se genera una lista con los proyectos necesarios con su ruta correspondiente.
+	bool divided_project = _extra["divided_project"].toBool();
+	QJsonArray ranges_to_render;
+	if (divided_project)
+	{
+		QJsonArray divided_projects = _extra["divided_projects"].toArray();
+		for (QJsonValue value : divided_projects)
+		{
+			QJsonObject proj = value.toObject();
+			QString proj_path = proj["project"].toString();
+			int _first_frame = proj["first_frame"].toInt();
+			int _last_frame = proj["last_frame"].toInt();
+
+			bool insert = false;
+
+			if (_first_frame <= last_frame[ins] && _first_frame >= first_frame[ins])
+				insert = true;
+			if (last_frame[ins] <= _last_frame && last_frame[ins] >= _first_frame)
+				insert = true;
+			if (_last_frame <= last_frame[ins] && _last_frame >= first_frame[ins])
+				insert = true;
+			if (last_frame[ins] <= _last_frame && last_frame[ins] >= _first_frame)
+				insert = true;
+
+			if (insert)
+				ranges_to_render.push_back(QJsonArray({proj_path, _first_frame, _last_frame}));
+		}
+	}
+	else
+	{
+		ranges_to_render.push_back(QJsonArray({project[ins], first_frame[ins], last_frame[ins]}));
+	}
+	// ---------------------------------
+
+	for (QJsonValue i : ranges_to_render)
+	{
+		QString project_path = i.toArray()[0].toString();
+		int _fist_frame = i.toArray()[1].toInt();
+		int _last_frame = i.toArray()[2].toInt();
+
+		// clamp de first y last frame a partir del rango de la tarea
+		if (_fist_frame < first_frame[ins])
+			_fist_frame = first_frame[ins];
+		if (_last_frame > last_frame[ins])
+			_last_frame = last_frame[ins];
+		// ---------------------
+	}
 
 	QThread *thread = new QThread;
 	connect(thread, &QThread::started, [=]() {

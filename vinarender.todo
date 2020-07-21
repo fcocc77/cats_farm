@@ -10,6 +10,8 @@ monitor:
     ☐ el over del puntero de la tableta, que da pegado en los bordes
     ☐ que tenga control-z
     ☐ columna de errores; contador de errores
+    toolbar:
+        ☐ crear opciones de layout, y que queden fijos a un tamanio especifico
     jobs:
         ☐ no funciona el ctrl-a para seleccionar todos
         ☐ al borrar un jobs incompleto, que borre tambien la carpeta que se creo

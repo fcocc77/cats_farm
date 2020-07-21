@@ -341,7 +341,8 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 		}
 		if (software == "Natron")
 		{
-			QString output_file = job->extra;
+			QJsonObject _extra = jofs(job->extra);
+			QString output_file = _extra["output"].toString();
 			QString ext = output_file.split(".").last();
 
 			if (ext == "mov")
