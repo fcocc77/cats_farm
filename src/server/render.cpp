@@ -419,9 +419,6 @@ bool render_class::natron(int ins)
 	//-----------------------------------------------
 	QJsonObject _extra = jofs(extra[ins]);
 
-	QString firstFrame = QString::number(first_frame[ins]);
-	QString lastFrame = QString::number(last_frame[ins]);
-
 	QString natron_module = path + "/modules/natron/render.sh";
 
 	// crea la carpeta donde se renderearan los archivos
@@ -431,44 +428,6 @@ bool render_class::natron(int ins)
 	QString output_name = os::basename(output_file);
 
 	QString ext = output_name.split(".").last();
-
-	QString output_render;
-	QString output;
-	if (ext == "mov")
-	{
-		output_name = output_name.split(".")[0];
-		output_render = output_dir + "/" + output_name;
-
-		// crea numero con ceros para el nombre a partir del primer cuadro
-		QString num = "0000000000" + firstFrame;
-		QStringRef nameNumber(&num, num.length() - 10, 10);
-		// -------------------------------------
-
-		output = output_render + "/" + output_name + "_" + nameNumber + ".mov";
-
-		if (not os::isdir(output_render))
-		{
-			os::mkdir(output_render);
-			if (_linux)
-				os::system("chmod 777 -R " + output_render);
-		}
-		//---------------------------------------------------
-	}
-	else
-	{
-		if (not os::isdir(output_dir))
-		{
-			os::mkdir(output_dir);
-			if (_linux)
-				os::system("chmod 777 -R " + output_dir);
-		}
-
-		output = output_file;
-	}
-
-	QString cmd = "sh " + natron_module + " " + exe + " \"" + project[ins] + "\" " + renderNode[ins] + " \"" + output + "\" " + firstFrame + " " + lastFrame;
-
-	mutex->unlock();
 
 	// para poder renderizar, cuando hay muchos proyectos con diferentes frames,
 	// se necesita identificar que proyectos contienen el rango de frames de la tarea a renderizar,
@@ -506,6 +465,13 @@ bool render_class::natron(int ins)
 	}
 	// ---------------------------------
 
+	QString render_node = renderNode[ins];
+
+	mutex->unlock();
+
+	int errors = 0;
+	QString log;
+
 	for (QJsonValue i : ranges_to_render)
 	{
 		QString project_path = i.toArray()[0].toString();
@@ -518,37 +484,82 @@ bool render_class::natron(int ins)
 		if (_last_frame > last_frame[ins])
 			_last_frame = last_frame[ins];
 		// ---------------------
+
+		QString firstFrame = QString::number(_fist_frame);
+		QString lastFrame = QString::number(_last_frame);
+
+		QString output_render;
+		QString output;
+		if (ext == "mov")
+		{
+			output_name = output_name.split(".")[0];
+			output_render = output_dir + "/" + output_name;
+
+			// crea numero con ceros para el nombre a partir del primer cuadro
+			QString num = "0000000000" + firstFrame;
+			QStringRef nameNumber(&num, num.length() - 10, 10);
+			// -------------------------------------
+
+			output = output_render + "/" + output_name + "_" + nameNumber + ".mov";
+
+			if (not os::isdir(output_render))
+			{
+				os::mkdir(output_render);
+				if (_linux)
+					os::system("chmod 777 -R " + output_render);
+			}
+			//---------------------------------------------------
+		}
+		else
+		{
+			if (not os::isdir(output_dir))
+			{
+				os::mkdir(output_dir);
+				if (_linux)
+					os::system("chmod 777 -R " + output_dir);
+			}
+
+			output = output_file;
+		}
+
+		QString cmd = "sh " + natron_module + " " + exe + " \"" + project_path + "\" " + render_node +
+					  " \"" + output + "\" " + firstFrame + " " + lastFrame;
+
+		print(cmd);
+		QThread *thread = new QThread;
+		connect(thread, &QThread::started, [=]() {
+			natron_monitoring(ins);
+		});
+		thread->start();
+
+		// si NatronRenderer se congelo con la cpu al 100%, se soluciona,
+		// dandole un timeout al render de 7 minutos, si esta pegado
+		// a los 7 minutos mata el proceso.
+		QString _log = qprocess(cmd, ins, 420);
+		log += _log;
+		// ------------------
+
+		thread->quit();
+		thread->requestInterruption();
+
+		if (_log.contains("Rendering finished"))
+		{
+			if (_log.contains("Render aborted"))
+				errors++;
+		}
+		else
+			errors++;
 	}
-
-	QThread *thread = new QThread;
-	connect(thread, &QThread::started, [=]() {
-		natron_monitoring(ins);
-	});
-	thread->start();
-
-	QString log;
-
-	// si NatronRenderer se congelo con la cpu al 100%, se soluciona,
-	// dandole un timeout al render de 7 minutos, si esta pegado
-	// a los 7 minutos mata el proceso.
-	log = qprocess(cmd, ins, 420);
-	// ------------------
-
-	thread->quit();
-	thread->requestInterruption();
 
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
 	fwrite(log_file, log);
 
+	print(errors);
 	// post render
-	if (log.contains("Rendering finished"))
-		if (log.contains("Render aborted"))
-			return false;
-		else
-			return true;
+	if (errors == 0)
+		return true;
 	else
 		return false;
-	//-----------------------------------------------
 }
 
 bool render_class::ntp(int ins)
