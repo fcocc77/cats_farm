@@ -569,9 +569,7 @@ bool render_class::ntp(int ins)
 	int slide_index = first_frame[ins];
 	QJsonArray slides = jafs(extra[ins]);
 	QJsonObject slide = slides[slide_index].toObject();
-
-	slide["project"] = project[ins];
-	slide["output_folder"] = renderNode[ins];
+	QString _module = slide["module"].toString();
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
@@ -583,7 +581,7 @@ bool render_class::ntp(int ins)
 	}
 	//-----------------------------------------------
 
-	QString ntp_module = path + "/modules/natron/ntp.sh";
+	QString ntp_module = path + "/modules/natron/" + _module + ".sh";
 	QString cmd = "sh " + ntp_module + " \"" + exe + "\" \"" + jots(slide).replace("\"", "'") + "\"";
 
 	mutex->unlock();
