@@ -525,7 +525,6 @@ bool render_class::natron(int ins)
 		QString cmd = "sh " + natron_module + " " + exe + " \"" + project_path + "\" " + render_node +
 					  " \"" + output + "\" " + firstFrame + " " + lastFrame;
 
-		print(cmd);
 		QThread *thread = new QThread;
 		connect(thread, &QThread::started, [=]() {
 			natron_monitoring(ins);
@@ -557,7 +556,6 @@ bool render_class::natron(int ins)
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
 	fwrite(log_file, log);
 
-	print(errors);
 	// post render
 	if (errors == 0)
 		return true;
