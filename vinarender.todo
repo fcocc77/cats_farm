@@ -1,3 +1,5 @@
+general:
+    ☐ opcion para poder renderizar videos con ffmpeg
 manager:
     ☐ hacer que siga funcionando la cola de render al desconectarse, por un corte de luz o baja del internet, y si demora mas de 2 minutos en volver, transferir todos los trabajos a otra zona
     ✔ corregir tiempo estimado y tiempo total @done (5/28/2020, 9:48:00 AM)

@@ -602,7 +602,12 @@ bool render_class::ntp(int ins)
 
 	// post render
 	if (log.contains("Testing Error: 0"))
-		return true;
+	{
+		if (log.contains("Traceback"))
+			return false;
+		else
+			return true;
+	}
 	else
 		return false;
 	//---------------------------
