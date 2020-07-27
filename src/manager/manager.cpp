@@ -45,7 +45,7 @@ QString manager::server_tcp(QString _recv)
 		send = sendToLogger();
 	mutex.unlock();
 	if (input == 7)
-		send = videovina(pks);
+		videovina(pks);
 
 	return send;
 }

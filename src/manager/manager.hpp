@@ -6,8 +6,8 @@
 using namespace std;
 #include <ctime>	 // time_t
 #include <algorithm> //sort
-#include <unistd.h>  // sleep usleep
-#include <thread>	// thread
+#include <unistd.h>	 // sleep usleep
+#include <thread>	 // thread
 #include <QCoreApplication>
 #include <QString>
 #include <QDebug>
@@ -70,7 +70,11 @@ public:
 	QString jobLogAction(QString pks);
 	void serverSetState(server_struct *server, bool state);
 	QString server_tcp(QString recv);
-	QString videovina(QJsonArray recv);
+
+	// funciones para videovina
+	void videovina(QJsonArray recv);
+	void wait_to_render();
+	// ---------------------
 
 	QString update_server_thread(QJsonArray recv);
 	void update_server();
