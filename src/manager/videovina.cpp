@@ -1,6 +1,6 @@
 #include "manager.hpp"
 
-void manager::wait_to_render()
+void manager::send_to_render()
 {
     // espera que los proyectos natron esten creados con los
     // datos del proyecto del usuario para poder enviarlo a renderizar
@@ -33,6 +33,4 @@ void manager::videovina(QJsonArray recv)
 
     QString cmd = natron_renderer + " " + api + " \"" + _data + "\"";
     os::system(cmd);
-
-    wait_to_render();
 }

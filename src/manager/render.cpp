@@ -292,76 +292,14 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 		}
 		//--------------------------------------
 		if (software == "Nuke")
-		{
-			QString ext = job->extra.split(".").last();
-			if (ext == "mov")
-			{
-				job->status = "Concatenate";
-
-				// obtiene nombre de carpeta de renders
-				QString _dirname = os::dirname(job->extra);
-				QString _basename = os::basename(job->extra);
-				_basename.replace(".mov", "");
-				//-----------------------------------------
-
-				_dirname.replace(src_path, dst_path);
-
-				if (os::isdir(_dirname))
-					concat(_dirname + "/" + _basename);
-			}
-		}
+			nuke_completed(job, src_path, dst_path);
 		if (software == "AE")
-		{
-			job->status = "Concatenate";
-			QString folderRender = os::dirname(job->extra);
-			folderRender.replace(src_path, dst_path);
-			//-----------------------------------------
-			if (os::isdir(folderRender))
-				concat(folderRender, "mp4");
-
-			// cuando termina el render, lee el proyecto videovina para reconstruir las rutas
-			// y asi copiar el video renderizado al la carpeta publica de s3 del usuario.
-			QString vv_project_dir = os::dirname(os::dirname(folderRender));
-			QString vv_project_json = vv_project_dir + "/project.json";
-			QJsonObject vv_project = jread(vv_project_json);
-
-			QString user_id = vv_project["user_id"].toString();
-			QString project_name = vv_project["name"].toString();
-
-			QString src_video = folderRender + ".mp4";
-			QString dst_video = as3 + "/public/" + user_id + "/projects/" + project_name + "/renders/" + project_name + ".mp4";
-
-			os::mkdir(os::dirname(dst_video));
-			os::copy(src_video, dst_video);
-			// -----------------------------------------
-
-			// borra el jobs para que no se acumule, ya que es un render de videovina
-			erase_by_name(jobs, job->name);
-			// ---------------------
-		}
+			ae_completed(job);
 		if (software == "Natron")
-		{
-			QJsonObject _extra = jofs(job->extra);
-			QString output_file = _extra["output"].toString();
-			QString ext = output_file.split(".").last();
+			natron_completed(job, src_path, dst_path);
+		if (software == "Ntp")
+			ntp_completed(job);
 
-			if (ext == "mov")
-			{
-				QString output_dir = os::dirname(output_file);
-				QString output_name = os::basename(output_file);
-				output_name = output_name.split(".")[0];
-
-				QString output_render = output_dir + "/" + output_name;
-
-				job->status = "Concatenate";
-
-				output_render.replace(src_path, dst_path);
-				//-----------------------------------------
-
-				if (os::isdir(output_render))
-					concat(output_render);
-			}
-		}
 		//------------------------------------------------------------
 
 		QString submit_finish = currentDateTime(0);
@@ -370,5 +308,58 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 		job->submit_finish = submit_finish;
 		job->status = "Completed";
 		mutex.unlock();
+	}
+}
+
+void manager::ae_completed(job_struct *job)
+{
+}
+
+void manager::nuke_completed(job_struct *job, QString src_path, QString dst_path)
+{
+	QString ext = job->extra.split(".").last();
+	if (ext == "mov")
+	{
+		job->status = "Concatenate";
+
+		// obtiene nombre de carpeta de renders
+		QString _dirname = os::dirname(job->extra);
+		QString _basename = os::basename(job->extra);
+		_basename.replace(".mov", "");
+		//-----------------------------------------
+
+		_dirname.replace(src_path, dst_path);
+
+		if (os::isdir(_dirname))
+			concat(_dirname + "/" + _basename);
+	}
+}
+
+void manager::ntp_completed(job_struct *job)
+{
+	send_to_render();
+}
+
+void manager::natron_completed(job_struct *job, QString src_path, QString dst_path)
+{
+	QJsonObject _extra = jofs(job->extra);
+	QString output_file = _extra["output"].toString();
+	QString ext = output_file.split(".").last();
+
+	if (ext == "mov")
+	{
+		QString output_dir = os::dirname(output_file);
+		QString output_name = os::basename(output_file);
+		output_name = output_name.split(".")[0];
+
+		QString output_render = output_dir + "/" + output_name;
+
+		job->status = "Concatenate";
+
+		output_render.replace(src_path, dst_path);
+		//-----------------------------------------
+
+		if (os::isdir(output_render))
+			concat(output_render);
 	}
 }

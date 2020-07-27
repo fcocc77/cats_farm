@@ -73,8 +73,13 @@ public:
 
 	// funciones para videovina
 	void videovina(QJsonArray recv);
-	void wait_to_render();
+	void send_to_render();
 	// ---------------------
+
+	void ae_completed(job_struct *job);
+	void nuke_completed(job_struct *job, QString src_path, QString dst_path);
+	void ntp_completed(job_struct *job);
+	void natron_completed(job_struct *job, QString src_path, QString dst_path);
 
 	QString update_server_thread(QJsonArray recv);
 	void update_server();
