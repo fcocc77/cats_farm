@@ -26,7 +26,6 @@ void manager::send_to_render(QString extra)
 
 void manager::post_render(QJsonObject extra, int last_frame)
 {
-
     QString output_file = extra["output"].toString();
     QString output_dir = os::dirname(output_file);
     QString output_name = os::basename(output_file);
@@ -44,10 +43,9 @@ void manager::post_render(QJsonObject extra, int last_frame)
     float fade_start = duration - fade_duration;
 
     QString audio_filter = "-filter:a \"afade=t=out:st=" + QString::number(fade_start) + ":d=" + QString::number(fade_duration) + "\"";
-    QString cmd = "ffmpeg -y -i \"" + output + "\" \"" + song + "\" -c:v copy " + audio_filter + " -t " + _duration + " \"" + output;
+    QString cmd = "ffmpeg -y -i \"" + output_file + "\" -i \"" + song + "\" -c:v copy " + audio_filter + " -t " + _duration + " \"" + output + "\"";
 
-    // os::system(cmd);
-    print(song);
+    os::system(cmd);
 }
 
 void manager::videovina(QJsonArray recv)
