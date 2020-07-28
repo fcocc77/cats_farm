@@ -522,8 +522,10 @@ bool render_class::natron(int ins)
 			output = output_file;
 		}
 
-		QString cmd = "sh " + natron_module + " " + exe + " \"" + project_path + "\" " + render_node +
-					  " \"" + output + "\" " + firstFrame + " " + lastFrame;
+		_extra["render_node"] = render_node;
+		_extra["output"] = output;
+
+		QString cmd = "sh " + natron_module + " " + exe + " \"" + project_path + "\" " + firstFrame + " " + lastFrame + " \"" + jots(_extra).replace("\"", "'") + "\"";
 
 		QThread *thread = new QThread;
 		connect(thread, &QThread::started, [=]() {
