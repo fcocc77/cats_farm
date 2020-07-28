@@ -27,16 +27,12 @@ void manager::send_to_render(QString extra)
 
 void manager::videovina(QJsonArray recv)
 {
-
-    QString slideshow = assets + "/slideshows";
-    QString song_dir = assets + "/music";
-
     // Datos recividos del servidor principal
     QString user = recv[0].toString();
     QString user_id = recv[1].toString();
     QString project_type = recv[2].toString();
     QString project_name = recv[3].toString();
-    bool proxy = recv[4].toString().toInt();
+    int format = recv[4].toString().toInt();
     // -------------------------------------
 
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
@@ -46,7 +42,8 @@ void manager::videovina(QJsonArray recv)
         {"action", "create_multi_project"},
         {"user", user},
         {"project_name", project_name},
-        {"project_type", project_type}};
+        {"project_type", project_type},
+        {"format", format}};
 
     QString _data = jots(data).replace("\"", "'");
 

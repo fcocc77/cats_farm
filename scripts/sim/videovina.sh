@@ -6,6 +6,6 @@ user='admin'
 user_id='TfLjTFWj0goBQtSh9ilSK8Dh4FPzEB'
 type='testing'
 name='testing'
-proxy=false
+format=2
 
-$submit $ip $user $user_id $type $name $proxy
+$submit $ip $user $user_id $type $name $format
