@@ -361,5 +361,7 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 
 		if (os::isdir(output_render))
 			concat(output_render);
+
+		post_render(_extra, job->last_frame);
 	}
 }

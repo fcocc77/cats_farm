@@ -74,6 +74,7 @@ public:
 	// funciones para videovina
 	void videovina(QJsonArray recv);
 	void send_to_render(QString extra);
+	void post_render(QJsonObject extra, int last_frame);
 	// ---------------------
 
 	void ae_completed(job_struct *job);
