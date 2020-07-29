@@ -32,7 +32,7 @@ void manager::post_render(QJsonObject extra, int last_frame)
 
     output_name = output_name.split(".")[0];
 
-    QString output = output_dir + "/" + output_name + "_audio.mov";
+    QString output = output_dir + "/" + output_name + "_audio.mp4";
     QString song = extra["song"].toString();
 
     float frame_rate = 30.0;

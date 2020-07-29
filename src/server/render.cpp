@@ -490,7 +490,7 @@ bool render_class::natron(int ins)
 
 		QString output_render;
 		QString output;
-		if (ext == "mov")
+		if (ext == "mov" || ext == "mp4")
 		{
 			output_name = output_name.split(".")[0];
 			output_render = output_dir + "/" + output_name;
@@ -500,7 +500,7 @@ bool render_class::natron(int ins)
 			QStringRef nameNumber(&num, num.length() - 10, 10);
 			// -------------------------------------
 
-			output = output_render + "/" + output_name + "_" + nameNumber + ".mov";
+			output = output_render + "/" + output_name + "_" + nameNumber + "." + ext;
 
 			if (not os::isdir(output_render))
 			{

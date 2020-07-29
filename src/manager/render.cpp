@@ -346,7 +346,7 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 	QString output_file = _extra["output"].toString();
 	QString ext = output_file.split(".").last();
 
-	if (ext == "mov")
+	if (ext == "mov" || ext == "mp4")
 	{
 		QString output_dir = os::dirname(output_file);
 		QString output_name = os::basename(output_file);
@@ -360,7 +360,7 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 		//-----------------------------------------
 
 		if (os::isdir(output_render))
-			concat(output_render);
+			concat(output_render, ext);
 
 		post_render(_extra, job->last_frame);
 	}

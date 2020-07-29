@@ -29,7 +29,7 @@ void concat(QString folder, QString format = "mov")
 	for (auto i : dir_list)
 	{
 		QString ext = i.split(".").last();
-		if (ext == "mov")
+		if (ext == "mov" || ext == "mp4")
 			movie_list += "file '" + i + "'\n";
 	}
 	//-------------------------
