@@ -64,6 +64,7 @@ void manager::videovina(QJsonArray recv)
     QJsonObject data = {
         {"action", "create_multi_project"},
         {"user", user},
+        {"user_id", user_id},
         {"project_name", project_name},
         {"project_type", project_type},
         {"format", format}};
