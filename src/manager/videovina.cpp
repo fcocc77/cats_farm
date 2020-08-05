@@ -13,10 +13,10 @@ void manager::send_to_render(QString extra)
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
     QString api = path + "/modules/natron/api.py";
 
-    QJsonObject data = {
-        {"action", "send_to_render"},
-        {"user", user},
-        {"project_name", project_name}};
+    QJsonObject data ={
+        { "action", "send_to_render" },
+        { "user", user },
+        { "project_name", project_name } };
 
     QString _data = jots(data).replace("\"", "'");
 
@@ -46,6 +46,14 @@ void manager::post_render(QJsonObject extra, int last_frame)
     QString cmd = "ffmpeg -y -i \"" + output_file + "\" -i \"" + song + "\" -c:v copy " + audio_filter + " -t " + _duration + " \"" + output + "\"";
 
     os::system(cmd);
+
+    // copia el video con audio, al la carpeta s3 del usuario
+    QString project_name = extra["project_name"].toString();
+    QString user_id = extra["user_id"].toString();
+    QString s3_video_path = as3 + "/public/" + user_id + "/projects/" + project_name + "/" + project_name + ".mp4";
+
+    print(s3_video_path);
+    // os::copy(output, s3_video_path)
 }
 
 void manager::videovina(QJsonArray recv)
@@ -61,13 +69,13 @@ void manager::videovina(QJsonArray recv)
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
     QString api = path + "/modules/natron/api.py";
 
-    QJsonObject data = {
-        {"action", "create_multi_project"},
-        {"user", user},
-        {"user_id", user_id},
-        {"project_name", project_name},
-        {"project_type", project_type},
-        {"format", format}};
+    QJsonObject data ={
+        { "action", "create_multi_project" },
+        { "user", user },
+        { "user_id", user_id },
+        { "project_name", project_name },
+        { "project_type", project_type },
+        { "format", format } };
 
     QString _data = jots(data).replace("\"", "'");
 
