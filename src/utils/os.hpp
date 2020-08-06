@@ -27,7 +27,6 @@ using namespace std;
 namespace os
 {
 
-void mkdir(QString path);
 void copy(QString src, QString dst);
 void copydir(QString src, QString dst);
 void move(QString src, QString dst);

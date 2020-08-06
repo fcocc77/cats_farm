@@ -199,7 +199,7 @@ bool render_class::nuke(int ins)
 
 	if (not os::isdir(folderRender))
 	{
-		os::mkdir(folderRender);
+		os::makedirs(folderRender);
 		if (_linux)
 			os::system("chmod 777 -R " + folderRender);
 	}
@@ -504,7 +504,7 @@ bool render_class::natron(int ins)
 
 			if (not os::isdir(output_render))
 			{
-				os::mkdir(output_render);
+				os::makedirs(output_render);
 				if (_linux)
 					os::system("chmod 777 -R " + output_render);
 			}
@@ -514,7 +514,7 @@ bool render_class::natron(int ins)
 		{
 			if (not os::isdir(output_dir))
 			{
-				os::mkdir(output_dir);
+				os::makedirs(output_dir);
 				if (_linux)
 					os::system("chmod 777 -R " + output_dir);
 			}
@@ -627,7 +627,7 @@ bool render_class::ae(int ins)
 	// Crea carpeta de renders
 	if (not os::isdir(folderRender))
 	{
-		os::mkdir(folderRender);
+		os::makedirs(folderRender);
 		if (_linux)
 			os::system("chmod 777 -R " + folderRender);
 	}

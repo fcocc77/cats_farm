@@ -371,14 +371,6 @@ void copymove(QString src, QString dst, bool copy)
 	}
 }
 
-void mkdir(QString path)
-{
-	QString cmd = "mkdir \"" + path + '"';
-	if (_win32)
-		cmd = cmd.replace("/", "\\");
-	std::system(cmd.toStdString().c_str());
-}
-
 void remove(QString _file)
 {
 	QFile file(_file);
