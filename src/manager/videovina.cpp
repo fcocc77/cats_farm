@@ -21,7 +21,7 @@ void manager::send_to_render(QString extra)
     QString _data = jots(data).replace("\"", "'");
 
     QString cmd = natron_renderer + " " + api + " \"" + _data + "\"";
-    os::system(cmd);
+    os::sh(cmd);
 }
 
 void manager::post_render(QJsonObject extra, int last_frame)
@@ -45,7 +45,7 @@ void manager::post_render(QJsonObject extra, int last_frame)
     QString audio_filter = "-filter:a \"afade=t=out:st=" + QString::number(fade_start) + ":d=" + QString::number(fade_duration) + "\"";
     QString cmd = "ffmpeg -y -i \"" + output_file + "\" -i \"" + song + "\" -c:v copy " + audio_filter + " -t " + _duration + " \"" + output + "\"";
 
-    os::system(cmd);
+    os::sh(cmd);
 
     // copia el video con audio, a la carpeta s3 del usuario
     QString project_name = extra["project_name"].toString();
@@ -79,5 +79,5 @@ void manager::videovina(QJsonArray recv)
     QString _data = jots(data).replace("\"", "'");
 
     QString cmd = natron_renderer + " " + api + " \"" + _data + "\"";
-    os::system(cmd);
+    os::sh(cmd);
 }

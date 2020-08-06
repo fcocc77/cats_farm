@@ -12,7 +12,7 @@ void manager::render_job()
 			bool cmp;
 			cmp = a->priority < b->priority;
 			// si prioridad es igual compara el submit_start
-			if ( a->priority == b->priority ){
+			if (a->priority == b->priority) {
 				cmp = a->submit_start < b->submit_start;
 			}
 			return cmp; });
@@ -160,9 +160,9 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			mutex.unlock();
 
 			// Envia a renderar la tarea al servidor que le corresponde
-			QJsonArray pks = {project, software, instance->index, first_frame, last_frame, jobSystem, extra, render};
+			QJsonArray pks ={ project, software, instance->index, first_frame, last_frame, jobSystem, extra, render };
 
-			QString result = tcpClient(server->host, server_port, jats({0, pks}));
+			QString result = tcpClient(server->host, server_port, jats({ 0, pks }));
 
 			if (not(result == "ok"))
 			{
@@ -338,6 +338,7 @@ void manager::nuke_completed(job_struct *job, QString src_path, QString dst_path
 void manager::ntp_completed(job_struct *job)
 {
 	send_to_render(job->extra);
+	job_delete(job->name);
 }
 
 void manager::natron_completed(job_struct *job, QString src_path, QString dst_path)
@@ -363,5 +364,6 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 			concat(output_render, ext);
 
 		post_render(_extra, job->last_frame);
+		job_delete(job->name);
 	}
 }
