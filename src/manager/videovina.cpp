@@ -47,13 +47,12 @@ void manager::post_render(QJsonObject extra, int last_frame)
 
     os::system(cmd);
 
-    // copia el video con audio, al la carpeta s3 del usuario
+    // copia el video con audio, a la carpeta s3 del usuario
     QString project_name = extra["project_name"].toString();
     QString user_id = extra["user_id"].toString();
     QString s3_video_path = as3 + "/public/" + user_id + "/projects/" + project_name + "/" + project_name + ".mp4";
 
-    print(s3_video_path);
-    // os::copy(output, s3_video_path)
+    os::copy(output, s3_video_path);
 }
 
 void manager::videovina(QJsonArray recv)
