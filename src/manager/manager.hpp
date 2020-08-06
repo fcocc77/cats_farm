@@ -49,27 +49,30 @@ public:
 	QString make_job(QJsonArray recv);
 	QString pivot_to_server(QJsonArray recv);
 	vector<task_struct *> make_task(int first_frame, int last_frame, int task_size);
-	void resetAllServer();
+	void reset_all_servers();
 	void kill_tasks(job_struct *job, bool _delete);
 	void render_job();
 	void render_task(server_struct *server, inst_struct *instance, job_struct *job);
-	QString sendToMonitor_thread();
-	QString sendToLogger();
+	QString send_to_monitor_thread();
+	QString send_to_logger();
 	QJsonObject struct_to_json();
 	void json_to_struct(QJsonObject info);
 	void reactive_all();
 	QString recieve_monitor_thread(QJsonArray recv);
-	void jobAction(QJsonArray pks);
-	QString jobOptions(QJsonArray pks);
-	QString serverAction(QJsonArray pks);
-	QString serverOptions(QJsonArray pks);
-	void groupAction(QJsonArray pks);
-	void taskAction(QJsonArray pks);
-	void groupCreate(QJsonArray pks);
-	QString preferencesAction(QJsonArray pks);
-	QString jobLogAction(QString pks);
-	void serverSetState(server_struct *server, bool state);
+	QString server_action(QJsonArray pks);
+	QString server_options(QJsonArray pks);
+	void group_action(QJsonArray pks);
+	void task_action(QJsonArray pks);
+	void group_create(QJsonArray pks);
+	QString preferences_action(QJsonArray pks);
+	void server_set_state(server_struct *server, bool state);
 	QString server_tcp(QString recv);
+
+	// jobs
+	void job_delete(QString job_name);
+	void job_action(QJsonArray pks);
+	QString job_options(QJsonArray pks);
+	QString job_log_action(QString pks);
 
 	// funciones para videovina
 	void videovina(QJsonArray recv);
@@ -89,10 +92,10 @@ public:
 	void update_jobs();
 	void container_save();
 	void update_all();
-	job_struct *findJob(QString name);
-	server_struct *findServer(QString name);
-	group_struct *findGroup(QString name);
-	task_struct *findTask(vector<task_struct *> tasks, QString name);
+	job_struct *find_job(QString name);
+	server_struct *find_server(QString name);
+	group_struct *find_group(QString name);
+	task_struct *find_task(vector<task_struct *> tasks, QString name);
 
 	template <typename T>
 	bool is_struct(T lista, QString name)

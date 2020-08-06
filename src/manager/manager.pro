@@ -19,6 +19,10 @@ HEADERS +=  ../utils/os.hpp \
 SOURCES += 	./main.cpp \
 			./manager.cpp \  
 			./actions.cpp \
+			./jobs.cpp \
+			./servers.cpp \
+			./groups.cpp \
+			./tasks.cpp \
 			./render.cpp \
 			./update.cpp \
 			./videovina.cpp \

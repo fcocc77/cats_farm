@@ -82,7 +82,7 @@ void groups_class::create_window()
 {
 
     // funcion anonima de grupo
-    auto groupCreate = [this](QString group_name) {
+    auto group_create = [this](QString group_name) {
         qDebug() << group_name;
         shared->stopUpdate = true;
         auto selected = servers->selectedItems();
@@ -116,11 +116,11 @@ void groups_class::create_window()
     {
         if (not group_name.isEmpty())
         {
-            groupCreate(group_name);
+            group_create(group_name);
         }
         else
         {
-            groupCreate("Nameless");
+            group_create("Nameless");
         }
     }
 }

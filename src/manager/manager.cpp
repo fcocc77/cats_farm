@@ -34,7 +34,7 @@ QString manager::server_tcp(QString _recv)
 	if (input == 1)
 		send = update_server_thread(pks);
 	else if (input == 2)
-		send = sendToMonitor_thread();
+		send = send_to_monitor_thread();
 	else if (input == 3)
 		send = recieve_monitor_thread(pks);
 	else if (input == 4)
@@ -42,7 +42,7 @@ QString manager::server_tcp(QString _recv)
 	else if (input == 5)
 		send = pivot_to_server(pks);
 	else if (input == 6)
-		send = sendToLogger();
+		send = send_to_logger();
 	mutex.unlock();
 	if (input == 7)
 		videovina(pks);
@@ -51,7 +51,7 @@ QString manager::server_tcp(QString _recv)
 }
 
 // Envia  informacion de jobs al logger
-QString manager::sendToLogger()
+QString manager::send_to_logger()
 {
 	QJsonObject _jobs;
 	for (auto job : jobs)
@@ -296,7 +296,7 @@ vector<task_struct *> manager::make_task(int first_frame, int last_frame, int ta
 }
 
 // Envia  informacion de jobs al monitor
-QString manager::sendToMonitor_thread()
+QString manager::send_to_monitor_thread()
 {
 	return jots(struct_to_json());
 } //-----------------------------------------
@@ -564,7 +564,7 @@ QJsonObject manager::struct_to_json()
 	return info;
 }
 
-job_struct *manager::findJob(QString name)
+job_struct *manager::find_job(QString name)
 {
 	for (auto job : jobs)
 		if (job->name == name)
@@ -572,7 +572,7 @@ job_struct *manager::findJob(QString name)
 	return jobs[0];
 }
 
-server_struct *manager::findServer(QString name)
+server_struct *manager::find_server(QString name)
 {
 	for (auto server : servers)
 		if (server->name == name)
@@ -580,7 +580,7 @@ server_struct *manager::findServer(QString name)
 	return servers[0];
 }
 
-group_struct *manager::findGroup(QString name)
+group_struct *manager::find_group(QString name)
 {
 	for (auto group : groups)
 		if (group->name == name)
@@ -588,7 +588,7 @@ group_struct *manager::findGroup(QString name)
 	return groups[0];
 }
 
-task_struct *manager::findTask(vector<task_struct *> tasks, QString name)
+task_struct *manager::find_task(vector<task_struct *> tasks, QString name)
 {
 	for (auto task : tasks)
 		if (task->name == name)
