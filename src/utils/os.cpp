@@ -296,7 +296,7 @@ void copy(QString src, QString dst)
 
 void copydir(QString src, QString dst)
 {
-	os::system("cp -rf " + src + " " + dst);
+	os::sh("cp -rf \"" + src + "\" \"" + dst + "\"");
 }
 
 void move(QString src, QString dst)
@@ -407,7 +407,8 @@ bool isdir(QString dir)
 
 void makedirs(QString dir)
 {
-	QDir(dir).mkpath(dir);
+	if (!isdir(dir))
+		QDir(dir).mkpath(dir);
 }
 
 #ifdef _WIN32

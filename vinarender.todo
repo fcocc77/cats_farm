@@ -5,6 +5,7 @@ manager:
     ✔ corregir tiempo estimado y tiempo total @done (5/28/2020, 9:48:00 AM)
     ☐ al exportar un solo frame, cuando termina a veces queda en 'queue', pasa cuando exportamos con Natron los frame de referencia, hacer un check a todos los job casa 10 segundos y si estan todas las tareas hechas, ponerla como completado
     ☐ hacer un script que valla matando el proceso de manager cada cierto tiempo, para probar que los archivos json, no se corrompan, y que siga el render
+    ☐ verificar que cuando se borre un 'jobs' no quede en la memoria, hay que utilizar 'delete jobs->'
 render:
     ☐ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios
 

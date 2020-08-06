@@ -1,5 +1,34 @@
 #include "manager.hpp"
 
+void manager::sample_render(QString video, int frame, int index) {
+
+    float frame_rate = 30.0;
+
+    QString start_second = QString::number(frame / frame_rate);
+
+    QString samples_folder = os::dirname(video) + "/samples";
+    os::makedirs(samples_folder);
+
+    QString output = samples_folder + "/sample_" + QString::number(index) + ".jpg";
+
+    QString cmd = "ffmpeg -y -i \"" + video + "\" -ss " + start_second + " -vf scale=640:360 -vframes 1 -q:v 2 \"" + output + "\"";
+    os::sh(cmd);
+}
+
+void manager::samples_export(QString video, QJsonArray ranges) {
+
+    for (int i = 0; i < ranges.size(); i++)
+    {
+        QJsonArray range = ranges[i].toArray();
+        int first_frame = range[0].toInt();
+        int last_frame = range[1].toInt();
+
+        int center_frame = (first_frame + last_frame) / 2;
+
+        sample_render(video, center_frame, i);
+    }
+}
+
 void manager::send_to_render(QString extra)
 {
     // espera que los proyectos natron esten creados con los
@@ -47,12 +76,19 @@ void manager::post_render(QJsonObject extra, int last_frame)
 
     os::sh(cmd);
 
+    samples_export(output, extra["ranges"].toArray());
+
     // copia el video con audio, a la carpeta s3 del usuario
     QString project_name = extra["project_name"].toString();
     QString user_id = extra["user_id"].toString();
-    QString s3_video_path = as3 + "/public/" + user_id + "/projects/" + project_name + "/" + project_name + ".mp4";
-
+    QString s3_project_folder = as3 + "/public/" + user_id + "/projects/" + project_name;
+    QString s3_video_path = s3_project_folder + "/" + project_name + ".mp4";
     os::copy(output, s3_video_path);
+
+    // copia las muestras a la carpeta s3
+    QString samples_folder = output_dir + "/samples";
+    
+    os::copydir(samples_folder, s3_project_folder);
 }
 
 void manager::videovina(QJsonArray recv)
