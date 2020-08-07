@@ -21,5 +21,7 @@ monitor:
     servers:
         ☐ al seleccionar y borrar con suprimir, no se borran los servidores sino los jobs
         ☐ uso de ram a veces queda negativo, ponerle un abc()
+        ☐ mostrar cpu i/o en otro color
+        ☐ mostrar memoria cache en otro color
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
