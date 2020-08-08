@@ -24,8 +24,6 @@ QString manager::recieve_monitor_thread(QJsonArray recv)
 			job_action(pks);
 		if (id == "jobOptions")
 			return job_options(pks);
-		if (id == "serverOptions")
-			return server_options(pks);
 		if (id == "serverAction")
 			return server_action(pks);
 		if (id == "groupAction")
@@ -58,4 +56,3 @@ QString manager::preferences_action(QJsonArray _pks)
 
 	return "";
 }
-

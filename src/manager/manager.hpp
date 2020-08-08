@@ -60,7 +60,6 @@ public:
 	void reactive_all();
 	QString recieve_monitor_thread(QJsonArray recv);
 	QString server_action(QJsonArray pks);
-	QString server_options(QJsonArray pks);
 	void group_action(QJsonArray pks);
 	void task_action(QJsonArray pks);
 	void group_create(QJsonArray pks);
@@ -89,7 +88,6 @@ public:
 
 	QString update_server_thread(QJsonArray recv);
 	void update_server();
-	bool iTime(QString schedule);
 	void update_group();
 	void update_jobs();
 	void container_save();

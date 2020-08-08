@@ -213,9 +213,6 @@ void manager::json_to_struct(QJsonObject info)
 		_server->sshUser = server["sshUser"].toString();
 		_server->sshPass = server["sshPass"].toString();
 		_server->vmSoftware = server["vmSoftware"].toString();
-		_server->schedule = server["schedule"].toString();
-		_server->schedule_state_0 = server["schedule_state_0"].toBool();
-		_server->schedule_state_1 = server["schedule_state_1"].toBool();
 
 		servers.push_back(_server);
 	}
@@ -344,9 +341,6 @@ QJsonObject manager::struct_to_json()
 		s["sshUser"] = server->sshUser;
 		s["sshPass"] = server->sshPass;
 		s["vmSoftware"] = server->vmSoftware;
-		s["schedule"] = server->schedule;
-		s["schedule_state_0"] = server->schedule_state_0;
-		s["schedule_state_1"] = server->schedule_state_1;
 		s["log"] = server->log;
 
 		_servers[server->name] = s;

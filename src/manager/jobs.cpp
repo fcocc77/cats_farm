@@ -1,5 +1,87 @@
 #include "manager.hpp"
 
+void manager::update_jobs()
+{
+	for (auto job : jobs)
+	{
+		int waiting = job->tasks - (job->suspended_task + job->progres + job->active_task);
+		job->waiting_task = waiting;
+
+		if (job->failed_task)
+		{
+			threading([=]() {
+				job->status = "Failed";
+				sleep(7);
+				job->status = "Queue";
+				});
+
+			job->failed_task = 0;
+		}
+		else
+		{
+			if ((job->status == "Suspended") or (job->status == "Completed") or (job->status == "Failed") or (job->status == "Concatenate"))
+				;
+			else if (job->active_task)
+				job->status = "Rendering...";
+			else
+				job->status = "Queue";
+		}
+
+		if (job->active_task)
+		{
+			// tiempo actual de inicio de los dias
+			int current_time = QTime::currentTime().msecsSinceStartOfDay();
+			// ---------------------------
+
+			int add = 0;
+			if (job->time_elapsed_running)
+				// tiempo actual menos el ultimo tiempo registrado
+				add = current_time - job->last_time;
+
+			job->time_elapsed += add;
+
+			// evita que el tiempo se dispare cuando inicia la cuenta,
+			// esto pasa cuando se resta el 'current_time' por 'job->last_time' que
+			// al inicio es cero.
+			if (job->time_elapsed > 50000000)
+				job->time_elapsed = 0;
+			// ---------------------------
+
+			int estimated_time;
+			if (job->progres)
+			{
+				// calcula el tiempo estimado
+				int remaining = job->tasks - job->progres;
+				estimated_time = (job->time_elapsed * remaining) / job->progres;
+				if (estimated_time > job->estimated_time_ms)
+					if (job->estimated_time_ms)
+						estimated_time = job->estimated_time_ms;
+			}
+			else
+				estimated_time = 0;
+
+			job->estimated_time_ms = estimated_time;
+
+			// convierte los milisegundo en segundos y luego al formato de tiempo
+			// en string, para el tiempo estimado y restante.
+			if (estimated_time)
+				job->estimated_time = secToTime(estimated_time / 1000);
+			else
+				job->estimated_time = "...";
+			job->total_render_time = secToTime(job->time_elapsed / 1000);
+			// ------------------------------
+
+			job->last_time = current_time;
+			job->time_elapsed_running = true;
+		}
+		else
+		{
+			job->time_elapsed_running = false;
+			job->estimated_time = "...";
+		}
+	}
+}
+
 QString manager::make_job(QJsonArray recv)
 {
     QString _job_name = recv[0].toString();

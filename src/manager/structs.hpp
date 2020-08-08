@@ -74,9 +74,6 @@ struct server_struct
 	QString sshUser;
 	QString sshPass;
 	QString vmSoftware;
-	QString schedule;
-	bool schedule_state_0;
-	bool schedule_state_1;
 	QString log;
 };
 

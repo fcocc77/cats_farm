@@ -1,5 +1,56 @@
 #include "manager.hpp"
 
+void manager::update_group()
+{
+	// Obtiene todos los grupos que estan activos
+	QStringList groups_used;
+	for (auto job : jobs)
+		if (job->active_task)
+			for (QString sg : job->server_group)
+				groups_used.push_back(sg);
+
+	QJsonArray grouplist;
+
+	for (auto group : groups)
+	{
+		grouplist.push_back(group->name);
+		int totaMachine = 0, activeMachine = 0;
+
+		for (auto _server : group->server)
+		{
+
+			if (is_struct(servers, _server->name))
+			{
+				auto server = get_server(_server->name);
+
+				totaMachine++;
+				if (server->status == "absent")
+					_server->status = false;
+				else
+				{
+					_server->status = true;
+					activeMachine++;
+				}
+			}
+			else
+			{
+				erase_by_name(group->server, _server->name);
+			}
+		}
+		bool server_status;
+		if (groups_used.contains(group->name))
+			server_status = true;
+		else
+			server_status = false;
+
+		group->status = server_status;
+		group->totaMachine = totaMachine;
+		group->activeMachine = activeMachine;
+	}
+
+	preferences["groups"] = grouplist;
+}
+
 void manager::group_action(QJsonArray pks)
 {
     QJsonArray group_list = pks[0].toArray();
