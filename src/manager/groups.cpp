@@ -65,6 +65,14 @@ void manager::group_action(QJsonArray pks)
     }
 }
 
+group_struct *manager::find_group(QString name)
+{
+	for (auto group : groups)
+		if (group->name == name)
+			return group;
+	return groups[0];
+}
+
 void manager::group_create(QJsonArray pks)
 {
 

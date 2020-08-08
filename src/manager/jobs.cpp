@@ -61,6 +61,14 @@ void manager::job_action(QJsonArray pks)
     }
 }
 
+job_struct *manager::find_job(QString name)
+{
+    for (auto job : jobs)
+        if (job->name == name)
+            return job;
+    return jobs[0];
+}
+
 QString manager::job_options(QJsonArray pks)
 {
     int num = 0;

@@ -253,7 +253,7 @@ vector<task_struct *> manager::make_task(int first_frame, int last_frame, int ta
 			}
 		}
 
-		range = {f, l};
+		range ={ f, l };
 		tasks_range.push_back(range);
 
 		if (l == last_frame)
@@ -426,7 +426,6 @@ void manager::json_to_struct(QJsonObject info)
 
 QJsonObject manager::struct_to_json()
 {
-
 	// combierte todas las estructuras de Jobs y las combierte a JSON para poder enviarlas y guardarlas
 	QJsonObject info;
 
@@ -521,7 +520,7 @@ QJsonObject manager::struct_to_json()
 		QJsonArray _instances;
 		for (auto instance : server->instances)
 		{
-			_instances.push_back({{instance->index, instance->status, instance->reset, instance->job_task}});
+			_instances.push_back({ { instance->index, instance->status, instance->reset, instance->job_task } });
 		}
 		s["instances"] = _instances;
 		// --------------------------------
@@ -552,7 +551,7 @@ QJsonObject manager::struct_to_json()
 		QJsonArray serverList;
 		for (auto server : group->server)
 		{
-			serverList.push_back({{server->name, server->status}});
+			serverList.push_back({ { server->name, server->status } });
 		}
 		g["server"] = serverList;
 
@@ -562,36 +561,4 @@ QJsonObject manager::struct_to_json()
 	info["groups"] = _groups;
 
 	return info;
-}
-
-job_struct *manager::find_job(QString name)
-{
-	for (auto job : jobs)
-		if (job->name == name)
-			return job;
-	return jobs[0];
-}
-
-server_struct *manager::find_server(QString name)
-{
-	for (auto server : servers)
-		if (server->name == name)
-			return server;
-	return servers[0];
-}
-
-group_struct *manager::find_group(QString name)
-{
-	for (auto group : groups)
-		if (group->name == name)
-			return group;
-	return groups[0];
-}
-
-task_struct *manager::find_task(vector<task_struct *> tasks, QString name)
-{
-	for (auto task : tasks)
-		if (task->name == name)
-			return task;
-	return tasks[0];
 }

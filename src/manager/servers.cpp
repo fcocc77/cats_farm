@@ -66,6 +66,14 @@ void manager::server_set_state(server_struct *server, bool state)
 	}
 }
 
+server_struct *manager::find_server(QString name)
+{
+	for (auto server : servers)
+		if (server->name == name)
+			return server;
+	return servers[0];
+}
+
 QString manager::server_options(QJsonArray pks)
 {
 

@@ -30,6 +30,14 @@ void manager::kill_tasks(job_struct *job, bool _delete)
             tcpClient(server->host, server_port, jats({ 3, kill_ins }));
 }
 
+task_struct *manager::find_task(vector<task_struct *> tasks, QString name)
+{
+	for (auto task : tasks)
+		if (task->name == name)
+			return task;
+	return tasks[0];
+}
+
 void manager::task_action(QJsonArray pks)
 {
     for (QJsonValue t : pks)

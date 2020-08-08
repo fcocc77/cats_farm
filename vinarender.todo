@@ -4,6 +4,7 @@ manager:
     ☐ hacer que siga funcionando la cola de render al desconectarse, por un corte de luz o baja del internet, y si demora mas de 2 minutos en volver, transferir todos los trabajos a otra zona
     ✔ corregir tiempo estimado y tiempo total @done (5/28/2020, 9:48:00 AM)
     ☐ al exportar un solo frame, cuando termina a veces queda en 'queue', pasa cuando exportamos con Natron los frame de referencia, hacer un check a todos los job casa 10 segundos y si estan todas las tareas hechas, ponerla como completado
+    ☐ a veces queda en queue, y terminaron todas las tareas, hacer un loop que valla verificando si todas las tareas estan en 'Complete'
     ☐ hacer un script que valla matando el proceso de manager cada cierto tiempo, para probar que los archivos json, no se corrompan, y que siga el render
     ☐ verificar que cuando se borre un 'jobs' no quede en la memoria, hay que utilizar 'delete jobs->'
 render:
