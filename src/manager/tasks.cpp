@@ -30,7 +30,7 @@ void manager::kill_tasks(job_struct *job, bool _delete)
             tcpClient(server->host, server_port, jats({ 3, kill_ins }));
 }
 
-task_struct *manager::find_task(vector<task_struct *> tasks, QString name)
+task_struct *manager::get_task(vector<task_struct *> tasks, QString name)
 {
 	for (auto task : tasks)
 		if (task->name == name)
@@ -47,8 +47,8 @@ void manager::task_action(QJsonArray pks)
         QString task_name = _task[1].toString();
         QString task_action = _task[2].toString();
 
-        auto job = find_job(job_name);
-        auto task = find_task(job->task, task_name);
+        auto job = get_job(job_name);
+        auto task = get_task(job->task, task_name);
 
         if (task_action == "suspend")
         {

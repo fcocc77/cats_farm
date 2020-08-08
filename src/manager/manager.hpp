@@ -94,10 +94,10 @@ public:
 	void update_jobs();
 	void container_save();
 	void update_all();
-	job_struct *find_job(QString name);
-	server_struct *find_server(QString name);
-	group_struct *find_group(QString name);
-	task_struct *find_task(vector<task_struct *> tasks, QString name);
+	job_struct *get_job(QString name);
+	server_struct *get_server(QString name);
+	group_struct *get_group(QString name);
+	task_struct *get_task(vector<task_struct *> tasks, QString name);
 
 	template <typename T>
 	bool is_struct(T lista, QString name)

@@ -12,7 +12,7 @@ void manager::job_action(QJsonArray pks)
         QString job_name = _job[0].toString();
         QString job_action = _job[1].toString();
 
-        auto job = find_job(job_name);
+        auto job = get_job(job_name);
 
         if (job_action == "delete")
             kill_tasks(job, true);
@@ -61,7 +61,7 @@ void manager::job_action(QJsonArray pks)
     }
 }
 
-job_struct *manager::find_job(QString name)
+job_struct *manager::get_job(QString name)
 {
     for (auto job : jobs)
         if (job->name == name)
@@ -80,7 +80,7 @@ QString manager::job_options(QJsonArray pks)
         QJsonArray options = _job[1].toArray();
         QString action = _job[2].toString();
 
-        auto job = find_job(job_name);
+        auto job = get_job(job_name);
 
         if (action == "write")
         {
@@ -188,7 +188,7 @@ QString manager::job_options(QJsonArray pks)
 
 QString manager::job_log_action(QString server_name)
 {
-    auto server = find_server(server_name);
+    auto server = get_server(server_name);
     QString result = server->log;
 
     return result;

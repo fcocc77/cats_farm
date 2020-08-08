@@ -16,7 +16,7 @@ void manager::group_action(QJsonArray pks)
             QString name = _group[0].toString();
             QJsonArray serverList = _group[1].toArray();
 
-            auto group = find_group(name);
+            auto group = get_group(name);
 
             for (QJsonValue s : serverList)
             {
@@ -24,7 +24,7 @@ void manager::group_action(QJsonArray pks)
                 if (not is_struct(group->server, server))
                 {
 
-                    QString status = find_server(server)->status;
+                    QString status = get_server(server)->status;
                     bool _status = true;
 
                     if (status == "absent")
@@ -52,7 +52,7 @@ void manager::group_action(QJsonArray pks)
             QString name = _group[0].toString();
             QString server = _group[1].toString();
 
-            auto group = find_group(name);
+            auto group = get_group(name);
 
             erase_by_name(group->server, server);
         }
@@ -65,7 +65,7 @@ void manager::group_action(QJsonArray pks)
     }
 }
 
-group_struct *manager::find_group(QString name)
+group_struct *manager::get_group(QString name)
 {
 	for (auto group : groups)
 		if (group->name == name)

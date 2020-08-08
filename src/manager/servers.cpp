@@ -9,7 +9,7 @@ QString manager::server_action(QJsonArray pks)
 		QString name = _server[0].toString();
 		QString server_action = _server[1].toString();
 		int instances = _server[2].toString().toInt();
-		auto server = find_server(name);
+		auto server = get_server(name);
 
 		if (server_action == "turn_on")
 			os::sh("ether-wake " + server->mac);
@@ -66,7 +66,7 @@ void manager::server_set_state(server_struct *server, bool state)
 	}
 }
 
-server_struct *manager::find_server(QString name)
+server_struct *manager::get_server(QString name)
 {
 	for (auto server : servers)
 		if (server->name == name)
@@ -85,7 +85,7 @@ QString manager::server_options(QJsonArray pks)
 		QJsonArray recv = _server[1].toArray();
 		QString action = _server[2].toString();
 
-		auto server = find_server(name);
+		auto server = get_server(name);
 
 		if (action == "read")
 		{

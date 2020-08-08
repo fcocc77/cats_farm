@@ -27,7 +27,7 @@ void manager::render_job()
 			{
 				if (not groups.empty())
 				{
-					auto group = find_group(sg);
+					auto group = get_group(sg);
 
 					for (auto s : group->server)
 						machinesList.push_back(s->name);

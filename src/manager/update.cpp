@@ -89,7 +89,7 @@ QString manager::update_server_thread(QJsonArray recv)
 
 		else
 		{
-			auto server = find_server(name);
+			auto server = get_server(name);
 
 			server->ram_used = ram_used;
 			server->cpu = cpu;
@@ -250,7 +250,7 @@ void manager::update_group()
 
 			if (is_struct(servers, _server->name))
 			{
-				auto server = find_server(_server->name);
+				auto server = get_server(_server->name);
 
 				totaMachine++;
 				if (server->status == "absent")
