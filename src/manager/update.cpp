@@ -128,37 +128,29 @@ void manager::update_server()
 		// si el porcentaje de la ram es mayor a 90 %, el tiempo de espera es mas para que no quede aucente le servidor
 		int response;
 		if (server->ram > 90)
-		{
 			response = 120;
-		}
 		else
-		{
 			response = 30;
-		}
-		//--------------------------------------------------------------------------------------------------
 
+		// si no responde en 10 segundos, queda ausente
 		if (response_time > response)
-		{ // si no responde en 10 segundo queda ausente
 			server->status = "absent";
-		}
 		else
-		{
 			server->status = "idle";
-		}
 
 		for (int i = 0; i < server->max_instances; ++i)
 		{
 			if (server->instances[i]->status == 3)
-				threading([=]() {
-					sleep(7);
-					if (server->instances[i]->status == 3)
+				threading([=]()
 					{
-						server->instances[i]->status = 0;
-						server->instances[i]->job_task = "...";
-					}
-				});
+						sleep(7);
+						if (server->instances[i]->status == 3)
+						{
+							server->instances[i]->status = 0;
+							server->instances[i]->job_task = "...";
+						}
+					});
 		}
-		//--------------------------------
 
 		//schedule server
 		if (not iTime(server->schedule))
@@ -170,7 +162,6 @@ void manager::update_server()
 				server->schedule_state_1 = true;
 			}
 		}
-
 		else
 		{
 			if (server->schedule_state_1)
@@ -181,8 +172,6 @@ void manager::update_server()
 				server->schedule_state_0 = true;
 			}
 		}
-
-		//-----------------------------
 	}
 
 	preferences["servers"] = serverList;
@@ -201,26 +190,17 @@ bool manager::iTime(QString schedule)
 	if (start > end)
 	{
 		if ((hora >= start) or (hora <= end))
-		{
 			return true;
-		}
 		else
-		{
 			return false;
-		}
 	}
 	else
 	{
 		if ((start <= hora) <= end)
-		{
 			return true;
-		}
 		else
-		{
 			return false;
-		}
 	}
-	//----------------------------------------------
 }
 
 void manager::update_group()
@@ -228,16 +208,10 @@ void manager::update_group()
 	// Obtiene todos los grupos que estan activos
 	QStringList groups_used;
 	for (auto job : jobs)
-	{
 		if (job->active_task)
-		{
 			for (QString sg : job->server_group)
-			{
 				groups_used.push_back(sg);
-			}
-		}
-	}
-	//------------------------------------------------
+
 	QJsonArray grouplist;
 
 	for (auto group : groups)
@@ -254,9 +228,7 @@ void manager::update_group()
 
 				totaMachine++;
 				if (server->status == "absent")
-				{
 					_server->status = false;
-				}
 				else
 				{
 					_server->status = true;
@@ -295,7 +267,7 @@ void manager::update_jobs()
 				job->status = "Failed";
 				sleep(7);
 				job->status = "Queue";
-			});
+				});
 
 			job->failed_task = 0;
 		}

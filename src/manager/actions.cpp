@@ -48,9 +48,7 @@ QString manager::preferences_action(QJsonArray _pks)
 	QString action = _pks[0].toString();
 
 	if (action == "read")
-	{
 		return jots(jread(path + "/etc/preferences.json"));
-	}
 	else
 	{
 		QJsonObject pks = _pks[1].toObject();

@@ -97,213 +97,33 @@ void manager::reactive_all()
 	for (auto &job : jobs)
 	{
 		if (job->status == "Rendering...")
-		{
 			job->status = "Queue";
-		}
 
 		for (auto &task : job->task)
-		{
 			if (task->status == "active")
 			{
 				task->status = "waiting";
 				job->active_task -= 1;
 			}
-		}
 	}
 
 	for (auto &server : servers)
-	{
 		for (auto &instance : server->instances)
 		{
 			if (instance->status == 1)
-			{
 				instance->status = 0;
-			}
 			instance->reset = 0;
 		}
-	}
-
-	//-------------------------------------------------------------
 }
 
-QString manager::make_job(QJsonArray recv)
-{
-
-	QString _job_name = recv[0].toString();
-	//------------------------------
-	QStringList _server;
-	if (recv[1].toString() != "None")
-		_server.push_back(recv[1].toString());
-	//------------------------------
-	QStringList _server_group;
-	if (recv[2].toString() != "None")
-		_server_group.push_back(recv[2].toString());
-	//------------------------------
-	int _first_frame = recv[3].toInt();
-	int _last_frame = recv[4].toInt();
-	int _task_size = recv[5].toInt();
-	int _priority = recv[6].toInt();
-	bool _suspend = recv[7].toBool();
-	QString _comment = recv[8].toString();
-	QString _software = recv[9].toString();
-	QString _project = recv[10].toString();
-	QString _extra = recv[11].toString();
-	QString _system = recv[12].toString();
-	int _instances = recv[13].toInt();
-	QString _render = recv[14].toString();
-
-	QString status, submit_start;
-
-	if (_suspend)
-	{
-		status = "Suspended";
-	}
-	else
-	{
-		status = "Queue";
-	}
-
-	submit_start = currentDateTime(0);
-
-	// checkea si el nombre esta en la lista, si esta le pone un padding
-	QString job_name = _job_name;
-
-	for (int i = 0; i < 100; ++i)
-	{
-		bool inside = false;
-		for (auto j : jobs)
-		{
-			if (job_name == j->name)
-			{
-				inside = true;
-			}
-		}
-		if (inside)
-		{
-			job_name = _job_name + "_" + QString::number(i);
-		}
-		else
-		{
-			break;
-		}
-	}
-	//----------------------------------------------------------------------
-
-	auto tasks = make_task(_first_frame, _last_frame, _task_size);
-
-	job_struct *_job = new job_struct;
-
-	_job->name = job_name;
-	_job->status = status;
-	_job->priority = _priority;
-	_job->server = _server;
-	_job->server_group = _server_group;
-	_job->instances = _instances;
-	_job->comment = _comment;
-	_job->submit_start = submit_start;
-	_job->submit_finish = "...";
-	_job->time_elapsed = 0;
-	_job->last_time = 0;
-	_job->total_render_time = "...";
-	_job->estimated_time = "...";
-	_job->time_elapsed_running = 0;
-	_job->software = _software;
-	_job->project = _project;
-	_job->system = _system;
-	_job->extra = _extra;
-	_job->render = _render;
-	_job->progres = 0;
-	_job->old_p = 0;
-	_job->waiting_task = tasks.size();
-	_job->tasks = tasks.size();
-	_job->suspended_task = 0;
-	_job->failed_task = 0;
-	_job->active_task = 0;
-	_job->task_size = _task_size;
-	_job->task = tasks;
-	_job->first_frame = _first_frame;
-	_job->last_frame = _last_frame;
-
-	jobs.push_back(_job);
-
-	return "";
-}
-
-vector<task_struct *> manager::make_task(int first_frame, int last_frame, int task_size)
-{
-
-	//Crea una lista de tareas con el frame de inicio y final
-	QList<int> range;
-	QList<QList<int>> tasks_range;
-
-	int t = task_size - 1;
-	int f = first_frame - task_size;
-	int s, l;
-
-	while (1)
-	{
-		f = f + t + 1;
-		for (int i = 0; i < 10000; i++)
-		{
-			s = f + t;
-			l = f + i;
-			if (l == s or l == last_frame)
-			{
-				break;
-			}
-		}
-
-		range ={ f, l };
-		tasks_range.push_back(range);
-
-		if (l == last_frame)
-		{
-			break;
-		}
-	}
-	//--------------------------------------------------------
-
-	// create tasks
-	vector<task_struct *> tasks;
-
-	int num = 0;
-	QString task_name;
-	for (auto i : tasks_range)
-	{
-		num++;
-
-		if (num < 10)
-			task_name = "Task_00" + QString::number(num);
-		else if (num > 99)
-			task_name = "Task_" + QString::number(num);
-		else
-			task_name = "Task_0" + QString::number(num);
-
-		task_struct *_tasks = new task_struct;
-
-		_tasks->name = task_name;
-		_tasks->status = "waiting";
-		_tasks->first_frame = i[0];
-		_tasks->last_frame = i[1];
-		_tasks->server = "...";
-		_tasks->time = "...";
-
-		tasks.push_back(_tasks);
-	}
-	//--------------------------------
-
-	return tasks;
-}
-
-// Envia  informacion de jobs al monitor
 QString manager::send_to_monitor_thread()
 {
+	// Envia informacion de los 'jobs' al vmonitor
 	return jots(struct_to_json());
-} //-----------------------------------------
+}
 
 void manager::json_to_struct(QJsonObject info)
 {
-
 	for (auto j : info["jobs"].toObject())
 	{
 		job_struct *_jobs = new job_struct;
@@ -331,9 +151,7 @@ void manager::json_to_struct(QJsonObject info)
 		_jobs->render = job["render"].toString();
 
 		for (QJsonValue vs : job["vetoed_servers"].toArray())
-		{
 			_jobs->vetoed_servers.push_back(vs.toString());
-		}
 
 		_jobs->progres = job["progres"].toInt();
 		_jobs->old_p = job["old_p"].toInt();
@@ -519,9 +337,7 @@ QJsonObject manager::struct_to_json()
 		// --------------------------------
 		QJsonArray _instances;
 		for (auto instance : server->instances)
-		{
 			_instances.push_back({ { instance->index, instance->status, instance->reset, instance->job_task } });
-		}
 		s["instances"] = _instances;
 		// --------------------------------
 		s["max_instances"] = server->max_instances;
@@ -550,9 +366,7 @@ QJsonObject manager::struct_to_json()
 		g["activeMachine"] = group->activeMachine;
 		QJsonArray serverList;
 		for (auto server : group->server)
-		{
 			serverList.push_back({ { server->name, server->status } });
-		}
 		g["server"] = serverList;
 
 		_groups[group->name] = g;

@@ -1,5 +1,96 @@
 #include "manager.hpp"
 
+QString manager::make_job(QJsonArray recv)
+{
+    QString _job_name = recv[0].toString();
+    //------------------------------
+    QStringList _server;
+    if (recv[1].toString() != "None")
+        _server.push_back(recv[1].toString());
+    //------------------------------
+    QStringList _server_group;
+    if (recv[2].toString() != "None")
+        _server_group.push_back(recv[2].toString());
+    //------------------------------
+    int _first_frame = recv[3].toInt();
+    int _last_frame = recv[4].toInt();
+    int _task_size = recv[5].toInt();
+    int _priority = recv[6].toInt();
+    bool _suspend = recv[7].toBool();
+    QString _comment = recv[8].toString();
+    QString _software = recv[9].toString();
+    QString _project = recv[10].toString();
+    QString _extra = recv[11].toString();
+    QString _system = recv[12].toString();
+    int _instances = recv[13].toInt();
+    QString _render = recv[14].toString();
+
+    QString status, submit_start;
+
+    if (_suspend)
+        status = "Suspended";
+    else
+        status = "Queue";
+
+    submit_start = currentDateTime(0);
+
+    // checkea si el nombre esta en la lista, si esta le pone un padding
+    QString job_name = _job_name;
+
+    for (int i = 0; i < 100; ++i)
+    {
+        bool inside = false;
+        for (auto j : jobs)
+            if (job_name == j->name)
+                inside = true;
+
+        if (inside)
+            job_name = _job_name + "_" + QString::number(i);
+        else
+            break;
+    }
+    //----------------------------------------------------------------------
+
+    auto tasks = make_task(_first_frame, _last_frame, _task_size);
+
+    job_struct *_job = new job_struct;
+
+    _job->name = job_name;
+    _job->status = status;
+    _job->priority = _priority;
+    _job->server = _server;
+    _job->server_group = _server_group;
+    _job->instances = _instances;
+    _job->comment = _comment;
+    _job->submit_start = submit_start;
+    _job->submit_finish = "...";
+    _job->time_elapsed = 0;
+    _job->last_time = 0;
+    _job->total_render_time = "...";
+    _job->estimated_time = "...";
+    _job->time_elapsed_running = 0;
+    _job->software = _software;
+    _job->project = _project;
+    _job->system = _system;
+    _job->extra = _extra;
+    _job->render = _render;
+    _job->progres = 0;
+    _job->old_p = 0;
+    _job->waiting_task = tasks.size();
+    _job->tasks = tasks.size();
+    _job->suspended_task = 0;
+    _job->failed_task = 0;
+    _job->active_task = 0;
+    _job->task_size = _task_size;
+    _job->task = tasks;
+    _job->first_frame = _first_frame;
+    _job->last_frame = _last_frame;
+
+    jobs.push_back(_job);
+
+    return "";
+}
+
 void manager::job_delete(QString job_name) {
     erase_by_name(jobs, job_name);
 }

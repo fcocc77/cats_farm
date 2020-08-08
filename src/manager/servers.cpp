@@ -76,7 +76,6 @@ server_struct *manager::get_server(QString name)
 
 QString manager::server_options(QJsonArray pks)
 {
-
 	for (QJsonValue s : pks)
 	{
 		QJsonArray _server = s.toArray();
@@ -88,14 +87,10 @@ QString manager::server_options(QJsonArray pks)
 		auto server = get_server(name);
 
 		if (action == "read")
-		{
 			return { server->schedule };
-		}
 
 		if (action == "write")
-		{
 			server->schedule = recv[0].toString();
-		}
 	}
 
 	return "";

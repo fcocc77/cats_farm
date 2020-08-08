@@ -2,14 +2,12 @@
 
 void manager::group_action(QJsonArray pks)
 {
-
     QJsonArray group_list = pks[0].toArray();
     QJsonArray group_machine = pks[1].toArray();
     QString group_action = pks[2].toString();
 
     if (group_action == "addMachine")
     {
-
         for (QJsonValue g : group_machine)
         {
             QJsonArray _group = g.toArray();
@@ -28,9 +26,7 @@ void manager::group_action(QJsonArray pks)
                     bool _status = true;
 
                     if (status == "absent")
-                    {
                         _status = false;
-                    }
 
                     serverFromGroupStruct *sg = new serverFromGroupStruct;
                     sg->name = server;
@@ -44,8 +40,7 @@ void manager::group_action(QJsonArray pks)
 
     if (group_action == "delete")
     {
-        // elimina servers del grupo
-
+        // Elimina los 'servers' del grupo
         for (QJsonValue g : group_machine)
         {
             QJsonArray _group = g.toArray();
@@ -58,19 +53,16 @@ void manager::group_action(QJsonArray pks)
         }
 
         for (QJsonValue group : group_list)
-        {
             erase_by_name(groups, group.toString());
-        }
-        //------------------------------------------
     }
 }
 
 group_struct *manager::get_group(QString name)
 {
-	for (auto group : groups)
-		if (group->name == name)
-			return group;
-	return groups[0];
+    for (auto group : groups)
+        if (group->name == name)
+            return group;
+    return groups[0];
 }
 
 void manager::group_create(QJsonArray pks)
@@ -88,13 +80,9 @@ void manager::group_create(QJsonArray pks)
     {
         pad += 1;
         if (is_struct(groups, group_name))
-        {
             group_name = group_name_in + "_" + QString::number(pad);
-        }
         else
-        {
             break;
-        }
     }
 
     group_struct *group = new group_struct;
