@@ -139,7 +139,7 @@ QList<QString> render_class::find_correct_path(QJsonArray system_path, QString _
 			break;
 	}
 
-	return {src, dst};
+	return { src, dst };
 }
 
 QString render_class::qprocess(QString cmd, int ins, int timeout)
@@ -271,7 +271,7 @@ bool render_class::maya(int ins)
 	os::remove(log_file);
 
 	QString args = " -r file -s " + QString::number(first_frame[ins]) + " -e " + QString::number(last_frame[ins]) +
-				   " -proj '" + extra[ins] + "' '" + project[ins] + "'" + " -log '" + log_file + "'";
+		" -proj '" + extra[ins] + "' '" + project[ins] + "'" + " -log '" + log_file + "'";
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
@@ -320,7 +320,7 @@ bool render_class::houdini(int ins)
 	QString hipFile = project[ins].replace(src_path[ins], dst_path[ins]);
 
 	QString render_file = path + "/modules/houdiniVinaRender.py " +
-						  hipFile + " " + renderNode[ins] + " " + QString::number(first_frame[ins]) + " " + QString::number(last_frame[ins]);
+		hipFile + " " + renderNode[ins] + " " + QString::number(first_frame[ins]) + " " + QString::number(last_frame[ins]);
 
 	QString cmd = '"' + exe + "\" " + render_file;
 
@@ -456,12 +456,12 @@ bool render_class::natron(int ins)
 				insert = true;
 
 			if (insert)
-				ranges_to_render.push_back(QJsonArray({proj_path, _first_frame, _last_frame}));
+				ranges_to_render.push_back(QJsonArray({ proj_path, _first_frame, _last_frame }));
 		}
 	}
 	else
 	{
-		ranges_to_render.push_back(QJsonArray({project[ins], first_frame[ins], last_frame[ins]}));
+		ranges_to_render.push_back(QJsonArray({ project[ins], first_frame[ins], last_frame[ins] }));
 	}
 	// ---------------------------------
 
@@ -530,7 +530,7 @@ bool render_class::natron(int ins)
 		QThread *thread = new QThread;
 		connect(thread, &QThread::started, [=]() {
 			natron_monitoring(ins);
-		});
+			});
 		thread->start();
 
 		// si NatronRenderer se congelo con la cpu al 100%, se soluciona,
@@ -542,6 +542,8 @@ bool render_class::natron(int ins)
 
 		thread->quit();
 		thread->requestInterruption();
+
+		pid[ins] = 0;
 
 		if (_log.contains("Rendering finished"))
 		{
@@ -594,7 +596,7 @@ bool render_class::ntp(int ins)
 	QThread *thread = new QThread;
 	connect(thread, &QThread::started, [=]() {
 		natron_monitoring(ins);
-	});
+		});
 	thread->start();
 
 	QString log = qprocess(cmd, ins);
