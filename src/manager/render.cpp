@@ -315,8 +315,7 @@ void manager::nuke_completed(job_struct *job, QString src_path, QString dst_path
 
 void manager::ntp_completed(job_struct *job)
 {
-	send_to_render(job->extra);
-	job_delete(job->name);
+	send_to_render(job);
 }
 
 void manager::natron_completed(job_struct *job, QString src_path, QString dst_path)

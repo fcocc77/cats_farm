@@ -29,15 +29,16 @@ void manager::samples_export(QString video, QJsonArray ranges) {
     }
 }
 
-void manager::send_to_render(QString extra)
+void manager::send_to_render(job_struct *job)
 {
     // espera que los proyectos natron esten creados con los
     // datos del proyecto del usuario para poder enviarlo a renderizar
 
-    QJsonObject _extra = jofs(extra);
+    QJsonObject _extra = jofs(job->extra);
 
     QString user = _extra["user"].toString();
     QString project_name = _extra["project_name"].toString();
+    QString _module = _extra["module"].toString();
 
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
     QString api = path + "/modules/natron/api.py";
@@ -51,6 +52,9 @@ void manager::send_to_render(QString extra)
 
     QString cmd = natron_renderer + " " + api + " \"" + _data + "\"";
     os::sh(cmd);
+
+    if (_module == "production_ntp")
+        job_delete(job->name);
 }
 
 void manager::post_render(QJsonObject extra, int last_frame)
@@ -87,7 +91,7 @@ void manager::post_render(QJsonObject extra, int last_frame)
 
     // copia las muestras a la carpeta s3
     QString samples_folder = output_dir + "/samples";
-    
+
     os::copydir(samples_folder, s3_project_folder);
 }
 
