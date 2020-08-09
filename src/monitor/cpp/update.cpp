@@ -103,8 +103,6 @@ QString update_class::manager_recieve_update(QString _recv, QJsonObject extra)
 
 void update_class::update_jobs(QJsonObject recv)
 {
-
-	// Chekear lista de jobs que hay en la lista
 	QStringList job_list;
 
 	struct _job_item
@@ -116,18 +114,15 @@ void update_class::update_jobs(QJsonObject recv)
 
 	for (int i = 0; i < jobs->topLevelItemCount(); ++i)
 	{
-
 		auto item = jobs->topLevelItem(i);
 		QString name = item->text(0);
 		job_list.push_back(name);
 		job_item.push_back({name, item});
 	}
-	//-----------------------------
 
 	// actualiza el contador de jobs de toolbar
 	int count = recv.size();
 	shared->jobs_count->setText(QString::number(count) + " jobs.");
-	// ----------------------------
 
 	QStringList job_name_list;
 	for (QJsonValue j : recv)
@@ -135,7 +130,7 @@ void update_class::update_jobs(QJsonObject recv)
 		QJsonObject job = j.toObject();
 		QString job_name = job["name"].toString();
 		QString status = job["status"].toString();
-		QString comment = job["comment"].toString();
+		int errors = job["errors"].toInt();
 		QString submit_start = job["submit_start"].toString();
 		QString submit_finish = job["submit_finish"].toString();
 		QString total_render_time = job["total_render_time"].toString();
@@ -162,30 +157,21 @@ void update_class::update_jobs(QJsonObject recv)
 			priority = "Low";
 		else
 			priority = "Very Low";
-		//-------------------------------
 
 		// si el jobs se borro recientemente no se agrega ni actualiza
 		bool _delete = false;
 		for (QString d : delete_list)
-		{
 			if (d == job_name)
-			{
 				_delete = true;
-			}
-		}
-		//---------------------------------
 
 		// agrega a la lista para saber que jobs ya no estan
 		job_name_list.push_back(job_name);
-		//------------------------------------
 
 		if (not _delete)
 		{
-
 			// Si el nombre no esta en la lista de la interface, agrega el nuevo job.
 			if (not job_list.contains(job_name))
 			{
-
 				QTreeWidgetItem *item = new QTreeWidgetItem();
 
 				QProgressBar *taskProgress = new QProgressBar();
@@ -209,16 +195,14 @@ void update_class::update_jobs(QJsonObject recv)
 				item->setText(7, estimated_time);
 
 				item->setText(8, total_render_time);
-				item->setText(9, comment);
+				item->setText(9, QString::number(errors));
 
 				jobs->addTopLevelItem(item);
 				jobs->setItemWidget(item, 3, widget);
 			}
-			//-----------------------------------------------------------------------
 
 			for (int i = 0; i < jobs->topLevelItemCount(); ++i)
 			{
-
 				auto item = jobs->topLevelItem(i);
 				QString name = item->text(0);
 				if (name == job_name)
@@ -237,30 +221,24 @@ void update_class::update_jobs(QJsonObject recv)
 					item->setText(6, submit_finish);
 					item->setText(7, estimated_time);
 					item->setText(8, total_render_time);
-					item->setText(9, comment);
+					item->setText(9, QString::number(errors));
 
 					if (status == "Completed")
 					{
-
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(70, 100, 120);}";
 						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
-						{
 							item->setForeground(i, QColor(80, 150, 200));
-						}
 					}
 
 					if (status == "Rendering...")
 					{
-
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(50, 120, 70);}";
 						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
-						{
 							item->setForeground(i, QColor(100, 200, 100));
-						}
 					}
 
 					if (status == "Failed")
@@ -270,22 +248,17 @@ void update_class::update_jobs(QJsonObject recv)
 						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
-						{
 							item->setForeground(i, QColor(200, 0, 0));
-						}
 					}
 
 					if (status == "Concatenate")
 					{
-
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(120, 100, 120);}";
 						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 						taskProgress->setFormat("....Concat....");
 
 						for (int i = 0; i < 10; ++i)
-						{
 							item->setForeground(i, QColor(180, 130, 200));
-						}
 					}
 
 					if (status == "Queue")
@@ -294,28 +267,22 @@ void update_class::update_jobs(QJsonObject recv)
 						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
-						{
 							item->setForeground(i, QColor(200, 200, 200));
-						}
 					}
 
 					if (status == "Suspended")
 					{
-
 						QString bar_color = "QProgressBar::chunk:horizontal {background: rgb(140, 140, 0);}";
 						jobs->itemWidget(item, 3)->setStyleSheet(bar_color);
 
 						for (int i = 0; i < 10; ++i)
-						{
 							item->setForeground(i, QColor(200, 200, 0));
-						}
 					}
 				}
 			}
 		}
 	}
 	// si el job ya no existe, borra el item
-
 	for (_job_item ji : job_item)
 	{
 		if (not job_name_list.contains(ji.name))

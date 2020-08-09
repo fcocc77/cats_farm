@@ -157,7 +157,7 @@ QString manager::make_job(QJsonArray recv)
     _job->extra = _extra;
     _job->render = _render;
     _job->progres = 0;
-    _job->old_p = 0;
+    _job->errors = 0;
     _job->waiting_task = tasks.size();
     _job->tasks = tasks.size();
     _job->suspended_task = 0;
@@ -216,6 +216,7 @@ void manager::job_action(QJsonArray pks)
             job->active_task = 0;
             job->time_elapsed = 0;
             job->last_time = 0;
+            job->errors = 0;
             job->submit_finish = "...";
             job->total_render_time = "...";
             job->vetoed_servers.clear();

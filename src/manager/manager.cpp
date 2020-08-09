@@ -148,13 +148,13 @@ void manager::json_to_struct(QJsonObject info)
 		_jobs->project = job["project"].toString();
 		_jobs->system = job["system"].toString();
 		_jobs->extra = job["extra"].toString();
+		_jobs->errors = job["errors"].toInt();
 		_jobs->render = job["render"].toString();
 
 		for (QJsonValue vs : job["vetoed_servers"].toArray())
 			_jobs->vetoed_servers.push_back(vs.toString());
 
 		_jobs->progres = job["progres"].toInt();
-		_jobs->old_p = job["old_p"].toInt();
 		_jobs->waiting_task = job["waiting_task"].toInt();
 		_jobs->tasks = job["tasks"].toInt();
 		_jobs->suspended_task = job["suspended_task"].toInt();
@@ -276,6 +276,7 @@ QJsonObject manager::struct_to_json()
 		j["project"] = job->project;
 		j["system"] = job->system;
 		j["extra"] = job->extra;
+		j["errors"] = job->errors;
 		// --------------------------------
 		QJsonArray vetoed_servers;
 		for (QString s : job->vetoed_servers)
@@ -284,7 +285,6 @@ QJsonObject manager::struct_to_json()
 		// --------------------------------
 		j["render"] = job->render;
 		j["progres"] = job->progres;
-		j["old_p"] = job->old_p;
 		j["waiting_task"] = job->waiting_task;
 		j["tasks"] = job->tasks;
 		j["suspended_task"] = job->suspended_task;

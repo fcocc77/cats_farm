@@ -41,7 +41,7 @@ void jobs_class::setup_ui()
     this->setObjectName("jobs");
     this->setColumnCount(10);
     QStringList columns{"Job Name", "Priority", "Software", "Task Progress", "Status",
-                        "Submit Data/Time", "Finished Data/Time", "Estimated Time", "Total Render Time", "Comment"};
+                        "Submit Data/Time", "Finished Data/Time", "Estimated Time", "Total Render Time", "Errors"};
 
     this->setHeaderLabels(columns);
 

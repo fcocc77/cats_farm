@@ -22,6 +22,7 @@ struct job_struct
 	QString comment;
 	QString submit_start;
 	QString submit_finish;
+	int errors;
 	int time_elapsed;
 	int last_time;
 	int estimated_time_ms;
@@ -35,7 +36,6 @@ struct job_struct
 	QString render;
 	QStringList vetoed_servers;
 	int progres;
-	int old_p;
 	int waiting_task;
 	int tasks;
 	int suspended_task;

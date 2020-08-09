@@ -177,6 +177,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 					job->vetoed_servers.push_back(server->name);
 
 					job->failed_task = 1;
+					job->errors ++;
 
 					int active_task = job->active_task - 1;
 					if (active_task >= 0)
