@@ -52,13 +52,8 @@ void manager::render_job()
 					// si la instancia esta dentro del trabajo renderea
 					bool instanceOK = 0;
 					for (int i = 0; i < job->instances; i++)
-					{
 						if (i == ins)
-						{
 							instanceOK = 1;
-						}
-					}
-					//-------------------------------------------------
 
 					if (serverOK)
 					{
@@ -69,13 +64,8 @@ void manager::render_job()
 								// Veta los servers que fallaron mas de dos veces
 								int vetoed_times = 0;
 								for (auto s : job->vetoed_servers)
-								{
 									if (server->name == s)
-									{
 										vetoed_times++;
-									}
-								}
-								//------------------------------------------
 
 								if (not(vetoed_times >= 3))
 								{ // este numero es la cantidad de veces que puede fallar el servidor antes que se bloquee
@@ -171,9 +161,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 					mutex.lock();
 					int active_task = job->active_task - 1;
 					if (active_task >= 0)
-					{
 						job->active_task = active_task;
-					}
 
 					task->status = "waiting";
 					task->time = "...";
@@ -192,9 +180,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 
 					int active_task = job->active_task - 1;
 					if (active_task >= 0)
-					{
 						job->active_task = active_task;
-					}
 
 					task->status = "failed";
 					mutex.unlock();
@@ -208,23 +194,21 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 					break;
 				}
 			}
-			//-------------------------------------------------------------
+
 			mutex.lock();
 			int active_task = job->active_task - 1;
 			if (active_task >= 0)
-			{
 				job->active_task = active_task;
-			}
 
 			task->status = "finished";
-			//----------------------------
+
 			int seconds = time(0) - time1;
 			task->time = timeStruct(seconds);
-			//-----------------------------------
 
 			auto tasks = job->tasks;
 			int before_progres = job->progres;
 			int after_progres;
+
 			//cuando el valor del progreso ya es igual al total de las tareas, no le suma 1 al progreso, si no el progreso queda arriba de 100%
 			if (not(tasks == before_progres))
 			{
@@ -232,15 +216,11 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 				job->progres = after_progres;
 			}
 			else
-			{
 				after_progres = before_progres;
-			}
-			//----------------------------------------------------
 
 			if (tasks == after_progres)
-			{
 				Completed = true;
-			}
+
 			mutex.unlock();
 		}
 		else
@@ -290,7 +270,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			if (os::isfile(aux))
 				break;
 		}
-		//--------------------------------------
+
 		if (software == "Nuke")
 			nuke_completed(job, src_path, dst_path);
 		if (software == "AE")
@@ -299,8 +279,6 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 			natron_completed(job, src_path, dst_path);
 		if (software == "Ntp")
 			ntp_completed(job);
-
-		//------------------------------------------------------------
 
 		QString submit_finish = currentDateTime(0);
 
