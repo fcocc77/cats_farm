@@ -469,7 +469,7 @@ bool render_class::natron(int ins)
 
 	mutex->unlock();
 
-	int errors = 0;
+	bool error = false;
 	QString log;
 
 	for (QJsonValue i : ranges_to_render)
@@ -547,24 +547,28 @@ bool render_class::natron(int ins)
 
 		if (_log.contains("Rendering finished"))
 		{
-			if (_log.contains("Render aborted"))
-				errors++;
-
-			if (_log.contains("Rendering Failed"))
-				errors++;
+			if (_log.contains("Render aborted")) {
+				error = true;
+				break;
+			}
+			if (_log.contains("Rendering Failed")) {
+				error = true;
+				break;
+			}
 		}
-		else
-			errors++;
+		else {
+			error = true;
+			break;
+		}
 	}
 
 	QString log_file = path + "/log/render_log_" + QString::number(ins);
 	fwrite(log_file, log);
 
-	// post render
-	if (errors == 0)
-		return true;
-	else
+	if (error)
 		return false;
+	else
+		return true;
 }
 
 bool render_class::ntp(int ins)
