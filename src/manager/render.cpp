@@ -323,7 +323,7 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 {
 	QJsonObject _extra = jofs(job->extra);
 	QString output_file = _extra["output"].toString();
-	bool production = _extra["output"].toBool();
+	bool production = _extra["production"].toBool();
 	QString ext = output_file.split(".").last();
 
 	if (ext == "mov" || ext == "mp4")
