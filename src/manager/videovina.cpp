@@ -57,7 +57,7 @@ void manager::send_to_render(job_struct *job)
         job_delete(job->name);
 }
 
-void manager::post_render(QJsonObject extra, int last_frame)
+void manager::post_render(QJsonObject extra, int last_frame, QString job_name)
 {
     QString output_file = extra["output"].toString();
     QString output_dir = os::dirname(output_file);
@@ -93,6 +93,8 @@ void manager::post_render(QJsonObject extra, int last_frame)
     QString samples_folder = output_dir + "/samples";
 
     os::copydir(samples_folder, s3_project_folder);
+
+    job_delete(job_name);
 }
 
 void manager::videovina(QJsonArray recv)

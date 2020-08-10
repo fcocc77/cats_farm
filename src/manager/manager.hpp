@@ -78,7 +78,7 @@ public:
 	void samples_export(QString video, QJsonArray ranges);
 	void videovina(QJsonArray recv);
 	void send_to_render(job_struct *job);
-	void post_render(QJsonObject extra, int last_frame);
+	void post_render(QJsonObject extra, int last_frame, QString job_name);
 	// ---------------------
 
 	void ae_completed(job_struct *job);

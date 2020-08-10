@@ -177,7 +177,7 @@ void manager::render_task(server_struct *server, inst_struct *instance, job_stru
 					job->vetoed_servers.push_back(server->name);
 
 					job->failed_task = 1;
-					job->errors ++;
+					job->errors++;
 
 					int active_task = job->active_task - 1;
 					if (active_task >= 0)
@@ -323,6 +323,7 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 {
 	QJsonObject _extra = jofs(job->extra);
 	QString output_file = _extra["output"].toString();
+	bool production = _extra["output"].toBool();
 	QString ext = output_file.split(".").last();
 
 	if (ext == "mov" || ext == "mp4")
@@ -341,7 +342,7 @@ void manager::natron_completed(job_struct *job, QString src_path, QString dst_pa
 		if (os::isdir(output_render))
 			concat(output_render, ext);
 
-		post_render(_extra, job->last_frame);
-		job_delete(job->name);
+		if (production)
+			post_render(_extra, job->last_frame, job->name);
 	}
 }
