@@ -10,7 +10,7 @@ manager:
     ☐ hacer un script que valla matando el proceso de manager cada cierto tiempo, para probar que los archivos json, no se corrompan, y que siga el render
     ☐ verificar que cuando se borre un 'jobs' no quede en la memoria, hay que utilizar 'delete jobs->'
     ☐ probar cortando el internet ( la red ) cuando esta el natron renderizando, al volver el internet queda pegado en activo
-    ☐ al activar el cortafuegos en pleno render, y se desabilita el servidor en el monitor, luego se de desactiva el cortafuego, la tarea se queda pegada en 'active'
+    ☐ al activar el cortafuegos en pleno render, y se desabilita el servidor en el monitor, luego se de desactiva el cortafuego, la tarea se queda pegada en 'active' (solo si el servidor no es el local)
 render:
     ☐ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios
 
