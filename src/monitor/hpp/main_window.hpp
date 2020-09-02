@@ -14,6 +14,7 @@
 #include "toolbar.hpp"
 #include "log.hpp"
 #include "options.hpp"
+#include <QSplitter>
 
 #include <QTextEdit>
 using namespace std;

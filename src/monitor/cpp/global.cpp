@@ -4,14 +4,16 @@ global_class::global_class(
 	QMainWindow *_monitor,
 	shared_variables *_shared,
 	QDockWidget *_settings_dock,
-	QDockWidget *_options_dock,
-	QDockWidget *_log_dock)
+	QWidget *_options_widget,
+	QWidget *_log_widget,
+	QWidget *_properties)
 {
 	monitor = _monitor;
 	shared = _shared;
 	settings_dock = _settings_dock;
-	options_dock = _options_dock;
-	log_dock = _log_dock;
+	options_widget = _options_widget;
+	log_widget = _log_widget;
+	properties = _properties;
 
 	// General Action
 	preferences_action = new QAction("Preferences");
@@ -54,8 +56,9 @@ void global_class::connections()
 	});
 
 	connect(hide_all_panels_action, &QAction::triggered, this, [this]() {
-		options_dock->hide();
-		log_dock->hide();
+		properties->hide();
+		options_widget->hide();
+		log_widget->hide();
 		settings_dock->hide();
 	});
 	hide_all_panels_action->setShortcut(QString("Esc"));

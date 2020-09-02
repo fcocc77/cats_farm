@@ -19,58 +19,68 @@ void monitor::setup_ui()
 	shared->manager_port = shared->settings["manager"].toObject()["port"].toInt();
 	shared->server_port = shared->settings["server"].toObject()["port"].toInt();
 
+	QSplitter *splitter_main = new QSplitter(this);
+	splitter_main->setOrientation(Qt::Vertical);
+	this->setCentralWidget(splitter_main);
+
+	QSplitter *splitter_top = new QSplitter(this);
+	QSplitter *splitter_bottom = new QSplitter(this);
+
+	splitter_main->addWidget(splitter_top);
+	splitter_main->addWidget(splitter_bottom);
+	splitter_main->setSizes({70, 30});
+
 	log = new log_class();
-	QDockWidget *log_dock = new QDockWidget("Log");
-	log_dock->hide();
-	log_dock->setWidget(log);
-	this->addDockWidget(Qt::LeftDockWidgetArea, log_dock);
+	log->hide();
 
 	options = new options_class();
-	QDockWidget *options_dock = new QDockWidget("Options");
-	options_dock->hide();
-	options_dock->setWidget(options);
-	this->addDockWidget(Qt::LeftDockWidgetArea, options_dock);
+
+	// widget de propiedades
+	QWidget *properties = new QWidget();
+	QVBoxLayout *properties_layout = new QVBoxLayout();
+	properties->setLayout(properties_layout);
+	properties_layout->addWidget(log);
+	properties_layout->addWidget(options);
+	splitter_top->addWidget(properties);
 
 	servers = new servers_class(this, shared, log);
-	QDockWidget *servers_dock = new QDockWidget("Servers");
-	servers_dock->setWidget(servers);
-	this->addDockWidget(Qt::BottomDockWidgetArea, servers_dock);
+	splitter_bottom->addWidget(servers);
 
 	groups = new groups_class(this, shared, servers);
-	QDockWidget *group_dock = new QDockWidget("Groups");
-	group_dock->setWidget(groups);
-	this->addDockWidget(Qt::BottomDockWidgetArea, group_dock);
+	splitter_bottom->addWidget(groups);
 
 	jobs = new jobs_class(shared, this, log, servers, options, groups);
-	QWidget *jobs_container = new QWidget;
-	QVBoxLayout *jobs_container_layout = new QVBoxLayout();
-	jobs_container->setLayout(jobs_container_layout);
-	QLabel *jobs_label = new QLabel("Jobs");
-	jobs_label->setObjectName("jobs_title");
-	jobs_container_layout->addWidget(jobs_label);
-	jobs_container_layout->addWidget(jobs);
-	this->setCentralWidget(jobs_container);
+	// QWidget *jobs_container = new QWidget;
+	// QVBoxLayout *jobs_container_layout = new QVBoxLayout();
+	// jobs_container->setLayout(jobs_container_layout);
+	// QLabel *jobs_label = new QLabel("Jobs");
+	// jobs_label->setObjectName("jobs_title");
+	// jobs_container_layout->addWidget(jobs_label);
+	// // jobs_container_layout->addWidget(jobs);
+	splitter_top->addWidget(jobs);
 
 	tasks = new tasks_class(this, shared, jobs);
-	QDockWidget *tasks_dock = new QDockWidget("Tasks");
-	tasks_dock->setWidget(tasks->tree);
-	this->addDockWidget(Qt::RightDockWidgetArea, tasks_dock);
+	splitter_top->addWidget(tasks->tree);
 
 	settings = new settings_class(shared);
 	QDockWidget *settings_dock = new QDockWidget("Settings");
 	settings_dock->hide();
 	settings_dock->setWidget(settings);
-	this->addDockWidget(Qt::LeftDockWidgetArea, settings_dock);
 
 	update = new update_class(shared, groups, jobs, servers, tasks->tree, settings);
-	global = new global_class(this, shared, settings_dock, options_dock, log_dock);
+	global = new global_class(this, shared, settings_dock, options, log, properties);
 
 	main_menu = new main_menu_class(global, jobs, servers, groups, tasks);
 	this->setMenuBar(main_menu);
 
 	toolbar = new toolbar_class(global, jobs, update, shared, settings_dock);
 	this->addToolBar(toolbar);
+
+	splitter_top->setSizes({120, 300, 120});
+	splitter_bottom->setSizes({300, 120});
 }
+
+
 
 void monitor::closeEvent(QCloseEvent *event)
 {

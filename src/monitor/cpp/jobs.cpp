@@ -215,11 +215,13 @@ void jobs_class::show_log()
         }
 
         log->parentWidget()->show();
+        log->show();
     }
 }
 
 void jobs_class::modify()
 {
+    options->show();
     options->parentWidget()->show();
 
     // Recive los servers del jobs que estan en el manager
