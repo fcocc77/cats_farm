@@ -1,4 +1,4 @@
-#include "../hpp/main_menu.hpp"
+#include <main_menu.hpp>
 
 main_menu_class::main_menu_class(
     global_class *_global,

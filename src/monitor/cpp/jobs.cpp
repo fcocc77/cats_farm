@@ -1,4 +1,4 @@
-#include "../hpp/jobs.hpp"
+#include <jobs.hpp>
 
 #include <QPixmap>
 #include <QtSvg>

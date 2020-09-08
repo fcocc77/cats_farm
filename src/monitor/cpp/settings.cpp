@@ -1,4 +1,4 @@
-#include "../hpp/settings.hpp"
+#include <settings.hpp>
 
 settings_class::settings_class(
 	shared_variables *_shared)

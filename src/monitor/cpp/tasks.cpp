@@ -1,4 +1,4 @@
-#include "../hpp/tasks.hpp"
+#include <tasks.hpp>
 
 tasks_class::tasks_class(
     QMainWindow *_monitor,

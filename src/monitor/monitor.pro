@@ -2,74 +2,30 @@ include(../../config/config.pro)
 
 TEMPLATE = app
 TARGET = "vmonitor"
-INCLUDEPATH += ../external/QCodeEditor/include # esto es para QCodeEditor
+
+CODE_EDITOR = ../external/QCodeEditor/include
+MONITOR_INCLUDES = ./includes
+
+INCLUDEPATH += $$MONITOR_INCLUDES
+INCLUDEPATH += $$CODE_EDITOR # esto es para QCodeEditor
 
 RC_ICONS = ../../icons/icon.ico
 
 QT += core gui svg widgets multimedia
 
-HEADERS += 	./hpp/includes.hpp \
-			./hpp/main_menu.hpp \
-			./hpp/jobs.hpp \
-			./hpp/servers.hpp \
-			./hpp/tasks.hpp \
-			./hpp/groups.hpp \
-			./hpp/update.hpp \
-			./hpp/main_window.hpp \
-			./hpp/shared_variables.hpp \
-			./hpp/global.hpp \
-			./hpp/settings.hpp \
-			./hpp/toolbar.hpp \
-			./hpp/log.hpp \
-			./hpp/options.hpp \
-			../utils/os.hpp \
-			../utils/tcp.hpp \
-			../utils/threading.hpp \
-			../utils/util.hpp \
-			../utils/video.hpp \
+HEADERS +=  $$MONITOR_INCLUDES/* \
+			../utils/*.hpp \
 			../manager/structs.hpp \
-			# QCodeEditor 
-			../external/QCodeEditor/include/KGL/Design/QCodeEditorDesign.hpp \
-			../external/QCodeEditor/include/KGL/Design/QCodeEditorSheets.hpp \
-			../external/QCodeEditor/include/KGL/Design/QLineColumnPadding.hpp \
-			../external/QCodeEditor/include/KGL/Design/QSyntaxRule.hpp \
-			../external/QCodeEditor/include/KGL/Widgets/QCodeEditor.hpp \
-			../external/QCodeEditor/include/KGL/Widgets/QCodeEditorHighlighter.hpp \
-			../external/QCodeEditor/include/KGL/Widgets/QCodeEditorLineWidget.hpp \
-			../external/QCodeEditor/include/KGL/Widgets/QCodeEditorPopup.hpp \
-			../external/QCodeEditor/include/KGL/KGLConfig.hpp \
-			../external/QCodeEditor/include/KGL/Design/XmlHelper.hpp \
-			#-------------------------------------
+			$$CODE_EDITOR/KGL/Design/* \
+			$$CODE_EDITOR/KGL/Widgets/* \
+			$$CODE_EDITOR/KGL/KGLConfig.hpp \
 
-SOURCES += 	./cpp/main.cpp \
-			./cpp/main_menu.cpp \
-			./cpp/jobs.cpp \
-			./cpp/servers.cpp \
-			./cpp/tasks.cpp \
-			./cpp/groups.cpp \
-			./cpp/main_window.cpp \
-			./cpp/update.cpp \
-			./cpp/global.cpp \
-			./cpp/settings.cpp \
-			./cpp/toolbar.cpp \
-			./cpp/log.cpp \
-			./cpp/options.cpp \
+SOURCES += 	./cpp/* \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \
-			# QCodeEditor
-			../external/QCodeEditor/src/Design/QCodeEditorDesign.cpp \
-			../external/QCodeEditor/src/Design/QCodeEditorSheets.cpp \
-			../external/QCodeEditor/src/Design/QLineColumnPadding.cpp \
-			../external/QCodeEditor/src/Design/QSyntaxRule.cpp \
-			../external/QCodeEditor/src/Widgets/QCodeEditor.cpp \
-			../external/QCodeEditor/src/Widgets/QCodeEditorEvents.cpp \
-			../external/QCodeEditor/src/Widgets/QCodeEditorHighlighter.cpp \
-			../external/QCodeEditor/src/Widgets/QCodeEditorLineWidget.cpp \
-			../external/QCodeEditor/src/Widgets/QCodeEditorPopup.cpp \
-			../external/QCodeEditor/src/Widgets/QCodeEditorSlots.cpp \
-			../external/QCodeEditor/src/Design/XmlHelper.cpp \
-			#-------------------------------------
+			../external/QCodeEditor/src/Design/*.cpp \
+			../external/QCodeEditor/src/Widgets/*.cpp \
 
 RESOURCES += \
 	# QCodeEditor

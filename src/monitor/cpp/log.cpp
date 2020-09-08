@@ -1,4 +1,4 @@
-#include "../hpp/log.hpp"
+#include <log.hpp>
 
 log_class::log_class()
 {

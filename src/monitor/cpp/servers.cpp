@@ -1,4 +1,4 @@
-#include "../hpp/servers.hpp"
+#include <servers.hpp>
 
 servers_class::servers_class(
     QMainWindow *_monitor,

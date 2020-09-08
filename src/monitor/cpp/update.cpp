@@ -1,4 +1,4 @@
-#include "../hpp/update.hpp"
+#include <update.hpp>
 
 update_class::update_class(
 	shared_variables *_shared,

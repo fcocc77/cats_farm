@@ -1,4 +1,4 @@
-#include "../hpp/global.hpp"
+#include <global.hpp>
 
 global_class::global_class(
 	QMainWindow *_monitor,

@@ -1,4 +1,4 @@
-#include "../hpp/toolbar.hpp"
+#include <toolbar.hpp>
 
 toolbar_class::toolbar_class(
 	global_class *_global,

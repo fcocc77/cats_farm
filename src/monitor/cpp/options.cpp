@@ -1,4 +1,4 @@
-#include "../hpp/options.hpp"
+#include <options.hpp>
 
 options_class::options_class()
 {

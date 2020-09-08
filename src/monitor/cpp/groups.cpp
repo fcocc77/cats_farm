@@ -1,4 +1,4 @@
-#include "../hpp/groups.hpp"
+#include <groups.hpp>
 
 groups_class::groups_class(
     QMainWindow *_monitor,
