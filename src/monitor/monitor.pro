@@ -20,7 +20,7 @@ HEADERS +=  $$MONITOR_INCLUDES/* \
 			$$CODE_EDITOR/KGL/Widgets/* \
 			$$CODE_EDITOR/KGL/KGLConfig.hpp \
 
-SOURCES += 	./cpp/* \
+SOURCES += 	./src/* \
 			../utils/os.cpp \
 			../utils/util.cpp \
 			../utils/video.cpp \
