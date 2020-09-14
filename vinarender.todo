@@ -31,3 +31,6 @@ monitor:
         ☐ mostrar memoria cache en otro color
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
+    
+    job_options:
+        ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
