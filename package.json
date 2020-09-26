@@ -15,9 +15,9 @@
         "w": "npx webpack -d --watch",
         "build": "sh scripts/build.sh",
         "setup": "sh scripts/setup.sh",
-        "install": "sh scripts/linux.sh install",
-        "reinstall": "sh scripts/linux.sh reinstall",
-        "uninstall": "sh scripts/linux.sh uninstall",
+        "install": "sh scripts/install.sh install",
+        "reinstall": "sh scripts/install.sh reinstall",
+        "uninstall": "sh scripts/install.sh uninstall",
         "push": "git push gh dev",
         "clean": "git clean -fdx"
     },

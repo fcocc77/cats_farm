@@ -32,6 +32,10 @@ nuke() {
     plugins=$nuke_path"/plugins"
     menu_py=$plugins"/menu.py"
 
+    if [ ! -d "$nuke_path" ]; then
+        return
+    fi
+
     line1="import nukeVinaRender"
     line2="menu_bar = nuke.menu('Nuke')"
     line3="menu_bar.addCommand('J_Script/SendToVinaRender...', 'nukeVinaRender.VinaRenderSend()', 'Ctrl+r')"

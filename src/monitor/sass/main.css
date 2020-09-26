@@ -13,7 +13,7 @@ QWidget {
   background: #17191c; }
 
 QMainWindow {
-  qproperty-windowIcon: url("/home/pancho/Documents/GitHub/vinarender/icons/icon.png"); }
+  qproperty-windowIcon: url("/home/pancho/Documents/develop/vinarender/icons/icon.png"); }
   QMainWindow #centralwidget {
     border: 1px solid transparent; }
     QMainWindow #centralwidget::hover {
@@ -82,19 +82,19 @@ QMainWindow {
   QMainWindow QScrollBar::add-line:horizontal, QMainWindow QScrollBar::add-line:vertical, QMainWindow QScrollBar::sub-line:horizontal, QMainWindow QScrollBar::sub-line:vertical {
     background: #3a3f45; }
   QMainWindow QScrollBar::right-arrow:horizontal {
-    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png);
+    image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/right_arrow.png);
     width: 7px;
     height: 7px; }
   QMainWindow QScrollBar::left-arrow:horizontal {
-    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/left_arrow.png);
+    image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/left_arrow.png);
     width: 7px;
     height: 7px; }
   QMainWindow QScrollBar::up-arrow:vertical {
-    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/up_arrow.png);
+    image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/up_arrow.png);
     width: 7px;
     height: 7px; }
   QMainWindow QScrollBar::down-arrow:vertical {
-    image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png);
+    image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/down_arrow.png);
     width: 7px;
     height: 7px; }
   QMainWindow QScrollBar::add-page:horizontal, QMainWindow QScrollBar::add-page:vertical, QMainWindow QScrollBar::sub-page:horizontal, QMainWindow QScrollBar::sub-page:vertical {
@@ -107,18 +107,18 @@ QMainWindow {
       QMainWindow QDockWidget > QWidget::hover {
         border-color: rgba(0, 153, 255, 0.5); }
     QMainWindow QDockWidget:floatable {
-      titlebar-close-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked.png);
-      titlebar-normal-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked.png); }
+      titlebar-close-icon: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/radio_checked.png);
+      titlebar-normal-icon: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/radio_unchecked.png); }
     QMainWindow QDockWidget::close-button {
       border: 10px;
       padding: 2px; }
       QMainWindow QDockWidget::close-button:hover {
-        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_checked_focus.png); }
+        image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/radio_checked_focus.png); }
     QMainWindow QDockWidget::float-button {
       border: 10px;
       padding: 2px; }
       QMainWindow QDockWidget::float-button:hover {
-        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/radio_unchecked_focus.png); }
+        image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/radio_unchecked_focus.png); }
     QMainWindow QDockWidget::title {
       background-color: #1c1e21;
       border: 1px solid transparent;
@@ -305,7 +305,7 @@ QToolBar {
       padding: 5px;
       border-radius: 2px; }
       QToolBar #barwidget QComboBox::down-arrow {
-        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
+        image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/down_arrow.png); }
       QToolBar #barwidget QComboBox:focus {
         border-color: #33373d; }
       QToolBar #barwidget QComboBox::drop-down {
@@ -326,13 +326,13 @@ QToolBar {
     QToolBar #barwidget QLabel {
       background: transparent; }
     QToolBar #barwidget #resume {
-      qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/play.svg); }
+      qproperty-icon: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/svg/play.svg); }
       QToolBar #barwidget #resume:hover {
-        qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/pause.svg); }
+        qproperty-icon: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/svg/pause.svg); }
     QToolBar #barwidget #suspend {
-      qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/pause.svg); }
+      qproperty-icon: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/svg/pause.svg); }
     QToolBar #barwidget #settings {
-      qproperty-icon: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/svg/gear.svg); }
+      qproperty-icon: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/svg/gear.svg); }
     QToolBar #barwidget #jobs_count {
       font-size: 15px;
       color: #0099ff; }
@@ -341,14 +341,6 @@ QToolBar {
       color: red;
       padding-right: 15px;
       margin-right: 15px; }
-
-#Log {
-  background-color: #23262a;
-  border-color: #ffaa00;
-  border: 1px solid #2e3238;
-  border-radius: 3px; }
-  #Log #QCodeEditorLineWidget {
-    background-color: #1c1e21; }
 
 #groups {
   alternate-background-color: #2a2d32;
@@ -425,9 +417,9 @@ QToolBar {
       #groups::branch:has-children:hover {
         background: #20272d; }
       #groups::branch:has-children:open {
-        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
+        image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/down_arrow.png); }
       #groups::branch:has-children:closed {
-        image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/right_arrow.png); }
+        image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/right_arrow.png); }
 
 #settings #zones_knobs, #settings #host_knobs {
   background: #2a2d32;
@@ -516,7 +508,7 @@ QToolBar {
     padding: 5px;
     border-radius: 2px; }
     #options QComboBox::down-arrow {
-      image: url(/home/pancho/Documents/GitHub/vinarender/src/monitor/sass/images/down_arrow.png); }
+      image: url(/home/pancho/Documents/develop/vinarender/src/monitor/sass/images/down_arrow.png); }
     #options QComboBox:focus {
       border-color: #33373d; }
     #options QComboBox::drop-down {
