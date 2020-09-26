@@ -20,7 +20,7 @@ src/*/ui_main.h
 *lock.json
 Makefile*
 bin
-log*
+log/*
 qt/*/*zip
 qt/*/*tar.gz
 .vscode
