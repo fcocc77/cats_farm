@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
     entry: {
-        monitor: "./src/monitor/sass/main.sass"
+        monitor: "./stylesheet/main.sass"
     },
     output: {
         path: __dirname + "/",
@@ -11,7 +11,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "src/monitor/sass/main.css"
+            filename: "./resources/css/style.css"
         }),
     ],
     module: {

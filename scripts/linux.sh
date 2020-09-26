@@ -80,9 +80,9 @@ install() {
     vmanager="/etc/systemd/system/vmanager.service"
     vlogger="/etc/systemd/system/vlogger.service"
 
-    cp $path/os/linux/init/vserver.service $vserver
-    cp $path/os/linux/init/vmanager.service $vmanager
-    cp $path/os/linux/init/vlogger.service $vlogger
+    cp $path/services/vserver.service $vserver
+    cp $path/services/vmanager.service $vmanager
+    cp $path/services/vlogger.service $vlogger
 
     sed -i "s|{{port}}|$server_port|g" $vserver
     sed -i "s|{{port}}|$manager_port|g" $vmanager
@@ -95,20 +95,19 @@ install() {
     # -----------------------------
 
     # los servicios son muy estrictos asi que esto corrige el servicio, si este se modifico mal
-    sed -i -e 's/\r//g' $path/os/linux/init/service.sh
+    sed -i -e 's/\r//g' $path/services/service.sh
     # --------------------------------------------------------------------------------
 
     mkdir $dst
-    mkdir $dst/os
     mkdir $dst/bin
 
     # # copia el contenido necesario
     cp -rf "$path/bin" $dst
     cp -rf "$path/etc" $dst
-    cp -rf "$path/icons" $dst
+    cp -rf "$path/resources" $dst
     cp -rf "$path/log" $dst
     cp -rf "$path/src" $dst
-    cp -rf "$path/os/linux" $dst/os
+    cp -rf "$path/services" $dst
     cp -rf "$path/modules" $dst
     # # ------------------------
 

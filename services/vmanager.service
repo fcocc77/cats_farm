@@ -1,0 +1,15 @@
+[Unit]
+Description=Service VinaRender Manager
+After=network.target
+
+[Service]
+Type=forking
+User=root
+Group=root
+ExecStart=/bin/sh -c "{{path}}/services/service.sh start vmanager {{port}}"
+ExecStop=/bin/sh -c "{{path}}/services/service.sh stop vmanager {{port}}"
+Restart=always
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

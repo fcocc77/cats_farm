@@ -1,9 +1,0 @@
-
-[Desktop Entry]
-
-Name=VinaRender Monitor
-Exec=/opt/vinarender/bin/linux/monitor
-Icon=/opt/vinarender/icons/monitor.png
-Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
-Type=Application
-Name[en_US]=VinaRender.desktop

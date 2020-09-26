@@ -67,7 +67,7 @@ void global_class::connections()
 void global_class::style()
 {
 	// estilo de general
-	QString style = fread(path + "/src/monitor/sass/main.css");
+	QString style = fread(path + "/resources/css/style.css");
 	monitor->setStyleSheet(style.toStdString().c_str());
 	// ----------------------------
 }

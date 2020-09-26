@@ -1,0 +1,125 @@
+*
+    color: $b80
+    margin: 0
+    padding: 0
+    outline: 0
+    background: $b12
+    background-color: white
+    border: 0px
+    font: 8pt "Tahoma"
+QWidget
+    background: $b10
+QMainWindow
+    qproperty-windowIcon: url('#{$path}/icons/icon.png')
+    #centralwidget
+        border: 1px solid transparent
+        &::hover
+            border-color: rgba($base, .5)
+    &::separator 
+        background: $b7
+        width: 4px
+        border-style: outset
+        border-width: 1px    
+        &:hover
+            background: rgba($base,.2)
+            border-color: rgba($base,.5)
+    QMessageBox
+        background: $b13
+        QLabel
+            font-size: 13px
+            background: transparent
+        QPushButton
+            @include button
+    QInputDialog
+        background: $b14
+        width: 500px
+        QLabel
+            background: transparent
+            font-size: 13px
+        QPushButton
+            @include button
+        QLineEdit
+            @include textedit
+            margin-bottom: 20px
+    QScrollBar
+        &::horizontal 
+            height: 10px
+        &:vertical 
+            width: 10px
+        &::handle
+            &:horizontal, &:vertical 
+                background: $b25
+                min-height: 20px
+                border-radius: 5px
+                margin-left: 11
+                margin-right: 11
+                &:hover
+                    background: $base
+        &::add-line, &::sub-line
+            &:horizontal, &:vertical
+                background: $b25
+        &::right-arrow:horizontal 
+            image: url(#{$images}/right_arrow.png)
+            width: 7px
+            height: 7px
+        &::left-arrow:horizontal 
+            image: url(#{$images}/left_arrow.png)
+            width: 7px
+            height: 7px
+        &::up-arrow:vertical 
+            image: url(#{$images}/up_arrow.png)
+            width: 7px
+            height: 7px
+        &::down-arrow:vertical 
+            image: url(#{$images}/down_arrow.png)
+            width: 7px
+            height: 7px
+        &::add-page, &::sub-page
+            &:horizontal, &:vertical
+                background: none
+    QDockWidget
+        color: $base
+        font-weight: bold
+        > QWidget
+            border: 1px solid transparent
+            &::hover
+                border-color: rgba($base, .5)
+        &:floatable 
+            titlebar-close-icon: url(#{$images}/radio_checked.png)
+            titlebar-normal-icon: url(#{$images}/radio_unchecked.png)
+        &::close-button
+            border: 10px
+            padding: 2px
+            &:hover 
+                image: url(#{$images}/radio_checked_focus.png)
+        &::float-button 
+            border: 10px
+            padding: 2px
+            &:hover 
+                image: url(#{$images}/radio_unchecked_focus.png)
+        &::title 
+            background-color: $b12
+            border: 1px solid transparent
+            padding: 7px
+            text-align: center
+    QMenu 
+        background-color: $b15
+        font-size: 13px
+        border: 1px solid rgba($base,.4)
+        border-radius: 2px
+        &::item 
+            padding: 7px 20px 7px 20px
+            border-top: 1px solid transparent
+            border-bottom: 1px solid transparent
+            spacing: 20px
+            &:selected 
+                background-color: rgba($base,.1)
+                border-color: rgba($base,.4)
+                color: $base
+        &::separator 
+            background-color: $b20
+            margin: 5px
+            height: 1px
+        &::indicator 
+            width: 20px
+            height: 13px

@@ -32,9 +32,9 @@ modules/ae/*.gz
 node_modules
 temp
 # os
-os/linux/init/vserver_pid
-os/linux/init/vmanager_pid
-os/linux/init/logger_pid
+services/vserver_pid
+services/vmanager_pid
+services/logger_pid
 # ------------------
 # archivos de etc
 etc/*.json*
