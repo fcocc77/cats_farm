@@ -342,6 +342,14 @@ QToolBar {
       padding-right: 15px;
       margin-right: 15px; }
 
+#Log {
+  background-color: #23262a;
+  border-color: #ffaa00;
+  border: 1px solid #2e3238;
+  border-radius: 3px; }
+  #Log #QCodeEditorLineWidget {
+    background-color: #1c1e21; }
+
 #groups {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
