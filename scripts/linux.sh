@@ -141,10 +141,12 @@ install() {
     # -----------------------------
 
     # Acceso directo
+    mv $dst/resources/app/vinarender.sh $dst/vinarender.sh
+
     echo "[Desktop Entry]
     Name=VinaRender Monitor
-    Exec=$dst/bin/vmonitor
-    Icon=$dst/icons/icon.png
+    Exec=sh $dst/vinarender.sh
+    Icon=$dst/resources/icons/icon.png
     Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
     Type=Application" >"/usr/share/applications/VinaRender.desktop"
     # ---------------
