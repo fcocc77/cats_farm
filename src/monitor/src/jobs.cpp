@@ -9,7 +9,8 @@ jobs_class::jobs_class(
     log_class *_log,
     servers_class *_servers,
     options_class *_options,
-    groups_class *_groups)
+    groups_class *_groups,
+    properties_class *_properties)
 {
     shared = _shared;
     monitor = _monitor;
@@ -17,6 +18,7 @@ jobs_class::jobs_class(
     servers = _servers;
     options = _options;
     groups = _groups;
+    properties = _properties;
 
     // Job Acciones
     delete_action = new QAction("Delete");
@@ -214,13 +216,13 @@ void jobs_class::show_log()
                 log->code_editor->setPlainText("The jobs has not yet rendered");
         }
 
-        log->parentWidget()->show();
+        properties->switch_widget("log");
     }
 }
 
 void jobs_class::modify()
 {
-    options->parentWidget()->show();
+    properties->switch_widget("options");
 
     // Recive los servers del jobs que estan en el manager
     auto selected = this->selectedItems();

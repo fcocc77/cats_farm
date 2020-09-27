@@ -11,9 +11,7 @@ private:
 
   QSystemTrayIcon *notify;
   QStringList completed_jobs;
-  QDockWidget *settings_dock;
-  QDockWidget *options_dock;
-  QDockWidget *log_dock;
+  QWidget *properties;
 
   // General Funcions
   void setup_ui();
@@ -26,16 +24,14 @@ public:
   global_class(
       QMainWindow *_monitor,
       shared_variables *_shared,
-      QDockWidget *_settings_dock,
-      QDockWidget *_options_dock,
-      QDockWidget *_log_dock);
+      QWidget *_properties);
 
   // General Action
   QAction *preferences_action;
   QAction *quit_action;
   QAction *hide_action;
   QAction *show_action;
-  QAction *hide_all_panels_action;
+  QAction *properties_hide;
   QAction *update_style_action;
   //------------------------------------------------
 };

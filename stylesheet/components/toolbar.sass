@@ -1,36 +1,31 @@
-QToolBar
+#tool_bar
     background: $b13
-    border-bottom: 1px solid $b7
-    border-style: outset
-    padding: 5px
-    #barwidget
+    QPushButton
         background: transparent
-        QPushButton
-            background: transparent
-            margin-right: 20px
-            qproperty-iconSize: 15px
-            font-size: 13px
-            border-right: 1px solid $b30
-            padding-right: 30px
-            &:hover
-                color: $base
-        QComboBox
-            @include combobox
-        QLabel
-            background: transparent
-        #resume
-            qproperty-icon: url(#{$svg}/play.svg)
-            &:hover
-                qproperty-icon: url(#{$svg}/pause.svg)
-        #suspend
-            qproperty-icon: url(#{$svg}/pause.svg)
-        #settings
-            qproperty-icon: url(#{$svg}/gear.svg)
-        #jobs_count
-            font-size: 15px
+        margin-right: 20px
+        qproperty-iconSize: 15px
+        font-size: 11px
+        border-right: 1px solid $b30
+        padding-right: 30px
+        &:hover
             color: $base
-        #conection
-            border-right: 1px solid $b30
-            color: red
-            padding-right: 15px
-            margin-right: 15px
+    QComboBox
+        @include combobox
+    QLabel
+        background: transparent
+    #resume
+        qproperty-icon: url(#{$svg}/play.svg)
+        &:hover
+            qproperty-icon: url(#{$svg}/pause.svg)
+    #suspend
+        qproperty-icon: url(#{$svg}/pause.svg)
+    #settings
+        qproperty-icon: url(#{$svg}/gear.svg)
+    #jobs_count
+        font-size: 15px
+        color: $base
+    #conection
+        border-right: 1px solid $b30
+        color: red
+        padding-right: 15px
+        margin-right: 15px

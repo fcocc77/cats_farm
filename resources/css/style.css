@@ -282,65 +282,60 @@ QMenuBar {
     QMenuBar::item::pressed {
       background-color: #33373d; }
 
-QToolBar {
-  background: #1e2124;
-  border-bottom: 1px solid #101213;
-  border-style: outset;
-  padding: 5px; }
-  QToolBar #barwidget {
-    background: transparent; }
-    QToolBar #barwidget QPushButton {
-      background: transparent;
-      margin-right: 20px;
-      qproperty-iconSize: 15px;
-      font-size: 13px;
-      border-right: 1px solid #464b53;
-      padding-right: 30px; }
-      QToolBar #barwidget QPushButton:hover {
-        color: #0099ff; }
-    QToolBar #barwidget QComboBox {
-      margin-right: 10px;
-      background-color: #2e3238;
-      border: 1px solid #2e3238;
-      padding: 5px;
-      border-radius: 2px; }
-      QToolBar #barwidget QComboBox::down-arrow {
-        image: url(/opt/vinarender/resources/images/down_arrow.png); }
-      QToolBar #barwidget QComboBox:focus {
-        border-color: #33373d; }
-      QToolBar #barwidget QComboBox::drop-down {
-        width: 20px;
-        background-color: #3a3f45; }
-      QToolBar #barwidget QComboBox:hover {
-        background: #33373d; }
-      QToolBar #barwidget QComboBox QAbstractItemView {
-        background-color: #1e2124; }
-      QToolBar #barwidget QComboBox:item {
-        font-size: 13px; }
-        QToolBar #barwidget QComboBox:item:selected {
-          background-color: #2e3238;
-          color: #0099ff;
-          padding-left: 0px; }
-      QToolBar #barwidget QComboBox::indicator {
-        background-color: transparent; }
-    QToolBar #barwidget QLabel {
-      background: transparent; }
-    QToolBar #barwidget #resume {
-      qproperty-icon: url(/opt/vinarender/resources/svg/play.svg); }
-      QToolBar #barwidget #resume:hover {
-        qproperty-icon: url(/opt/vinarender/resources/svg/pause.svg); }
-    QToolBar #barwidget #suspend {
-      qproperty-icon: url(/opt/vinarender/resources/svg/pause.svg); }
-    QToolBar #barwidget #settings {
-      qproperty-icon: url(/opt/vinarender/resources/svg/gear.svg); }
-    QToolBar #barwidget #jobs_count {
-      font-size: 15px;
+#tool_bar {
+  background: #1e2124; }
+  #tool_bar QPushButton {
+    background: transparent;
+    margin-right: 20px;
+    qproperty-iconSize: 15px;
+    font-size: 11px;
+    border-right: 1px solid #464b53;
+    padding-right: 30px; }
+    #tool_bar QPushButton:hover {
       color: #0099ff; }
-    QToolBar #barwidget #conection {
-      border-right: 1px solid #464b53;
-      color: red;
-      padding-right: 15px;
-      margin-right: 15px; }
+  #tool_bar QComboBox {
+    margin-right: 10px;
+    background-color: #2e3238;
+    border: 1px solid #2e3238;
+    padding: 5px;
+    border-radius: 2px; }
+    #tool_bar QComboBox::down-arrow {
+      image: url(/opt/vinarender/resources/images/down_arrow.png); }
+    #tool_bar QComboBox:focus {
+      border-color: #33373d; }
+    #tool_bar QComboBox::drop-down {
+      width: 20px;
+      background-color: #3a3f45; }
+    #tool_bar QComboBox:hover {
+      background: #33373d; }
+    #tool_bar QComboBox QAbstractItemView {
+      background-color: #1e2124; }
+    #tool_bar QComboBox:item {
+      font-size: 13px; }
+      #tool_bar QComboBox:item:selected {
+        background-color: #2e3238;
+        color: #0099ff;
+        padding-left: 0px; }
+    #tool_bar QComboBox::indicator {
+      background-color: transparent; }
+  #tool_bar QLabel {
+    background: transparent; }
+  #tool_bar #resume {
+    qproperty-icon: url(/opt/vinarender/resources/svg/play.svg); }
+    #tool_bar #resume:hover {
+      qproperty-icon: url(/opt/vinarender/resources/svg/pause.svg); }
+  #tool_bar #suspend {
+    qproperty-icon: url(/opt/vinarender/resources/svg/pause.svg); }
+  #tool_bar #settings {
+    qproperty-icon: url(/opt/vinarender/resources/svg/gear.svg); }
+  #tool_bar #jobs_count {
+    font-size: 15px;
+    color: #0099ff; }
+  #tool_bar #conection {
+    border-right: 1px solid #464b53;
+    color: red;
+    padding-right: 15px;
+    margin-right: 15px; }
 
 #Log {
   background-color: #23262a;

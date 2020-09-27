@@ -14,6 +14,9 @@
 #include "toolbar.hpp"
 #include "log.hpp"
 #include "options.hpp"
+#include "properties.hpp"
+
+#include <QSplitter>
 
 #include <QTextEdit>
 using namespace std;
@@ -36,6 +39,7 @@ public:
   // ----------------------------
 
   void setup_ui();
+  QWidget *add_title(QWidget *widget, QString title);
 
   // Modulos
   main_menu_class *main_menu;
@@ -49,6 +53,7 @@ public:
   toolbar_class *toolbar;
   log_class *log;
   options_class *options;
+  properties_class *properties;
 };
 
 #endif //MAIN_WINDOW_H

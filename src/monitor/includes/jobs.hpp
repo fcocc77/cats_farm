@@ -6,6 +6,7 @@
 #include "servers.hpp"
 #include "options.hpp"
 #include "groups.hpp"
+#include "properties.hpp"
 
 class jobs_class : public QTreeWidget
 {
@@ -17,6 +18,7 @@ private:
     servers_class *servers;
     options_class *options;
     groups_class *groups;
+    properties_class *properties;
     void connections();
     virtual void mousePressEvent(QMouseEvent *event);
 
@@ -51,7 +53,8 @@ public:
         log_class *_log,
         servers_class *_servers,
         options_class *_options,
-        groups_class *_groups);
+        groups_class *_groups,
+        properties_class *_properties);
     ~jobs_class();
 
     // Job Acciones

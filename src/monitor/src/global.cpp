@@ -3,22 +3,18 @@
 global_class::global_class(
 	QMainWindow *_monitor,
 	shared_variables *_shared,
-	QDockWidget *_settings_dock,
-	QDockWidget *_options_dock,
-	QDockWidget *_log_dock)
+	QWidget *_properties)
 {
 	monitor = _monitor;
 	shared = _shared;
-	settings_dock = _settings_dock;
-	options_dock = _options_dock;
-	log_dock = _log_dock;
+	properties = _properties;
 
 	// General Action
 	preferences_action = new QAction("Preferences");
 	quit_action = new QAction("Quit");
 	hide_action = new QAction("Hide");
 	show_action = new QAction("Show App");
-	hide_all_panels_action = new QAction("Hide Panels");
+	properties_hide = new QAction("Hide Panels");
 	update_style_action = new QAction("Update Style");
 	//------------------------------------------------
 
@@ -29,9 +25,6 @@ global_class::global_class(
 
 void global_class::connections()
 {
-	connect(preferences_action, &QAction::triggered, this, [this]() {
-		settings_dock->show();
-	});
 
 	preferences_action->setIcon(QIcon(path + "/icons/setting.png"));
 	preferences_action->setShortcut(QString("S"));
@@ -53,12 +46,10 @@ void global_class::connections()
 		monitor->show();
 	});
 
-	connect(hide_all_panels_action, &QAction::triggered, this, [this]() {
-		options_dock->hide();
-		log_dock->hide();
-		settings_dock->hide();
+	connect(properties_hide, &QAction::triggered, this, [this]() {
+		properties->hide();
 	});
-	hide_all_panels_action->setShortcut(QString("Esc"));
+	properties_hide->setShortcut(QString("Esc"));
 
 	connect(update_style_action, &QAction::triggered, this, &global_class::style);
 	update_style_action->setShortcut(QString("Ctrl+R"));
@@ -67,7 +58,7 @@ void global_class::connections()
 void global_class::style()
 {
 	// estilo de general
-	QString style = fread(path + "/resources/css/style.css");
+	QString style = fread("/home/pancho/Documents/develop/vinarender/resources/css/style.css");
 	monitor->setStyleSheet(style.toStdString().c_str());
 	// ----------------------------
 }
