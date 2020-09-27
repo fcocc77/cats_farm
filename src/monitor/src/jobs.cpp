@@ -108,7 +108,7 @@ void jobs_class::connections()
 
     connect(options->ok_button, &QPushButton::clicked, this, &jobs_class::options_ok);
     connect(options->cancel_button, &QPushButton::clicked, [this]() {
-        options->parentWidget()->hide();
+        properties->parentWidget()->hide();
     });
     //-----------------------------------------------------------------------
 }

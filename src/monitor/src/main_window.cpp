@@ -16,9 +16,11 @@ QWidget *monitor::add_title(QWidget *widget, QString title)
 	// le agrega un titilo superior al 'widget'
 	QWidget *container = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout();
+	layout->setContentsMargins(0, 0, 0, 0);
 	container->setLayout(layout);
+
 	QLabel *label = new QLabel(title);
-	label->setObjectName(title + "_title");
+	label->setObjectName("widget_title");
 	layout->addWidget(label);
 	layout->addWidget(widget);
 
@@ -72,7 +74,6 @@ void monitor::setup_ui()
 	// Groups
 	groups = new groups_class(this, shared, servers);
 	QWidget *groups_parent = add_title(groups, "Groups");
-	groups_parent->setMaximumWidth(550);
 	splitter_bottom->addWidget(groups_parent);
 	//
 
@@ -88,7 +89,6 @@ void monitor::setup_ui()
 	// Task
 	tasks = new tasks_class(this, shared, jobs);
 	QWidget *tasks_parent = add_title(tasks->tree, "Tasks");
-	tasks_parent->setMaximumWidth(550);
 	splitter_top->addWidget(tasks_parent);
 	//
 

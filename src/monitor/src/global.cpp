@@ -47,7 +47,7 @@ void global_class::connections()
 	});
 
 	connect(properties_hide, &QAction::triggered, this, [this]() {
-		properties->hide();
+		properties->parentWidget()->hide();
 	});
 	properties_hide->setShortcut(QString("Esc"));
 

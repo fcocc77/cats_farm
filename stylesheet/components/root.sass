@@ -77,31 +77,6 @@ QMainWindow
         &::add-page, &::sub-page
             &:horizontal, &:vertical
                 background: none
-    QDockWidget
-        color: $base
-        font-weight: bold
-        > QWidget
-            border: 1px solid transparent
-            &::hover
-                border-color: rgba($base, .5)
-        &:floatable 
-            titlebar-close-icon: url(#{$images}/radio_checked.png)
-            titlebar-normal-icon: url(#{$images}/radio_unchecked.png)
-        &::close-button
-            border: 10px
-            padding: 2px
-            &:hover 
-                image: url(#{$images}/radio_checked_focus.png)
-        &::float-button 
-            border: 10px
-            padding: 2px
-            &:hover 
-                image: url(#{$images}/radio_unchecked_focus.png)
-        &::title 
-            background-color: $b12
-            border: 1px solid transparent
-            padding: 7px
-            text-align: center
     QMenu 
         background-color: $b15
         font-size: 13px
@@ -123,3 +98,21 @@ QMainWindow
         &::indicator 
             width: 20px
             height: 13px
+
+    QSplitter
+        &::handle
+            $width: 3px
+            &::horizontal, &::vertical
+                background: $b10
+                &:hover
+                    background: mix($base, $b10, 80%)
+            &::horizontal 
+                width: $width
+            &::vertical 
+                height: $width
+
+    #widget_title
+        font-weight: bold
+        color: $b70
+        qproperty-alignment: AlignCenter
+        padding: 0px

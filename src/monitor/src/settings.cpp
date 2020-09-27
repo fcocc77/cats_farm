@@ -92,14 +92,14 @@ void settings_class::setup_ui()
 void settings_class::connections()
 {
 	connect(cancel_button, &QPushButton::clicked, this, [this]() {
-		this->parentWidget()->hide();
+		this->parentWidget()->parentWidget()->hide();
 	});
 	connect(apply_button, &QPushButton::clicked, this, [this]() {
 		this->ok();
 	});
 	connect(ok_button, &QPushButton::clicked, this, [this]() {
 		this->ok();
-		this->parentWidget()->hide();
+		this->parentWidget()->parentWidget()->hide();
 	});
 }
 

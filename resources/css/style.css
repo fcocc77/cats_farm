@@ -99,31 +99,6 @@ QMainWindow {
     height: 7px; }
   QMainWindow QScrollBar::add-page:horizontal, QMainWindow QScrollBar::add-page:vertical, QMainWindow QScrollBar::sub-page:horizontal, QMainWindow QScrollBar::sub-page:vertical {
     background: none; }
-  QMainWindow QDockWidget {
-    color: #0099ff;
-    font-weight: bold; }
-    QMainWindow QDockWidget > QWidget {
-      border: 1px solid transparent; }
-      QMainWindow QDockWidget > QWidget::hover {
-        border-color: rgba(0, 153, 255, 0.5); }
-    QMainWindow QDockWidget:floatable {
-      titlebar-close-icon: url(/opt/vinarender/resources/images/radio_checked.png);
-      titlebar-normal-icon: url(/opt/vinarender/resources/images/radio_unchecked.png); }
-    QMainWindow QDockWidget::close-button {
-      border: 10px;
-      padding: 2px; }
-      QMainWindow QDockWidget::close-button:hover {
-        image: url(/opt/vinarender/resources/images/radio_checked_focus.png); }
-    QMainWindow QDockWidget::float-button {
-      border: 10px;
-      padding: 2px; }
-      QMainWindow QDockWidget::float-button:hover {
-        image: url(/opt/vinarender/resources/images/radio_unchecked_focus.png); }
-    QMainWindow QDockWidget::title {
-      background-color: #1c1e21;
-      border: 1px solid transparent;
-      padding: 7px;
-      text-align: center; }
   QMainWindow QMenu {
     background-color: #23262a;
     font-size: 13px;
@@ -145,17 +120,25 @@ QMainWindow {
     QMainWindow QMenu::indicator {
       width: 20px;
       height: 13px; }
-
-#jobs_title {
-  font-weight: bold;
-  color: #0099ff;
-  qproperty-alignment: AlignCenter;
-  padding: 7px; }
+  QMainWindow QSplitter::handle::horizontal, QMainWindow QSplitter::handle::vertical {
+    background: #17191c; }
+    QMainWindow QSplitter::handle::horizontal:hover, QMainWindow QSplitter::handle::vertical:hover {
+      background: #057fd2; }
+  QMainWindow QSplitter::handle::horizontal {
+    width: 3px; }
+  QMainWindow QSplitter::handle::vertical {
+    height: 3px; }
+  QMainWindow #widget_title {
+    font-weight: bold;
+    color: #acb1b9;
+    qproperty-alignment: AlignCenter;
+    padding: 0px; }
 
 #jobs {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
-  border: 1px solid #2a2d32; }
+  border: 1px solid #2a2d32;
+  background: #272b2f; }
   #jobs QWidget {
     background: transparent; }
   #jobs::item {
@@ -180,19 +163,20 @@ QMainWindow {
       #jobs::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #jobs QHeaderView::section {
-    background-color: #2a2d32;
-    padding: 5px 10px 5px 10px;
-    border: 0px solid transparent;
-    margin-left: 1px;
-    margin-top: 1px;
-    margin-bottom: 1px; }
+  #jobs QHeaderView {
+    border-bottom: 1px solid #17191c; }
+    #jobs QHeaderView::section {
+      background-color: #2a2d32;
+      padding: 5px 10px 5px 10px;
+      border: 0px solid transparent;
+      margin-left: 1px;
+      margin-top: 1px;
+      margin-bottom: 1px; }
 
 #tasks {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
-  border: 1px solid #2a2d32;
-  margin: 10px; }
+  border: 1px solid #2a2d32; }
   #tasks QWidget {
     background: transparent; }
   #tasks::item {
@@ -217,13 +201,15 @@ QMainWindow {
       #tasks::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #tasks QHeaderView::section {
-    background-color: #2a2d32;
-    padding: 5px 10px 5px 10px;
-    border: 0px solid transparent;
-    margin-left: 1px;
-    margin-top: 1px;
-    margin-bottom: 1px; }
+  #tasks QHeaderView {
+    border-bottom: 1px solid #17191c; }
+    #tasks QHeaderView::section {
+      background-color: #2a2d32;
+      padding: 5px 10px 5px 10px;
+      border: 0px solid transparent;
+      margin-left: 1px;
+      margin-top: 1px;
+      margin-bottom: 1px; }
   #tasks:item {
     height: 20px; }
 
@@ -231,7 +217,7 @@ QMainWindow {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
   border: 1px solid #2a2d32;
-  margin: 10px; }
+  background: #272b2f; }
   #servers QWidget {
     background: transparent; }
   #servers::item {
@@ -256,13 +242,15 @@ QMainWindow {
       #servers::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #servers QHeaderView::section {
-    background-color: #2a2d32;
-    padding: 5px 10px 5px 10px;
-    border: 0px solid transparent;
-    margin-left: 1px;
-    margin-top: 1px;
-    margin-bottom: 1px; }
+  #servers QHeaderView {
+    border-bottom: 1px solid #17191c; }
+    #servers QHeaderView::section {
+      background-color: #2a2d32;
+      padding: 5px 10px 5px 10px;
+      border: 0px solid transparent;
+      margin-left: 1px;
+      margin-top: 1px;
+      margin-bottom: 1px; }
   #servers::item #ram_bar::chunk:horizontal {
     border-radius: 2px;
     background: #0a8246; }
@@ -349,7 +337,6 @@ QMenuBar {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
   border: 1px solid #2a2d32;
-  margin: 10px;
   alternate-background-color: #2a2d32; }
   #groups QWidget {
     background: transparent; }
@@ -375,13 +362,15 @@ QMenuBar {
       #groups::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #groups QHeaderView::section {
-    background-color: #2a2d32;
-    padding: 5px 10px 5px 10px;
-    border: 0px solid transparent;
-    margin-left: 1px;
-    margin-top: 1px;
-    margin-bottom: 1px; }
+  #groups QHeaderView {
+    border-bottom: 1px solid #17191c; }
+    #groups QHeaderView::section {
+      background-color: #2a2d32;
+      padding: 5px 10px 5px 10px;
+      border: 0px solid transparent;
+      margin-left: 1px;
+      margin-top: 1px;
+      margin-bottom: 1px; }
   #groups::item {
     height: 12px;
     padding-top: 5px;
