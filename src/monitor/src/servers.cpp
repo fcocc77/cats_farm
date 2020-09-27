@@ -63,6 +63,7 @@ void servers_class::setup_ui()
     this->setColumnWidth(4, 100);
     this->setColumnWidth(5, 177);
     this->setColumnWidth(6, 100);
+    this->setColumnWidth(8, 130);
     //-------------------------------
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
