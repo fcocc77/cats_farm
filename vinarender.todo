@@ -17,10 +17,12 @@ render:
 monitor:
     ☐ el over del puntero de la tableta, que da pegado en los bordes
     ☐ que tenga control-z
-    ☐ columna de errores; contador de errores
-    ☐ cambiar de QDockWidget a QSpliter
+    ✔ columna de errores; contador de errores @done (9/27/2020, 8:23:29 PM)
+    ✔ cambiar de QDockWidget a QSpliter @done (9/27/2020, 8:23:16 PM)
     toolbar:
-        ☐ crear opciones de layout, y que queden fijos a un tamanio especifico
+        ✔ crear opciones de layout, y que queden fijos a un tamanio especifico @done (9/27/2020, 8:23:50 PM)
+        ☐ poner icono a los botones finales
+        ☐ que los iconos cambien de color cuando esta en 'check'
     jobs:
         ☐ no funciona el ctrl-a para seleccionar todos
         ☐ al borrar un jobs incompleto, que borre tambien la carpeta que se creo
@@ -29,6 +31,7 @@ monitor:
         ☐ uso de ram a veces queda negativo, ponerle un abc()
         ☐ mostrar cpu i/o en otro color
         ☐ mostrar memoria cache en otro color
+        ☐ crear un toolbar con las opciones del 'server', cuando esta seleccionado poner los iconos en blanco y si no desabilitados
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
     
