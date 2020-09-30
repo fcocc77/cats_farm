@@ -57,10 +57,12 @@ void global_class::connections()
 
 void global_class::style()
 {
-	// estilo de general
+	// Estilo de general
 	QString style = fread("/home/pancho/Documents/develop/vinarender/resources/css/style.css");
 	monitor->setStyleSheet(style.toStdString().c_str());
-	// ----------------------------
+
+	// Titulo de ventana
+	monitor->setWindowTitle("VinaRender Monitor");
 }
 
 void global_class::notify_icon()
