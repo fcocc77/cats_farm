@@ -385,7 +385,7 @@ void render_class::natron_monitoring(int ins)
 			return;
 		}
 
-		int usage = os::processCpuUsed(natron_renderer_pid);
+		int usage = os::get_process_cpu_used(natron_renderer_pid);
 
 		// si la cpu esta bajo 30 suma 1 a la actividad de natron
 		if (usage < 30)

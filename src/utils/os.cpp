@@ -5,7 +5,7 @@
 namespace os
 {
 
-QList<long> getStat()
+QList<long> get_cpu_stat()
 {
 	QList<long> cpu;
 
@@ -18,20 +18,12 @@ QList<long> getStat()
 	return cpu;
 }
 
-int cpuUsed()
+int get_cpu_used()
 {
-
 	static int usage;
 	QString result;
-	if (_win32)
-	{
-		result = sh("C:/Windows/SysWOW64/wbem/wmic.exe cpu get loadpercentage");
-		result = result.replace("LoadPercentage", "");
 
-		usage = result.toInt();
-	}
-
-	else if (_linux)
+	if (_linux)
 	{
 		static QList<long> current;
 		QList<long> prev;
@@ -40,41 +32,77 @@ int cpuUsed()
 
 		if (current.empty())
 		{
-			current = getStat();
-			prev = getStat();
+			current = get_cpu_stat();
+			prev = get_cpu_stat();
 		}
 		else
 		{
 			prev = current;
-			current = getStat();
+			current = get_cpu_stat();
 		}
 
 		prev_idle = prev[3] + prev[4];
 		idle = current[3] + current[4];
 
+		// 0:user, 1:nice, 2:system, 3:idle, 4:iowait, 5:irq, 6:softirq, 7:steal, 8:guest
 		prev_not_idle = prev[0] + prev[1] + prev[2] + prev[5] + prev[6] + prev[7];
 		not_idle = current[0] + current[1] + current[2] + current[5] + current[6] + current[7];
 
 		prev_total = prev_idle + prev_not_idle;
 		total = idle + not_idle;
 
-		// differentiate: actual value minus the previous one
 		totald = total - prev_total;
 		idled = idle - prev_idle;
 
 		usage = round(((totald - idled) / totald) * 100.0);
 	}
 
-	else
+	return usage;
+}
+
+int get_iowait_cpu_used(){
+
+	static int usage;
+	QString result;
+
+	if (_linux)
 	{
-		QString p = os::sh("ps -aeo pcpu | awk '{s+=$1} END {print s }'p");
-		usage = p.toInt() / cpuCount();
+		static QList<long> current;
+		QList<long> prev;
+		long prev_idle, idle, prev_not_idle, not_idle, prev_total, total;
+		float totald, idled;
+
+		if (current.empty())
+		{
+			current = get_cpu_stat();
+			prev = get_cpu_stat();
+		}
+		else
+		{
+			prev = current;
+			current = get_cpu_stat();
+		}
+
+		prev_idle = prev[3];
+		idle = current[3];
+
+		// 0:user, 1:nice, 2:system, 3:idle, 4:iowait, 5:irq, 6:softirq, 7:steal, 8:guest
+		prev_not_idle = prev[0] + prev[1] + prev[2] + prev[4] + prev[5] + prev[6] + prev[7];
+		not_idle = current[0] + current[1] + current[2] + current[4] + current[5] + current[6] + current[7];
+
+		prev_total = prev_idle + prev_not_idle;
+		total = idle + not_idle;
+
+		totald = total - prev_total;
+		idled = idle - prev_idle;
+
+		usage = round(((totald - idled) / totald) * 100.0);
 	}
 
 	return usage;
 }
 
-int processCpuUsed(int pid){
+int get_process_cpu_used(int pid){
 	// obtiene el uso de la cpu de 1 solo proceso
 	QString out_top = os::sh("sh -c \"echo $(top -b -n 1 -p " + QString::number( pid ) +  " | tail -n 1)\"");
 	QStringList separate = out_top.split(" ");
@@ -186,7 +214,7 @@ float get_ram_used()
 	return roundf(used * 10) / 10; // roundf limita los decimales
 }
 
-int cpuTemp()
+int get_cpu_temp()
 {
 	static int temp;
 	if (_linux)
@@ -270,7 +298,7 @@ int cpuTemp()
 	return temp;
 }
 
-int cpuCount()
+int get_cpu_cores()
 {
 	static int cores;
 

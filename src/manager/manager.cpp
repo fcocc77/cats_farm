@@ -189,9 +189,11 @@ void manager::json_to_struct(QJsonObject info)
 		_server->host = server["host"].toString();
 		_server->system = server["system"].toString();
 		_server->cpu = server["cpu"].toInt();
+		_server->cpu_iowait = server["cpu_iowait"].toInt();
 		_server->cpu_cores = server["cpu_cores"].toInt();
 		_server->ram = server["ram"].toInt();
 		_server->ram_used = server["ram_used"].toDouble();
+		_server->ram_cached = server["ram_cached"].toInt();
 		_server->ram_total = server["ram_total"].toDouble();
 		_server->temp = server["temp"].toInt();
 		_server->mac = server["mac"].toString();
@@ -324,6 +326,7 @@ QJsonObject manager::struct_to_json()
 		s["host"] = server->host;
 		s["system"] = server->system;
 		s["cpu"] = server->cpu;
+		s["cpu_iowait"] = server->cpu_iowait;
 		s["cpu_cores"] = server->cpu_cores;
 		s["ram"] = server->ram;
 		s["ram_cached"] = server->ram_cached;

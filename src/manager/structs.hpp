@@ -62,6 +62,7 @@ struct server_struct
 	QString host;
 	QString system;
 	int cpu;
+	int cpu_iowait;
 	int cpu_cores;
 	int ram;
 	int ram_cached;

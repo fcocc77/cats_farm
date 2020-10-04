@@ -16,7 +16,7 @@ public:
 
     void set_value(int value_a, int value_b);
     void set_text(QString text);
-    void set_color(int red, int green, int blue);
+    void set_color(int red, int green, int blue, float rgb_divide = 1.5);
 };
 
 #endif // PROGRESS_BAR_HPP
