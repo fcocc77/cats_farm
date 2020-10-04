@@ -64,6 +64,7 @@ struct server_struct
 	int cpu;
 	int cpu_cores;
 	int ram;
+	int ram_cached;
 	float ram_used;
 	float ram_total;
 	int temp;

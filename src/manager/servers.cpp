@@ -8,15 +8,16 @@ QString manager::update_server_thread(QJsonArray recv)
 		QString host = recv[1].toString();
 		int cpu = recv[2].toInt();
 		int ram = recv[3].toInt();
-		int temp = recv[4].toInt();
-		QString system = recv[5].toString();
-		QString mac = recv[6].toString();
-		float ram_total = recv[7].toDouble();
-		float ram_used = recv[8].toDouble();
-		int cpu_cores = recv[9].toInt();
-		QString log = recv[10].toString();
-		QString sshUser = recv[11].toString();
-		QString sshPass = recv[12].toString();
+		int ram_cached = recv[4].toInt();
+		int temp = recv[5].toInt();
+		QString system = recv[6].toString();
+		QString mac = recv[7].toString();
+		float ram_total = recv[8].toDouble();
+		float ram_used = recv[9].toDouble();
+		int cpu_cores = recv[10].toInt();
+		QString log = recv[11].toString();
+		QString sshUser = recv[12].toString();
+		QString sshPass = recv[13].toString();
 
 		int response_time = time(0);
 
@@ -43,6 +44,7 @@ QString manager::update_server_thread(QJsonArray recv)
 			server->cpu = cpu;
 			server->cpu_cores = cpu_cores;
 			server->ram = ram;
+			server->ram_cached = ram_cached;
 			server->ram_used = ram_used;
 			server->ram_total = ram_total;
 			server->temp = temp;
@@ -63,6 +65,7 @@ QString manager::update_server_thread(QJsonArray recv)
 			server->ram_used = ram_used;
 			server->cpu = cpu;
 			server->ram = ram;
+			server->ram_cached = ram_cached;
 			server->temp = temp;
 			server->host = host;
 			server->log = log;

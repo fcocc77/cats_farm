@@ -252,8 +252,7 @@ QMainWindow {
       margin-top: 1px;
       margin-bottom: 1px; }
   #servers::item #ram_bar::chunk:horizontal {
-    border-radius: 2px;
-    background: #0a8246; }
+    border-radius: 2px; }
   #servers::item #cpu_bar::chunk:horizontal {
     border-radius: 2px;
     background: #325064; }

@@ -107,7 +107,7 @@ QList<float> ram()
 	return resorc;
 }
 
-int ramPercent()
+int get_ram_percent(bool cached_percent)
 {
 	int total, free, buffers, cached, used, percent;
 
@@ -115,10 +115,17 @@ int ramPercent()
 	{
 		QString mem = os::sh("cat /proc/meminfo");
 		total = mem.split("MemTotal:")[1].split("kB")[0].toInt();
+
 		free = mem.split("MemFree:")[1].split("kB")[0].toInt();
 		buffers = mem.split("Buffers:")[1].split("kB")[0].toInt();
 		cached = mem.split("Cached:")[1].split("kB")[0].toInt();
+
+
 		used = (total - free) - (buffers + cached);
+
+		if (cached_percent)
+			used = (total - free) - used;
+			
 		percent = (used * 100) / total;
 	}
 
@@ -145,7 +152,7 @@ void system(QString cmd)
 	std::system(cmd.toStdString().c_str());
 }
 
-float ramTotal()
+float get_ram_total()
 {
 	static float total_ram;
 
@@ -173,9 +180,9 @@ float ramTotal()
 	return roundf(total_ram * 10) / 10; // roundf limita los decimales
 }
 
-float ramUsed()
+float get_ram_used()
 {
-	float used = (ramTotal() * ramPercent()) / 100.0;
+	float used = (get_ram_total() * get_ram_percent()) / 100.0;
 	return roundf(used * 10) / 10; // roundf limita los decimales
 }
 

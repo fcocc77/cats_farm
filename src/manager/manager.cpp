@@ -326,6 +326,7 @@ QJsonObject manager::struct_to_json()
 		s["cpu"] = server->cpu;
 		s["cpu_cores"] = server->cpu_cores;
 		s["ram"] = server->ram;
+		s["ram_cached"] = server->ram_cached;
 		s["ram_used"] = server->ram_used;
 		s["ram_total"] = server->ram_total;
 		s["temp"] = server->temp;

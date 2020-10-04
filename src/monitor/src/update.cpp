@@ -367,7 +367,6 @@ void update_class::update_servers(QJsonObject recv)
 			}
 		}
 	}
-	//------------------------------------------------------
 
 	QStringList server_name_list;
 
@@ -381,6 +380,7 @@ void update_class::update_servers(QJsonObject recv)
 		QString system = server["system"].toString();
 		int cpu = server["cpu"].toInt();
 		int ram = server["ram"].toInt();
+		int ram_cached = server["ram_cached"].toInt();
 		int temp = server["temp"].toInt();
 		QString mac = server["mac"].toString();
 		float ram_total = server["ram_total"].toDouble();
@@ -461,19 +461,18 @@ void update_class::update_servers(QJsonObject recv)
 					QWidget *cpuWidget = new QWidget();
 					cpuWidget->setLayout(cpuVbox);
 
-					QProgressBar *ramBar = new QProgressBar();
-					ramBar->setObjectName("ram_bar");
-					QVBoxLayout *ramVbox = new QVBoxLayout();
-					ramVbox->addWidget(ramBar);
-					ramVbox->setContentsMargins(0, 0, 0, 0);
-					QWidget *ramWidget = new QWidget();
-					ramWidget->setLayout(ramVbox);
+					progress_bar_class *ram_bar = new progress_bar_class();
+					ram_bar->set_color(10, 130, 70);
+					ram_bar->setObjectName("ram_bar");
+					QVBoxLayout *ram_vbox = new QVBoxLayout();
+					ram_vbox->addWidget(ram_bar);
+					ram_vbox->setContentsMargins(0, 0, 0, 0);
+					QWidget *ram_widget = new QWidget();
+					ram_widget->setLayout(ram_vbox);
 
 					cpuBar->setValue(cpu);
-					ramBar->setValue(ram);
 
 					cpuBar->setMaximumHeight(15);
-					ramBar->setMaximumHeight(15);
 
 					QTreeWidgetItem *item = new QTreeWidgetItem();
 
@@ -493,7 +492,7 @@ void update_class::update_servers(QJsonObject recv)
 					servers->addTopLevelItem(item);
 
 					servers->setItemWidget(item, 3, cpuWidget);
-					servers->setItemWidget(item, 5, ramWidget);
+					servers->setItemWidget(item, 5, ram_widget);
 				}
 				//-----------------------------------------------------------------------
 
@@ -517,10 +516,10 @@ void update_class::update_servers(QJsonObject recv)
 						item->setText(4, QString::number(temp) + "°C");
 
 						QProgressBar *cpuBar = servers->itemWidget(item, 3)->findChild<QProgressBar *>();
-						QProgressBar *ramBar = servers->itemWidget(item, 5)->findChild<QProgressBar *>();
+						progress_bar_class *ram_bar = servers->itemWidget(item, 5)->findChild<progress_bar_class *>();
 
 						cpuBar->setFormat("%p%  (" + QString::number(cpu_cores) + " Cores)");
-						ramBar->setFormat("%p%  (" + QString::number(ram_used) + " GB / " + QString::number(ram_total) + " GB)");
+						ram_bar->set_text(QString::number(ram) + "%  (" + QString::number(ram_used) + " GB / " + QString::number(ram_total) + " GB)");
 
 						if (status == "absent")
 							item->setForeground(4, QColor(200, 200, 200));
@@ -537,17 +536,17 @@ void update_class::update_servers(QJsonObject recv)
 							item->setForeground(1, QColor(255, 30, 30));
 
 							cpuBar->setValue(0);
-							ramBar->setValue(0);
+							ram_bar->set_value(0, 0);
 							cpuBar->setFormat("...");
 							item->setText(4, "...");
-							ramBar->setFormat("...");
+							ram_bar->set_text("...");
 						}
 
 						else
 						{
 
 							cpuBar->setValue(cpu);
-							ramBar->setValue(ram);
+							ram_bar->set_value(ram, ram_cached);
 
 							if (general_status[3])
 							{
@@ -722,7 +721,7 @@ void update_class::update_task()
 								 QString::number(task["last_frame"].toInt());
 
 			_tasks.push_back({task["name"].toString(), frameRange, task["status"].toString(),
-							 task["server"].toString(), task["time"].toString()});
+							  task["server"].toString(), task["time"].toString()});
 		}
 
 		auto item_set = [=](QTreeWidgetItem *item,

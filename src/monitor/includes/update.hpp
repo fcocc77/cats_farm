@@ -6,11 +6,11 @@
 #include "servers.hpp"
 #include "jobs.hpp"
 #include "settings.hpp"
+#include <progress_bar.hpp>
 
 class update_class : public QObject
 {
 private:
-
   // variables
   shared_variables *shared;
   groups_class *groups;
