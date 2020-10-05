@@ -44,7 +44,7 @@ void servers_class::setup_ui()
 {
     this->setObjectName("servers");
 
-    QStringList columns{"Server Name", "Status", "Ins.", "CPU Usage", "CPU Temp",
+    QStringList columns{"Host Name", "Status", "Ins.", "CPU Usage", "CPU Temp",
                         "RAM Usage", "System", "IP", "MAC Address", "Job Rendered"};
     this->setHeaderLabels(columns);
 
