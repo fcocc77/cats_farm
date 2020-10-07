@@ -58,9 +58,7 @@ QString render_class::render_task(QJsonArray recv)
 	{
 		mutex->lock();
 		//obtiene ruta correcta
-		QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
-
-		auto correctPath = find_correct_path(system_path, project[ins]);
+		auto correctPath = find_correct_path(project[ins]);
 		src_path[ins] = correctPath[0];
 		dst_path[ins] = correctPath[1];
 		//------------------------------------------------------
@@ -114,8 +112,11 @@ QString render_class::render_task(QJsonArray recv)
 	return status;
 }
 
-QList<QString> render_class::find_correct_path(QJsonArray system_path, QString _path)
+QList<QString> render_class::find_correct_path(QString file_path)
 {
+	QString _path = os::dirname(file_path);
+	QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
+
 	//obtiene ruta correcta
 	QString proj;
 	QString src;
@@ -139,7 +140,7 @@ QList<QString> render_class::find_correct_path(QJsonArray system_path, QString _
 			break;
 	}
 
-	return { src, dst };
+	return {src, dst};
 }
 
 QString render_class::qprocess(QString cmd, int ins, int timeout)
@@ -163,8 +164,7 @@ bool render_class::nuke(int ins)
 {
 	mutex->lock();
 	// Ecuentra ruta del write y la remplaza por la ruta correcta segun OS
-	QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
-	auto correctPath = find_correct_path(system_path, os::dirname(extra[ins]));
+	auto correctPath = find_correct_path(extra[ins]);
 
 	QString proj = project[ins];
 	proj.replace(src_path[ins], dst_path[ins]);
@@ -271,7 +271,7 @@ bool render_class::maya(int ins)
 	os::remove(log_file);
 
 	QString args = " -r file -s " + QString::number(first_frame[ins]) + " -e " + QString::number(last_frame[ins]) +
-		" -proj '" + extra[ins] + "' '" + project[ins] + "'" + " -log '" + log_file + "'";
+				   " -proj '" + extra[ins] + "' '" + project[ins] + "'" + " -log '" + log_file + "'";
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
@@ -320,7 +320,7 @@ bool render_class::houdini(int ins)
 	QString hipFile = project[ins].replace(src_path[ins], dst_path[ins]);
 
 	QString render_file = path + "/modules/houdiniVinaRender.py " +
-		hipFile + " " + renderNode[ins] + " " + QString::number(first_frame[ins]) + " " + QString::number(last_frame[ins]);
+						  hipFile + " " + renderNode[ins] + " " + QString::number(first_frame[ins]) + " " + QString::number(last_frame[ins]);
 
 	QString cmd = '"' + exe + "\" " + render_file;
 
@@ -416,14 +416,19 @@ bool render_class::natron(int ins)
 		if (os::isfile(exe))
 			break;
 	}
-	//-----------------------------------------------
+
 	QJsonObject _extra = jofs(extra[ins]);
+
+	// Correccion de ruta para el video de salida
+	QString output_file = _extra["output"].toString();
+	auto correct_path = find_correct_path(output_file);
+	output_file = output_file.replace(correct_path[0], correct_path[1]);
+	_extra["output"] = output_file;
+	//
 
 	QString natron_module = path + "/modules/natron/render.sh";
 
 	// crea la carpeta donde se renderearan los archivos
-	QString output_file = _extra["output"].toString();
-
 	QString output_dir = os::dirname(output_file);
 	QString output_name = os::basename(output_file);
 
@@ -456,12 +461,12 @@ bool render_class::natron(int ins)
 				insert = true;
 
 			if (insert)
-				ranges_to_render.push_back(QJsonArray({ proj_path, _first_frame, _last_frame }));
+				ranges_to_render.push_back(QJsonArray({proj_path, _first_frame, _last_frame}));
 		}
 	}
 	else
 	{
-		ranges_to_render.push_back(QJsonArray({ project[ins], first_frame[ins], last_frame[ins] }));
+		ranges_to_render.push_back(QJsonArray({project[ins], first_frame[ins], last_frame[ins]}));
 	}
 	// ---------------------------------
 
@@ -483,7 +488,11 @@ bool render_class::natron(int ins)
 			_fist_frame = first_frame[ins];
 		if (_last_frame > last_frame[ins])
 			_last_frame = last_frame[ins];
-		// ---------------------
+		//
+
+		// Correccion de ruta para el proyecto 'ntp'
+		project_path = project_path.replace(correct_path[0], correct_path[1]);
+		//
 
 		QString firstFrame = QString::number(_fist_frame);
 		QString lastFrame = QString::number(_last_frame);
@@ -530,7 +539,7 @@ bool render_class::natron(int ins)
 		QThread *thread = new QThread;
 		connect(thread, &QThread::started, [=]() {
 			natron_monitoring(ins);
-			});
+		});
 		thread->start();
 
 		// si NatronRenderer se congelo con la cpu al 100%, se soluciona,
@@ -547,16 +556,19 @@ bool render_class::natron(int ins)
 
 		if (_log.contains("Rendering finished"))
 		{
-			if (_log.contains("Render aborted")) {
+			if (_log.contains("Render aborted"))
+			{
 				error = true;
 				break;
 			}
-			if (_log.contains("Rendering Failed")) {
+			if (_log.contains("Rendering Failed"))
+			{
 				error = true;
 				break;
 			}
 		}
-		else {
+		else
+		{
 			error = true;
 			break;
 		}
@@ -600,7 +612,7 @@ bool render_class::ntp(int ins)
 	QThread *thread = new QThread;
 	connect(thread, &QThread::started, [=]() {
 		natron_monitoring(ins);
-		});
+	});
 	thread->start();
 
 	QString log = qprocess(cmd, ins);

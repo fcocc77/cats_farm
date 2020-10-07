@@ -17,7 +17,7 @@ public:
 	render_class(QMutex *_mutex);
 
 	QString render_task(QJsonArray recv);
-	QList<QString> find_correct_path(QJsonArray system_path, QString _path);
+	QList<QString> find_correct_path(QString file_path);
 	QString qprocess(QString cmd, int ins = -1, int timeout = -1);
 	bool nuke(int ins);
 	bool maya(int ins);
