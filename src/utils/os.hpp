@@ -47,6 +47,7 @@ QString basename(QString file);
 bool isfile(QString file);
 bool isdir(QString dir);
 void makedirs(QString dir);
+void makedir(QString dir);
 void kill(int pid, bool force = false);
 QStringList listdir(QString folder, bool onlyname = 0);
 QString sh(QString cmd, bool error = true);

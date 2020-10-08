@@ -446,6 +446,12 @@ void makedirs(QString dir)
 		QDir(dir).mkpath(dir);
 }
 
+void makedir(QString dir)
+{
+	if (!isdir(dir))
+		QDir(dir).mkdir(dir);
+}
+
 #ifdef _WIN32
 void KillProcessTree(DWORD myprocID)
 {

@@ -37,3 +37,6 @@ monitor:
     
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
+
+    settings:
+        ☐ al presionar cancelar o escape, que los valores queden como estaban, ahora si se modifica el 'QPlainText' se mantiene.

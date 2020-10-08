@@ -114,7 +114,7 @@ QString render_class::render_task(QJsonArray recv)
 
 QList<QString> render_class::find_correct_path(QString file_path)
 {
-	QString _path = os::dirname(file_path);
+	QString _path = os::dirname(os::dirname(file_path));
 	QJsonArray system_path = preferences["paths"].toObject()["system"].toArray();
 
 	//obtiene ruta correcta
@@ -494,6 +494,10 @@ bool render_class::natron(int ins)
 		project_path = project_path.replace(correct_path[0], correct_path[1]);
 		//
 
+		// Creacion de directorio si no existe
+		os::makedir(output_dir);
+		//
+
 		QString firstFrame = QString::number(_fist_frame);
 		QString lastFrame = QString::number(_last_frame);
 
@@ -504,29 +508,21 @@ bool render_class::natron(int ins)
 			output_name = output_name.split(".")[0];
 			output_render = output_dir + "/" + output_name;
 
+			os::makedir(output_render);
+
 			// crea numero con ceros para el nombre a partir del primer cuadro
 			QString num = "0000000000" + firstFrame;
 			QStringRef nameNumber(&num, num.length() - 10, 10);
-			// -------------------------------------
 
 			output = output_render + "/" + output_name + "_" + nameNumber + "." + ext;
 
-			if (not os::isdir(output_render))
-			{
-				os::makedirs(output_render);
-				if (_linux)
-					os::system("chmod 777 -R " + output_render);
-			}
-			//---------------------------------------------------
+			if (_linux)
+				os::system("chmod 777 -R " + output_render);
 		}
 		else
 		{
-			if (not os::isdir(output_dir))
-			{
-				os::makedirs(output_dir);
-				if (_linux)
-					os::system("chmod 777 -R " + output_dir);
-			}
+			if (_linux)
+				os::system("chmod 777 -R " + output_dir);
 
 			output = output_file;
 		}
