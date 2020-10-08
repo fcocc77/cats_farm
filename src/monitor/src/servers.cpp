@@ -57,7 +57,7 @@ void servers_class::setup_ui()
 
     // ajusta el largo de las columnas
     this->setColumnWidth(0, 150);
-    this->setColumnWidth(1, 50);
+    this->setColumnWidth(1, 100);
     this->setColumnWidth(2, 50);
     this->setColumnWidth(3, 177);
     this->setColumnWidth(4, 100);
