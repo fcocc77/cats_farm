@@ -28,7 +28,7 @@ compile() {
 }
 
 nuke() {
-    nuke_path="/usr/local/Nuke10.5v8"
+    nuke_path="/opt/Nuke9.0v9"
     plugins=$nuke_path"/plugins"
     menu_py=$plugins"/menu.py"
 
