@@ -27,15 +27,7 @@
             "/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render"
         ],
         "nuke": [
-            "/usr/local/Nuke10.5v8/Nuke10.5",
-            "/usr/local/Nuke9.0v9/Nuke9.0",
-            "C:/Program Files/Nuke9.0v9/Nuke9.0.exe",
-            "C:/Program Files/Nuke10.0v4/Nuke10.0.exe",
-            "C:/Program Files/Nuke10.5v4/Nuke10.5.exe",
-            "/usr/local/Applications/Nuke10.5v4/Nuke10.5v4.app/Contents/MacOS/Nuke10.5v4",
-            "/usr/local/Applications/Nuke9.0v9/Nuke9.0v9.app/Contents/MacOS/Nuke9.0v9",
-            "/Applications/Nuke10.5v4/Nuke10.5v4.app/Contents/MacOS/Nuke10.5v4",
-            "/Applications/Nuke9.0v9/Nuke9.0v9.app/Contents/MacOS/Nuke9.0v9"
+            "/opt/Nuke9.0v9/Nuke9.0"
         ],
         "system": [
             "/mnt/Documents",
