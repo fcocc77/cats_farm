@@ -37,7 +37,7 @@ monitor:
     
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
-        ☐ al presionar ok, se cierra el widget de 'propieties', solo deberia cerrarse el widget de 'job_options'
+        ✔ al presionar ok, se cierra el widget de 'propieties', solo deberia cerrarse el widget de 'job_options' @done (10/9/2020, 2:55:26 PM)
 
     settings:
         ☐ al presionar cancelar o escape, que los valores queden como estaban, ahora si se modifica el 'QPlainText' se mantiene.

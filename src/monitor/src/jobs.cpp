@@ -319,7 +319,7 @@ void jobs_class::options_ok()
     if (reply == QMessageBox::Yes)
     {
         tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
-        options->parentWidget()->hide();
+        properties->parentWidget()->hide();
     }
 }
 
