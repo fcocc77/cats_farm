@@ -38,13 +38,9 @@
             "/Applications/Nuke9.0v9/Nuke9.0v9.app/Contents/MacOS/Nuke9.0v9"
         ],
         "system": [
-            "/mnt/server_01",
-            "/media/server_01",
-            "//192.168.10.46/server_01",
-            "/Volumes/server_01",
-            "//VBOXSVR/server_01",
-            "Z:",
-            "C:"
+            "/mnt/Documents",
+            "/home/pancho/Documents",
+            "/"
         ]
     },
     "servers": [
