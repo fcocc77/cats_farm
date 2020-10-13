@@ -67,7 +67,7 @@ void manager::render_job()
 									if (server->name == s)
 										vetoed_times++;
 
-								if (not(vetoed_times >= 3))
+								if (not(vetoed_times >= 10))
 								{ // este numero es la cantidad de veces que puede fallar el servidor antes que se bloquee
 
 									if (job->waiting_task)
