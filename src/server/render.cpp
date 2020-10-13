@@ -548,6 +548,10 @@ bool render_class::natron(int ins)
 		thread->quit();
 		thread->requestInterruption();
 
+		// Elimina el archivo .ntp.lock; a veces queda cuando se mata el 'NatronRenderer'
+		os::remove(project_path + ".lock");
+		//
+
 		pid[ins] = 0;
 
 		if (_log.contains("Rendering finished"))
