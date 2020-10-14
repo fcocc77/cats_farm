@@ -494,6 +494,10 @@ bool render_class::natron(int ins)
 		project_path = project_path.replace(correct_path[0], correct_path[1]);
 		//
 
+		// Elimina el archivo .ntp.lock antes de renderizar.
+		os::remove(project_path + ".lock");
+		//
+
 		// Creacion de directorio si no existe
 		os::makedir(output_dir);
 		//
