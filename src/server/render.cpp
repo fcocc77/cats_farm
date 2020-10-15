@@ -533,6 +533,8 @@ bool render_class::natron(int ins)
 
 		_extra["render_node"] = render_node;
 		_extra["output"] = output;
+		_extra["src_path"] = correct_path[0];
+		_extra["dst_path"] = correct_path[1];
 
 		QString cmd = "sh " + natron_module + " " + exe + " \"" + project_path + "\" " + firstFrame + " " + lastFrame + " \"" + jots(_extra).replace("\"", "'") + "\"";
 
