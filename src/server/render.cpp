@@ -598,7 +598,11 @@ bool render_class::ntp(int ins)
 	QJsonObject slide = slides[slide_index].toObject();
 	QString _module = _extra["module"].toString();
 
+	auto correct_path = find_correct_path(_extra["project"].toString());
+
 	_extra["slide"] = slide;
+	_extra["src_path"] = correct_path[0];
+	_extra["dst_path"] = correct_path[1];
 
 	//Obtiene el excecutable que existe en este sistema
 	QString exe;
