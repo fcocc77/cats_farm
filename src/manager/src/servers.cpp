@@ -1,4 +1,4 @@
-#include "manager.hpp"
+#include <manager.hpp>
 
 QString manager::update_server_thread(QJsonArray recv)
 {

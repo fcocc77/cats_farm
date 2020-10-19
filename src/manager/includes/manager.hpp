@@ -17,11 +17,11 @@ using namespace std;
 #include <QMutex>
 #include <QTime>
 
-#include "structs.hpp"
+#include <structs.hpp>
+#include <util.hpp>
+#include <os.hpp>
 #include "../utils/video.hpp"
-#include "../utils/util.hpp"
 #include "../utils/tcp.hpp"
-#include "../utils/os.hpp"
 #include "../utils/threading.hpp"
 
 class manager : public QObject

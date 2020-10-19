@@ -1,4 +1,4 @@
-#include "manager.hpp"
+#include <manager.hpp>
 
 void manager::sample_render(QString video, int frame, int index) {
 

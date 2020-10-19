@@ -6,18 +6,17 @@ TEMPLATE = app
 TARGET = "logger"
 
 CONFIG += console
+INCLUDEPATH += ./includes
+INCLUDEPATH += ../../utils/c++/includes
 
 QT += core gui multimedia widgets
 
-HEADERS += 	./logger.hpp \
-			../utils/os.hpp \
+HEADERS += 	./includes/* \
 			../utils/tcp.hpp \
 			../utils/threading.hpp \
-			../utils/util.hpp \
 			../utils/video.hpp \
+			../../utils/c++/includes/* \
 
-SOURCES += 	./main.cpp \
-			./logger.cpp \  
-			../utils/util.cpp \ 
+SOURCES += 	./src/* \
 			../utils/video.cpp \
-			../utils/os.cpp \
+			../../utils/c++/src/* \

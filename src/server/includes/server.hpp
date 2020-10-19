@@ -5,7 +5,7 @@
 using namespace std;
 #include <thread>
 
-#include "../utils/util.hpp"
+#include <util.hpp>
 #include "../utils/tcp.hpp"
 
 #include <QCoreApplication>

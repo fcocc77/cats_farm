@@ -6,21 +6,18 @@ TEMPLATE = app
 TARGET = "vserver"
 
 CONFIG += console
+INCLUDEPATH += ../../utils/c++/includes
+INCLUDEPATH += ./includes
 
 QT += core gui multimedia widgets
 
-HEADERS += 	./server.hpp \
-			./render.hpp \
+HEADERS += 	./includes/* \
 			../manager/structs.hpp \
-			../utils/os.hpp \
 			../utils/tcp.hpp \
 			../utils/threading.hpp \
-			../utils/util.hpp \
 			../utils/video.hpp \
+			../../utils/c++/includes/* \
 
-SOURCES += 	./main.cpp \
-			./server.cpp \  
-			./render.cpp \ 
-			../utils/util.cpp \ 
+SOURCES += 	./src/* \
 			../utils/video.cpp \
-			../utils/os.cpp \
+			../../utils/c++/src/* \

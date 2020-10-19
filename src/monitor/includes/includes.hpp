@@ -36,10 +36,10 @@
 #include <iostream>
 using namespace std;
 
+#include <util.hpp>
+#include <os.hpp>
+#include "../../manager/includes/structs.hpp"
 #include "../../utils/threading.hpp"
-#include "../../utils/util.hpp"
-#include "../../utils/os.hpp"
-#include "../../manager/structs.hpp"
 #include "../../utils/tcp.hpp"
 
 #include "shared_variables.hpp"

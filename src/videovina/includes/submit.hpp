@@ -5,7 +5,7 @@
 #include <iostream>
 using namespace std;
 #include "../utils/tcp.hpp"
-#include "../utils/util.hpp"
+#include <util.hpp>
 
 class submit : public QObject
 {

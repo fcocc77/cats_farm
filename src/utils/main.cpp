@@ -1,5 +1,5 @@
-#include "../utils/util.hpp"
-#include "../utils/os.hpp"
+#include <util.hpp>
+#include <os.hpp>
 #include "../utils/tcp.hpp"
 #include "../utils/video.hpp"
 #include "../utils/threading.hpp"

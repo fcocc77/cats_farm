@@ -8,24 +8,15 @@ RC_ICONS = ../../icons/icon.ico
 CONFIG += console
 QT += core gui multimedia widgets
 
-HEADERS +=  ../utils/os.hpp \
-			../utils/tcp.hpp \
-			../utils/threading.hpp \ 
-			../utils/util.hpp \
-			../utils/video.hpp \
-			./manager.hpp \
-			./structs.hpp \
+INCLUDEPATH += ../../utils/c++/includes
+INCLUDEPATH += ./includes
 
-SOURCES += 	./main.cpp \
-			./manager.cpp \  
-			./actions.cpp \
-			./jobs.cpp \
-			./servers.cpp \
-			./groups.cpp \
-			./tasks.cpp \
-			./render.cpp \
-			./update.cpp \
-			./videovina.cpp \
-			../utils/util.cpp \ 
+HEADERS +=  ../utils/tcp.hpp \
+			../utils/threading.hpp \ 
+			../utils/video.hpp \
+			./includes/* \
+			../../utils/c++/includes/* \
+
+SOURCES += 	./src/* \
 			../utils/video.cpp \
-			../utils/os.cpp \
+			../../utils/c++/src/* \

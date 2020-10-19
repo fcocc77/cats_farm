@@ -1,7 +1,7 @@
 #ifndef RENDER_HPP
 #define RENDER_HPP
 
-#include "../utils/util.hpp"
+#include <util.hpp>
 #include "../utils/threading.hpp"
 #include <QMutex>
 

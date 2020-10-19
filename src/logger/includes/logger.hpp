@@ -5,9 +5,9 @@
 using namespace std;
 #include <thread>
 
-#include "../utils/util.hpp"
+#include <util.hpp>
 #include "../utils/tcp.hpp"
-#include "../utils/os.hpp"
+#include <os.hpp>
 #include "../utils/threading.hpp"
 
 #include <QCoreApplication>

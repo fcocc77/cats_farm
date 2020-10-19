@@ -8,12 +8,14 @@ CONFIG += console
 
 QT += core gui multimedia widgets
 
-HEADERS += 	./submit.hpp \
-			../utils/tcp.hpp \
-			../utils/util.hpp \
-			../utils/os.hpp \
+INCLUDEPATH += ./includes
+INCLUDEPATH += ../../utils/c++/includes
 
-SOURCES += 	./main.cpp \
-			./submit.cpp \
-			../utils/util.cpp \
-			../utils/os.cpp \
+QT += core gui multimedia widgets
+
+HEADERS += 	./includes/* \
+			../utils/tcp.hpp \
+			../../utils/c++/includes/* \
+
+SOURCES += 	./src/* \
+			../../utils/c++/src/* \
