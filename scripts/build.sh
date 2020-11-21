@@ -4,6 +4,7 @@ qmake-qt5
 make -j $thread
 
 rm ./bin/*
+mkdir ./bin
 
 # copia los ejecutables a la carpeta bin
 cp ./source/manager/release/vmanager ./bin
