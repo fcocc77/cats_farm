@@ -7,13 +7,14 @@ update_class::update_class(
 	servers_class *_servers,
 	QTreeWidget *_tasks_tree,
 	settings_class *_settings)
+
+	: shared(_shared),
+	  groups(_groups),
+	  jobs(_jobs),
+	  servers(_servers),
+	  tasks(_tasks_tree),
+	  settings(_settings)
 {
-	shared = _shared;
-	groups = _groups;
-	jobs = _jobs;
-	servers = _servers;
-	tasks = _tasks_tree;
-	settings = _settings;
 	connections();
 
 	// Iniciar hilo para tasks

@@ -4,10 +4,12 @@ groups_class::groups_class(
     QMainWindow *_monitor,
     shared_variables *_shared,
     servers_class *_servers)
+
+    : monitor(_monitor),
+      shared(_shared),
+      servers(_servers)
 {
-    monitor = _monitor;
-    shared = _shared;
-    servers = _servers;
+
     // Group Action
     create_action = new QAction("Create Group");
     add_machine_action = new QAction("Add Machine");

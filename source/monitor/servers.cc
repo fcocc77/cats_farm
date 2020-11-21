@@ -4,11 +4,11 @@ servers_class::servers_class(
     QMainWindow *_monitor,
     shared_variables *_shared,
     log_class *_log)
-{
-    monitor = _monitor;
-    shared = _shared;
-    log = _log;
 
+    : monitor(_monitor),
+      shared(_shared),
+      log(_log)
+{
     // display job list
     show_all_action = new QAction("Show All");
     hide_all_action = new QAction("Hide All");

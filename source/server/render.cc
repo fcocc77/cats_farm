@@ -1,8 +1,8 @@
 #include "render.h"
 
 render_class::render_class(QMutex *_mutex)
+	: mutex(_mutex)
 {
-	mutex = _mutex;
 	// inicializar instancias 16 veces
 	for (int i = 0; i < 15; ++i)
 	{

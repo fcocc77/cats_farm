@@ -4,11 +4,11 @@ tasks_class::tasks_class(
     QMainWindow *_monitor,
     shared_variables *_shared,
     jobs_class *_jobs)
-{
-    monitor = _monitor;
-    shared = _shared;
-    jobs = _jobs;
 
+    : monitor(_monitor),
+      shared(_shared),
+      jobs(_jobs)
+{
     // Task Action
     suspend_action = new QAction("Suspend");
     restart_action = new QAction("Restart");

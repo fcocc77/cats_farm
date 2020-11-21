@@ -11,15 +11,15 @@ jobs_class::jobs_class(
     options_class *_options,
     groups_class *_groups,
     properties_class *_properties)
-{
-    shared = _shared;
-    monitor = _monitor;
-    log = _log;
-    servers = _servers;
-    options = _options;
-    groups = _groups;
-    properties = _properties;
 
+    : shared(_shared),
+      monitor(_monitor),
+      log(_log),
+      servers(_servers),
+      options(_options),
+      groups(_groups),
+      properties(_properties)
+{
     // Job Acciones
     delete_action = new QAction("Delete");
     job_suspend_action = new QAction("Suspend");

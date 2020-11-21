@@ -2,9 +2,8 @@
 
 settings_class::settings_class(
 	shared_variables *_shared)
+	: shared(_shared)
 {
-	shared = _shared;
-
 	setup_ui();
 	connections();
 }

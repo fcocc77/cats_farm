@@ -4,10 +4,11 @@ global_class::global_class(
 	QMainWindow *_monitor,
 	shared_variables *_shared,
 	QWidget *_properties)
+
+	: monitor(_monitor),
+	  shared(_shared),
+	  properties(_properties)
 {
-	monitor = _monitor;
-	shared = _shared;
-	properties = _properties;
 
 	// General Action
 	preferences_action = new QAction("Preferences");

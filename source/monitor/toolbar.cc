@@ -12,18 +12,19 @@ toolbar_class::toolbar_class(
 	shared_variables *_shared,
 	QWidget *_settings_widget,
 	properties_class *_properties)
+
+	: monitor(_monitor),
+	  global(_global),
+	  jobs(_jobs),
+	  tasks(_tasks),
+	  servers(_servers),
+	  groups(_groups),
+	  log(_log),
+	  update(_update),
+	  shared(_shared),
+	  settings_widget(_settings_widget),
+	  properties(_properties)
 {
-	monitor = _monitor;
-	global = _global;
-	jobs = _jobs;
-	tasks = _tasks;
-	servers = _servers;
-	groups = _groups;
-	log = _log;
-	update = _update;
-	shared = _shared;
-	settings_widget = _settings_widget;
-	properties = _properties;
 	setup_ui();
 	load_zones();
 	connections();
