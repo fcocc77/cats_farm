@@ -15,6 +15,6 @@ HEADERS += 	./*.h \
 			../utils/*.h \
 			../../utils/c++/*.h \
 
-SOURCES += 	./*.h \
+SOURCES += 	./*.cc \
 			../utils/*.cc \
 			../../utils/c++/*.cc \

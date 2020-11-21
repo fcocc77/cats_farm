@@ -5,11 +5,6 @@
 using namespace std;
 #include <thread>
 
-#include <util.hpp>
-#include "../utils/tcp.h"
-#include <os.h>
-#include "../utils/threading.h"
-
 #include <QCoreApplication>
 #include <QProcess>
 #include <QObject>
@@ -17,6 +12,11 @@ using namespace std;
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMutex>
+
+#include <util.h>
+#include <os.h>
+#include "../utils/tcp.h"
+#include "../utils/threading.h"
 
 class logger : public QObject
 {
