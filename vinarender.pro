@@ -1,9 +1,9 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    src/logger \
-    src/monitor \
-    src/manager \
-    src/server \
-    src/submit \
-    src/videovina \
+    source/logger \
+    source/monitor \
+    source/manager \
+    source/server \
+    source/submit \
+    source/videovina \

@@ -18,7 +18,7 @@ server_start=$4
 logger_start=$5
 
 compile() {
-    folder=$path/src/$1
+    folder=$path/source/$1
     cd $folder
     qmake-qt5
     make -j 4

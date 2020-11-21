@@ -6,9 +6,9 @@ make -j $thread
 rm ./bin/*
 
 # copia los ejecutables a la carpeta bin
-cp ./src/manager/release/vmanager ./bin
-cp ./src/server/release/vserver ./bin
-cp ./src/monitor/release/vmonitor ./bin
-cp ./src/logger/release/logger ./bin
-cp ./src/submit/release/submit ./bin
-cp ./src/videovina/release/videovina ./bin
+cp ./source/manager/release/vmanager ./bin
+cp ./source/server/release/vserver ./bin
+cp ./source/monitor/release/vmonitor ./bin
+cp ./source/logger/release/logger ./bin
+cp ./source/submit/release/submit ./bin
+cp ./source/videovina/release/videovina ./bin
