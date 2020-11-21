@@ -1,50 +1,7 @@
-**/release
-*/debug
-*/*.o
-*/moc_*
-*/qrc_res.cpp
-*/object_script*
-*/VinaRender*
-*/*.exe
-*/*.app
-*/*.rc
-*/submit
-*/vserver
-*/vmanager
-*/vmonitor
-*/logger
-*/utils
-*/videovina
-*/ui_main.h
-*.qmake.stash
-*lock.json
-Makefile*
-bin
-log/*
-qt/*/*zip
-qt/*/*tar.gz
-.vscode
-.DS_Store
-*.swp
-*.swo
-*.pyc
-*.o
-modules/ae/*.gz
 node_modules
-temp
-# os
-services/vserver_pid
-services/vmanager_pid
-services/logger_pid
-# ------------------
-# archivos de etc
-etc/*.json*
-!etc/preferences.json
-!etc/settings.json
-etc/manager_host
-# --------------------
-
-# natron
-apis/natron/project
-modules/natron
-*.ntp
+*.stash
+Makefile
+package-lock.json
+*.o
+**/release/*
+bin
