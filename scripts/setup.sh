@@ -1,7 +1,8 @@
 # instala las dependencias para vinarender
 
-yum -y install epel-release http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
-yum -y install \
+sudo yum -y install epel-release http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+
+sudo yum -y install \
     qt5-qtbase \
     qt5-qtbase-devel \
     qt5-qtmultimedia.x86_64 \
@@ -19,5 +20,5 @@ yum -y install \
     nmap \
     psmisc #fuser
 
-yum -y group install "Development Tools"
+sudo yum -y group install "Development Tools"
 # ----------------------
