@@ -4,14 +4,14 @@
 #include "includes.h"
 
 #include "global.h"
-#include "jobs.h"
 #include "groups.h"
-#include "servers.h"
-#include "tasks.h"
+#include "jobs.h"
 #include "log.h"
-#include "update.h"
-#include "shared_variables.h"
 #include "properties.h"
+#include "servers.h"
+#include "shared_variables.h"
+#include "tasks.h"
+#include "update.h"
 
 class toolbar_class : public QWidget
 {
@@ -43,19 +43,13 @@ private:
     QPushButton *log_switch;
 
 public:
-    toolbar_class(
-        QMainWindow *_monitor,
-        global_class *_global,
-        jobs_class *_jobs,
-        tasks_class *_tasks,
-        servers_class *_servers,
-        groups_class *_groups,
-        log_class *_log,
-        update_class *_update,
-        shared_variables *_shared,
-        QWidget *_settings_widget,
-        properties_class *_properties);
+    toolbar_class(QMainWindow *_monitor, global_class *_global,
+                  jobs_class *_jobs, tasks_class *_tasks,
+                  servers_class *_servers, groups_class *_groups,
+                  log_class *_log, update_class *_update,
+                  shared_variables *_shared, QWidget *_settings_widget,
+                  properties_class *_properties);
     ~toolbar_class();
 };
 
-#endif //TOOLBAR_HPP
+#endif // TOOLBAR_HPP

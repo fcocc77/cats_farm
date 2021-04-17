@@ -2,53 +2,53 @@
 
 void manager::update_group()
 {
-	// Obtiene todos los grupos que estan activos
-	QStringList groups_used;
-	for (auto job : jobs)
-		if (job->active_task)
-			for (QString sg : job->server_group)
-				groups_used.push_back(sg);
+    // Obtiene todos los grupos que estan activos
+    QStringList groups_used;
+    for (auto job : jobs)
+        if (job->active_task)
+            for (QString sg : job->server_group)
+                groups_used.push_back(sg);
 
-	QJsonArray grouplist;
+    QJsonArray grouplist;
 
-	for (auto group : groups)
-	{
-		grouplist.push_back(group->name);
-		int totaMachine = 0, activeMachine = 0;
+    for (auto group : groups)
+    {
+        grouplist.push_back(group->name);
+        int totaMachine = 0, activeMachine = 0;
 
-		for (auto _server : group->server)
-		{
+        for (auto _server : group->server)
+        {
 
-			if (is_struct(servers, _server->name))
-			{
-				auto server = get_server(_server->name);
+            if (is_struct(servers, _server->name))
+            {
+                auto server = get_server(_server->name);
 
-				totaMachine++;
-				if (server->status == "absent")
-					_server->status = false;
-				else
-				{
-					_server->status = true;
-					activeMachine++;
-				}
-			}
-			else
-			{
-				erase_by_name(group->server, _server->name);
-			}
-		}
-		bool server_status;
-		if (groups_used.contains(group->name))
-			server_status = true;
-		else
-			server_status = false;
+                totaMachine++;
+                if (server->status == "absent")
+                    _server->status = false;
+                else
+                {
+                    _server->status = true;
+                    activeMachine++;
+                }
+            }
+            else
+            {
+                erase_by_name(group->server, _server->name);
+            }
+        }
+        bool server_status;
+        if (groups_used.contains(group->name))
+            server_status = true;
+        else
+            server_status = false;
 
-		group->status = server_status;
-		group->totaMachine = totaMachine;
-		group->activeMachine = activeMachine;
-	}
+        group->status = server_status;
+        group->totaMachine = totaMachine;
+        group->activeMachine = activeMachine;
+    }
 
-	preferences["groups"] = grouplist;
+    preferences["groups"] = grouplist;
 }
 
 void manager::group_action(QJsonArray pks)
@@ -143,7 +143,7 @@ void manager::group_create(QJsonArray pks)
     group->totaMachine = totaMachine;
     group->activeMachine = activeMachine;
 
-    //crea vector de server group
+    // crea vector de server group
     QList<serverFromGroupStruct *> _server;
     for (auto name : server)
     {

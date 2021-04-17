@@ -21,10 +21,8 @@ private:
     //-----------------
 
 public:
-    groups_class(
-        QMainWindow *_monitor,
-        shared_variables *_shared,
-        servers_class *_servers);
+    groups_class(QMainWindow *_monitor, shared_variables *_shared,
+                 servers_class *_servers);
     ~groups_class();
 
     // Group Action
@@ -34,11 +32,8 @@ public:
     //------------------------------------------------
 
     void make_server(QTreeWidgetItem *item, QJsonArray machines);
-    QTreeWidgetItem *group_make(
-        QString group_name,
-        int totaMachine,
-        int activeMachine,
-        int offMachine);
+    QTreeWidgetItem *group_make(QString group_name, int totaMachine,
+                                int activeMachine, int offMachine);
 };
 
 class ElidedLabel : public QLabel
@@ -49,7 +44,8 @@ public:
     void paintEvent(QPaintEvent *e)
     {
         QPainter p(this);
-        p.drawText(0, 0, geometry().width(), geometry().height(), alignment(), cachedElidedText);
+        p.drawText(0, 0, geometry().width(), geometry().height(), alignment(),
+                   cachedElidedText);
     }
 
     void resizeEvent(QResizeEvent *e)
@@ -60,8 +56,9 @@ public:
 
     void cacheElidedText(int w)
     {
-        cachedElidedText = fontMetrics().elidedText(text(), Qt::ElideRight, w, Qt::TextShowMnemonic);
+        cachedElidedText = fontMetrics().elidedText(text(), Qt::ElideRight, w,
+                                                    Qt::TextShowMnemonic);
     }
 };
 
-#endif //GROUPS_HPP
+#endif // GROUPS_HPP

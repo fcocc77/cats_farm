@@ -7,12 +7,11 @@ y se repite la informacion que hay dentro. */
 #ifndef MYTHREAD_H
 #define MYTHREAD_H
 
-#include <QThread>
 #include <QObject>
+#include <QThread>
 #include <QTimer>
 
-template <class T>
-void threading(T func)
+template <class T> void threading(T func)
 {
     QThread *thread = new QThread;
     QObject::connect(thread, &QThread::started, [=]() { func(); });
@@ -20,8 +19,7 @@ void threading(T func)
     thread->exit();
 }
 
-template <class T1, class T2>
-void threading(T1(T2::*func), T2 *_class)
+template <class T1, class T2> void threading(T1(T2::*func), T2 *_class)
 {
     QThread *thread = new QThread;
     QObject::connect(thread, &QThread::started, [=]() { (_class->*func)(); });
@@ -33,21 +31,22 @@ template <class T1, class T2, class T3, class T4, class T5>
 void threading(T1(T2::*func), T2 *_class, T3 arg1, T4 arg2, T5 arg3)
 {
     QThread *thread = new QThread;
-    QObject::connect(thread, &QThread::started, [=]() { (_class->*func)(arg1, arg2, arg3); });
+    QObject::connect(thread, &QThread::started,
+                     [=]() { (_class->*func)(arg1, arg2, arg3); });
     thread->start();
     thread->exit();
 }
 
-template <class T>
-class qthread_class : public QThread
+template <class T> class qthread_class : public QThread
 {
-  public:
+public:
     T *_class;
     void (T::*func)();
     QTimer *qtimer;
 
     // Constructor client loop
-    qthread_class(void (T::*_func)(), T *__class) : QThread(__class)
+    qthread_class(void (T::*_func)(), T *__class)
+        : QThread(__class)
     {
         _class = __class;
         func = _func;
@@ -71,8 +70,7 @@ class qthread_class : public QThread
     }
 };
 
-template <class T>
-QThread *qthread(void (T::*_func)(), T *_class)
+template <class T> QThread *qthread(void (T::*_func)(), T *_class)
 {
 
     // inicia thread de update widget

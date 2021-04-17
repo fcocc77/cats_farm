@@ -1,9 +1,9 @@
 #ifndef VIDEO_HPP
 #define VIDEO_HPP
 
-#include <algorithm> //sort
 #include "util.h"
+#include <algorithm> //sort
 
 void concat(QString folder, QString format = "mov");
 
-#endif //VIDEO_HPP
+#endif // VIDEO_HPP

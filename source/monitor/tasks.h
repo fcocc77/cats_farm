@@ -2,8 +2,8 @@
 #define TASKS_HPP
 
 #include "includes.h"
-#include "shared_variables.h"
 #include "jobs.h"
+#include "shared_variables.h"
 
 class tasks_class : public QObject
 {
@@ -23,10 +23,8 @@ private:
     jobs_class *jobs;
 
 public:
-    tasks_class(
-        QMainWindow *_monitor,
-        shared_variables *_shared,
-        jobs_class *_jobs);
+    tasks_class(QMainWindow *_monitor, shared_variables *_shared,
+                jobs_class *_jobs);
     ~tasks_class();
 
     // Task Action
@@ -36,7 +34,6 @@ public:
     //-----------------------------
 
     QTreeWidget *tree;
-
 };
 
-#endif //TASKS_HPP
+#endif // TASKS_HPP

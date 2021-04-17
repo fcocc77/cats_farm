@@ -1,24 +1,19 @@
 #include <main_menu.h>
 
-main_menu_class::main_menu_class(
-    global_class *_global,
-    jobs_class *_jobs,
-    servers_class *_servers,
-    groups_class *_groups,
-    tasks_class *_tasks)
+main_menu_class::main_menu_class(global_class *_global, jobs_class *_jobs,
+                                 servers_class *_servers, groups_class *_groups,
+                                 tasks_class *_tasks)
 
-    : global(_global),
-      jobs(_jobs),
-      servers(_servers),
-      groups(_groups),
-      tasks(_tasks)
+    : global(_global)
+    , jobs(_jobs)
+    , servers(_servers)
+    , groups(_groups)
+    , tasks(_tasks)
 {
     connections();
 }
 
-main_menu_class::~main_menu_class()
-{
-}
+main_menu_class::~main_menu_class() {}
 
 void main_menu_class::connections()
 {

@@ -1,13 +1,11 @@
 #include <groups.h>
 
-groups_class::groups_class(
-    QMainWindow *_monitor,
-    shared_variables *_shared,
-    servers_class *_servers)
+groups_class::groups_class(QMainWindow *_monitor, shared_variables *_shared,
+                           servers_class *_servers)
 
-    : monitor(_monitor),
-      shared(_shared),
-      servers(_servers)
+    : monitor(_monitor)
+    , shared(_shared)
+    , servers(_servers)
 {
 
     // Group Action
@@ -19,9 +17,7 @@ groups_class::groups_class(
     setup_ui();
 }
 
-groups_class::~groups_class()
-{
-}
+groups_class::~groups_class() {}
 
 void groups_class::setup_ui()
 {
@@ -31,7 +27,8 @@ void groups_class::setup_ui()
     this->setColumnCount(3);
     this->setHeaderLabels(columns); // pone el nombre de las columnas
 
-    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setSelectionMode(
+        QAbstractItemView::ExtendedSelection); // multi seleccion
 
     this->setColumnHidden(2, true);
 
@@ -49,14 +46,18 @@ void groups_class::setup_ui()
 void groups_class::connections()
 {
 
-    connect(this, &QTreeWidget::customContextMenuRequested, this, &groups_class::popup);
+    connect(this, &QTreeWidget::customContextMenuRequested, this,
+            &groups_class::popup);
 
     // Group Action
-    connect(create_action, &QAction::triggered, this, &groups_class::create_window);
+    connect(create_action, &QAction::triggered, this,
+            &groups_class::create_window);
     create_action->setShortcut(QString("Ctrl+G"));
-    connect(add_machine_action, &QAction::triggered, this, &groups_class::add_machine);
+    connect(add_machine_action, &QAction::triggered, this,
+            &groups_class::add_machine);
 
-    connect(delete_action, &QAction::triggered, this, &groups_class::group_delete);
+    connect(delete_action, &QAction::triggered, this,
+            &groups_class::group_delete);
 
     //--------------------------------------------------------------------
 }
@@ -106,13 +107,14 @@ void groups_class::create_window()
         QTreeWidgetItem *item = group_make(group_name, machines.size(), 0, 0);
 
         make_server(item, machines);
-        //submitUpdateBox();
+        // submitUpdateBox();
     };
     //-----------------------------------------------
 
     bool ok;
-    QString group_name = QInputDialog::getText(monitor, "Server Group", "Enter Group name:",
-                                               QLineEdit::Normal, QDir::home().dirName(), &ok);
+    QString group_name = QInputDialog::getText(
+        monitor, "Server Group", "Enter Group name:", QLineEdit::Normal,
+        QDir::home().dirName(), &ok);
 
     if (ok)
     {
@@ -127,11 +129,8 @@ void groups_class::create_window()
     }
 }
 
-QTreeWidgetItem *groups_class::group_make(
-    QString group_name,
-    int totaMachine,
-    int activeMachine,
-    int offMachine)
+QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
+                                          int activeMachine, int offMachine)
 {
 
     // Name Column
@@ -245,9 +244,7 @@ QTreeWidgetItem *groups_class::group_make(
     return item;
 }
 
-void groups_class::make_server(
-    QTreeWidgetItem *item,
-    QJsonArray machines)
+void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
 {
     struct _name_item
     {
@@ -311,7 +308,7 @@ void groups_class::make_server(
     }
     //---------------------------------------------------------
 
-    //Actualiza el status del childItem
+    // Actualiza el status del childItem
     for (int i = 0; i < item->childCount(); ++i)
     {
         QTreeWidgetItem *childItem = item->child(i);
@@ -402,7 +399,8 @@ void groups_class::group_delete()
         QString ask = "Sure you want to delete the group?";
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask, QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(monitor, tile, ask,
+                                      QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
 
@@ -436,7 +434,8 @@ void groups_class::group_delete()
             QJsonArray _groups = {group_list, group_machine, "delete"};
 
             QJsonArray pks = {"groupAction", _groups};
-            tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
+            tcpClient(shared->manager_host, shared->manager_port,
+                      jats({3, pks}));
         }
     }
 }

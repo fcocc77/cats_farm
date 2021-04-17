@@ -1,11 +1,11 @@
 #ifndef MAIN_MENU_HPP
 #define MAIN_MENU_HPP
 
-#include "includes.h"
 #include "global.h"
+#include "groups.h"
+#include "includes.h"
 #include "jobs.h"
 #include "servers.h"
-#include "groups.h"
 #include "tasks.h"
 
 class main_menu_class : public QMenuBar
@@ -20,13 +20,10 @@ private:
     tasks_class *tasks;
 
 public:
-    main_menu_class(
-        global_class *_global,
-        jobs_class *_jobs,
-        servers_class *_servers,
-        groups_class *_groups,
-        tasks_class *_tasks);
+    main_menu_class(global_class *_global, jobs_class *_jobs,
+                    servers_class *_servers, groups_class *_groups,
+                    tasks_class *_tasks);
     ~main_menu_class();
 };
 
-#endif //MAIN_MENU_HPP
+#endif // MAIN_MENU_HPP

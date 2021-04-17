@@ -3,22 +3,18 @@
 #include <QPixmap>
 #include <QtSvg>
 
-jobs_class::jobs_class(
-    shared_variables *_shared,
-    QMainWindow *_monitor,
-    log_class *_log,
-    servers_class *_servers,
-    options_class *_options,
-    groups_class *_groups,
-    properties_class *_properties)
+jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
+                       log_class *_log, servers_class *_servers,
+                       options_class *_options, groups_class *_groups,
+                       properties_class *_properties)
 
-    : shared(_shared),
-      monitor(_monitor),
-      log(_log),
-      servers(_servers),
-      options(_options),
-      groups(_groups),
-      properties(_properties)
+    : shared(_shared)
+    , monitor(_monitor)
+    , log(_log)
+    , servers(_servers)
+    , options(_options)
+    , groups(_groups)
+    , properties(_properties)
 {
     // Job Acciones
     delete_action = new QAction("Delete");
@@ -34,22 +30,29 @@ jobs_class::jobs_class(
     connections();
 }
 
-jobs_class::~jobs_class()
-{
-}
+jobs_class::~jobs_class() {}
 
 void jobs_class::setup_ui()
 {
     this->setObjectName("jobs");
     this->setColumnCount(10);
-    QStringList columns{"Job Name", "Priority", "Software", "Task Progress", "Status",
-                        "Submit Data/Time", "Finished Data/Time", "Estimated Time", "Total Render Time", "Errors"};
+    QStringList columns{"Job Name",
+                        "Priority",
+                        "Software",
+                        "Task Progress",
+                        "Status",
+                        "Submit Data/Time",
+                        "Finished Data/Time",
+                        "Estimated Time",
+                        "Total Render Time",
+                        "Errors"};
 
     this->setHeaderLabels(columns);
 
-    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    this->setAlternatingRowColors(true);                          // item con color alternativos
-    this->setIndentation(0);                                      // elimina el margen del principio
+    this->setSelectionMode(
+        QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setAlternatingRowColors(true);       // item con color alternativos
+    this->setIndentation(0); // elimina el margen del principio
 
     this->setColumnWidth(0, 200); // ajusta el largo de las columnas
     this->setColumnWidth(1, 80);
@@ -71,7 +74,8 @@ void jobs_class::setup_ui()
 void jobs_class::connections()
 {
     connect(this, &QTreeWidget::itemDoubleClicked, this, &jobs_class::modify);
-    connect(this, &QTreeWidget::customContextMenuRequested, this, &jobs_class::popup);
+    connect(this, &QTreeWidget::customContextMenuRequested, this,
+            &jobs_class::popup);
 
     // Job Acciones
     connect(delete_action, &QAction::triggered, this, &jobs_class::item_delete);
@@ -92,13 +96,11 @@ void jobs_class::connections()
         message(&jobs_class::to_action, action, ask, tile, this);
     });
 
-    connect(job_resume_action, &QAction::triggered, this, [this]() {
-        to_action("resume");
-    });
+    connect(job_resume_action, &QAction::triggered, this,
+            [this]() { to_action("resume"); });
 
-    connect(job_unlock_servers_action, &QAction::triggered, this, [this]() {
-        to_action("unlock");
-    });
+    connect(job_unlock_servers_action, &QAction::triggered, this,
+            [this]() { to_action("unlock"); });
 
     connect(job_log_action, &QAction::triggered, this, &jobs_class::show_log);
     job_log_action->setShortcut(QString("L"));
@@ -106,10 +108,10 @@ void jobs_class::connections()
     connect(job_modify_action, &QAction::triggered, this, &jobs_class::modify);
     job_modify_action->setShortcut(QString("M"));
 
-    connect(options->ok_button, &QPushButton::clicked, this, &jobs_class::options_ok);
-    connect(options->cancel_button, &QPushButton::clicked, [this]() {
-        properties->parentWidget()->hide();
-    });
+    connect(options->ok_button, &QPushButton::clicked, this,
+            &jobs_class::options_ok);
+    connect(options->cancel_button, &QPushButton::clicked,
+            [this]() { properties->parentWidget()->hide(); });
     //-----------------------------------------------------------------------
 }
 
@@ -207,7 +209,9 @@ void jobs_class::show_log()
                 }
 
                 QJsonArray send = {_host, QJsonArray({1, failed})};
-                QString result = tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
+                QString result =
+                    tcpClient(shared->manager_host, shared->manager_port,
+                              jats({5, send}));
 
                 log->code_editor->setPlainText(_name + " Log:\n\n" + result);
                 break;
@@ -234,7 +238,8 @@ void jobs_class::modify()
 
         QJsonArray send = {QJsonArray({job_name, "options", "read"})};
         send = {"jobOptions", send};
-        QString recv = tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
+        QString recv = tcpClient(shared->manager_host, shared->manager_port,
+                                 jats({3, send}));
         QJsonArray pks = jafs(recv);
         //-----------------------------------------
 
@@ -303,8 +308,11 @@ void jobs_class::options_ok()
     for (auto item : selected)
     {
         QString job_name = item->text(0);
-        QJsonArray options = {machines, group, priority, comment, instances, first_frame, last_frame, task_size, _job_name};
-        // el primer item se repite asi que si esta 2 veces no lo agrega otra vez
+        QJsonArray options = {machines,   group,     priority,
+                              comment,    instances, first_frame,
+                              last_frame, task_size, _job_name};
+        // el primer item se repite asi que si esta 2 veces no lo agrega otra
+        // vez
         if (not repeatItem.contains(job_name))
             pks.push_back({{job_name, options, "write"}});
         repeatItem.push_back(job_name);
@@ -312,10 +320,12 @@ void jobs_class::options_ok()
     }
     pks = {"jobOptions", pks};
 
-    QString ask = "Sure you want to send the changes? \nSome frames will be lost due to the size of the tasks.";
+    QString ask = "Sure you want to send the changes? \nSome frames will be "
+                  "lost due to the size of the tasks.";
 
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(monitor, "Job Options", ask, QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(monitor, "Job Options", ask,
+                                  QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
         tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
@@ -323,12 +333,8 @@ void jobs_class::options_ok()
     }
 }
 
-void jobs_class::message(
-    void (jobs_class::*funtion)(QString),
-    QString action,
-    QString ask,
-    QString tile,
-    jobs_class *_class)
+void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,
+                         QString ask, QString tile, jobs_class *_class)
 {
     auto selected = this->selectedItems();
 
@@ -336,7 +342,8 @@ void jobs_class::message(
     {
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask, QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(monitor, tile, ask,
+                                      QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
             (_class->*funtion)(action);

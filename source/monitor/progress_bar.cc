@@ -5,9 +5,7 @@ progress_bar_class::progress_bar_class()
     set_color(255, 255, 255);
 }
 
-progress_bar_class::~progress_bar_class()
-{
-}
+progress_bar_class::~progress_bar_class() {}
 
 void progress_bar_class::set_value(int value_a, int value_b)
 {
@@ -32,8 +30,9 @@ void progress_bar_class::set_value(int value_a, int value_b)
                         "background-color: "
                         "qlineargradient(x0: 0, x2: 1, "
                         "stop: 0 " +
-                        color_a + " , stop: " + mid_value_a + " " + color_a + ", "
-                                                                              "stop: " +
+                        color_a + " , stop: " + mid_value_a + " " + color_a +
+                        ", "
+                        "stop: " +
                         mid_value_b + " " + color_b + ", stop: 1 " + color_b +
                         ")}");
 }
@@ -43,8 +42,12 @@ void progress_bar_class::set_text(QString text)
     this->setFormat(text);
 }
 
-void progress_bar_class::set_color(int red, int green, int blue, float rgb_divide)
+void progress_bar_class::set_color(int red, int green, int blue,
+                                   float rgb_divide)
 {
-    color_a = "rgb(" + QString::number(red) + "," + QString::number(green) + "," + QString::number(blue) + ")";
-    color_b = "rgb(" + QString::number(red / rgb_divide) + "," + QString::number(green / rgb_divide) + "," + QString::number(blue / rgb_divide) + ")";
+    color_a = "rgb(" + QString::number(red) + "," + QString::number(green) +
+              "," + QString::number(blue) + ")";
+    color_b = "rgb(" + QString::number(red / rgb_divide) + "," +
+              QString::number(green / rgb_divide) + "," +
+              QString::number(blue / rgb_divide) + ")";
 }

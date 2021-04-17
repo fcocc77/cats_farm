@@ -1,6 +1,7 @@
 #include <manager.h>
 
-vector<task_struct *> manager::make_task(int first_frame, int last_frame, int task_size)
+vector<task_struct *> manager::make_task(int first_frame, int last_frame,
+                                         int task_size)
 {
     // Crea una lista de tareas con los 'frames' de inicio y final
     QList<int> range;
@@ -21,7 +22,7 @@ vector<task_struct *> manager::make_task(int first_frame, int last_frame, int ta
                 break;
         }
 
-        range ={ f, l };
+        range = {f, l};
         tasks_range.push_back(range);
 
         if (l == last_frame)
@@ -61,7 +62,7 @@ vector<task_struct *> manager::make_task(int first_frame, int last_frame, int ta
 
 void manager::kill_tasks(job_struct *job, bool _delete)
 {
-    //desactica servers que estaban activos por este job
+    // desactica servers que estaban activos por este job
     QStringList active_server;
     for (auto task : job->task)
     {
@@ -85,7 +86,7 @@ void manager::kill_tasks(job_struct *job, bool _delete)
 
     for (auto server : servers)
         if (active_server.contains(server->name))
-            tcpClient(server->host, server_port, jats({ 3, kill_ins }));
+            tcpClient(server->host, server_port, jats({3, kill_ins}));
 }
 
 task_struct *manager::get_task(vector<task_struct *> tasks, QString name)

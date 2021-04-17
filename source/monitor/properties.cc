@@ -1,13 +1,11 @@
 #include <properties.h>
 
-properties_class::properties_class(
-    log_class *_log,
-    options_class *_options,
-    settings_class *_settings)
+properties_class::properties_class(log_class *_log, options_class *_options,
+                                   settings_class *_settings)
 
-    : log(_log),
-      options(_options),
-      settings(_settings)
+    : log(_log)
+    , options(_options)
+    , settings(_settings)
 {
     setup_ui();
 

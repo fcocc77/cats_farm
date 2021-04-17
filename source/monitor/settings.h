@@ -30,8 +30,7 @@ private:
     QPushButton *ok_button;
 
 public:
-    settings_class(
-        shared_variables *_shared);
+    settings_class(shared_variables *_shared);
     ~settings_class();
     void update(QString host);
 };

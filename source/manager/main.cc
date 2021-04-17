@@ -2,9 +2,9 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
 
-	manager _manager;
+    manager _manager;
 
-	return app.exec();
+    return app.exec();
 }

@@ -2,7 +2,9 @@
 
 logger::logger()
 {
-    int port = jread(path + "/etc/settings.json")["manager"].toObject()["port"].toInt();
+    int port = jread(path + "/etc/settings.json")["manager"]
+                   .toObject()["port"]
+                   .toInt();
 
     // el json zones.json es generado al iniciar el servior de django,
     // esta informacion esta declarada en general.py render_zones.
@@ -36,9 +38,7 @@ QString logger::get(QString _recv, QJsonObject extra)
     QString zone = extra["zone"].toString();
 
     QJsonObject jobs = jofs(_recv);
-    QJsonObject zone_data = {
-        {"count", jobs.count()},
-        {"jobs", jobs}};
+    QJsonObject zone_data = {{"count", jobs.count()}, {"jobs", jobs}};
 
     mutex.lock();
     zones_jobs[zone] = zone_data;

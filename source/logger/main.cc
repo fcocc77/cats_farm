@@ -2,8 +2,8 @@
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication a(argc, argv);
-	logger _logger;
+    QCoreApplication a(argc, argv);
+    logger _logger;
 
-	return a.exec();
+    return a.exec();
 }

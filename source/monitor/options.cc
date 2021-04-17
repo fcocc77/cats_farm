@@ -5,9 +5,7 @@ options_class::options_class()
     setup_ui();
 }
 
-options_class::~options_class()
-{
-}
+options_class::~options_class() {}
 
 void options_class::setup_ui()
 {

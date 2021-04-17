@@ -6,17 +6,17 @@ using namespace std;
 #include <thread>
 
 #include <QCoreApplication>
-#include <QProcess>
-#include <QObject>
 #include <QFileInfo>
-#include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonObject>
 #include <QMutex>
+#include <QObject>
+#include <QProcess>
 
-#include <util.h>
-#include <os.h>
 #include "../utils/tcp.h"
 #include "../utils/threading.h"
+#include <os.h>
+#include <util.h>
 
 class logger : public QObject
 {

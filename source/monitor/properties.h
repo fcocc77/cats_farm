@@ -19,10 +19,8 @@ private:
     QString current_widget;
 
 public:
-    properties_class(
-        log_class *_log,
-        options_class *_options,
-        settings_class *_settings);
+    properties_class(log_class *_log, options_class *_options,
+                     settings_class *_settings);
 
     void switch_widget(QString widget_name);
 };

@@ -1,13 +1,11 @@
 #include <servers.h>
 
-servers_class::servers_class(
-    QMainWindow *_monitor,
-    shared_variables *_shared,
-    log_class *_log)
+servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
+                             log_class *_log)
 
-    : monitor(_monitor),
-      shared(_shared),
-      log(_log)
+    : monitor(_monitor)
+    , shared(_shared)
+    , log(_log)
 {
     // display job list
     show_all_action = new QAction("Show All");
@@ -36,20 +34,20 @@ servers_class::servers_class(
     setup_ui();
 }
 
-servers_class::~servers_class()
-{
-}
+servers_class::~servers_class() {}
 
 void servers_class::setup_ui()
 {
     this->setObjectName("servers");
 
-    QStringList columns{"Host Name", "Status", "Ins.", "CPU Usage", "CPU Temp",
-                        "RAM Usage", "System", "IP", "MAC Address", "Job Rendered"};
+    QStringList columns{"Host Name",   "Status",      "Ins.",   "CPU Usage",
+                        "CPU Temp",    "RAM Usage",   "System", "IP",
+                        "MAC Address", "Job Rendered"};
     this->setHeaderLabels(columns);
 
-    this->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    this->setIndentation(0);                                      // elimina el margen del principio
+    this->setSelectionMode(
+        QAbstractItemView::ExtendedSelection); // multi seleccion
+    this->setIndentation(0); // elimina el margen del principio
     this->setAlternatingRowColors(true);
     this->setFocusPolicy(Qt::NoFocus); // item con color alternativos
 
@@ -125,32 +123,41 @@ void servers_class::connections()
         jwrite(path + "/etc/server_display.json", shared->server_display);
     };
 
-    connect(show_all_action, &QAction::triggered, this, [=]() { displayAll(true); });
-    connect(hide_all_action, &QAction::triggered, this, [=]() { displayAll(false); });
+    connect(show_all_action, &QAction::triggered, this,
+            [=]() { displayAll(true); });
+    connect(hide_all_action, &QAction::triggered, this,
+            [=]() { displayAll(false); });
 
-    connect(display_windows_action, &QAction::triggered, this, [=]() { displayAction("window"); });
+    connect(display_windows_action, &QAction::triggered, this,
+            [=]() { displayAction("window"); });
     display_windows_action->setCheckable(true);
-    display_windows_action->setChecked(shared->server_display["window"].toBool());
+    display_windows_action->setChecked(
+        shared->server_display["window"].toBool());
 
-    connect(display_linux_action, &QAction::triggered, this, [=]() { displayAction("linux"); });
+    connect(display_linux_action, &QAction::triggered, this,
+            [=]() { displayAction("linux"); });
     display_linux_action->setCheckable(true);
     display_linux_action->setChecked(shared->server_display["linux"].toBool());
 
-    connect(display_mac_action, &QAction::triggered, this, [=]() { displayAction("mac"); });
+    connect(display_mac_action, &QAction::triggered, this,
+            [=]() { displayAction("mac"); });
     display_mac_action->setCheckable(true);
     display_mac_action->setChecked(shared->server_display["mac"].toBool());
 
-    connect(display_on_action, &QAction::triggered, this, [=]() { displayAction("on"); });
+    connect(display_on_action, &QAction::triggered, this,
+            [=]() { displayAction("on"); });
     display_on_action->setCheckable(true);
     display_on_action->setChecked(shared->server_display["on"].toBool());
 
-    connect(display_off_action, &QAction::triggered, this, [=]() { displayAction("off"); });
+    connect(display_off_action, &QAction::triggered, this,
+            [=]() { displayAction("off"); });
     display_off_action->setCheckable(true);
     display_off_action->setChecked(shared->server_display["off"].toBool());
 
     // Server List Connections
 
-    connect(this, &QTreeWidget::customContextMenuRequested, this, &servers_class::server_popup);
+    connect(this, &QTreeWidget::customContextMenuRequested, this,
+            &servers_class::server_popup);
 
     // Server Action
 
@@ -163,34 +170,36 @@ void servers_class::connections()
     });
 
     connect(server_inactive_action, &QAction::triggered, this, [this]() {
-        QString ask = "The task will kill, Sure you want to disable this server?";
+        QString ask =
+            "The task will kill, Sure you want to disable this server?";
         QString tile = "Server Disabling";
         QString action = "inactive";
         message(&servers_class::to_action, action, ask, tile, "None", this);
     });
-    connect(server_reactive_action, &QAction::triggered, this, [this]() {
-        to_action("reactive", "None");
-    });
-    connect(server_max_instances_action, &QAction::triggered, this, &servers_class::server_max_instances);
-    connect(server_free_ram_action, &QAction::triggered, this, [this]() {
-        send_to_vserver("freeram", "none");
-    });
+    connect(server_reactive_action, &QAction::triggered, this,
+            [this]() { to_action("reactive", "None"); });
+    connect(server_max_instances_action, &QAction::triggered, this,
+            &servers_class::server_max_instances);
+    connect(server_free_ram_action, &QAction::triggered, this,
+            [this]() { send_to_vserver("freeram", "none"); });
 
-    connect(server_turn_on_action, &QAction::triggered, this, [this]() {
-        to_action("turn_on", "none");
-    });
+    connect(server_turn_on_action, &QAction::triggered, this,
+            [this]() { to_action("turn_on", "none"); });
     connect(server_turn_off_action, &QAction::triggered, this, [this]() {
         QString ask = "Are you sure to want turn off this server?";
         QString tile = "Server OFF";
         QString action = "off";
 
-        message(&servers_class::send_to_vserver, action, ask, tile, "None", this);
+        message(&servers_class::send_to_vserver, action, ask, tile, "None",
+                this);
     });
 
-    connect(server_ssh_action, &QAction::triggered, this, &servers_class::ssh_client);
+    connect(server_ssh_action, &QAction::triggered, this,
+            &servers_class::ssh_client);
     connect(server_show_log, &QAction::triggered, this, &servers_class::to_log);
     server_show_log->setShortcut(QString("Ctrl+L"));
-    connect(server_vnc_action, &QAction::triggered, this, &servers_class::vnc_client);
+    connect(server_vnc_action, &QAction::triggered, this,
+            &servers_class::vnc_client);
     //--------------------------------------------------------
 }
 
@@ -222,7 +231,8 @@ void servers_class::server_popup()
             mapper->setMapping(action, i);
             submenu->addAction(action);
         }
-        connect(mapper, SIGNAL(mapped(int)), this, SLOT(server_max_instances(int)));
+        connect(mapper, SIGNAL(mapped(int)), this,
+                SLOT(server_max_instances(int)));
 
         menu->addMenu(submenu);
         //-------------------------------------------------
@@ -266,7 +276,8 @@ void servers_class::to_log()
         QString host = (selected[0]->text(7));
 
         QJsonArray send = {host, QJsonArray({1, true})};
-        QString result = tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
+        QString result = tcpClient(shared->manager_host, shared->manager_port,
+                                   jats({5, send}));
 
         log->code_editor->setPlainText(result);
         log->parentWidget()->show();
@@ -287,13 +298,18 @@ void servers_class::ssh_client()
     QString sshPass = recv[1].toString();
     QString ip = recv[2].toString();
 
-    QString disable_ask = " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
+    QString disable_ask =
+        " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
     QString cmd;
     QString ssh = "C:/vinarender/os/win/OpenSSH/bin/ssh.exe";
-    QString linux_sshpass = "sshpass -p " + sshPass + " ssh -o StrictHostKeyChecking=no " + sshUser + "@" + ip;
+    QString linux_sshpass = "sshpass -p " + sshPass +
+                            " ssh -o StrictHostKeyChecking=no " + sshUser +
+                            "@" + ip;
 
     if (_win32)
-        cmd = "cmd.exe /K start cmd.exe /K " + ssh + " -tt " + disable_ask + sshUser + "@" + shared->manager_host + " \"" + linux_sshpass + "\"";
+        cmd = "cmd.exe /K start cmd.exe /K " + ssh + " -tt " + disable_ask +
+              sshUser + "@" + shared->manager_host + " \"" + linux_sshpass +
+              "\"";
     else
         cmd = "gnome-terminal -e '" + linux_sshpass + "'";
     os::back(cmd);
@@ -324,20 +340,17 @@ void servers_class::vnc_client()
     }
 }
 
-void servers_class::message(
-    QString (servers_class::*funtion)(QString, QString),
-    QString action,
-    QString ask,
-    QString tile,
-    QString info,
-    servers_class *_class)
+void servers_class::message(QString (servers_class::*funtion)(QString, QString),
+                            QString action, QString ask, QString tile,
+                            QString info, servers_class *_class)
 {
     auto selected = this->selectedItems();
     if (not selected.empty())
     {
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask, QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(monitor, tile, ask,
+                                      QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
             (_class->*funtion)(action, info);
@@ -359,7 +372,8 @@ QString servers_class::to_action(QString action, QString info)
     }
     pks = {"serverAction", pks};
 
-    QString recv = tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
+    QString recv =
+        tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
 
     return recv;
 }

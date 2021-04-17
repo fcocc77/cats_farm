@@ -1,12 +1,12 @@
 #ifndef JOBS_HPP
 #define JOBS_HPP
 
+#include "groups.h"
 #include "includes.h"
 #include "log.h"
-#include "servers.h"
 #include "options.h"
-#include "groups.h"
 #include "properties.h"
+#include "servers.h"
 
 class jobs_class : public QTreeWidget
 {
@@ -31,12 +31,8 @@ private:
     void delete_start(QString action);
     void to_action(QString action);
 
-    void message(
-        void (jobs_class::*funtion)(QString),
-        QString action,
-        QString ask,
-        QString tile,
-        jobs_class *_class);
+    void message(void (jobs_class::*funtion)(QString), QString action,
+                 QString ask, QString tile, jobs_class *_class);
 
     void item_delete();
     //-----------------------------
@@ -47,14 +43,10 @@ private:
     // --------------------------
 
 public:
-    jobs_class(
-        shared_variables *_shared,
-        QMainWindow *_monitor,
-        log_class *_log,
-        servers_class *_servers,
-        options_class *_options,
-        groups_class *_groups,
-        properties_class *_properties);
+    jobs_class(shared_variables *_shared, QMainWindow *_monitor,
+               log_class *_log, servers_class *_servers,
+               options_class *_options, groups_class *_groups,
+               properties_class *_properties);
     ~jobs_class();
 
     // Job Acciones
@@ -68,4 +60,4 @@ public:
     //------------------------------------------------
 };
 
-#endif //JOBS_HPP
+#endif // JOBS_HPP

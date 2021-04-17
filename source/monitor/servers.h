@@ -20,13 +20,9 @@ private:
     void to_log();
     void ssh_client();
     void vnc_client();
-    void message(
-        QString (servers_class::*funtion)(QString, QString),
-        QString action,
-        QString ask,
-        QString tile,
-        QString info,
-        servers_class *_class);
+    void message(QString (servers_class::*funtion)(QString, QString),
+                 QString action, QString ask, QString tile, QString info,
+                 servers_class *_class);
     QString to_action(QString action, QString info);
     QString send_to_vserver(QString action, QString info);
     //----------------
@@ -34,10 +30,8 @@ private:
     QTreeWidgetItem *firstServerItem;
 
 public:
-    servers_class(
-        QMainWindow *_monitor,
-        shared_variables *_shared,
-        log_class *_log);
+    servers_class(QMainWindow *_monitor, shared_variables *_shared,
+                  log_class *_log);
     ~servers_class();
 
     // display job list
@@ -67,4 +61,4 @@ public slots:
     void server_max_instances(int);
 };
 
-#endif //SERVERS_HPP
+#endif // SERVERS_HPP

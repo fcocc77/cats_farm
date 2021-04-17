@@ -9,8 +9,8 @@ using namespace std;
 
 class submit : public QObject
 {
-  public:
-	void init(int argc, char const *argv[]);
+public:
+    void init(int argc, char const *argv[]);
 };
 
-#endif //SUBMIT_HPP
+#endif // SUBMIT_HPP

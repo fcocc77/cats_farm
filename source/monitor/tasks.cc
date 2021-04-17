@@ -1,13 +1,11 @@
 #include <tasks.h>
 
-tasks_class::tasks_class(
-    QMainWindow *_monitor,
-    shared_variables *_shared,
-    jobs_class *_jobs)
+tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
+                         jobs_class *_jobs)
 
-    : monitor(_monitor),
-      shared(_shared),
-      jobs(_jobs)
+    : monitor(_monitor)
+    , shared(_shared)
+    , jobs(_jobs)
 {
     // Task Action
     suspend_action = new QAction("Suspend");
@@ -22,20 +20,20 @@ tasks_class::tasks_class(
     connections();
 }
 
-tasks_class::~tasks_class()
-{
-}
+tasks_class::~tasks_class() {}
 
 void tasks_class::setup_ui()
 {
     tree->setObjectName("tasks");
 
-    QStringList columns = {"Task", "Frame Range", "Status", "Server", "Task Time"};
+    QStringList columns = {"Task", "Frame Range", "Status", "Server",
+                           "Task Time"};
     tree->setColumnCount(5);
     tree->setHeaderLabels(columns); // pone el nombre de las columnas
 
-    tree->setSelectionMode(QAbstractItemView::ExtendedSelection); // multi seleccion
-    tree->setAlternatingRowColors(true);                          // item con color alternativos
+    tree->setSelectionMode(
+        QAbstractItemView::ExtendedSelection); // multi seleccion
+    tree->setAlternatingRowColors(true);       // item con color alternativos
     tree->setIndentation(0);
     tree->setFocusPolicy(Qt::NoFocus); // elimina el margen del principio
 
@@ -52,13 +50,16 @@ void tasks_class::setup_ui()
 
 void tasks_class::connections()
 {
-    connect(tree, &QTreeWidget::customContextMenuRequested, this, &tasks_class::popup);
+    connect(tree, &QTreeWidget::customContextMenuRequested, this,
+            &tasks_class::popup);
 
     // Task Action
-    connect(suspend_action, &QAction::triggered, this, [this]() { to_action("suspend"); });
+    connect(suspend_action, &QAction::triggered, this,
+            [this]() { to_action("suspend"); });
     connect(restart_action, &QAction::triggered, this, &tasks_class::restart);
 
-    connect(render_server_action, &QAction::triggered, this, &tasks_class::render_server);
+    connect(render_server_action, &QAction::triggered, this,
+            &tasks_class::render_server);
     //-----------------------------------------------------
 }
 
@@ -111,7 +112,8 @@ void tasks_class::message(QString action, QString ask, QString tile)
     {
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask, QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(monitor, tile, ask,
+                                      QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
             to_action(action);

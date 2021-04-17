@@ -22,4 +22,4 @@ struct shared_variables
     QTreeWidget *tasks_tree;
 };
 
-#endif //SHARED_VARIABLES_HPP
+#endif // SHARED_VARIABLES_HPP
