@@ -1,6 +1,10 @@
 #ifndef STRUCT_HPP
 #define STRUCT_HPP
 
+#include <QString>
+#include <QStringList>
+#include <iostream>
+
 struct task_struct
 {
     QString name;
@@ -44,7 +48,7 @@ struct job_struct
     int task_size;
     int first_frame;
     int last_frame;
-    vector<task_struct *> task;
+    std::vector<task_struct *> task;
 };
 
 struct inst_struct

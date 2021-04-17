@@ -1,0 +1,22 @@
+clang++
+%cc %h -std=c++11
+
+-Wall
+
+-I/usr/include/qt5
+-I/usr/include/qt5/QtWidgets
+-I/usr/include/qt5/QtCore
+-I/usr/include/qt5/QtGui
+-I/usr/include/qt5/QtMultimedia
+-I/usr/include/qt5/QtNetwork
+
+-I./source/logger
+-I./source/manager
+-I./source/server
+-I./source/submit
+-I./source/monitor
+-I./source/utils
+-I./source/videovina
+
+-I./utils/c++
+

@@ -18,4 +18,4 @@ HEADERS += 	./*.h \
 
 SOURCES += 	./*.cc \
 			../utils/video.cc \
-			../../utils/c++/* \
+			../../utils/c++/*cc \

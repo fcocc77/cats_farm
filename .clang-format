@@ -1,0 +1,20 @@
+Language: Cpp
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 80
+BreakConstructorInitializers: BeforeComma
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterFunction: true
+    AfterStruct: true
+    AfterClass: true
+    AfterNamespace: true
+    BeforeElse: true
+    AfterControlStatement: true
+AccessModifierOffset: -4
+SpacesInParentheses: false
+SpaceInEmptyParentheses: false
+SpacesInSquareBrackets: false
+Standard: Cpp11
+AllowShortFunctionsOnASingleLine: Empty
