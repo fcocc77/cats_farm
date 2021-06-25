@@ -8,11 +8,18 @@ debug=false
 run() {
 	# mata el pid a partir del puerto de vinarender
 	fuser -k $port/tcp &>/dev/null
-	#----------------------------------
+
 	if $debug; then
 		rm $log_file &>/dev/null
 		echo "Started debugging."
-		gdb -ex "set logging file $log_file" -ex "set logging redirect on" -ex "set confirm off" -ex "set pagination off" -ex r -ex "set logging on" -ex bt -ex q "./$name" &>/dev/null
+		gdb -ex "set logging file $log_file" \
+            -ex "set logging redirect on" \
+            -ex "set confirm off" \
+            -ex "set pagination off" \
+            -ex r \
+            -ex "set logging on" \
+            -ex bt \
+            -ex q "./$name" &>/dev/null
 	else
 		"./$name" &>/dev/null
 	fi

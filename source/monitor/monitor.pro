@@ -12,7 +12,7 @@ INCLUDEPATH += ../../libs/QCodeEditor/include/KGL/Widgets
 
 RC_ICONS = ../../icons/icon.ico
 
-QT += core gui svg widgets multimedia
+QT += core gui widgets multimedia
 
 HEADERS +=  ./* \
 			../utils/video.h \

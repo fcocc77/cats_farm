@@ -1,6 +1,12 @@
 #!/usr/bin/env sh
 cd "$(dirname "$0")"
 cd ..
+
+if [[ $EUID -ne 0 ]]; then
+   echo "Execute with root: sudo sh install.sh"
+   exit 1
+fi
+
 path=$(pwd)
 
 # ruta de instalacion
@@ -20,6 +26,7 @@ logger_start=$5
 compile() {
     folder=$path/source/$1
     cd $folder
+    rm ./Makefile
     qmake-qt5
     make -j 4
     bin=$path/bin

@@ -1,7 +1,6 @@
 #include <jobs.h>
 
 #include <QPixmap>
-#include <QtSvg>
 
 jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
                        log_class *_log, servers_class *_servers,
