@@ -10,6 +10,7 @@ clang++
 -I/usr/include/qt5/QtMultimedia
 -I/usr/include/qt5/QtNetwork
 
+-I./source/global
 -I./source/logger
 -I./source/manager
 -I./source/server

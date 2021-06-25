@@ -1,4 +1,5 @@
 #include <settings.h>
+#include "../global/global.h"
 
 settings_class::settings_class(shared_variables *_shared)
     : shared(_shared)
@@ -121,7 +122,7 @@ void settings_class::ok()
 
     shared->settings["hosts"] = json_hosts;
     // -----------------------------
-    jwrite(path + "/etc/settings.json", shared->settings);
+    jwrite(VINARENDER_PATH + "/etc/settings.json", shared->settings);
 
     // agrega las ips al combobox de zonas
     shared->zone_box->clear();

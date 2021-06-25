@@ -1,4 +1,5 @@
 #include <manager.h>
+#include "../global/global.h"
 
 void manager::update_all()
 {
@@ -23,7 +24,7 @@ void manager::container_save()
     // guarda informacion a json cada 10 seg
     if (sec > 10)
     {
-        jwrite(path + "/etc/info.json", struct_to_json());
+        jwrite(VINARENDER_PATH + "/etc/info.json", struct_to_json());
         sec = 0;
     }
 }

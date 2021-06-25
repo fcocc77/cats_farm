@@ -1,8 +1,9 @@
 #include <main_window.h>
+#include "../global/global.h"
 
 int main(int argc, char *argv[])
 {
-    QString showMonitor = path + "/etc/showMonitor";
+    QString showMonitor = VINARENDER_PATH + "/etc/showMonitor";
 
     // si el monitor esta abierto no lo abre
     int count = 0;

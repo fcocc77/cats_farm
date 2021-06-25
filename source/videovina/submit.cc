@@ -1,4 +1,5 @@
 #include "submit.h"
+#include "../global/global.h"
 
 void submit::init(int argc, char const *argv[])
 {
@@ -12,7 +13,7 @@ void submit::init(int argc, char const *argv[])
 	format = argv[6];
 
 	QJsonArray info = {user, user_id, type, name, format};
-	QJsonObject settings = jread(path + "/etc/settings.json");
+	QJsonObject settings = jread(VINARENDER_PATH + "/etc/settings.json");
 	int port = settings["manager"].toObject()["port"].toInt();
 
 	if (argc > 2)

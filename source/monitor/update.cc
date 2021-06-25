@@ -1,4 +1,5 @@
 #include <update.h>
+#include "../global/global.h"
 
 update_class::update_class(shared_variables *_shared, groups_class *_groups,
                            jobs_class *_jobs, servers_class *_servers,
@@ -34,7 +35,7 @@ void update_class::update(QString host)
     // guarda la zona actual en settings, para que cuando
     // abramos nuevamente el vmonitor inicie con esa zona
     shared->settings["current_manager"] = host;
-    jwrite(path + "/etc/settings.json", shared->settings);
+    jwrite(VINARENDER_PATH + "/etc/settings.json", shared->settings);
     // ------------------------------
 
     shared->manager_host = host;

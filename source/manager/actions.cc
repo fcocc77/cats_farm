@@ -1,4 +1,5 @@
 #include <manager.h>
+#include "../global/global.h"
 
 // Recive la informacion del monitor
 void manager::reset_all_servers()
@@ -46,12 +47,12 @@ QString manager::preferences_action(QJsonArray _pks)
     QString action = _pks[0].toString();
 
     if (action == "read")
-        return jots(jread(path + "/etc/preferences.json"));
+        return jots(jread(VINARENDER_PATH + "/etc/preferences.json"));
     else
     {
         QJsonObject pks = _pks[1].toObject();
         preferences["paths"] = pks;
-        jwrite(path + "/etc/preferences.json", preferences);
+        jwrite(VINARENDER_PATH + "/etc/preferences.json", preferences);
     }
 
     return "";

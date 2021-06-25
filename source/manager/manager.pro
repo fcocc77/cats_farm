@@ -9,6 +9,7 @@ CONFIG += console
 QT += core gui multimedia widgets
 
 INCLUDEPATH += ../../utils/c++
+INCLUDEPATH += ../utils
 INCLUDEPATH += ./
 
 HEADERS +=  ./*.h \

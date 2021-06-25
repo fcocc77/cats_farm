@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-#include "global.h"
+#include "general.h"
 #include "groups.h"
 #include "jobs.h"
 #include "log.h"
@@ -48,7 +48,7 @@ public:
     tasks_class *tasks;
     groups_class *groups;
     update_class *update;
-    global_class *global;
+    general_class *global;
     settings_class *settings;
     toolbar_class *toolbar;
     log_class *log;

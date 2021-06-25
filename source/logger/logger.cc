@@ -1,14 +1,15 @@
 #include <logger.h>
+#include "../global/global.h"
 
 logger::logger()
 {
-    int port = jread(path + "/etc/settings.json")["manager"]
+    int port = jread(VINARENDER_PATH + "/etc/settings.json")["manager"]
                    .toObject()["port"]
                    .toInt();
 
     // el json zones.json es generado al iniciar el servior de django,
     // esta informacion esta declarada en general.py render_zones.
-    zones = jread(path + "/etc/zones.json");
+    zones = jread(VINARENDER_PATH + "/etc/zones.json");
 
     for (QString key : zones.keys())
     {
@@ -26,7 +27,7 @@ void logger::save()
     while (1)
     {
         mutex.lock();
-        jwrite(path + "/etc/zones_jobs.json", zones_jobs);
+        jwrite(VINARENDER_PATH + "/etc/zones_jobs.json", zones_jobs);
         mutex.unlock();
 
         sleep(1);

@@ -5,6 +5,7 @@ TARGET = "vmonitor"
 
 INCLUDEPATH += ./
 INCLUDEPATH += ../../utils/c++
+INCLUDEPATH += ../../global
 INCLUDEPATH += ../../libs/QCodeEditor/include
 INCLUDEPATH += ../../libs/QCodeEditor/include/KGL
 INCLUDEPATH += ../../libs/QCodeEditor/include/KGL/Design
@@ -16,6 +17,7 @@ QT += core gui widgets multimedia
 
 HEADERS +=  ./* \
 			../utils/video.h \
+			../global/*.h \
 			../../utils/c++/*.h \
 			../manager/structs.h \
 			$$system(ls ../../libs/QCodeEditor/include/KGL/*/*.hpp) \

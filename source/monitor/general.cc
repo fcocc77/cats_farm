@@ -1,6 +1,7 @@
-#include <global.h>
+#include <general.h>
+#include "../global/global.h"
 
-global_class::global_class(QMainWindow *_monitor, shared_variables *_shared,
+general_class::general_class(QMainWindow *_monitor, shared_variables *_shared,
                            QWidget *_properties)
 
     : monitor(_monitor)
@@ -22,10 +23,9 @@ global_class::global_class(QMainWindow *_monitor, shared_variables *_shared,
     style();
 }
 
-void global_class::connections()
+void general_class::connections()
 {
-
-    preferences_action->setIcon(QIcon(path + "/icons/setting.png"));
+    preferences_action->setIcon(QIcon(VINARENDER_PATH + "/icons/setting.png"));
     preferences_action->setShortcut(QString("S"));
 
     connect(quit_action, &QAction::triggered, this, [this]() {
@@ -49,11 +49,11 @@ void global_class::connections()
     properties_hide->setShortcut(QString("Esc"));
 
     connect(update_style_action, &QAction::triggered, this,
-            &global_class::style);
+            &general_class::style);
     update_style_action->setShortcut(QString("Ctrl+R"));
 }
 
-void global_class::style()
+void general_class::style()
 {
     // Estilo de general
     QString style = fread(
@@ -64,10 +64,10 @@ void global_class::style()
     monitor->setWindowTitle("VinaRender Monitor");
 }
 
-void global_class::notify_icon()
+void general_class::notify_icon()
 {
     notify =
-        new QSystemTrayIcon(QIcon(path + "/resources/icons/icon.png"), monitor);
+        new QSystemTrayIcon(QIcon(VINARENDER_PATH + "/resources/icons/icon.png"), monitor);
 
     connect(notify, &QSystemTrayIcon::messageClicked, this,
             [this]() { monitor->show(); });
@@ -94,7 +94,7 @@ void global_class::notify_icon()
     notify->setContextMenu(menu);
 
     // Importa lista de jobs completados
-    for (QJsonValue job : jafs(fread(path + "/log/trayIcon")))
+    for (QJsonValue job : jafs(fread(VINARENDER_PATH + "/log/trayIcon")))
         completed_jobs.push_back(job.toString());
     // ----------------------------------------------
 }

@@ -20,6 +20,7 @@ using namespace std;
 #include "../utils/tcp.h"
 #include "../utils/threading.h"
 #include "../utils/video.h"
+#include "../global/global.h"
 #include <os.h>
 #include <structs.h>
 #include <util.h>
@@ -30,14 +31,14 @@ public:
     vector<job_struct *> jobs;
     vector<server_struct *> servers;
     vector<group_struct *> groups;
-    QJsonObject preferences = jread(path + "/etc/preferences.json");
+    QJsonObject preferences = jread(VINARENDER_PATH + "/etc/preferences.json");
     bool reset_render;
     QMutex mutex;
     QJsonObject settings;
     int server_port;
 
     // rutas generales para videovina
-    QJsonObject env_videovina = jread(path + "/etc/videovina.json");
+    QJsonObject env_videovina = jread(VINARENDER_PATH + "/etc/videovina.json");
     QString assets = env_videovina["assets"].toString();
     QString as3 = env_videovina["s3"].toString();
     QString vinarender = env_videovina["vinarender"].toString();

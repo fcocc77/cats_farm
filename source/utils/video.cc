@@ -4,6 +4,8 @@ using namespace std;
 
 #include "os.h"
 #include "util.h"
+#include "../global/global.h"
+
 void concat(QString folder, QString format = "mov")
 {
     QString ffmpeg, logMetod, dirMovie, list, concat, movie, movie_list, name,
@@ -11,7 +13,7 @@ void concat(QString folder, QString format = "mov")
 
     if (_win32)
     {
-        ffmpeg = path + "/os/win/ffmpeg/ffmpeg.exe";
+        ffmpeg = VINARENDER_PATH + "/os/win/ffmpeg/ffmpeg.exe";
         logMetod = " > ";
     }
     if (_linux)

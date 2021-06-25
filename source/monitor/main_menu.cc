@@ -1,6 +1,6 @@
 #include <main_menu.h>
 
-main_menu_class::main_menu_class(global_class *_global, jobs_class *_jobs,
+main_menu_class::main_menu_class(general_class *_global, jobs_class *_jobs,
                                  servers_class *_servers, groups_class *_groups,
                                  tasks_class *_tasks)
 

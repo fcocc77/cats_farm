@@ -3,7 +3,7 @@
 
 #include "includes.h"
 
-#include "global.h"
+#include "general.h"
 #include "groups.h"
 #include "jobs.h"
 #include "log.h"
@@ -17,7 +17,7 @@ class toolbar_class : public QWidget
 {
 private:
     QMainWindow *monitor;
-    global_class *global;
+    general_class *global;
     jobs_class *jobs;
     tasks_class *tasks;
     servers_class *servers;
@@ -43,7 +43,7 @@ private:
     QPushButton *log_switch;
 
 public:
-    toolbar_class(QMainWindow *_monitor, global_class *_global,
+    toolbar_class(QMainWindow *_monitor, general_class *_global,
                   jobs_class *_jobs, tasks_class *_tasks,
                   servers_class *_servers, groups_class *_groups,
                   log_class *_log, update_class *_update,

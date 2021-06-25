@@ -1,4 +1,5 @@
 #include <jobs.h>
+#include "../global/global.h"
 
 #include <QPixmap>
 
@@ -362,7 +363,7 @@ void jobs_class::delete_start(QString action)
     {
 
         QString job_name = item->text(0);
-        os::remove(path + "/log/trayIcon/" + job_name);
+        os::remove(VINARENDER_PATH + "/log/trayIcon/" + job_name);
 
         pks.push_back({{job_name, action}});
 

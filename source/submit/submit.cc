@@ -1,4 +1,5 @@
 #include "submit.h"
+#include "../global/global.h"
 
 void submit::init(int argc, char const *argv[])
 {
@@ -64,7 +65,7 @@ void submit::init(int argc, char const *argv[])
                        instances.toInt(),
                        render};
 
-    QJsonObject settings = jread(path + "/etc/settings.json");
+    QJsonObject settings = jread(VINARENDER_PATH + "/etc/settings.json");
     int port = settings["manager"].toObject()["port"].toInt();
     QString host = settings["current_manager"].toString();
     if (!ip.isEmpty())

@@ -1,4 +1,6 @@
 #include "render.h"
+#include "../global/global.h"
+#include <hardware_monitor.h>
 
 render_class::render_class(QMutex *_mutex)
     : mutex(_mutex)
@@ -80,7 +82,7 @@ QString render_class::render_task(QJsonArray recv)
             renderOK = ae(ins);
         // -------------------------------------------------
 
-        QString log_file = path + "/log/render_log_" + QString::number(ins);
+        QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
 
         mutex->lock();
         if (taskKill[ins])
@@ -95,7 +97,7 @@ QString render_class::render_task(QJsonArray recv)
             else
             {
                 status = "failed";
-                os::copy(log_file, path + "/log/render_log");
+                os::copy(log_file, VINARENDER_PATH + "/log/render_log");
             }
         }
 
@@ -236,7 +238,7 @@ bool render_class::nuke(int ins)
 
     QString cmd = '"' + exe + '"' + args;
 
-    QString log_file = path + "/log/render_log_" + QString::number(ins);
+    QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
 
     // rendering ...
     // ----------------------------------
@@ -272,7 +274,7 @@ bool render_class::nuke(int ins)
 bool render_class::maya(int ins)
 {
 
-    QString log_file = path + "/log/render_log_" + QString::number(ins);
+    QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
     os::remove(log_file);
 
     QString args = " -r file -s " + QString::number(first_frame[ins]) + " -e " +
@@ -326,14 +328,14 @@ bool render_class::houdini(int ins)
 
     QString hipFile = project[ins].replace(src_path[ins], dst_path[ins]);
 
-    QString render_file = path + "/modules/houdiniVinaRender.py " + hipFile +
+    QString render_file = VINARENDER_PATH + "/modules/houdiniVinaRender.py " + hipFile +
                           " " + renderNode[ins] + " " +
                           QString::number(first_frame[ins]) + " " +
                           QString::number(last_frame[ins]);
 
     QString cmd = '"' + exe + "\" " + render_file;
 
-    QString log_file = path + "/log/render_log_" + QString::number(ins);
+    QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
 
     // rendering ...
     // ----------------------------------
@@ -396,7 +398,7 @@ void render_class::natron_monitoring(int ins)
             return;
         }
 
-        int usage = os::get_process_cpu_used(natron_renderer_pid);
+        int usage = hm::get_process_cpu_used(natron_renderer_pid);
 
         // si la cpu esta bajo 30 suma 1 a la actividad de natron
         if (usage < 30)
@@ -437,7 +439,7 @@ bool render_class::natron(int ins)
     _extra["output"] = output_file;
     //
 
-    QString natron_module = path + "/modules/natron/render.sh";
+    QString natron_module = VINARENDER_PATH + "/modules/natron/render.sh";
 
     // crea la carpeta donde se renderearan los archivos
     QString output_dir = os::dirname(output_file);
@@ -600,7 +602,7 @@ bool render_class::natron(int ins)
         }
     }
 
-    QString log_file = path + "/log/render_log_" + QString::number(ins);
+    QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
     fwrite(log_file, log);
 
     if (error)
@@ -634,7 +636,7 @@ bool render_class::ntp(int ins)
     }
     //-----------------------------------------------
 
-    QString ntp_module = path + "/modules/natron/" + _module + ".sh";
+    QString ntp_module = VINARENDER_PATH + "/modules/natron/" + _module + ".sh";
     QString cmd = "sh " + ntp_module + " \"" + exe + "\" \"" +
                   jots(_extra).replace("\"", "'") + "\"";
 
@@ -646,7 +648,7 @@ bool render_class::ntp(int ins)
 
     QString log = qprocess(cmd, ins);
 
-    QString log_file = path + "/log/render_log_" + QString::number(ins);
+    QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
     fwrite(log_file, log);
 
     thread->quit();
@@ -667,7 +669,7 @@ bool render_class::ntp(int ins)
 
 bool render_class::ae(int ins)
 {
-    QString log_file = path + "/log/render_log_" + QString::number(ins);
+    QString log_file = VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
     os::remove(log_file);
 
     QString folderRender = os::dirname(extra[ins]);
@@ -697,7 +699,7 @@ bool render_class::ae(int ins)
 
     args = args.replace(src_path[ins], dst_path[ins]);
 
-    QString cmd = "sh " + path + "/modules/ae/aerender.sh " + args;
+    QString cmd = "sh " + VINARENDER_PATH + "/modules/ae/aerender.sh " + args;
     // rendering ...
     // ----------------------------------
     qprocess(cmd, ins);

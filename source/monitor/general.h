@@ -1,9 +1,9 @@
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef GENERAL_H
+#define GENERAL_H
 
 #include "includes.h"
 
-class global_class : public QObject
+class general_class : public QObject
 {
 private:
     shared_variables *shared;
@@ -21,7 +21,7 @@ private:
     //----------------------------
 
 public:
-    global_class(QMainWindow *_monitor, shared_variables *_shared,
+    general_class(QMainWindow *_monitor, shared_variables *_shared,
                  QWidget *_properties);
 
     // General Action
@@ -34,4 +34,4 @@ public:
     //------------------------------------------------
 };
 
-#endif // GLOBAL_HPP
+#endif // GENERAL_H

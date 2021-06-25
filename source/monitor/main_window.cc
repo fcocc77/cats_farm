@@ -1,4 +1,5 @@
 #include <main_window.h>
+#include "../global/global.h"
 
 monitor::monitor(QWidget *parent)
     : QMainWindow(parent)
@@ -8,7 +9,7 @@ monitor::monitor(QWidget *parent)
 
 monitor::~monitor()
 {
-    QString openMonitor = path + "/etc/openMonitor";
+    QString openMonitor = VINARENDER_PATH + "/etc/openMonitor";
     fwrite(openMonitor,
            "0"); // guarda un bool para ver si el monitor ya esta cerrado.
 }
@@ -32,7 +33,7 @@ QWidget *monitor::add_title(QWidget *widget, QString title)
 void monitor::setup_ui()
 {
     shared = new shared_variables();
-    shared->settings = jread(path + "/etc/settings.json");
+    shared->settings = jread(VINARENDER_PATH + "/etc/settings.json");
     shared->manager_host =
         shared->settings["manager"].toObject()["ip"].toString();
     shared->manager_port =
@@ -103,7 +104,7 @@ void monitor::setup_ui()
 
     update =
         new update_class(shared, groups, jobs, servers, tasks->tree, settings);
-    global = new global_class(this, shared, properties);
+    global = new general_class(this, shared, properties);
 
     main_menu = new main_menu_class(global, jobs, servers, groups, tasks);
     this->setMenuBar(main_menu);

@@ -7,6 +7,7 @@ TARGET = "logger"
 
 CONFIG += console
 INCLUDEPATH += ./
+INCLUDEPATH += ../utils
 INCLUDEPATH += ../../utils/c++
 
 QT += core gui multimedia widgets

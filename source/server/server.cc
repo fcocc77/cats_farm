@@ -1,11 +1,13 @@
 #include "server.h"
+#include <hardware_monitor.h>
+#include "../global/global.h"
 
 server::server()
 {
     render = new render_class(&mutex);
 
     // obtiene los puertos del manager y server
-    QJsonObject settings = jread(path + "/etc/settings.json");
+    QJsonObject settings = jread(VINARENDER_PATH + "/etc/settings.json");
     QString manager_host = settings["manager"].toObject()["ip"].toString();
     int manager_port = settings["manager"].toObject()["port"].toInt();
     int server_port = settings["server"].toObject()["port"].toInt();
@@ -22,7 +24,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
         mutex.lock();
         render->preferences = jofs(recv);
         mutex.unlock();
-        jwrite(path + "/etc/preferences_s.json", render->preferences);
+        jwrite(VINARENDER_PATH + "/etc/preferences_s.json", render->preferences);
     }
 
     QString system;
@@ -55,16 +57,16 @@ QString server::send_resources(QString recv, QJsonObject extra)
 
     QJsonArray server_info = {os::hostName(),
                               os::ip(),
-                              os::get_cpu_used(),
-                              os::get_iowait_cpu_used(),
-                              os::get_ram_percent(),
-                              os::get_ram_percent(true),
-                              os::get_cpu_temp(),
+                              hm::get_cpu_used(),
+                              hm::get_iowait_cpu_used(),
+                              hm::get_ram_percent(),
+                              hm::get_ram_percent(true),
+                              hm::get_cpu_temp(),
                               system,
                               os::mac(),
-                              os::get_ram_total(),
-                              os::get_ram_used(),
-                              os::get_cpu_cores(),
+                              hm::get_ram_total(),
+                              hm::get_ram_used(),
+                              hm::get_cpu_cores(),
                               "log",
                               username,
                               userpass};
@@ -88,9 +90,9 @@ QString server::recieveManager(QString _recv)
     {
         bool failed = recv[0].toBool();
         if (failed)
-            send = fread(path + "/log/render_log");
+            send = fread(VINARENDER_PATH + "/log/render_log");
         else
-            send = fread(path + "/log/render_log_0");
+            send = fread(VINARENDER_PATH + "/log/render_log_0");
     }
 
     if (input == 3)

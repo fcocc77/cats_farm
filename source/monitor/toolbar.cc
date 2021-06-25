@@ -1,6 +1,6 @@
 #include <toolbar.h>
 
-toolbar_class::toolbar_class(QMainWindow *_monitor, global_class *_global,
+toolbar_class::toolbar_class(QMainWindow *_monitor, general_class *_global,
                              jobs_class *_jobs, tasks_class *_tasks,
                              servers_class *_servers, groups_class *_groups,
                              log_class *_log, update_class *_update,

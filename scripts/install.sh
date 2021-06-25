@@ -1,8 +1,7 @@
 cd $(dirname "$0")
 
-
 # IPs
-manager_ip="192.168.1.3"
+manager_ip="192.168.1.77"
 
 # Inicio de Servicios
 manager_start=true

@@ -1,4 +1,5 @@
 #include <servers.h>
+#include "../global/global.h"
 
 servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
                              log_class *_log)
@@ -95,14 +96,14 @@ void servers_class::setup_ui()
 
 void servers_class::connections()
 {
-    shared->server_display = jread(path + "/etc/server_display.json");
+    shared->server_display = jread(VINARENDER_PATH + "/etc/server_display.json");
 
     auto displayAction = [this](QString action) {
         if (shared->server_display[action].toBool())
             shared->server_display[action] = false;
         else
             shared->server_display[action] = true;
-        jwrite(path + "/etc/server_display.json", shared->server_display);
+        jwrite(VINARENDER_PATH + "/etc/server_display.json", shared->server_display);
     };
 
     auto displayAll = [this](bool status) {
@@ -120,7 +121,7 @@ void servers_class::connections()
         display_on_action->setChecked(status);
         display_off_action->setChecked(status);
 
-        jwrite(path + "/etc/server_display.json", shared->server_display);
+        jwrite(VINARENDER_PATH + "/etc/server_display.json", shared->server_display);
     };
 
     connect(show_all_action, &QAction::triggered, this,
@@ -325,11 +326,11 @@ void servers_class::vnc_client()
     }
     else if (_win32)
     {
-        tigervnc = path + "/os/win/vnc/vncviewer.exe";
+        tigervnc = VINARENDER_PATH + "/os/win/vnc/vncviewer.exe";
     }
     else
     {
-        tigervnc = path + "/os/mac/vnc/vncviewer";
+        tigervnc = VINARENDER_PATH + "/os/mac/vnc/vncviewer";
     }
 
     for (auto item : this->selectedItems())

@@ -1,4 +1,5 @@
 #include <manager.h>
+#include "../global/global.h"
 
 void manager::sample_render(QString video, int frame, int index)
 {
@@ -45,7 +46,7 @@ void manager::send_to_render(job_struct *job)
     QString _module = _extra["module"].toString();
 
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
-    QString api = path + "/modules/natron/api.py";
+    QString api = VINARENDER_PATH + "/modules/natron/api.py";
 
     QJsonObject data = {{"action", "send_to_render"},
                         {"user", user},
@@ -116,7 +117,7 @@ void manager::videovina(QJsonArray recv)
     // -------------------------------------
 
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
-    QString api = path + "/modules/natron/api.py";
+    QString api = VINARENDER_PATH + "/modules/natron/api.py";
 
     QJsonObject data = {{"action", "create_multi_project"},
                         {"user", user},
