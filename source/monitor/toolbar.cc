@@ -56,7 +56,7 @@ void toolbar_class::setup_ui()
     zone->setObjectName("zone");
     main_layout->addWidget(zone);
 
-    shared->zone_box = new QComboBox();
+    shared->zone_box = new combo_box();
     shared->zone_box->setObjectName("zone_box");
     main_layout->addWidget(shared->zone_box);
 
@@ -110,7 +110,7 @@ void toolbar_class::connections()
     connect(resume, &QPushButton::clicked, this,
             [this]() { jobs->job_resume_action->triggered(); });
 
-    connect(shared->zone_box, &QComboBox::currentTextChanged, update,
+    connect(shared->zone_box, &combo_box::currentTextChanged, update,
             &update_class::update);
 
     connect(jobs_switch, &QPushButton::clicked, this, [this]() {
@@ -146,12 +146,12 @@ void toolbar_class::load_zones()
     for (QJsonValue value : zones)
     {
         QString zone = value.toString();
-        shared->zone_box->addItem(zone);
+        shared->zone_box->add_item(zone);
     }
     // ---------------------------
 
     // check zona actual en el combobox
-    shared->zone_box->setCurrentText(current_manager);
+    shared->zone_box->set_current_text(current_manager);
     // ----------------------
     // establece por defecto la ultima zona guardada
     update->update(current_manager);

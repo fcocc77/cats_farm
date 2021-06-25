@@ -14,6 +14,7 @@ properties_class::properties_class(log_class *_log, options_class *_options,
 
     log->hide();
     options->hide();
+    _submit->hide();
 
     current_widget = "settings";
 }
@@ -66,6 +67,7 @@ void properties_class::switch_widget(QString widget_name)
         log->hide();
         options->hide();
         settings->hide();
+        _submit->hide();
 
         if (widget_name == "log")
             log->show();

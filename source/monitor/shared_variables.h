@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QTreeWidget>
 
+#include "combo_box.h"
 
 struct shared_variables
 {
@@ -19,7 +20,7 @@ struct shared_variables
     QString manager_host;
     int manager_port;
     int server_port;
-    QComboBox *zone_box;
+    combo_box *zone_box;
     QLabel *conection;
     QLabel *jobs_count;
     QTreeWidget *tasks_tree;

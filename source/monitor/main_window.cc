@@ -25,9 +25,12 @@ QWidget *monitor::add_title(QWidget *widget, QString title)
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout();
     layout->setContentsMargins(0, 0, 0, 0);
+
+    container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     container->setLayout(layout);
 
     QLabel *label = new QLabel(title);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     label->setObjectName("widget_title");
     layout->addWidget(label);
     layout->addWidget(widget);
