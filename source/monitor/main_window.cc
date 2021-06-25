@@ -53,13 +53,16 @@ void monitor::setup_ui()
     QSplitter *splitter_top = new QSplitter(this);
     QSplitter *splitter_bottom = new QSplitter(this);
 
-    // propiedades
+    // Log
     log = new log_class();
     options = new options_class();
     settings = new settings_class(shared);
 
+    // Submit
+    _submit = new submit();
+
     // Widget de propiedades
-    properties = new properties_class(log, options, settings);
+    properties = new properties_class(log, options, settings, _submit);
     QWidget *properties_parent = add_title(properties, "Properties");
     properties_parent->hide();
     properties_parent->setMaximumWidth(500);
@@ -79,9 +82,6 @@ void monitor::setup_ui()
     // Task
     tasks = new tasks_class(this, shared, jobs);
     QWidget *tasks_parent = add_title(tasks->tree, "Tasks");
-
-    // Submit
-    _submit = new submit();
 
     update =
         new update_class(shared, groups, jobs, servers, tasks->tree, settings);

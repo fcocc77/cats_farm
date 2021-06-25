@@ -98,10 +98,11 @@ void toolbar_class::setup_ui()
 void toolbar_class::connections()
 {
     connect(settings, &QPushButton::clicked, this, [this]() {
-        monitor->setUpdatesEnabled(false);
         properties->switch_widget("settings");
-        monitor->setUpdatesEnabled(true);
     });
+
+    connect(submit, &QPushButton::clicked, this,
+            [this]() { properties->switch_widget("submit"); });
 
     connect(suspend, &QPushButton::clicked, this,
             [this]() { jobs->job_suspend_action->triggered(); });
@@ -113,34 +114,26 @@ void toolbar_class::connections()
             &update_class::update);
 
     connect(jobs_switch, &QPushButton::clicked, this, [this]() {
-        monitor->setUpdatesEnabled(false);
         jobs->parentWidget()->setVisible(!jobs->parentWidget()->isVisible());
-        monitor->setUpdatesEnabled(true);
     });
 
     connect(tasks_switch, &QPushButton::clicked, this, [this]() {
-        monitor->setUpdatesEnabled(false);
         tasks->tree->parentWidget()->setVisible(
             !tasks->tree->parentWidget()->isVisible());
-        monitor->setUpdatesEnabled(true);
     });
 
     connect(servers_switch, &QPushButton::clicked, this, [this]() {
-        monitor->setUpdatesEnabled(false);
         servers->parentWidget()->setVisible(
             !servers->parentWidget()->isVisible());
-        monitor->setUpdatesEnabled(true);
     });
+
     connect(groups_switch, &QPushButton::clicked, this, [this]() {
-        monitor->setUpdatesEnabled(false);
         groups->parentWidget()->setVisible(
             !groups->parentWidget()->isVisible());
-        monitor->setUpdatesEnabled(true);
     });
+
     connect(log_switch, &QPushButton::clicked, this, [this]() {
-        monitor->setUpdatesEnabled(false);
         properties->switch_widget("log");
-        monitor->setUpdatesEnabled(true);
     });
 }
 

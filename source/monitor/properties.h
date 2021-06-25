@@ -6,6 +6,7 @@
 #include "options.h"
 #include "settings.h"
 #include "log.h"
+#include "submit.h"
 
 class properties_class : public QWidget
 {
@@ -14,13 +15,14 @@ private:
     log_class *log;
     options_class *options;
     settings_class *settings;
+    submit *_submit;
 
     void setup_ui();
     QString current_widget;
 
 public:
     properties_class(log_class *_log, options_class *_options,
-                     settings_class *_settings);
+                     settings_class *_settings, submit *_submit);
 
     void switch_widget(QString widget_name);
 };

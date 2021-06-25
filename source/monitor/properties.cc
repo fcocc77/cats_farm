@@ -3,11 +3,12 @@
 #include <properties.h>
 
 properties_class::properties_class(log_class *_log, options_class *_options,
-                                   settings_class *_settings)
+                                   settings_class *_settings, submit *__submit)
 
     : log(_log)
     , options(_options)
     , settings(_settings)
+    , _submit(__submit)
 {
     setup_ui();
 
@@ -26,6 +27,7 @@ void properties_class::setup_ui()
     properties_layout->addWidget(log);
     properties_layout->addWidget(options);
     properties_layout->addWidget(settings);
+    properties_layout->addWidget(_submit);
 }
 
 void properties_class::switch_widget(QString widget_name)
@@ -51,6 +53,11 @@ void properties_class::switch_widget(QString widget_name)
             visible = !settings->isVisible();
             settings->setVisible(visible);
         }
+        else if (widget_name == "submit")
+        {
+            visible = !_submit->isVisible();
+            _submit->setVisible(visible);
+        }
 
         this->parentWidget()->setVisible(visible);
     }
@@ -68,6 +75,9 @@ void properties_class::switch_widget(QString widget_name)
 
         else if (widget_name == "settings")
             settings->show();
+
+        else if (widget_name == "submit")
+            _submit->show();
 
         current_widget = widget_name;
 
