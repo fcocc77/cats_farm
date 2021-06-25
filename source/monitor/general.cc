@@ -20,7 +20,7 @@ general_class::general_class(QMainWindow *_monitor, shared_variables *_shared,
 
     notify_icon();
     connections();
-    style();
+    update_style();
 }
 
 void general_class::connections()
@@ -49,15 +49,16 @@ void general_class::connections()
     properties_hide->setShortcut(QString("Esc"));
 
     connect(update_style_action, &QAction::triggered, this,
-            &general_class::style);
+            [=]() { update_style(true); });
     update_style_action->setShortcut(QString("Ctrl+R"));
 }
 
-void general_class::style()
+void general_class::update_style(bool from_source_code)
 {
-    // Estilo de general
-    QString style = fread(
-        "/home/pancho/Documents/develop/vinarender/resources/css/style.css");
+    QString path = from_source_code ? VINARENDER_SOURCE : VINARENDER_PATH;
+    QString style = fread(path + "/resources/css/style.css");
+
+    monitor->setStyleSheet("");
     monitor->setStyleSheet(style.toStdString().c_str());
 
     // Titulo de ventana

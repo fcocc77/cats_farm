@@ -17,7 +17,7 @@ private:
     void setup_ui();
     void connections();
     void notify_icon();
-    void style();
+    void update_style(bool from_source_code = false);
     //----------------------------
 
 public:

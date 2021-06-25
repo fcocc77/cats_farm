@@ -16,8 +16,7 @@
     QAbstractItemView 
         background-color: $b13
     &:item
-        font-size: 13px
-        &:selected 
+        &:selected
             background-color: $b20
             color: $base
             padding-left: 0px
@@ -65,12 +64,15 @@
             margin-top: 1px
             margin-bottom: 1px
 @mixin button
-    padding: 10px 15px 10px 15px
-    font-size: 13px
+    padding: 3px
     border-radius: 3px
     background: $b20
-    border: 1px solid transparent
+    border: 1px solid $b20
     &:hover
+        background: $b22
+        color: white
+        border-color: $b30
+    &:pressed
         border-color: $base
         color: $base
 @mixin textedit

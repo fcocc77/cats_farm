@@ -13,8 +13,9 @@ settings_class::~settings_class() {}
 void settings_class::setup_ui()
 {
     this->setObjectName("settings");
-    QVBoxLayout *main_layout = new QVBoxLayout();
-    this->setLayout(main_layout);
+    QVBoxLayout *main_layout = new QVBoxLayout(this);
+    main_layout->setMargin(0);
+
     {
         QLayout *zones_knobs = qlayout(main_layout, "h", "zones_knobs");
         {
@@ -37,6 +38,7 @@ void settings_class::setup_ui()
         {
             QTabWidget *settings_tab = new QTabWidget();
             third_knobs->addWidget(settings_tab);
+            third_knobs->setMargin(0);
             {
                 auto addTab = [=](QString name, QPlainTextEdit *text) {
                     QWidget *tab = new QWidget();
@@ -72,6 +74,8 @@ void settings_class::setup_ui()
         QLayout *fourth_knobs = qlayout(main_layout, "v");
         {
             QLayout *button_knobs = qlayout(fourth_knobs, "h");
+            fourth_knobs->setMargin(0);
+            button_knobs->setMargin(0);
             {
                 cancel_button = new QPushButton("Cancel");
                 button_knobs->addWidget(cancel_button);

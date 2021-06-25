@@ -1,15 +1,14 @@
 thread=4
 
+monitor_source="./source/monitor"
+
+cd $monitor_source
 qmake-qt5
 make -j $thread
 
-rm ./bin/*
-mkdir ./bin
+pkill -9 vmonitor
 
-# copia los ejecutables a la carpeta bin
-cp ./source/manager/release/vmanager ./bin
-cp ./source/server/release/vserver ./bin
-cp ./source/monitor/release/vmonitor ./bin
-cp ./source/logger/release/logger ./bin
-cp ./source/submit/release/submit ./bin
-cp ./source/videovina/release/videovina ./bin
+sudo cp ../../resources/css/style.css '/opt/vinarender/resources/css/style.css'
+
+./release/vmonitor
+

@@ -7,4 +7,6 @@
 
 #define VINARENDER_PATH QString("/opt/vinarender")
 
+#define VINARENDER_SOURCE QString("/home/pancho/Documents/develop/vinarender")
+
 #endif // GLOBAL_H
