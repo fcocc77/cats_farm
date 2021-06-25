@@ -1,4 +1,8 @@
-#include <settings.h>
+#include <QVBoxLayout>
+
+#include "util.h"
+#include "tcp.h"
+#include "settings.h"
 #include "../global/global.h"
 
 settings_class::settings_class(shared_variables *_shared)
@@ -142,7 +146,7 @@ void settings_class::path_read()
         tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
     QJsonObject preferences = jofs(recv);
 
-    auto array_to_string = [this](QJsonArray array) {
+    auto array_to_string = [](QJsonArray array) {
         QString ret;
         for (QJsonValue value : array)
             ret += value.toString() + "\n";

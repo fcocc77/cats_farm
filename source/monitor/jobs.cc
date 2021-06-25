@@ -1,7 +1,13 @@
-#include <jobs.h>
+#include <QPixmap>
+#include <QAction>
+#include <QMessageBox>
+#include <QMenu>
+
+#include "util.h"
+#include "tcp.h"
+#include "jobs.h"
 #include "../global/global.h"
 
-#include <QPixmap>
 
 jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
                        log_class *_log, servers_class *_servers,
@@ -213,11 +219,11 @@ void jobs_class::show_log()
                     tcpClient(shared->manager_host, shared->manager_port,
                               jats({5, send}));
 
-                log->code_editor->setPlainText(_name + " Log:\n\n" + result);
+                log->set_text(_name + " Log:\n\n" + result);
                 break;
             }
             else
-                log->code_editor->setPlainText("The jobs has not yet rendered");
+                log->set_text("The jobs has not yet rendered");
         }
 
         properties->switch_widget("log");

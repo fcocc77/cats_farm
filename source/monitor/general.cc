@@ -1,8 +1,12 @@
-#include <general.h>
+#include <QAction>
+#include <QMenu>
+
 #include "../global/global.h"
+#include "general.h"
+#include "util.h"
 
 general_class::general_class(QMainWindow *_monitor, shared_variables *_shared,
-                           QWidget *_properties)
+                             QWidget *_properties)
 
     : monitor(_monitor)
     , shared(_shared)
@@ -16,7 +20,6 @@ general_class::general_class(QMainWindow *_monitor, shared_variables *_shared,
     show_action = new QAction("Show App");
     properties_hide = new QAction("Hide Panels");
     update_style_action = new QAction("Update Style");
-    //------------------------------------------------
 
     notify_icon();
     connections();
@@ -67,8 +70,8 @@ void general_class::update_style(bool from_source_code)
 
 void general_class::notify_icon()
 {
-    notify =
-        new QSystemTrayIcon(QIcon(VINARENDER_PATH + "/resources/icons/icon.png"), monitor);
+    notify = new QSystemTrayIcon(
+        QIcon(VINARENDER_PATH + "/resources/icons/icon.png"), monitor);
 
     connect(notify, &QSystemTrayIcon::messageClicked, this,
             [this]() { monitor->show(); });
@@ -83,7 +86,6 @@ void general_class::notify_icon()
                         monitor->hide();
                     else
                         monitor->show();
-                    //------------------------------------------------
                 }
             });
     notify->show();
@@ -97,5 +99,4 @@ void general_class::notify_icon()
     // Importa lista de jobs completados
     for (QJsonValue job : jafs(fread(VINARENDER_PATH + "/log/trayIcon")))
         completed_jobs.push_back(job.toString());
-    // ----------------------------------------------
 }

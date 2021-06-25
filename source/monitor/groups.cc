@@ -1,4 +1,11 @@
-#include <groups.h>
+#include <QAction>
+#include <QMenu>
+#include <QMessageBox>
+#include <QLineEdit>
+#include <QInputDialog>
+
+#include <tcp.h>
+#include "groups.h"
 
 groups_class::groups_class(QMainWindow *_monitor, shared_variables *_shared,
                            servers_class *_servers)

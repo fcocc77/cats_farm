@@ -1,4 +1,8 @@
-#include <options.h>
+#include <QVBoxLayout>
+#include <QLabel>
+
+#include "util.h"
+#include "options.h"
 
 options_class::options_class()
 {

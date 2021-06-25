@@ -1,7 +1,7 @@
 #ifndef TOOLBAR_HPP
 #define TOOLBAR_HPP
 
-#include "includes.h"
+#include <QWidget>
 
 #include "general.h"
 #include "groups.h"
@@ -35,6 +35,7 @@ private:
     QPushButton *resume;
     QPushButton *suspend;
     QPushButton *settings;
+    QPushButton *submit;
 
     QPushButton *jobs_switch;
     QPushButton *tasks_switch;

@@ -1,4 +1,11 @@
-#include <tasks.h>
+#include <QTreeWidget>
+#include <QAction>
+#include <QMessageBox>
+#include <QMenu>
+
+#include "util.h"
+#include "tcp.h"
+#include "tasks.h"
 
 tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
                          jobs_class *_jobs)

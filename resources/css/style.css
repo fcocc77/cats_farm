@@ -7,7 +7,7 @@
   background: #1c1e21;
   background-color: white;
   border: 0px;
-  font: 8pt "Tahoma"; }
+  font-size: 11px; }
 
 QWidget {
   background: #17191c; }
@@ -107,11 +107,10 @@ QMainWindow {
     background: none; }
   QMainWindow QMenu {
     background-color: #23262a;
-    font-size: 13px;
     border: 1px solid rgba(0, 153, 255, 0.4);
     border-radius: 2px; }
     QMainWindow QMenu::item {
-      padding: 7px 20px 7px 20px;
+      padding: 4px 20px 4px 20px;
       border-top: 1px solid transparent;
       border-bottom: 1px solid transparent;
       spacing: 20px; }
@@ -266,8 +265,7 @@ QMainWindow {
 QMenuBar {
   background-color: #272b2f;
   border-bottom: 1px solid #17191c;
-  padding: 5px;
-  font-size: 12px; }
+  padding: 5px; }
   QMenuBar::item {
     background-color: transparent; }
     QMenuBar::item:selected {

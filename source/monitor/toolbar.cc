@@ -1,4 +1,6 @@
-#include <toolbar.h>
+#include <QAction>
+
+#include "toolbar.h"
 
 toolbar_class::toolbar_class(QMainWindow *_monitor, general_class *_global,
                              jobs_class *_jobs, tasks_class *_tasks,
@@ -45,6 +47,10 @@ void toolbar_class::setup_ui()
     settings = new QPushButton("SETTINGS");
     settings->setObjectName("settings");
     main_layout->addWidget(settings);
+
+    submit = new QPushButton("SUBMIT");
+    submit->setObjectName("submit");
+    main_layout->addWidget(submit);
 
     QLabel *zone = new QLabel("ZONE:");
     zone->setObjectName("zone");

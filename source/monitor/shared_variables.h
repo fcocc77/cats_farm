@@ -1,9 +1,12 @@
 #ifndef SHARED_VARIABLES_HPP
 #define SHARED_VARIABLES_HPP
 
-using namespace std;
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QComboBox>
+#include <QLabel>
+#include <QTreeWidget>
+
 
 struct shared_variables
 {

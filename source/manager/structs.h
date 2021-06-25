@@ -3,7 +3,9 @@
 
 #include <QString>
 #include <QStringList>
+
 #include <iostream>
+#include <vector>
 
 struct task_struct
 {

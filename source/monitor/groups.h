@@ -1,7 +1,11 @@
 #ifndef GROUPS_HPP
 #define GROUPS_HPP
 
-#include "includes.h"
+#include <QTreeWidget>
+#include <QMainWindow>
+#include <QPainter>
+#include <QResizeEvent>
+
 #include "servers.h"
 
 class groups_class : public QTreeWidget

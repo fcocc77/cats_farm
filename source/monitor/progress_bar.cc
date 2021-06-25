@@ -1,4 +1,5 @@
-#include <progress_bar.h>
+#include "progress_bar.h"
+#include "util.h"
 
 progress_bar_class::progress_bar_class()
 {

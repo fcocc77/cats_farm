@@ -1,12 +1,13 @@
 #ifndef MAIN_MENU_HPP
 #define MAIN_MENU_HPP
 
+#include <QMenuBar>
+
 #include "general.h"
 #include "groups.h"
-#include "includes.h"
-#include "jobs.h"
 #include "servers.h"
 #include "tasks.h"
+#include "jobs.h"
 
 class main_menu_class : public QMenuBar
 {

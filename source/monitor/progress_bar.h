@@ -1,7 +1,7 @@
 #ifndef PROGRESS_BAR_HPP
 #define PROGRESS_BAR_HPP
 
-#include <includes.h>
+#include <QProgressBar>
 
 class progress_bar_class : public QProgressBar
 {

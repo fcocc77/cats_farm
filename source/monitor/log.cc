@@ -1,4 +1,6 @@
-#include <log.h>
+#include <QVBoxLayout>
+
+#include "log.h"
 
 log_class::log_class()
 {
@@ -6,6 +8,7 @@ log_class::log_class()
 }
 
 log_class::~log_class() {}
+
 void log_class::setup_ui()
 {
     code_editor = new kgl::QCodeEditor();

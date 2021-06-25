@@ -1,7 +1,9 @@
-#ifndef OPTIONS_HPP
-#define OPTIONS_HPP
+#ifndef OPTIONS_H
+#define OPTIONS_H
 
-#include "includes.h"
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
 
 class options_class : public QWidget
 {
@@ -25,4 +27,4 @@ public:
     QComboBox *group_combobox;
 };
 
-#endif // OPTIONS_HPP
+#endif // OPTIONS_H

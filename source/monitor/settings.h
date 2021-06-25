@@ -1,7 +1,12 @@
 #ifndef SETTING_HPP
 #define SETTING_HPP
 
-#include "includes.h"
+#include <QWidget>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QPlainTextEdit>
+
+#include "shared_variables.h"
 
 class settings_class : public QWidget
 {

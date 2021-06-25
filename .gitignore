@@ -8,4 +8,4 @@ bin
 .undodir
 session.vim
 temp/
-
+*.swp

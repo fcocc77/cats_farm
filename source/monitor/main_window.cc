@@ -1,5 +1,9 @@
-#include <main_window.h>
+#include <QSplitter>
+#include <QTextEdit>
+
+#include "util.h"
 #include "../global/global.h"
+#include "main_window.h"
 
 monitor::monitor(QWidget *parent)
     : QMainWindow(parent)
@@ -10,8 +14,9 @@ monitor::monitor(QWidget *parent)
 monitor::~monitor()
 {
     QString openMonitor = VINARENDER_PATH + "/etc/openMonitor";
-    fwrite(openMonitor,
-           "0"); // guarda un bool para ver si el monitor ya esta cerrado.
+
+    // guarda un bool para ver si el monitor ya esta cerrado.
+    fwrite(openMonitor, "0");
 }
 
 QWidget *monitor::add_title(QWidget *widget, QString title)
@@ -48,75 +53,55 @@ void monitor::setup_ui()
     QSplitter *splitter_top = new QSplitter(this);
     QSplitter *splitter_bottom = new QSplitter(this);
 
-    //
-
-    //
-
     // propiedades
     log = new log_class();
     options = new options_class();
     settings = new settings_class(shared);
-    //
 
     // Widget de propiedades
     properties = new properties_class(log, options, settings);
     QWidget *properties_parent = add_title(properties, "Properties");
     properties_parent->hide();
     properties_parent->setMaximumWidth(500);
-    splitter_top->addWidget(properties_parent);
-    //
-
-    //
 
     // Servers
     servers = new servers_class(this, shared, log);
     QWidget *servers_parents = add_title(servers, "Servers");
-    splitter_bottom->addWidget(servers_parents);
-    //
-
-    //
 
     // Groups
     groups = new groups_class(this, shared, servers);
     QWidget *groups_parent = add_title(groups, "Groups");
-    splitter_bottom->addWidget(groups_parent);
-    //
-
-    //
 
     // Jobs
     jobs =
         new jobs_class(shared, this, log, servers, options, groups, properties);
-    splitter_top->addWidget(add_title(jobs, "Jobs"));
-    //
-
-    //
 
     // Task
     tasks = new tasks_class(this, shared, jobs);
     QWidget *tasks_parent = add_title(tasks->tree, "Tasks");
-    splitter_top->addWidget(tasks_parent);
-    //
 
-    //
-
-    //
+    // Submit
+    _submit = new submit();
 
     update =
         new update_class(shared, groups, jobs, servers, tasks->tree, settings);
-    global = new general_class(this, shared, properties);
+    general = new general_class(this, shared, properties);
 
-    main_menu = new main_menu_class(global, jobs, servers, groups, tasks);
+    main_menu = new main_menu_class(general, jobs, servers, groups, tasks);
     this->setMenuBar(main_menu);
 
-    toolbar = new toolbar_class(this, global, jobs, tasks, servers, groups, log,
+    toolbar = new toolbar_class(this, general, jobs, tasks, servers, groups, log,
                                 update, shared, settings, properties);
     toolbar->setMaximumHeight(40);
-    //
 
-    //
+    // Layout
+    splitter_top->addWidget(properties_parent);
+    splitter_top->addWidget(add_title(jobs, "Jobs"));
+    splitter_top->addWidget(tasks_parent);
 
-    // Sumar widget al splitter principal
+    splitter_bottom->addWidget(servers_parents);
+    splitter_bottom->addWidget(groups_parent);
+
     splitter_main->addWidget(toolbar);
     splitter_main->addWidget(splitter_top);
     splitter_main->addWidget(splitter_bottom);

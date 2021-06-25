@@ -1,8 +1,11 @@
 #ifndef SERVERS_HPP
 #define SERVERS_HPP
 
-#include "includes.h"
+#include <QTreeWidget>
+#include <QMainWindow>
+
 #include "log.h"
+#include "shared_variables.h"
 
 class servers_class : public QTreeWidget
 {

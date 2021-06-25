@@ -1,11 +1,11 @@
 #ifndef PROPERTIES_HPP
 #define PROPERTIES_HPP
 
-#include <includes.h>
+#include <QWidget>
 
-#include "log.h"
 #include "options.h"
 #include "settings.h"
+#include "log.h"
 
 class properties_class : public QWidget
 {

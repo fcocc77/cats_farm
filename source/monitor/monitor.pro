@@ -4,6 +4,7 @@ TEMPLATE = app
 TARGET = "vmonitor"
 
 INCLUDEPATH += ./
+INCLUDEPATH += ../utils
 INCLUDEPATH += ../../utils/c++
 INCLUDEPATH += ../../global
 INCLUDEPATH += ../../libs/QCodeEditor/include

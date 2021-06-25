@@ -1,3 +1,5 @@
+#include <QVBoxLayout>
+
 #include <properties.h>
 
 properties_class::properties_class(log_class *_log, options_class *_options,

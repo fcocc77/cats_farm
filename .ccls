@@ -10,6 +10,11 @@ clang++
 -I/usr/include/qt5/QtMultimedia
 -I/usr/include/qt5/QtNetwork
 
+-I./libs/QCodeEditor/include
+-I./libs/QCodeEditor/include/KGL
+-I./libs/QCodeEditor/include/KGL/Design
+-I./libs/QCodeEditor/include/KGL/Widgets
+
 -I./source/global
 -I./source/logger
 -I./source/manager

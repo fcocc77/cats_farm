@@ -1,10 +1,11 @@
 #ifndef JOBS_HPP
 #define JOBS_HPP
 
-#include "groups.h"
-#include "includes.h"
-#include "log.h"
+#include <QTreeWidget>
+
 #include "options.h"
+#include "groups.h"
+#include "log.h"
 #include "properties.h"
 #include "servers.h"
 

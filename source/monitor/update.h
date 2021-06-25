@@ -1,12 +1,12 @@
 #ifndef UPDATE_HPP
 #define UPDATE_HPP
 
+#include "tcp.h"
 #include "groups.h"
-#include "includes.h"
 #include "jobs.h"
 #include "servers.h"
 #include "settings.h"
-#include <progress_bar.h>
+#include "progress_bar.h"
 
 class update_class : public QObject
 {

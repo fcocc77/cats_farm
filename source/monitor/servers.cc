@@ -1,4 +1,10 @@
-#include <servers.h>
+#include <QAction>
+#include <QMenuBar>
+#include <QSignalMapper>
+
+#include "util.h"
+#include "tcp.h"
+#include "servers.h"
 #include "../global/global.h"
 
 servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
@@ -280,7 +286,7 @@ void servers_class::to_log()
         QString result = tcpClient(shared->manager_host, shared->manager_port,
                                    jats({5, send}));
 
-        log->code_editor->setPlainText(result);
+        log->set_text(result);
         log->parentWidget()->show();
     }
 }
