@@ -64,14 +64,8 @@ void settings_class::setup_ui()
                 houdini_text = new QPlainTextEdit();
                 addTab("Houdini", houdini_text);
 
-                ntp_text = new QPlainTextEdit();
-                addTab("Natron Ntp", ntp_text);
-
-                natron_text = new QPlainTextEdit();
-                addTab("Natron", natron_text);
-
-                ae_text = new QPlainTextEdit();
-                addTab("After Effect", ae_text);
+                vinacomp_text = new QPlainTextEdit();
+                addTab("VinaComp", vinacomp_text);
             }
         }
 
@@ -156,23 +150,19 @@ void settings_class::path_read()
     if (not preferences.empty())
     {
         QJsonObject paths = preferences["paths"].toObject();
-        QString system, nuke, maya, houdini, ntp, natron, ae;
+        QString system, nuke, maya, houdini, vinacomp;
 
         system = array_to_string(paths["system"].toArray());
         nuke = array_to_string(paths["nuke"].toArray());
         houdini = array_to_string(paths["houdini"].toArray());
-        ntp = array_to_string(paths["ntp"].toArray());
-        natron = array_to_string(paths["natron"].toArray());
         maya = array_to_string(paths["maya"].toArray());
-        ae = array_to_string(paths["ae"].toArray());
+        vinacomp = array_to_string(paths["vinacomp"].toArray());
 
         paths_text->setPlainText(system);
         nuke_text->setPlainText(nuke);
         maya_text->setPlainText(maya);
         houdini_text->setPlainText(houdini);
-        ntp_text->setPlainText(ntp);
-        natron_text->setPlainText(natron);
-        ae_text->setPlainText(ae);
+        vinacomp_text->setPlainText(vinacomp);
 
         // setea los hosts guardados
         QString hosts;
@@ -215,21 +205,11 @@ void settings_class::path_write()
         houdini.push_back(l);
     paths["houdini"] = houdini;
 
-    QJsonArray ntp;
-    for (auto l : ntp_text->toPlainText().split("\n"))
-        ntp.push_back(l);
-    paths["ntp"] = ntp;
+    QJsonArray vinacomp;
+    for (auto l : vinacomp_text->toPlainText().split("\n"))
+        vinacomp.push_back(l);
+    paths["vinacomp"] = vinacomp;
 
-    QJsonArray natron;
-    for (auto l : natron_text->toPlainText().split("\n"))
-        natron.push_back(l);
-    paths["natron"] = natron;
-
-    QJsonArray ae;
-    for (auto l : ae_text->toPlainText().split("\n"))
-        ae.push_back(l);
-
-    paths["ae"] = ae;
 
     tcpClient(shared->manager_host, shared->manager_port,
               jats({3, {{"preferences", {{"write", paths}}}}}));
