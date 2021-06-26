@@ -1,10 +1,9 @@
 cd "$(dirname "$0")"
 
-install_dir="/c/Program Files/vinarender"
-
 qmake="/c/Qt/Qt5.12.11/5.12.11/mingw73_64/bin/qmake.exe"
 make="/c/Qt/Qt5.12.11/Tools/mingw730_64/bin/mingw32-make.exe"
 
+install_dir="/c/Program Files/vinarender"
 
 manager_ip=$(ipconfig | awk -F":" '/IPv4/{print $2}')
 manager_port=771
@@ -63,6 +62,12 @@ function install(){
     "$nssm" install "VinaRender Server" "$install_dir/bin/vserver.exe"
     "$nssm" install "VinaRender Manager" "$install_dir/bin/vmanager.exe"
 
+    "$nssm" set "VinaRender Server" ObjectName ".\\$user" "$password"
+    "$nssm" set "VinaRender Manager" ObjectName ".\\$user" "$password"
+
+    sc start "VinaRender Server"
+    sc start "VinaRender Manager"
+
 	# CoreTemp service
     "$nssm" install "VinaRender CoreTemp" "$install_dir/win/sensor/core_temp.exe"
     "$nssm" start "VinaRender CoreTemp"
@@ -78,8 +83,8 @@ function install(){
 }
 
 function uninstall(){
-    # service
 	nssm="$install_dir/win/service/nssm.exe"
+
     "$nssm" stop "VinaRender Server"
     "$nssm" remove "VinaRender Server" confirm
 
@@ -97,6 +102,11 @@ function uninstall(){
 if [ ! -d "C:/Qt" ]; then
     download_qt5
 else
+    echo "UserName: "
+    read user
+    echo "Password: "
+    read -s password
+
     uninstall
     install
 fi
