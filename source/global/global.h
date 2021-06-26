@@ -5,7 +5,7 @@
 
 #define VINARENDER_SOURCE QString("/home/pancho/Documents/develop/vinarender")
 
-#ifdef _win32
+#if _win32
 #define USER_DIR QString::fromStdString(getenv("USERPROFILE"))
 #define VINARENDER_CONF_PATH USER_DIR + "/AppData/Local/vinarender"
 #define VINARENDER_PATH QString("C:/Program Files/vinarender")
