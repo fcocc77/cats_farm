@@ -11,14 +11,14 @@ path=$(pwd)
 
 # ruta de instalacion
 dst="/opt/vinarender"
-# ------------------
+
 # IPs
 manager_ip="$2"
-# ------------------
+
 # PORTs
 manager_port=771
 server_port=772
-# -----------------
+
 manager_start=$3
 server_start=$4
 logger_start=$5

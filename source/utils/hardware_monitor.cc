@@ -1,6 +1,9 @@
+#include <iostream>
+
 #include <hardware_monitor.h>
 #include "../global/global.h"
 #include <os.h>
+#include <util.h>
 
 namespace hm
 {
@@ -58,6 +61,13 @@ int get_cpu_used()
         idled = idle - prev_idle;
 
         usage = round(((totald - idled) / totald) * 100.0);
+    }
+    else if (_win32)
+    {
+        result = os::sh("wmic cpu get loadpercentage");
+        result.replace("LoadPercentage", "");
+
+        usage = result.toInt();
     }
 
     return usage;
@@ -241,7 +251,7 @@ int get_cpu_temp()
         csv_delete++;
         // Obtiene la temperatura a partir de un sensor con interface core temp,
         // no es lo mas optimo hasta el momento
-        QString core_temp_dir = VINARENDER_PATH + "/os/win/core_temp";
+        QString core_temp_dir = VINARENDER_PATH + "/win/sensor";
 
         for (QString f : os::listdir(core_temp_dir))
         {
