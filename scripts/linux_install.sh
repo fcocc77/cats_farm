@@ -51,24 +51,21 @@ nuke() {
         # copia modulos al directorio de plugins de nuke
         cp $dst"/modules/nuke/util.py" $plugins
         cp $dst"/modules/nuke/nukeVinaRender.py" $plugins
-        # ------------------------------
 
         # Agrega accesos directo a vinarender
         echo $line1 >>$menu_py
         echo $line2 >>$menu_py
         echo $line3 >>$menu_py
-        # ---------------
     fi
     if [ $1 == uninstall ]; then
         # borra los modulos de nuke
         rm $plugins"/util.py"
         rm $plugins"/nukeVinaRender.py"
-        # -----------------
+
         # borra todas las lineas de vinarender
         sed -i "/$line1/d" $menu_py
         sed -i "/$line2/d" $menu_py
         sed -i "/SendToVinaRender/d" $menu_py
-        # -----------------------
     fi
 }
 
@@ -80,7 +77,6 @@ install() {
     compile submit submit
     compile videovina videovina
     compile logger logger
-    # ----------------------
 
     # Creacion de servicios
     vserver="/etc/systemd/system/vserver.service"
@@ -99,35 +95,29 @@ install() {
     done
 
     systemctl daemon-reload
-    # -----------------------------
 
     # los servicios son muy estrictos asi que esto corrige el servicio, si este se modifico mal
     sed -i -e 's/\r//g' $path/services/service.sh
-    # --------------------------------------------------------------------------------
 
     mkdir $dst
     mkdir $dst/bin
 
-    # # copia el contenido necesario
+    # copia el contenido necesario
     cp -rf "$path/bin" $dst
     cp -rf "$path/etc" $dst
     cp -rf "$path/resources" $dst
     cp -rf "$path/log" $dst
-    cp -rf "$path/src" $dst
     cp -rf "$path/services" $dst
     cp -rf "$path/modules" $dst
-    # # ------------------------
 
     # guarda ruta de instalacion en etc del sistema operativo
     echo $dst >/etc/vinarender
-    # -----------------------
 
     # guarda ip del manager y puertos en el settings
     settings=$dst"/etc/settings.json"
     sed -i "s|{{server_port}}|$server_port|g" $settings
     sed -i "s|{{manager_port}}|$manager_port|g" $settings
     sed -i "s|{{manager_ip}}|$manager_ip|g" $settings
-    # -------------------------------------------
 
     chmod 755 -R $dst
 
@@ -145,7 +135,6 @@ install() {
         systemctl start vlogger
         systemctl enable vlogger
     fi
-    # -----------------------------
 
     # Acceso directo
     mv $dst/resources/app/vinarender.sh $dst/vinarender.sh
@@ -156,13 +145,11 @@ install() {
     Icon=$dst/resources/icons/icon.png
     Categories=Graphics;2DGraphics;RasterGraphics;FLTK;
     Type=Application" >"/usr/share/applications/VinaRender.desktop"
-    # ---------------
 
     # modifica los permisos de los directorios etc y log para
     # que el vmonitor tenga acceso ya que se ejecuta en usuario.
     chmod 777 -R "$dst/etc"
     chmod 777 -R "$dst/log"
-    # ---------------------------
 
     nuke install
 }
