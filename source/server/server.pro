@@ -1,6 +1,6 @@
 include(../../config/config.pro)
 
-RC_ICONS = ../../icons/icon.ico
+RC_ICONS = ../../resources/icons/icon.ico
 
 TEMPLATE = app
 TARGET = "vserver"

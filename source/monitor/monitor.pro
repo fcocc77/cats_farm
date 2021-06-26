@@ -12,7 +12,7 @@ INCLUDEPATH += ../../libs/QCodeEditor/include/KGL
 INCLUDEPATH += ../../libs/QCodeEditor/include/KGL/Design
 INCLUDEPATH += ../../libs/QCodeEditor/include/KGL/Widgets
 
-RC_ICONS = ../../icons/icon.ico
+RC_ICONS = ../../resources/icons/icon.ico
 
 QT += core gui widgets multimedia
 
