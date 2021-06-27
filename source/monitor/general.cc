@@ -28,7 +28,6 @@ general_class::general_class(QMainWindow *_monitor, shared_variables *_shared,
 
 void general_class::connections()
 {
-    preferences_action->setIcon(QIcon(VINARENDER_PATH + "/icons/setting.png"));
     preferences_action->setShortcut(QString("S"));
 
     connect(quit_action, &QAction::triggered, this, [this]() {

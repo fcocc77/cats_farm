@@ -19,12 +19,12 @@ main_menu_class::~main_menu_class() {}
 
 void main_menu_class::connections()
 {
-    QMenu *file_menu = new QMenu("&File", this);
+    QMenu *file_menu = new QMenu("File", this);
     this->addMenu(file_menu);
     file_menu->addAction(global->hide_action);
     file_menu->addAction(global->quit_action);
 
-    QMenu *edit_menu = new QMenu("&Edit", this);
+    QMenu *edit_menu = new QMenu("Edit", this);
     this->addMenu(edit_menu);
     edit_menu->addAction(global->preferences_action);
     edit_menu->addAction(global->properties_hide);
