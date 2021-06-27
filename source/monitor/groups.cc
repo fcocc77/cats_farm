@@ -7,10 +7,10 @@
 #include <tcp.h>
 #include "groups.h"
 
-groups_class::groups_class(QMainWindow *_monitor, shared_variables *_shared,
+groups_class::groups_class(QWidget *__monitor, shared_variables *_shared,
                            servers_class *_servers)
 
-    : monitor(_monitor)
+    : _monitor(__monitor)
     , shared(_shared)
     , servers(_servers)
 {
@@ -19,7 +19,7 @@ groups_class::groups_class(QMainWindow *_monitor, shared_variables *_shared,
     create_action = new QAction("Create Group");
     add_machine_action = new QAction("Add Machine");
     delete_action = new QAction("Delete Group");
-    //------------------------------------------------
+
     connections();
     setup_ui();
 }
@@ -73,7 +73,7 @@ void groups_class::popup()
 {
     auto selected = this->selectedItems();
 
-    QMenu *menu = new QMenu(monitor);
+    QMenu *menu = new QMenu(_monitor);
     if (not selected.empty())
     {
         menu->addAction(add_machine_action);
@@ -120,7 +120,7 @@ void groups_class::create_window()
 
     bool ok;
     QString group_name = QInputDialog::getText(
-        monitor, "Server Group", "Enter Group name:", QLineEdit::Normal,
+        _monitor, "Server Group", "Enter Group name:", QLineEdit::Normal,
         QDir::home().dirName(), &ok);
 
     if (ok)
@@ -406,7 +406,7 @@ void groups_class::group_delete()
         QString ask = "Sure you want to delete the group?";
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask,
+        reply = QMessageBox::question(_monitor, tile, ask,
                                       QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
@@ -445,4 +445,16 @@ void groups_class::group_delete()
                       jats({3, pks}));
         }
     }
+}
+
+QStringList groups_class::get_groups() const
+{
+    QStringList groups;
+    for (int i = 0; i < this->topLevelItemCount(); ++i)
+    {
+        QTreeWidgetItem *item = this->topLevelItem(i);
+        groups.push_back(item->text(2));
+    }
+
+    return groups;
 }

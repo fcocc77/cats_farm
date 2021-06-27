@@ -18,3 +18,9 @@ void combo_box::set_current_text(QString text)
 {
     this->setCurrentText(text);
 }
+
+void combo_box::mousePressEvent(QMouseEvent *event)
+{
+    clicked();
+    QComboBox::mousePressEvent(event);
+}

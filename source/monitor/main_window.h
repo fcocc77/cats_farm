@@ -53,6 +53,13 @@ private:
 public:
     monitor(QWidget *parent = 0);
     ~monitor();
+
+    inline QWidget *get_groups_widget() const;
 };
+
+inline QWidget *monitor::get_groups_widget() const
+{
+    return groups;
+}
 
 #endif // MAIN_WINDOW_H

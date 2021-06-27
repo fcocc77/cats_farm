@@ -62,7 +62,7 @@ void monitor::setup_ui()
     settings = new settings_class(shared);
 
     // Submit
-    _submit = new submit();
+    _submit = new submit(this);
 
     // Widget de propiedades
     properties = new properties_class(log, options, settings, _submit);

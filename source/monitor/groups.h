@@ -1,17 +1,17 @@
 #ifndef GROUPS_HPP
 #define GROUPS_HPP
 
-#include <QTreeWidget>
 #include <QMainWindow>
 #include <QPainter>
 #include <QResizeEvent>
+#include <QTreeWidget>
 
 #include "servers.h"
 
 class groups_class : public QTreeWidget
 {
 private:
-    QMainWindow *monitor;
+    QWidget *_monitor;
     shared_variables *shared;
     servers_class *servers;
 
@@ -22,10 +22,9 @@ private:
     void create_window();
     void add_machine();
     void group_delete();
-    //-----------------
 
 public:
-    groups_class(QMainWindow *_monitor, shared_variables *_shared,
+    groups_class(QWidget *_monitor, shared_variables *_shared,
                  servers_class *_servers);
     ~groups_class();
 
@@ -33,11 +32,12 @@ public:
     QAction *create_action;
     QAction *add_machine_action;
     QAction *delete_action;
-    //------------------------------------------------
 
     void make_server(QTreeWidgetItem *item, QJsonArray machines);
     QTreeWidgetItem *group_make(QString group_name, int totaMachine,
                                 int activeMachine, int offMachine);
+
+    QStringList get_groups() const;
 };
 
 class ElidedLabel : public QLabel
