@@ -42,12 +42,15 @@ function build()
         mkdir "$bin"
     fi
 
+    compiled=true
+
     if [[ (! -d "C:/Qt") && (! -f "$bin/vmanager.exe") ]]; then
         download_qt5
     fi
 
     if [ ! -f "$bin/submit.exe" ]; then
         compile submit submit
+        compiled=false
     fi
 
     if [ ! -f "$bin/vserver.exe" ]; then
@@ -60,6 +63,10 @@ function build()
 
     if [ ! -f "$bin/vmonitor.exe" ]; then
         compile monitor vmonitor
+    fi
+
+    if [ $compiled == false ]; then
+        windeployqt "$bin"
     fi
 }
 

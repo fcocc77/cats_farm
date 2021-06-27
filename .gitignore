@@ -13,3 +13,4 @@ source/*/*.Debug
 source/*/*.Release
 source/*/*.rc
 resources/images
+.qmake*
