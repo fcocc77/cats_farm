@@ -47,12 +47,12 @@ QString manager::preferences_action(QJsonArray _pks)
     QString action = _pks[0].toString();
 
     if (action == "read")
-        return jots(jread(VINARENDER_PATH + "/etc/preferences.json"));
+        return jots(jread(VINARENDER_CONF_PATH + "/preferences.json"));
     else
     {
         QJsonObject pks = _pks[1].toObject();
         preferences["paths"] = pks;
-        jwrite(VINARENDER_PATH + "/etc/preferences.json", preferences);
+        jwrite(VINARENDER_CONF_PATH + "/preferences.json", preferences);
     }
 
     return "";

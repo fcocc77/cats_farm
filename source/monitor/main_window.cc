@@ -13,7 +13,7 @@ monitor::monitor(QWidget *parent)
 
 monitor::~monitor()
 {
-    QString openMonitor = VINARENDER_PATH + "/etc/openMonitor";
+    QString openMonitor = VINARENDER_CONF_PATH + "/openMonitor";
 
     // guarda un bool para ver si el monitor ya esta cerrado.
     fwrite(openMonitor, "0");
@@ -41,7 +41,7 @@ QWidget *monitor::add_title(QWidget *widget, QString title)
 void monitor::setup_ui()
 {
     shared = new shared_variables();
-    shared->settings = jread(VINARENDER_PATH + "/etc/settings.json");
+    shared->settings = jread(VINARENDER_CONF_PATH + "/settings.json");
     shared->manager_host =
         shared->settings["manager"].toObject()["ip"].toString();
     shared->manager_port =

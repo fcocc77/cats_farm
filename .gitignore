@@ -9,3 +9,6 @@ bin
 session.vim
 temp/
 *.swp
+source/*/*.Debug
+source/*/*.Release
+source/*/*.rc

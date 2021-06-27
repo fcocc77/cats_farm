@@ -39,7 +39,7 @@ void update_class::update(QString host)
     // guarda la zona actual en settings, para que cuando
     // abramos nuevamente el vmonitor inicie con esa zona
     shared->settings["current_manager"] = host;
-    jwrite(VINARENDER_PATH + "/etc/settings.json", shared->settings);
+    jwrite(VINARENDER_CONF_PATH + "/settings.json", shared->settings);
 
     shared->manager_host = host;
 

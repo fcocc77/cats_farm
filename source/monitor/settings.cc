@@ -124,7 +124,7 @@ void settings_class::ok()
 
     shared->settings["hosts"] = json_hosts;
     // -----------------------------
-    jwrite(VINARENDER_PATH + "/etc/settings.json", shared->settings);
+    jwrite(VINARENDER_CONF_PATH + "/settings.json", shared->settings);
 
     // agrega las ips al combobox de zonas
     shared->zone_box->clear();

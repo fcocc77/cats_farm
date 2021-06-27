@@ -7,7 +7,7 @@ server::server()
     render = new render_class(&mutex);
 
     // obtiene los puertos del manager y server
-    QJsonObject settings = jread(VINARENDER_PATH + "/etc/settings.json");
+    QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
     QString manager_host = settings["manager"].toObject()["ip"].toString();
     int manager_port = settings["manager"].toObject()["port"].toInt();
     int server_port = settings["server"].toObject()["port"].toInt();
@@ -24,7 +24,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
         mutex.lock();
         render->preferences = jofs(recv);
         mutex.unlock();
-        jwrite(VINARENDER_PATH + "/etc/preferences_s.json", render->preferences);
+        jwrite(VINARENDER_CONF_PATH + "/preferences_s.json", render->preferences);
     }
 
     QString system;

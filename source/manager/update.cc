@@ -24,7 +24,7 @@ void manager::container_save()
     // guarda informacion a json cada 10 seg
     if (sec > 10)
     {
-        jwrite(VINARENDER_PATH + "/etc/info.json", struct_to_json());
+        jwrite(VINARENDER_CONF_PATH + "/info.json", struct_to_json());
         sec = 0;
     }
 }

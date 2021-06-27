@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    QString showMonitor = VINARENDER_PATH + "/etc/showMonitor";
+    QString showMonitor = VINARENDER_CONF_PATH + "/showMonitor";
 
     // si el monitor esta abierto no lo abre
     int count = 0;

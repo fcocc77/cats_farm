@@ -3,7 +3,7 @@
 manager::manager()
 {
     // Carga la informacion guardada de Jobs, Servers y Groups
-    QJsonObject info = jread(VINARENDER_PATH + "/etc/info.json");
+    QJsonObject info = jread(VINARENDER_CONF_PATH + "/info.json");
     if (not info.empty())
         json_to_struct(info);
     //-----------------------------------------------
@@ -11,7 +11,7 @@ manager::manager()
     // Recive la informacion del suministrador y crea un jobs con sus tareas
 
     // obtiene los puertos del manager y server
-    settings = jread(VINARENDER_PATH + "/etc/settings.json");
+    settings = jread(VINARENDER_CONF_PATH + "/settings.json");
     int port = settings["manager"].toObject()["port"].toInt();
     server_port = settings["server"].toObject()["port"].toInt();
     // -------------------------------

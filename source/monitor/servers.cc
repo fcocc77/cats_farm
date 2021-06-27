@@ -102,14 +102,14 @@ void servers_class::setup_ui()
 
 void servers_class::connections()
 {
-    shared->server_display = jread(VINARENDER_PATH + "/etc/server_display.json");
+    shared->server_display = jread(VINARENDER_CONF_PATH + "/server_display.json");
 
     auto displayAction = [this](QString action) {
         if (shared->server_display[action].toBool())
             shared->server_display[action] = false;
         else
             shared->server_display[action] = true;
-        jwrite(VINARENDER_PATH + "/etc/server_display.json", shared->server_display);
+        jwrite(VINARENDER_CONF_PATH + "/server_display.json", shared->server_display);
     };
 
     auto displayAll = [this](bool status) {
@@ -127,7 +127,7 @@ void servers_class::connections()
         display_on_action->setChecked(status);
         display_off_action->setChecked(status);
 
-        jwrite(VINARENDER_PATH + "/etc/server_display.json", shared->server_display);
+        jwrite(VINARENDER_CONF_PATH + "/server_display.json", shared->server_display);
     };
 
     connect(show_all_action, &QAction::triggered, this,

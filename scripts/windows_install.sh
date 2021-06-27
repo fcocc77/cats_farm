@@ -1,9 +1,11 @@
 cd "$(dirname "$0")"
+path="$(dirname "$(pwd)")"
 
 qmake="/c/Qt/Qt5.12.11/5.12.11/mingw73_64/bin/qmake.exe"
 make="/c/Qt/Qt5.12.11/Tools/mingw730_64/bin/mingw32-make.exe"
 
 install_dir="/c/Program Files/vinarender"
+app_data="$HOME/AppData/Local/vinarender"
 
 manager_ip=$(ipconfig | awk -F":" '/IPv4/{print $2}')
 manager_port=771
@@ -18,13 +20,47 @@ function download_qt5() {
 }
 
 function compile() {
-    folder="$install_dir/source/$1"
-    cd "$folder"
+    cd "$path/source/$1"
+
     $qmake
     $make -j 8
-    bin="$install_dir/bin"
-    mkdir -p "$bin"
-    mv "$folder/release/$2.exe" "$bin"
+    mv "./release/$2.exe" "$path/bin"
+
+    rm ./MakeFile
+    rm ./*.Debug
+    rm ./*.Release
+    rm ./*.rc
+    rm -rf ./debug
+    rm -rf ./release
+}
+
+function build()
+{
+    bin="$path/bin"
+
+    if [ ! -d "$bin" ]; then
+        mkdir "$bin"
+    fi
+
+    if [[ (! -d "C:/Qt") && (! -f "$bin/vmanager.exe") ]]; then
+        download_qt5
+    fi
+
+    if [ ! -f "$bin/submit.exe" ]; then
+        compile submit submit
+    fi
+
+    if [ ! -f "$bin/vserver.exe" ]; then
+        compile server vserver
+    fi
+
+    if [ ! -f "$bin/vmanager.exe" ]; then
+        compile manager vmanager
+    fi
+
+    if [ ! -f "$bin/vmonitor.exe" ]; then
+        compile monitor vmonitor
+    fi
 }
 
 function install(){
@@ -32,24 +68,20 @@ function install(){
         mkdir "$install_dir"
     fi
 
-    cp -rf ../etc "$install_dir"
-    cp -rf ../config "$install_dir"
-    cp -rf ../libs "$install_dir"
-    cp -rf ../log "$install_dir"
-    cp -rf ../modules "$install_dir"
-    cp -rf ../resources "$install_dir"
-    cp -rf ../services "$install_dir"
-    cp -rf ../source "$install_dir"
-    cp -rf ../utils "$install_dir"
-    cp -rf ../win "$install_dir"
+    if [ ! -d "$app_data" ]; then
+        mkdir "$app_data"
+        cp -rf "$path"/etc/* "$app_data"
+    fi
 
-    compile server vserver
-    compile manager vmanager
-    compile monitor vmonitor
-    compile submit submit
+    cp "$path/etc/settings.json" "$app_data/settings.json"
+    cp -rf $path/log "$install_dir"
+    cp -rf $path/modules "$install_dir"
+    cp -rf $path/resources "$install_dir"
+    cp -rf $path/win "$install_dir"
+    cp -rf $path/bin "$install_dir"
 
     # guarda ip del manager y puertos en el settings
-    settings="$install_dir/etc/settings.json"
+    settings="$app_data/settings.json"
     sed -i "s|{{server_port}}|$server_port|g" "$settings"
     sed -i "s|{{manager_port}}|$manager_port|g" "$settings"
     sed -i "s|{{manager_ip}}|$manager_ip|g" "$settings"
@@ -57,13 +89,16 @@ function install(){
     # cambia ruta de linux por la de windows
     sed -i "s|/opt/vinarender|C:/Program Files/vinarender|g" "$install_dir/resources/css/style.css"
 
+    # link
+    cmd //c mklink "$HOME/Desktop/VinaRender Monitor" "$install_dir/bin/vmonitor.exe"
+
     # service
 	nssm="$install_dir/win/service/nssm.exe"
     "$nssm" install "VinaRender Server" "$install_dir/bin/vserver.exe"
     "$nssm" install "VinaRender Manager" "$install_dir/bin/vmanager.exe"
 
-    "$nssm" set "VinaRender Server" ObjectName ".\\$user" "$password"
-    "$nssm" set "VinaRender Manager" ObjectName ".\\$user" "$password"
+    "$nssm" set "VinaRender Server" ObjectName ".\\$USERNAME" "$password"
+    "$nssm" set "VinaRender Manager" ObjectName ".\\$USERNAME" "$password"
 
     sc start "VinaRender Server"
     sc start "VinaRender Manager"
@@ -97,18 +132,21 @@ function uninstall(){
     taskkill -f -im "vmonitor.exe"
 
     rm -rf "$install_dir"
+    rm "$HOME/Desktop/VinaRender Monitor"
 }
 
-if [ ! -d "C:/Qt" ]; then
-    download_qt5
-else
-    echo "UserName: "
-    read user
-    echo "Password: "
-    read -s password
+echo Password of \"$USERNAME\":
+read -s password
 
-    uninstall
-    install
-fi
+echo -e "\nUninstalling ..."
+uninstall &>/dev/null
+
+echo 'Building ...'
+build &>/dev/null
+
+echo 'Installing ...'
+install &>/dev/null
+
+echo -e "\n// Installation completed //"
 
 

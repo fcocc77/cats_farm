@@ -368,7 +368,7 @@ void submit::submit_start(QString software)
 
     if (ok)
     {
-        QJsonObject settings = jread(VINARENDER_PATH + "/etc/settings.json");
+        QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
         int port = settings["manager"].toObject()["port"].toInt();
         QString host = settings["current_manager"].toString();
 
