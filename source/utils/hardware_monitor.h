@@ -16,7 +16,7 @@ float get_ram_used();
 int get_cpu_temp();
 int get_cpu_cores();
 QList<long> get_cpu_stat();
-QList<float> ram();
+QList<float> get_ram_from_windows();
 
 }; // namespace hm
 

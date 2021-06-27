@@ -133,7 +133,7 @@ int get_process_cpu_used(int pid)
     return usage;
 }
 
-QList<float> ram()
+QList<float> get_ram_from_windows()
 {
 
     QList<float> resorc;
@@ -177,13 +177,10 @@ int get_ram_percent(bool cached_percent)
 
     else if (_win32)
     {
-        percent = ram()[1];
-    }
-
-    else
-    {
-        QString mem = os::sh("memory_pressure");
-        percent = 100 - mem.split("percentage:")[1].split("%")[0].toInt();
+        if (cached_percent)
+            percent = 0;
+        else
+            percent = get_ram_from_windows()[1];
     }
 
     return percent;
@@ -204,7 +201,7 @@ float get_ram_total()
         }
         else if (_win32)
         {
-            total_ram = ram()[0];
+            total_ram = get_ram_from_windows()[0];
         }
         else
         {
