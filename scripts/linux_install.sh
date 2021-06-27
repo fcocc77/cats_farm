@@ -1,16 +1,15 @@
 #!/usr/bin/env sh
 cd "$(dirname "$0")"
-cd ..
+path="$(dirname $(pwd))"
 
 if [[ $EUID -ne 0 ]]; then
    echo "Execute with root: sudo sh install.sh"
    exit 1
 fi
 
-path=$(pwd)
-
 # ruta de instalacion
 dst="/opt/vinarender"
+app_data="/home/$SUDO_USER/.vinarender"
 
 # IPs
 manager_ip="$2"
@@ -28,7 +27,7 @@ compile() {
     cd $folder
     rm ./Makefile
     qmake-qt5
-    make -j 4
+    make -j 8
     bin=$path/bin
     mkdir -p $bin
     mv "$folder/release/$2" $bin
@@ -102,9 +101,15 @@ install() {
     mkdir $dst
     mkdir $dst/bin
 
+    if [ ! -d "$app_data" ]; then
+        mkdir "$app_data"
+        cp "$path"/etc/* $app_data
+    fi
+    echo $app_data
+
     # copia el contenido necesario
+    cp "$path/etc/settings.json" "$app_data/settings.json"
     cp -rf "$path/bin" $dst
-    cp -rf "$path/etc" $dst
     cp -rf "$path/resources" $dst
     cp -rf "$path/log" $dst
     cp -rf "$path/services" $dst
@@ -114,7 +119,7 @@ install() {
     echo $dst >/etc/vinarender
 
     # guarda ip del manager y puertos en el settings
-    settings=$dst"/etc/settings.json"
+    settings="$app_data/settings.json"
     sed -i "s|{{server_port}}|$server_port|g" $settings
     sed -i "s|{{manager_port}}|$manager_port|g" $settings
     sed -i "s|{{manager_ip}}|$manager_ip|g" $settings
@@ -148,7 +153,7 @@ install() {
 
     # modifica los permisos de los directorios etc y log para
     # que el vmonitor tenga acceso ya que se ejecuta en usuario.
-    chmod 777 -R "$dst/etc"
+    chmod 777 -R "$app_data"
     chmod 777 -R "$dst/log"
 
     nuke install
