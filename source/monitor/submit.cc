@@ -34,7 +34,7 @@ submit::submit(QWidget *__monitor)
 
     job_name = new QLineEdit();
     server_group_box = new combo_box();
-    priority = new QComboBox();
+    priority = new combo_box();
     task_size_edit = new QLineEdit();
     comment_edit = new QLineEdit();
     first_frame_edit = new QLineEdit();
@@ -54,7 +54,7 @@ void submit::ui()
     vboxSubmit->setContentsMargins(15, 15, 15, 15);
 
     QStringList items = {"Maya", "Houdini"};
-    software_box->addItems(items);
+    software_box->add_items(items);
     vboxSubmit->addWidget(software_box);
 
     // box 1
@@ -180,8 +180,8 @@ void submit::ui()
     labelPriority->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     labelPriority->setMaximumWidth(70);
 
-    priority->addItems({"Very High", "High", "Normal", "Low", "Very Low"});
-    priority->setCurrentIndex(2);
+    priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
+    priority->set_current_index(2);
     priority->setMaximumWidth(80);
 
     hbox13->addWidget(labelPriority);
@@ -263,7 +263,7 @@ void submit::connections()
     connect(server_group_box, &combo_box::clicked, this,
             &submit::update_server_groups);
 
-    connect(software_box, &combo_box::currentTextChanged, this,
+    connect(software_box, &combo_box::current_text_changed, this,
             &submit::update_software_box);
 
     connect(project_dir_button, &QPushButton::clicked, this, [this]() {
@@ -283,7 +283,7 @@ void submit::connections()
     });
 
     connect(submit_button, &QPushButton::clicked, this,
-            [this]() { submit_start(software_box->currentText()); });
+            [this]() { submit_start(software_box->get_current_text()); });
 }
 
 void submit::update_software_box(QString software)
@@ -318,20 +318,20 @@ void submit::update_server_groups()
         static_cast<monitor *>(_monitor)->get_groups_widget());
 
     server_group_box->clear();
-    server_group_box->addItems({"None"});
+    server_group_box->add_items({"None"});
 
     for (QString group : groups->get_groups())
-        server_group_box->addItems({group});
+        server_group_box->add_items({group});
 }
 
 void submit::submit_start(QString software)
 {
     QString system = _linux ? "Linux" : "Windows";
 
-    QJsonArray info = {job_name->text(), "", server_group_box->currentText(),
+    QJsonArray info = {job_name->text(), "", server_group_box->get_current_text(),
                        first_frame_edit->text().toInt(),
                        last_frame_edit->text().toInt(),
-                       task_size_edit->text().toInt(), priority->currentIndex(),
+                       task_size_edit->text().toInt(), priority->get_current_text(),
                        suspend_box->isChecked(), comment_edit->text(), software,
                        // project,
                        // extra,

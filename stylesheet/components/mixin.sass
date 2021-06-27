@@ -1,27 +1,8 @@
 @mixin combobox
-    margin-right: 10px
-    background-color: $b20
-    border: 1px solid $b20
-    padding: 5px
-    border-radius: 2px
-    &::down-arrow
-        image: url(#{$images}/down_arrow.png)
-    &:focus 
-        border-color: $b22
-    &::drop-down 
-        width: 20px
-        background-color: $b25
-    &:hover 
-        background: $b22
-    QAbstractItemView 
-        background-color: $b13
-    &:item
-        &:selected
-            background-color: $b20
-            color: $base
-            padding-left: 0px
-    &::indicator 
-        background-color: transparent  
+    background: red
+    QLabel
+        background: $b30
+
 @mixin treecolor
     &:selected
         background-color: rgba($base,.1)

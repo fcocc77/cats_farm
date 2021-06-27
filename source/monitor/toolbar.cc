@@ -110,7 +110,7 @@ void toolbar_class::connections()
     connect(resume, &QPushButton::clicked, this,
             [this]() { jobs->job_resume_action->triggered(); });
 
-    connect(shared->zone_box, &combo_box::currentTextChanged, update,
+    connect(shared->zone_box, &combo_box::current_text_changed, update,
             &update_class::update);
 
     connect(jobs_switch, &QPushButton::clicked, this, [this]() {

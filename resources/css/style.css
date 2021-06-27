@@ -285,28 +285,9 @@ QMenuBar {
     #tool_bar QPushButton:hover {
       color: #0099ff; }
   #tool_bar QComboBox {
-    margin-right: 10px;
-    background-color: #2e3238;
-    border: 1px solid #2e3238;
-    padding: 5px;
-    border-radius: 2px; }
-    #tool_bar QComboBox::down-arrow {
-      image: url(/opt/vinarender/resources/images/down_arrow.png); }
-    #tool_bar QComboBox:focus {
-      border-color: #33373d; }
-    #tool_bar QComboBox::drop-down {
-      width: 20px;
-      background-color: #3a3f45; }
-    #tool_bar QComboBox:hover {
-      background: #33373d; }
-    #tool_bar QComboBox QAbstractItemView {
-      background-color: #1e2124; }
-    #tool_bar QComboBox:item:selected {
-      background-color: #2e3238;
-      color: #0099ff;
-      padding-left: 0px; }
-    #tool_bar QComboBox::indicator {
-      background-color: transparent; }
+    background: red; }
+    #tool_bar QComboBox QLabel {
+      background: #464b53; }
   #tool_bar QLabel {
     background: transparent; }
   #tool_bar #resume {
@@ -502,28 +483,9 @@ QMenuBar {
       border-color: #0099ff;
       color: #0099ff; }
   #options QComboBox {
-    margin-right: 10px;
-    background-color: #2e3238;
-    border: 1px solid #2e3238;
-    padding: 5px;
-    border-radius: 2px; }
-    #options QComboBox::down-arrow {
-      image: url(/opt/vinarender/resources/images/down_arrow.png); }
-    #options QComboBox:focus {
-      border-color: #33373d; }
-    #options QComboBox::drop-down {
-      width: 20px;
-      background-color: #3a3f45; }
-    #options QComboBox:hover {
-      background: #33373d; }
-    #options QComboBox QAbstractItemView {
-      background-color: #1e2124; }
-    #options QComboBox:item:selected {
-      background-color: #2e3238;
-      color: #0099ff;
-      padding-left: 0px; }
-    #options QComboBox::indicator {
-      background-color: transparent; }
+    background: red; }
+    #options QComboBox QLabel {
+      background: #464b53; }
   #options #first_knobs, #options #second_knobs, #options #third_knobs {
     background: #1e2124;
     border-radius: 2px; }
@@ -540,29 +502,10 @@ QMenuBar {
     background: #3a3f45;
     border-color: #0099ff; }
 
-#submit_widget QComboBox {
-  margin-right: 10px;
-  background-color: #2e3238;
-  border: 1px solid #2e3238;
-  padding: 5px;
-  border-radius: 2px; }
-  #submit_widget QComboBox::down-arrow {
-    image: url(/opt/vinarender/resources/images/down_arrow.png); }
-  #submit_widget QComboBox:focus {
-    border-color: #33373d; }
-  #submit_widget QComboBox::drop-down {
-    width: 20px;
-    background-color: #3a3f45; }
-  #submit_widget QComboBox:hover {
-    background: #33373d; }
-  #submit_widget QComboBox QAbstractItemView {
-    background-color: #1e2124; }
-  #submit_widget QComboBox:item:selected {
-    background-color: #2e3238;
-    color: #0099ff;
-    padding-left: 0px; }
-  #submit_widget QComboBox::indicator {
-    background-color: transparent; }
+#submit_widget #combo_box {
+  background: red; }
+  #submit_widget #combo_box QLabel {
+    background: #464b53; }
 
 #submit_widget QPushButton {
   padding: 3px;

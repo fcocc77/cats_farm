@@ -129,7 +129,7 @@ void settings_class::ok()
     // agrega las ips al combobox de zonas
     shared->zone_box->clear();
     for (QJsonValue ip : json_hosts)
-        shared->zone_box->addItem(ip.toString());
+        shared->zone_box->add_item(ip.toString());
     // -------------------------
 }
 
