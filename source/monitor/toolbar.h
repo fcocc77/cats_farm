@@ -12,6 +12,7 @@
 #include "shared_variables.h"
 #include "tasks.h"
 #include "update.h"
+#include "button.h"
 
 class toolbar_class : public QWidget
 {
@@ -32,16 +33,16 @@ private:
     void connections();
     void load_zones();
 
-    QPushButton *resume;
-    QPushButton *suspend;
-    QPushButton *settings;
-    QPushButton *submit;
+    button *resume;
+    button *suspend;
+    button *settings;
+    button *submit;
 
-    QPushButton *jobs_switch;
-    QPushButton *tasks_switch;
-    QPushButton *groups_switch;
-    QPushButton *servers_switch;
-    QPushButton *log_switch;
+    button *jobs_switch;
+    button *tasks_switch;
+    button *groups_switch;
+    button *servers_switch;
+    button *log_switch;
 
 public:
     toolbar_class(QMainWindow *_monitor, general_class *_global,

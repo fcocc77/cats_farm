@@ -36,19 +36,19 @@ void toolbar_class::setup_ui()
     this->setContentsMargins(0, 0, 0, 0);
     this->setLayout(main_layout);
 
-    resume = new QPushButton("RESUME JOB");
+    resume = new button("RESUME JOB", "play_arrow");
     resume->setObjectName("resume");
     main_layout->addWidget(resume);
 
-    suspend = new QPushButton("SUSPEND JOB");
+    suspend = new button("SUSPEND JOB", "pause");
     suspend->setObjectName("suspend");
     main_layout->addWidget(suspend);
 
-    settings = new QPushButton("SETTINGS");
+    settings = new button("SETTINGS", "settings");
     settings->setObjectName("settings");
     main_layout->addWidget(settings);
 
-    submit = new QPushButton("SUBMIT");
+    submit = new button("SUBMIT", "submit");
     submit->setObjectName("submit");
     main_layout->addWidget(submit);
 
@@ -74,65 +74,65 @@ void toolbar_class::setup_ui()
 
     main_layout->addStretch();
 
-    jobs_switch = new QPushButton("Jobs");
+    jobs_switch = new button("Jobs", "jobs");
     jobs_switch->setObjectName("jobs_switch");
     main_layout->addWidget(jobs_switch);
 
-    tasks_switch = new QPushButton("Tasks");
+    tasks_switch = new button("Tasks", "tasks");
     tasks_switch->setObjectName("tasks_switch");
     main_layout->addWidget(tasks_switch);
 
-    servers_switch = new QPushButton("Servers");
+    servers_switch = new button("Servers", "server");
     servers_switch->setObjectName("servers_switch");
     main_layout->addWidget(servers_switch);
 
-    groups_switch = new QPushButton("Groups");
+    groups_switch = new button("Groups", "groups");
     groups_switch->setObjectName("groups_switch");
     main_layout->addWidget(groups_switch);
 
-    log_switch = new QPushButton("Log");
+    log_switch = new button("Log", "log");
     log_switch->setObjectName("log_switch");
     main_layout->addWidget(log_switch);
 }
 
 void toolbar_class::connections()
 {
-    connect(settings, &QPushButton::clicked, this, [this]() {
+    connect(settings, &button::clicked, this, [this]() {
         properties->switch_widget("settings");
     });
 
-    connect(submit, &QPushButton::clicked, this,
+    connect(submit, &button::clicked, this,
             [this]() { properties->switch_widget("submit"); });
 
-    connect(suspend, &QPushButton::clicked, this,
+    connect(suspend, &button::clicked, this,
             [this]() { jobs->job_suspend_action->triggered(); });
 
-    connect(resume, &QPushButton::clicked, this,
+    connect(resume, &button::clicked, this,
             [this]() { jobs->job_resume_action->triggered(); });
 
     connect(shared->zone_box, &combo_box::current_text_changed, update,
             &update_class::update);
 
-    connect(jobs_switch, &QPushButton::clicked, this, [this]() {
+    connect(jobs_switch, &button::clicked, this, [this]() {
         jobs->parentWidget()->setVisible(!jobs->parentWidget()->isVisible());
     });
 
-    connect(tasks_switch, &QPushButton::clicked, this, [this]() {
+    connect(tasks_switch, &button::clicked, this, [this]() {
         tasks->tree->parentWidget()->setVisible(
             !tasks->tree->parentWidget()->isVisible());
     });
 
-    connect(servers_switch, &QPushButton::clicked, this, [this]() {
+    connect(servers_switch, &button::clicked, this, [this]() {
         servers->parentWidget()->setVisible(
             !servers->parentWidget()->isVisible());
     });
 
-    connect(groups_switch, &QPushButton::clicked, this, [this]() {
+    connect(groups_switch, &button::clicked, this, [this]() {
         groups->parentWidget()->setVisible(
             !groups->parentWidget()->isVisible());
     });
 
-    connect(log_switch, &QPushButton::clicked, this, [this]() {
+    connect(log_switch, &button::clicked, this, [this]() {
         properties->switch_widget("log");
     });
 }

@@ -12,3 +12,4 @@ temp/
 source/*/*.Debug
 source/*/*.Release
 source/*/*.rc
+resources/images

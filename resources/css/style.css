@@ -278,7 +278,6 @@ QMenuBar {
   #tool_bar QPushButton {
     background: transparent;
     margin-right: 15px;
-    qproperty-iconSize: 13px;
     font-size: 11px;
     border-right: 1px solid #464b53;
     padding-right: 20px; }
@@ -290,14 +289,6 @@ QMenuBar {
       background: #464b53; }
   #tool_bar QLabel {
     background: transparent; }
-  #tool_bar #resume {
-    qproperty-icon: url(/opt/vinarender/resources/svg/play.svg); }
-    #tool_bar #resume:hover {
-      qproperty-icon: url(/opt/vinarender/resources/svg/pause.svg); }
-  #tool_bar #suspend {
-    qproperty-icon: url(/opt/vinarender/resources/svg/pause.svg); }
-  #tool_bar #settings {
-    qproperty-icon: url(/opt/vinarender/resources/svg/gear.svg); }
   #tool_bar #jobs_count {
     font-size: 15px;
     color: #0099ff; }
@@ -391,9 +382,9 @@ QMenuBar {
       #groups::branch:has-children:hover {
         background: #20272d; }
       #groups::branch:has-children:open {
-        image: url(/opt/vinarender/resources/images/down_arrow.png); }
+        image: url("/opt/vinarender/resources/images/arrow_down_checked.png"); }
       #groups::branch:has-children:closed {
-        image: url(/opt/vinarender/resources/images/right_arrow.png); }
+        image: url("/opt/vinarender/resources/images/arrow_right_normal.png"); }
 
 #settings #zones_knobs, #settings #host_knobs {
   background: #2a2d32;
