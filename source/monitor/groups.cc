@@ -6,6 +6,7 @@
 
 #include <tcp.h>
 #include "groups.h"
+#include "../global/global.h"
 
 groups_class::groups_class(QWidget *__monitor, shared_variables *_shared,
                            servers_class *_servers)
@@ -19,6 +20,15 @@ groups_class::groups_class(QWidget *__monitor, shared_variables *_shared,
     create_action = new QAction("Create Group");
     add_machine_action = new QAction("Add Machine");
     delete_action = new QAction("Delete Group");
+
+    auto icon = [=](QString name) {
+        return QIcon(VINARENDER_PATH + "/resources/images/" + name +
+                     "_normal.png");
+    };
+
+    create_action->setIcon(icon("groups"));
+    add_machine_action->setIcon(icon("add"));
+    delete_action->setIcon(icon("delete"));
 
     connections();
     setup_ui();
@@ -43,7 +53,6 @@ void groups_class::setup_ui()
     this->setColumnWidth(0, 150);
     this->setColumnWidth(1, 70);
     this->setColumnWidth(2, 70);
-    //----------------------------------
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 

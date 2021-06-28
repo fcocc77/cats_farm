@@ -2,10 +2,10 @@
 #include <QMenuBar>
 #include <QSignalMapper>
 
-#include "util.h"
-#include "tcp.h"
-#include "servers.h"
 #include "../global/global.h"
+#include "servers.h"
+#include "tcp.h"
+#include "util.h"
 
 servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
                              log_class *_log)
@@ -22,7 +22,6 @@ servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
     display_mac_action = new QAction("Mac OS X");
     display_on_action = new QAction("ON");
     display_off_action = new QAction("OFF");
-    //------------------------------------------------
 
     // Server Action
     server_inactive_action = new QAction("Disable");
@@ -31,11 +30,24 @@ servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
     server_free_ram_action = new QAction("Free Ram");
     server_turn_on_action = new QAction("Turn ON");
     server_turn_off_action = new QAction("Turn OFF");
-    server_ssh_action = new QAction("SSH");
     server_show_log = new QAction("Show Log");
-    server_vnc_action = new QAction("VNC");
     delete_action = new QAction("Delete Server");
-    //------------------------------------------------
+
+    server_show_log->setShortcut(QString("Ctrl+L"));
+
+    auto icon = [=](QString name) {
+        return QIcon(VINARENDER_PATH + "/resources/images/" + name +
+                     "_normal.png");
+    };
+
+    server_show_log->setIcon(icon("log"));
+    server_inactive_action->setIcon(icon("disable_server"));
+    server_reactive_action->setIcon(icon("enable_server"));
+    delete_action->setIcon(icon("delete"));
+    server_turn_on_action->setIcon(icon("on"));
+    server_turn_off_action->setIcon(icon("off"));
+    server_free_ram_action->setIcon(icon("ram"));
+
 
     connections();
     setup_ui();
@@ -69,47 +81,25 @@ void servers_class::setup_ui()
     this->setColumnWidth(5, 177);
     this->setColumnWidth(6, 100);
     this->setColumnWidth(8, 130);
-    //-------------------------------
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
 
     this->setSortingEnabled(true);
     this->sortByColumn(0, Qt::AscendingOrder);
-
-    // Menus de display de servidores
-    return;
-
-    QMenuBar *menuBar = new QMenuBar(this);
-    menuBar->addMenu("File");
-    menuBar->addMenu("Edit");
-
-    QMenu *display = new QMenu("Filter", monitor);
-    menuBar->addMenu(display);
-
-    display->addAction(show_all_action);
-    display->addAction(hide_all_action);
-    display->addSeparator();
-
-    display->addAction(display_on_action);
-    display->addAction(display_off_action);
-    display->addSeparator();
-
-    display->addAction(display_windows_action);
-    display->addAction(display_linux_action);
-    display->addAction(display_mac_action);
-    //------------------------------------------
 }
 
 void servers_class::connections()
 {
-    shared->server_display = jread(VINARENDER_CONF_PATH + "/server_display.json");
+    shared->server_display =
+        jread(VINARENDER_CONF_PATH + "/server_display.json");
 
     auto displayAction = [this](QString action) {
         if (shared->server_display[action].toBool())
             shared->server_display[action] = false;
         else
             shared->server_display[action] = true;
-        jwrite(VINARENDER_CONF_PATH + "/server_display.json", shared->server_display);
+        jwrite(VINARENDER_CONF_PATH + "/server_display.json",
+               shared->server_display);
     };
 
     auto displayAll = [this](bool status) {
@@ -127,7 +117,8 @@ void servers_class::connections()
         display_on_action->setChecked(status);
         display_off_action->setChecked(status);
 
-        jwrite(VINARENDER_CONF_PATH + "/server_display.json", shared->server_display);
+        jwrite(VINARENDER_CONF_PATH + "/server_display.json",
+               shared->server_display);
     };
 
     connect(show_all_action, &QAction::triggered, this,
@@ -201,13 +192,7 @@ void servers_class::connections()
                 this);
     });
 
-    connect(server_ssh_action, &QAction::triggered, this,
-            &servers_class::ssh_client);
     connect(server_show_log, &QAction::triggered, this, &servers_class::to_log);
-    server_show_log->setShortcut(QString("Ctrl+L"));
-    connect(server_vnc_action, &QAction::triggered, this,
-            &servers_class::vnc_client);
-    //--------------------------------------------------------
 }
 
 void servers_class::server_popup()
@@ -226,7 +211,6 @@ void servers_class::server_popup()
         menu->addAction(server_show_log);
         menu->addSeparator();
 
-        //-------------------------------------------------
         QMenu *submenu = new QMenu("Number of instances", monitor);
         QSignalMapper *mapper = new QSignalMapper(monitor);
 
@@ -242,14 +226,10 @@ void servers_class::server_popup()
                 SLOT(server_max_instances(int)));
 
         menu->addMenu(submenu);
-        //-------------------------------------------------
 
         menu->addAction(server_free_ram_action);
         menu->addAction(server_turn_on_action);
         menu->addAction(server_turn_off_action);
-        menu->addSeparator();
-        menu->addAction(server_ssh_action);
-        menu->addAction(server_vnc_action);
         menu->addSeparator();
         menu->popup(QCursor::pos());
     }
@@ -294,57 +274,6 @@ void servers_class::to_log()
 void servers_class::server_max_instances(int ins)
 {
     to_action("max_instances", QString::number(ins));
-}
-
-void servers_class::ssh_client()
-{
-
-    QJsonArray recv = jafs(to_action("ssh", "None"));
-
-    QString sshUser = recv[0].toString();
-    QString sshPass = recv[1].toString();
-    QString ip = recv[2].toString();
-
-    QString disable_ask =
-        " -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ";
-    QString cmd;
-    QString ssh = "C:/vinarender/os/win/OpenSSH/bin/ssh.exe";
-    QString linux_sshpass = "sshpass -p " + sshPass +
-                            " ssh -o StrictHostKeyChecking=no " + sshUser +
-                            "@" + ip;
-
-    if (_win32)
-        cmd = "cmd.exe /K start cmd.exe /K " + ssh + " -tt " + disable_ask +
-              sshUser + "@" + shared->manager_host + " \"" + linux_sshpass +
-              "\"";
-    else
-        cmd = "gnome-terminal -e '" + linux_sshpass + "'";
-    os::back(cmd);
-}
-
-void servers_class::vnc_client()
-{
-
-    QString tigervnc;
-    if (_linux)
-    {
-        tigervnc = "vncviewer";
-    }
-    else if (_win32)
-    {
-        tigervnc = VINARENDER_PATH + "/os/win/vnc/vncviewer.exe";
-    }
-    else
-    {
-        tigervnc = VINARENDER_PATH + "/os/mac/vnc/vncviewer";
-    }
-
-    for (auto item : this->selectedItems())
-    {
-        QString ip = item->text(7);
-        QString arg = "\"" + tigervnc + "\" " + ip + ":7";
-        os::back(arg);
-    }
 }
 
 void servers_class::message(QString (servers_class::*funtion)(QString, QString),
@@ -396,6 +325,6 @@ QString servers_class::send_to_vserver(QString action, QString info)
         QJsonArray send = {host, QJsonArray({4, {{action, info}}})};
         tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
     }
-    //-------------------------------------
+
     return "none";
 }

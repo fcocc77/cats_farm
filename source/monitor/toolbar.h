@@ -42,7 +42,6 @@ private:
     void setup_ui();
     void connections();
     void load_zones();
-    void switch_widget(QString widget_name);
 
 
 public:
@@ -53,6 +52,8 @@ public:
                   shared_variables *_shared, QWidget *_settings_widget,
                   properties_class *_properties);
     ~toolbar_class();
+
+    void switch_widget(QString widget_name);
 };
 
 #endif // TOOLBAR_HPP

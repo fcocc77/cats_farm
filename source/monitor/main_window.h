@@ -55,7 +55,13 @@ public:
     ~monitor();
 
     inline QWidget *get_groups_widget() const;
+    inline toolbar_class *get_toolbar() const;
 };
+
+inline toolbar_class *monitor::get_toolbar() const
+{
+    return toolbar;
+}
 
 inline QWidget *monitor::get_groups_widget() const
 {

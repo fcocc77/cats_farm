@@ -10,7 +10,7 @@
 class general_class : public QObject
 {
 private:
-    QMainWindow *monitor;
+    QMainWindow *_monitor;
     shared_variables *shared;
 
     QSystemTrayIcon *notify;

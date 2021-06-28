@@ -22,7 +22,6 @@ jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
     , groups(_groups)
     , properties(_properties)
 {
-    // Job Acciones
     delete_action = new QAction("Delete");
     job_suspend_action = new QAction("Suspend");
     job_resume_action = new QAction("Resume");
@@ -30,7 +29,19 @@ jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
     job_unlock_servers_action = new QAction("Enable blocked servers");
     job_log_action = new QAction("Show Log");
     job_modify_action = new QAction("Modify");
-    //------------------------------------------------
+
+    auto icon = [=](QString name) {
+        return QIcon(VINARENDER_PATH + "/resources/images/" + name +
+                     "_normal.png");
+    };
+
+    delete_action->setIcon(icon("delete"));
+    job_suspend_action->setIcon(icon("pause"));
+    job_resume_action->setIcon(icon("play_arrow"));
+    job_restart_action->setIcon(icon("restart"));
+    job_unlock_servers_action->setIcon(icon("unlock"));
+    job_log_action->setIcon(icon("log"));
+    job_modify_action->setIcon(icon("edit"));
 
     setup_ui();
     connections();

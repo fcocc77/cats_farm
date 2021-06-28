@@ -46,7 +46,6 @@ void toolbar_class::setup_ui()
     zone->setObjectName("zone");
 
     shared->zone_box = new combo_box();
-    shared->zone_box->setObjectName("zone_box");
 
     shared->conection = new QLabel();
     shared->conection->setObjectName("conection");

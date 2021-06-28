@@ -77,26 +77,24 @@ QMainWindow
         &::add-page, &::sub-page
             &:horizontal, &:vertical
                 background: none
-    QMenu 
-        background-color: $b15
-        border: 1px solid rgba($base,.4)
+    QMenu
+        background-color: $b17
+        border: 1px solid mix($base, $b15, 20%)
         border-radius: 2px
+        &::icon
+            padding-left: 15px
         &::item
-            padding: 4px 20px 4px 20px
-            border-top: 1px solid transparent
-            border-bottom: 1px solid transparent
-            spacing: 20px
-            &:selected 
-                background-color: rgba($base,.1)
-                border-color: rgba($base,.4)
+            padding: 4px 15px 4px 15px
+            &:selected
+                background: $b22
                 color: $base
-        &::separator 
+            &:checked
+                text-decoration: underline
+        &::separator
             background-color: $b20
             margin: 5px
             height: 1px
-        &::indicator 
-            width: 20px
-            height: 13px
+
 
     QSplitter
         &::handle

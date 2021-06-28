@@ -6,6 +6,7 @@
 #include "util.h"
 #include "tcp.h"
 #include "tasks.h"
+#include "../global/global.h"
 
 tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
                          jobs_class *_jobs)
@@ -14,11 +15,17 @@ tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
     , shared(_shared)
     , jobs(_jobs)
 {
-    // Task Action
     suspend_action = new QAction("Suspend");
     restart_action = new QAction("Restart");
     render_server_action = new QAction("Select server tasks");
-    //------------------------------------------------
+
+    auto icon = [=](QString name) {
+        return QIcon(VINARENDER_PATH + "/resources/images/" + name +
+                     "_normal.png");
+    };
+
+    suspend_action->setIcon(icon("pause"));
+    restart_action->setIcon(icon("play_arrow"));
 
     tree = new QTreeWidget();
     shared->tasks_tree = tree;

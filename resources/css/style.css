@@ -106,25 +106,22 @@ QMainWindow {
   QMainWindow QScrollBar::add-page:horizontal, QMainWindow QScrollBar::add-page:vertical, QMainWindow QScrollBar::sub-page:horizontal, QMainWindow QScrollBar::sub-page:vertical {
     background: none; }
   QMainWindow QMenu {
-    background-color: #23262a;
-    border: 1px solid rgba(0, 153, 255, 0.4);
+    background-color: #272b2f;
+    border: 1px solid #1c3d54;
     border-radius: 2px; }
+    QMainWindow QMenu::icon {
+      padding-left: 15px; }
     QMainWindow QMenu::item {
-      padding: 4px 20px 4px 20px;
-      border-top: 1px solid transparent;
-      border-bottom: 1px solid transparent;
-      spacing: 20px; }
+      padding: 4px 15px 4px 15px; }
       QMainWindow QMenu::item:selected {
-        background-color: rgba(0, 153, 255, 0.1);
-        border-color: rgba(0, 153, 255, 0.4);
+        background: #33373d;
         color: #0099ff; }
+      QMainWindow QMenu::item:checked {
+        text-decoration: underline; }
     QMainWindow QMenu::separator {
       background-color: #2e3238;
       margin: 5px;
       height: 1px; }
-    QMainWindow QMenu::indicator {
-      width: 20px;
-      height: 13px; }
   QMainWindow QSplitter::handle::horizontal, QMainWindow QSplitter::handle::vertical {
     background: #17191c; }
     QMainWindow QSplitter::handle::horizontal:hover, QMainWindow QSplitter::handle::vertical:hover {
