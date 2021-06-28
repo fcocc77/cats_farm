@@ -481,6 +481,15 @@ QMenuBar {
     background: #1e2124;
     border-radius: 2px; }
 
+#submit_widget #box_widget {
+  background: #23262a;
+  border-radius: 3px; }
+  #submit_widget #box_widget > QWidget {
+    background: none; }
+
+#submit_widget QLabel {
+  background: none; }
+
 #submit_widget QLineEdit {
   background: #2e3238;
   border: 1px solid #2e3238;

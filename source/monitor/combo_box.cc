@@ -11,6 +11,7 @@ combo_box::combo_box()
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     this->setObjectName("combo_box");
+    this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     connect(menu, &QMenu::triggered, this,
             [=](QAction *action) { set_current_text(action->text()); });

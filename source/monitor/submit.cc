@@ -16,6 +16,7 @@ submit::submit(QWidget *__monitor)
     : _monitor(__monitor)
 {
     layout = new QVBoxLayout(this);
+    layout->setMargin(0);
 
     this->setObjectName("submit_widget");
 
@@ -23,14 +24,11 @@ submit::submit(QWidget *__monitor)
 
     project_dir_edit = new QLineEdit();
     project_dir_button = new QPushButton("Open");
-    project_dir_label = new QLabel("Project Folder:");
 
     project_button = new QPushButton("Open");
     project_edit = new QLineEdit();
-    project_label = new QLabel("Project File:");
 
     render_node_edit = new QLineEdit();
-    render_node_label = new QLabel("Render Node:");
 
     job_name = new QLineEdit();
     server_group_box = new combo_box();
@@ -50,211 +48,199 @@ submit::~submit() {}
 
 void submit::ui()
 {
-    QVBoxLayout *vboxSubmit = new QVBoxLayout();
-    vboxSubmit->setContentsMargins(15, 15, 15, 15);
+    QWidget *main_widget = new QWidget();
+    QVBoxLayout *main_layout = new QVBoxLayout(main_widget);
 
-    QStringList items = {"Maya", "Houdini"};
-    software_box->add_items(items);
-    vboxSubmit->addWidget(software_box);
+    QWidget *box_a_widget = new QWidget();
+    QVBoxLayout *box_a_layout = new QVBoxLayout(box_a_widget);
 
-    // box 1
-    QVBoxLayout *vbox2 = new QVBoxLayout();
-    vbox2->setContentsMargins(15, 15, 15, 15);
+    QWidget *box_b_widget = new QWidget();
+    QVBoxLayout *box_b_layout = new QVBoxLayout(box_b_widget);
 
-    QHBoxLayout *hbox7 = new QHBoxLayout();
-    hbox7->setContentsMargins(0, 0, 0, 0);
+    QWidget *box_c_widget = new QWidget();
+    QVBoxLayout *box_c_layout = new QVBoxLayout(box_c_widget);
+
+    QWidget *box_d_widget = new QWidget();
+    QVBoxLayout *box_d_layout = new QVBoxLayout(box_d_widget);
+
+    QWidget *box_e_widget = new QWidget();
+    QVBoxLayout *box_e_layout = new QVBoxLayout(box_e_widget);
+
+    QWidget *project_dir_widget = new QWidget();
+    QHBoxLayout *project_dir_layout = new QHBoxLayout(project_dir_widget);
+
+    QWidget *project_widget = new QWidget();
+    QHBoxLayout *project_layout = new QHBoxLayout(project_widget);
+
+    QWidget *render_node_widget = new QWidget();
+    QHBoxLayout *render_node_layout = new QHBoxLayout(render_node_widget);
+
+    QWidget *job_widget = new QWidget();
+    QHBoxLayout *job_layout = new QHBoxLayout(job_widget);
+
+    QWidget *frame_range_widget = new QWidget();
+    QHBoxLayout *frame_range_layout = new QHBoxLayout(frame_range_widget);
+
+    QWidget *task_size_widget = new QWidget();
+    QHBoxLayout *task_size_layout = new QHBoxLayout(task_size_widget);
+
+    QWidget *priority_widget = new QWidget();
+    QHBoxLayout *priority_layout = new QHBoxLayout(priority_widget);
+
+    QWidget *server_group_widget = new QWidget();
+    QHBoxLayout *server_group_layout = new QHBoxLayout(server_group_widget);
+
+    QWidget *comment_widget = new QWidget();
+    QHBoxLayout *comment_layout = new QHBoxLayout(comment_widget);
+
+    project_dir_label = new QLabel("Project Folder:");
+    project_label = new QLabel("Project File:");
+    render_node_label = new QLabel("Render Node:");
+    QLabel *job_name_label = new QLabel("Job Name:");
+    QLabel *frame_range_label = new QLabel("Frame Range:");
+    QLabel *task_size_label = new QLabel("Task Size:");
+    QLabel *server_group_label = new QLabel("Server Group:");
+    QLabel *comment_label = new QLabel("Comment:");
+    QLabel *priority_label = new QLabel("Priority:");
+
+    QScrollArea *scrollArea = new QScrollArea();
+
+
+    // Layouts Settings
+    main_layout->setMargin(0);
+    box_a_layout->setMargin(0);
+    box_b_layout->setMargin(0);
+    box_c_layout->setMargin(0);
+    box_d_layout->setMargin(0);
+    box_e_layout->setMargin(0);
+
+    box_a_layout->setSpacing(0);
+    box_b_layout->setSpacing(0);
+    box_c_layout->setSpacing(0);
+    box_d_layout->setSpacing(0);
+    box_e_layout->setSpacing(0);
+
+    main_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+
+    int h_margin = 20;
+    int v_margin = 3;
+    int v_padding = 15;
+
+    project_dir_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
+    project_layout->setContentsMargins(h_margin, v_margin, h_margin, v_margin);
+    render_node_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
+
+    job_layout->setContentsMargins(h_margin, v_padding, h_margin, v_padding);
+
+    frame_range_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
+    task_size_layout->setContentsMargins(h_margin, v_margin, h_margin, v_margin);
+    priority_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
+
+    server_group_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
+    comment_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
+
+    priority_layout->setAlignment(Qt::AlignLeft);
+    server_group_layout->setAlignment(Qt::AlignLeft);
+
+
+    // Widgets
+    box_a_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    box_b_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    box_c_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    box_d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    box_e_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    box_a_widget->setObjectName("box_widget");
+    box_b_widget->setObjectName("box_widget");
+    box_c_widget->setObjectName("box_widget");
+    box_d_widget->setObjectName("box_widget");
+    box_e_widget->setObjectName("box_widget");
+
+    // Labels
+    int label_width = 100;
+    project_dir_label->setFixedWidth(label_width);
+    project_label->setFixedWidth(label_width);
+    render_node_label->setFixedWidth(label_width);
+    job_name_label->setFixedWidth(label_width);
+    frame_range_label->setFixedWidth(label_width);
+    task_size_label->setFixedWidth(label_width);
+    priority_label->setFixedWidth(label_width);
+    server_group_label->setFixedWidth(label_width);
+    comment_label->setFixedWidth(label_width);
+
     project_dir_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    project_dir_label->setMinimumWidth(70);
-    project_dir_button->setMinimumWidth(70);
-    //------------------------------
-    hbox7->addWidget(project_dir_label);
-    hbox7->addWidget(project_dir_edit);
-    hbox7->addWidget(project_dir_button);
-    QWidget *widget7 = new QWidget();
-    widget7->setLayout(hbox7);
-    widget7->setObjectName("style2");
-    vbox2->addWidget(widget7);
-
-    QHBoxLayout *hbox8 = new QHBoxLayout();
-    hbox8->setContentsMargins(0, 0, 0, 0);
     project_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    project_label->setMinimumWidth(70);
-    project_button->setMinimumWidth(70);
-    //------------------------------
-    hbox8->addWidget(project_label);
-    hbox8->addWidget(project_edit);
-    hbox8->addWidget(project_button);
-    QWidget *widget8 = new QWidget();
-    widget8->setLayout(hbox8);
-    widget8->setObjectName("style2");
-    vbox2->addWidget(widget8);
-
-    QHBoxLayout *hbox85 = new QHBoxLayout();
-    hbox85->setContentsMargins(0, 0, 0, 0);
-    //------------------------------
-    QWidget *widget85 = new QWidget();
-    widget85->setLayout(hbox85);
-    widget85->setObjectName("style2");
-    vbox2->addWidget(widget85);
-
-    QHBoxLayout *hbox9 = new QHBoxLayout();
-    hbox9->setContentsMargins(0, 0, 0, 0);
     render_node_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    render_node_label->setMinimumWidth(70);
-    //------------------------------
-    hbox9->addWidget(render_node_label);
-    hbox9->addWidget(render_node_edit);
-    QWidget *widget9 = new QWidget();
-    widget9->setLayout(hbox9);
-    widget9->setObjectName("style2");
-    vbox2->addWidget(widget9);
+    job_name_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    frame_range_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    task_size_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    priority_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    server_group_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    comment_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    QWidget *widget2 = new QWidget();
-    widget2->setLayout(vbox2);
-    widget2->setObjectName("style1");
 
-    vboxSubmit->addWidget(widget2);
-    //---------------------------------------
-
-    // box 2
-    QVBoxLayout *vbox3 = new QVBoxLayout();
-    vbox3->setContentsMargins(15, 15, 15, 15);
-    QHBoxLayout *hbox10 = new QHBoxLayout();
-    hbox10->setContentsMargins(0, 0, 0, 0);
-    QLabel *labelJobName = new QLabel("Job Name:");
-    labelJobName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    labelJobName->setMinimumWidth(70);
-    //---------------------------------------
-    hbox10->addWidget(labelJobName);
-    hbox10->addWidget(job_name);
-    QWidget *widget10 = new QWidget();
-    widget10->setLayout(hbox10);
-    widget10->setObjectName("style2");
-
-    vbox3->addWidget(widget10);
-
-    QWidget *widget3 = new QWidget();
-    widget3->setLayout(vbox3);
-    widget3->setObjectName("style1");
-
-    vboxSubmit->addWidget(widget3);
-    //---------------------------------------
-
-    // box 3
-    QVBoxLayout *vbox4 = new QVBoxLayout();
-    vbox4->setContentsMargins(15, 15, 15, 15);
-
-    QHBoxLayout *hbox11 = new QHBoxLayout();
-    hbox11->setContentsMargins(0, 0, 0, 0);
-
-    QLabel *labelFR = new QLabel("Frame Range:");
-    labelFR->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    labelFR->setMinimumWidth(70);
-
-    hbox11->addWidget(labelFR);
-    hbox11->addWidget(first_frame_edit);
-    hbox11->addWidget(last_frame_edit);
-    QWidget *widget11 = new QWidget();
-    widget11->setLayout(hbox11);
-    widget11->setObjectName("style2");
-    vbox4->addWidget(widget11);
-
-    QHBoxLayout *hbox12 = new QHBoxLayout();
-    hbox12->setContentsMargins(0, 0, 0, 0);
-
-    QLabel *labelTS = new QLabel("Task Size:");
-    labelTS->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    labelTS->setMinimumWidth(70);
-
-    hbox12->addWidget(labelTS);
-    hbox12->addWidget(task_size_edit);
-    QWidget *widget12 = new QWidget();
-    widget12->setLayout(hbox12);
-    widget12->setObjectName("style2");
-    vbox4->addWidget(widget12);
-
-    QHBoxLayout *hbox13 = new QHBoxLayout();
-    hbox13->setContentsMargins(0, 0, 0, 0);
-
-    QLabel *labelPriority = new QLabel("           Priority:");
-    labelPriority->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    labelPriority->setMaximumWidth(70);
+    // Settings
+    QStringList items = {"Maya", "Houdini", "FFMpeg"};
+    software_box->add_items(items);
 
     priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
     priority->set_current_index(2);
     priority->setMaximumWidth(80);
 
-    hbox13->addWidget(labelPriority);
-    hbox13->addWidget(priority);
-    QLabel *null = new QLabel(" ");
-    hbox13->addWidget(null);
-    QWidget *widget13 = new QWidget();
-    widget13->setLayout(hbox13);
-    widget13->setObjectName("style2");
-    vbox4->addWidget(widget13);
-
-    QWidget *widget4 = new QWidget();
-    widget4->setLayout(vbox4);
-    widget4->setObjectName("style1");
-
-    vboxSubmit->addWidget(widget4);
-    //---------------------------------------
-
-    // box 4
-    QVBoxLayout *vbox5 = new QVBoxLayout();
-    vbox5->setContentsMargins(15, 15, 15, 15);
-    QHBoxLayout *hbox14 = new QHBoxLayout();
-    hbox14->setContentsMargins(0, 0, 0, 0);
-    QLabel *labelSG = new QLabel("Server Group:");
-    labelSG->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    labelSG->setMinimumWidth(70);
-
-    QLabel *labelServer = new QLabel("Server:");
-    labelServer->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-
-    hbox14->addWidget(labelSG);
-    hbox14->addWidget(server_group_box);
-    hbox14->addWidget(labelServer);
-    QWidget *widget14 = new QWidget();
-    widget14->setLayout(hbox14);
-    widget14->setObjectName("style2");
-    vbox5->addWidget(widget14);
-
-    QHBoxLayout *hbox16 = new QHBoxLayout();
-    hbox16->setContentsMargins(0, 0, 0, 0);
-    QLabel *labelComment = new QLabel("Comment:");
-    labelComment->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    labelComment->setMinimumWidth(70);
-    hbox16->addWidget(labelComment);
-    hbox16->addWidget(comment_edit);
-    QWidget *widget16 = new QWidget();
-    widget16->setLayout(hbox16);
-    widget16->setObjectName("style2");
-    vbox5->addWidget(widget16);
-    QWidget *widget5 = new QWidget();
-    widget5->setLayout(vbox5);
-    widget5->setObjectName("style1");
-    vboxSubmit->addWidget(widget5);
-
-    // box 5
-    QVBoxLayout *vbox6 = new QVBoxLayout();
-    vbox6->setContentsMargins(15, 15, 15, 15);
-    vbox6->addWidget(suspend_box);
-
-    QWidget *widget6 = new QWidget();
-    widget6->setLayout(vbox6);
-    widget6->setObjectName("style1");
-    vboxSubmit->addWidget(widget6);
-
-    QWidget *widget1 = new QWidget();
-    widget1->setLayout(vboxSubmit);
-    widget1->setMaximumHeight(590);
-
-    vboxSubmit->addWidget(submit_button);
-
-    QScrollArea *scrollArea = new QScrollArea();
-    scrollArea->setWidget(widget1);
+    scrollArea->setWidget(main_widget);
     scrollArea->setWidgetResizable(true);
+
+    // Layout
+
+    project_dir_layout->addWidget(project_dir_label);
+    project_dir_layout->addWidget(project_dir_edit);
+    project_dir_layout->addWidget(project_dir_button);
+
+    project_layout->addWidget(project_label);
+    project_layout->addWidget(project_edit);
+    project_layout->addWidget(project_button);
+
+    render_node_layout->addWidget(render_node_label);
+    render_node_layout->addWidget(render_node_edit);
+
+    job_layout->addWidget(job_name_label);
+    job_layout->addWidget(job_name);
+
+    frame_range_layout->addWidget(frame_range_label);
+    frame_range_layout->addWidget(first_frame_edit);
+    frame_range_layout->addWidget(last_frame_edit);
+
+    task_size_layout->addWidget(task_size_label);
+    task_size_layout->addWidget(task_size_edit);
+
+    priority_layout->addWidget(priority_label);
+    priority_layout->addWidget(priority);
+
+    server_group_layout->addWidget(server_group_label);
+    server_group_layout->addWidget(server_group_box);
+
+    comment_layout->addWidget(comment_label);
+    comment_layout->addWidget(comment_edit);
+
+    box_a_layout->addWidget(project_dir_widget);
+    box_a_layout->addWidget(project_widget);
+    box_a_layout->addWidget(render_node_widget);
+    box_b_layout->addWidget(job_widget);
+    box_c_layout->addWidget(frame_range_widget);
+    box_c_layout->addWidget(task_size_widget);
+    box_c_layout->addWidget(priority_widget);
+    box_d_layout->addWidget(server_group_widget);
+    box_d_layout->addWidget(comment_widget);
+    box_e_layout->addWidget(suspend_box);
+
+    main_layout->addWidget(software_box);
+    main_layout->addWidget(box_a_widget);
+    main_layout->addWidget(box_b_widget);
+    main_layout->addWidget(box_c_widget);
+    main_layout->addWidget(box_d_widget);
+    main_layout->addWidget(box_e_widget);
+    main_layout->addWidget(submit_button);
+
     layout->addWidget(scrollArea);
 }
 
