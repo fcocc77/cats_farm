@@ -1,7 +1,19 @@
 @mixin combobox
-    background: red
-    QLabel
-        background: $b30
+    #combobox_label
+        background: $b20
+        border-top-left-radius: 2px
+        border-bottom-left-radius: 2px
+        padding-left: 9px
+        padding-right: 9px
+        &:hover
+            background: $b22
+            color: white
+    #arrow
+        background: $b20
+        border-top-right-radius: 2px
+        border-bottom-right-radius: 2px
+        &:hover
+            background: $b25
 
 @mixin treecolor
     &:selected

@@ -63,8 +63,8 @@ void toolbar_class::setup_ui()
 
     // Layout
     main_layout->addWidget(settings);
-    main_layout->addWidget(submit);
     main_layout->addWidget(log_switch);
+    main_layout->addWidget(submit);
 
     main_layout->addWidget(resume);
     main_layout->addWidget(suspend);

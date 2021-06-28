@@ -185,7 +185,6 @@ void submit::ui()
 
     priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
     priority->set_current_index(2);
-    priority->setMaximumWidth(80);
 
     scrollArea->setWidget(main_widget);
     scrollArea->setWidgetResizable(true);

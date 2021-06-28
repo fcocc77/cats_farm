@@ -290,16 +290,27 @@ QMenuBar {
     color: #515861; }
     #tool_bar #button_checkable:checked {
       color: #e3e5e8; }
-  #tool_bar QComboBox {
-    background: red; }
-    #tool_bar QComboBox QLabel {
-      background: #464b53; }
+  #tool_bar #combo_box #combobox_label {
+    background: #2e3238;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    padding-left: 9px;
+    padding-right: 9px; }
+    #tool_bar #combo_box #combobox_label:hover {
+      background: #33373d;
+      color: white; }
+  #tool_bar #combo_box #arrow {
+    background: #2e3238;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px; }
+    #tool_bar #combo_box #arrow:hover {
+      background: #3a3f45; }
   #tool_bar QLabel {
     background: transparent; }
   #tool_bar #jobs_count {
-    font-size: 15px;
     color: #0099ff; }
   #tool_bar #conection {
+    color: red;
     border-right: 1px solid #464b53;
     padding-right: 15px;
     margin-right: 15px; }
@@ -479,10 +490,21 @@ QMenuBar {
     #options QPushButton:hover {
       border-color: #0099ff;
       color: #0099ff; }
-  #options QComboBox {
-    background: red; }
-    #options QComboBox QLabel {
-      background: #464b53; }
+  #options QComboBox #combobox_label {
+    background: #2e3238;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    padding-left: 9px;
+    padding-right: 9px; }
+    #options QComboBox #combobox_label:hover {
+      background: #33373d;
+      color: white; }
+  #options QComboBox #arrow {
+    background: #2e3238;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px; }
+    #options QComboBox #arrow:hover {
+      background: #3a3f45; }
   #options #first_knobs, #options #second_knobs, #options #third_knobs {
     background: #1e2124;
     border-radius: 2px; }
@@ -508,10 +530,22 @@ QMenuBar {
     background: #3a3f45;
     border-color: #0099ff; }
 
-#submit_widget #combo_box {
-  background: red; }
-  #submit_widget #combo_box QLabel {
-    background: #464b53; }
+#submit_widget #combo_box #combobox_label {
+  background: #2e3238;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  padding-left: 9px;
+  padding-right: 9px; }
+  #submit_widget #combo_box #combobox_label:hover {
+    background: #33373d;
+    color: white; }
+
+#submit_widget #combo_box #arrow {
+  background: #2e3238;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px; }
+  #submit_widget #combo_box #arrow:hover {
+    background: #3a3f45; }
 
 #submit_widget QPushButton {
   padding: 3px;

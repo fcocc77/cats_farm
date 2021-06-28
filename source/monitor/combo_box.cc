@@ -1,23 +1,40 @@
-#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 #include "util.h"
 #include <combo_box.h>
+#include "../global/global.h"
 
 combo_box::combo_box()
     : menu(new QMenu(this))
     , label(new QLabel)
     , index(0)
 {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
     this->setObjectName("combo_box");
     this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    this->setFixedHeight(23);
+    this->setMinimumWidth(70);
+
+    QLabel *arrow = new QLabel;
+    QPixmap pixmap(VINARENDER_PATH + "/resources/images/arrow_down_normal.png");
+    arrow->setPixmap(pixmap.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    arrow->setFixedWidth(22);
+    arrow->setObjectName("arrow");
+
+    label->setObjectName("combobox_label");
+    label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     connect(menu, &QMenu::triggered, this,
             [=](QAction *action) { set_current_text(action->text()); });
 
     // Layout
     layout->addWidget(label);
+    layout->addWidget(arrow);
 }
 
 combo_box::~combo_box() {}
