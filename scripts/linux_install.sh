@@ -153,7 +153,7 @@ install() {
 
     # modifica los permisos de los directorios etc y log para
     # que el vmonitor tenga acceso ya que se ejecuta en usuario.
-    chmod 777 -R "$app_data"
+    chown $SUDO_USER:$SUDO_USER -R "$app_data"
     chmod 777 -R "$dst/log"
 
     nuke install
