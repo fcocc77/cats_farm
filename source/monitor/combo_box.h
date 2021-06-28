@@ -25,14 +25,25 @@ public:
 
     void add_item(QString item);
     void add_items(QStringList items);
-    void set_current_text(QString text);
-    void set_current_index(int index);
+    void set_current_text(QString text, bool emmit_signal = false);
+    void set_index(int index, bool emmit_signal = false);
     void clear();
-    QString get_current_text() const;
+    inline QString get_current_text() const;
+    inline void add_separator();
 
 signals:
     void clicked();
     void current_text_changed(QString text);
 };
+
+inline QString combo_box::get_current_text() const
+{
+    return label->text();
+}
+
+inline void combo_box::add_separator()
+{
+    menu->addSeparator();
+}
 
 #endif // COMBO_BOX_H

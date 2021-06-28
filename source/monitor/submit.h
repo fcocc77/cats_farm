@@ -10,6 +10,7 @@
 #include <QVBoxLayout>
 
 #include "combo_box.h"
+#include "ffmpeg_submit.h"
 
 class submit : public QWidget
 {
@@ -25,8 +26,8 @@ private:
     void update_server_groups();
     void update_software_box(QString software);
 
-    // submit
     combo_box *software_box;
+    ffmpeg_submit *ffmpeg_widget;
 
     QLineEdit *project_dir_edit;
     QPushButton *project_dir_button;

@@ -1,8 +1,8 @@
 #include <QHBoxLayout>
 
+#include "../global/global.h"
 #include "util.h"
 #include <combo_box.h>
-#include "../global/global.h"
 
 combo_box::combo_box()
     : menu(new QMenu(this))
@@ -21,7 +21,8 @@ combo_box::combo_box()
 
     QLabel *arrow = new QLabel;
     QPixmap pixmap(VINARENDER_PATH + "/resources/images/arrow_down_normal.png");
-    arrow->setPixmap(pixmap.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    arrow->setPixmap(
+        pixmap.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
     arrow->setFixedWidth(22);
     arrow->setObjectName("arrow");
@@ -30,7 +31,7 @@ combo_box::combo_box()
     label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     connect(menu, &QMenu::triggered, this,
-            [=](QAction *action) { set_current_text(action->text()); });
+            [=](QAction *action) { set_current_text(action->text(), true); });
 
     // Layout
     layout->addWidget(label);
@@ -53,7 +54,7 @@ void combo_box::add_items(QStringList items)
         add_item(item);
 }
 
-void combo_box::set_current_index(int _index)
+void combo_box::set_index(int _index, bool emmit_signal)
 {
     if (_index == -1)
         return;
@@ -63,12 +64,13 @@ void combo_box::set_current_index(int _index)
     QString text = actions[index]->text();
     label->setText(text);
 
-    current_text_changed(text);
+    if (emmit_signal)
+        current_text_changed(text);
 }
 
-void combo_box::set_current_text(QString text)
+void combo_box::set_current_text(QString text, bool emmit_signal)
 {
-    set_current_index(get_index(text));
+    set_index(get_index(text), emmit_signal);
 }
 
 int combo_box::get_index(QString text) const
@@ -90,11 +92,6 @@ void combo_box::clear()
 
     menu->clear();
     actions.clear();
-}
-
-QString combo_box::get_current_text() const
-{
-    return label->text();
 }
 
 void combo_box::mousePressEvent(QMouseEvent *event)

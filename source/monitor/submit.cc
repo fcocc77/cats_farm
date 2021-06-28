@@ -48,6 +48,11 @@ submit::~submit() {}
 
 void submit::ui()
 {
+    int label_width = 100;
+    int h_margin = 20;
+    int v_margin = 3;
+    int v_padding = 15;
+
     QWidget *main_widget = new QWidget();
     QVBoxLayout *main_layout = new QVBoxLayout(main_widget);
 
@@ -102,6 +107,8 @@ void submit::ui()
     QLabel *server_group_label = new QLabel("Server Group:");
     QLabel *comment_label = new QLabel("Comment:");
     QLabel *priority_label = new QLabel("Priority:");
+    ffmpeg_widget =
+        new ffmpeg_submit({label_width, h_margin, v_margin, v_padding});
 
     QScrollArea *scrollArea = new QScrollArea();
 
@@ -121,10 +128,6 @@ void submit::ui()
     box_e_layout->setSpacing(0);
 
     main_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-
-    int h_margin = 20;
-    int v_margin = 3;
-    int v_padding = 15;
 
     project_dir_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
     project_layout->setContentsMargins(h_margin, v_margin, h_margin, v_margin);
@@ -149,15 +152,16 @@ void submit::ui()
     box_c_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     box_d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     box_e_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    ffmpeg_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     box_a_widget->setObjectName("box_widget");
     box_b_widget->setObjectName("box_widget");
     box_c_widget->setObjectName("box_widget");
     box_d_widget->setObjectName("box_widget");
     box_e_widget->setObjectName("box_widget");
+    ffmpeg_widget->setObjectName("box_widget");
 
     // Labels
-    int label_width = 100;
     project_dir_label->setFixedWidth(label_width);
     project_label->setFixedWidth(label_width);
     render_node_label->setFixedWidth(label_width);
@@ -184,7 +188,7 @@ void submit::ui()
     software_box->add_items(items);
 
     priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
-    priority->set_current_index(2);
+    priority->set_index(2);
 
     scrollArea->setWidget(main_widget);
     scrollArea->setWidgetResizable(true);
@@ -234,6 +238,7 @@ void submit::ui()
 
     main_layout->addWidget(software_box);
     main_layout->addWidget(box_a_widget);
+    main_layout->addWidget(ffmpeg_widget);
     main_layout->addWidget(box_b_widget);
     main_layout->addWidget(box_c_widget);
     main_layout->addWidget(box_d_widget);
