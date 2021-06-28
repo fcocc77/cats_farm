@@ -24,7 +24,7 @@ public:
     properties_class(log_class *_log, options_class *_options,
                      settings_class *_settings, submit *_submit);
 
-    void switch_widget(QString widget_name);
+    bool switch_widget(QString widget_name);
 };
 
 #endif // PROPERTIES_HPP

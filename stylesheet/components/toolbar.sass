@@ -1,15 +1,25 @@
 #tool_bar
     background: $b13
-    QPushButton
-        background: transparent
+    #toolbar_button, #button_checkable
+        background: none
         margin-right: 15px
         font-size: 11px
         border-right: 1px solid $b30
         padding-right: 20px
+        color: $b90
         &:hover
+            color: white
+        &:pressed
             color: $base
+
+    #button_checkable
+        color: $b35
+        &:checked
+            color: $b90
+
     QComboBox
         @include combobox
+
     QLabel
         background: transparent
     #jobs_count
@@ -17,6 +27,5 @@
         color: $base
     #conection
         border-right: 1px solid $b30
-        color: red
         padding-right: 15px
         margin-right: 15px

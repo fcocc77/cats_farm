@@ -37,72 +37,58 @@ void toolbar_class::setup_ui()
     this->setLayout(main_layout);
 
     resume = new button("RESUME JOB", "play_arrow");
-    resume->setObjectName("resume");
-    main_layout->addWidget(resume);
-
     suspend = new button("SUSPEND JOB", "pause");
-    suspend->setObjectName("suspend");
-    main_layout->addWidget(suspend);
-
-    settings = new button("SETTINGS", "settings");
-    settings->setObjectName("settings");
-    main_layout->addWidget(settings);
-
-    submit = new button("SUBMIT", "submit");
-    submit->setObjectName("submit");
-    main_layout->addWidget(submit);
+    settings = new button("SETTINGS", "settings", true, false);
+    submit = new button("SUBMIT", "submit", true, false);
+    log_switch = new button("Log", "log", true, false);
 
     QLabel *zone = new QLabel("ZONE:");
     zone->setObjectName("zone");
-    main_layout->addWidget(zone);
 
     shared->zone_box = new combo_box();
     shared->zone_box->setObjectName("zone_box");
-    main_layout->addWidget(shared->zone_box);
 
     shared->conection = new QLabel();
     shared->conection->setObjectName("conection");
-    main_layout->addWidget(shared->conection);
 
     QLabel *jobs_label = new QLabel("QUEUE JOBS:");
     jobs_label->setObjectName("jobs_label");
-    main_layout->addWidget(jobs_label);
 
     shared->jobs_count = new QLabel("0 jobs.");
     shared->jobs_count->setObjectName("jobs_count");
+
+    tasks_switch = new button("Tasks", "tasks", true);
+    servers_switch = new button("Servers", "server", true);
+    groups_switch = new button("Groups", "groups", true);
+
+    // Layout
+    main_layout->addWidget(settings);
+    main_layout->addWidget(submit);
+    main_layout->addWidget(log_switch);
+
+    main_layout->addWidget(resume);
+    main_layout->addWidget(suspend);
+
+    main_layout->addWidget(zone);
+    main_layout->addWidget(shared->zone_box);
+    main_layout->addWidget(shared->conection);
+    main_layout->addWidget(jobs_label);
     main_layout->addWidget(shared->jobs_count);
 
     main_layout->addStretch();
 
-    jobs_switch = new button("Jobs", "jobs");
-    jobs_switch->setObjectName("jobs_switch");
-    main_layout->addWidget(jobs_switch);
-
-    tasks_switch = new button("Tasks", "tasks");
-    tasks_switch->setObjectName("tasks_switch");
     main_layout->addWidget(tasks_switch);
-
-    servers_switch = new button("Servers", "server");
-    servers_switch->setObjectName("servers_switch");
     main_layout->addWidget(servers_switch);
-
-    groups_switch = new button("Groups", "groups");
-    groups_switch->setObjectName("groups_switch");
     main_layout->addWidget(groups_switch);
-
-    log_switch = new button("Log", "log");
-    log_switch->setObjectName("log_switch");
-    main_layout->addWidget(log_switch);
 }
 
 void toolbar_class::connections()
 {
-    connect(settings, &button::clicked, this, [this]() {
-        properties->switch_widget("settings");
-    });
+    connect(settings, &button::clicked, this,
+            [this]() { switch_widget("settings"); });
 
     connect(submit, &button::clicked, this,
-            [this]() { properties->switch_widget("submit"); });
+            [this]() { switch_widget("submit"); });
 
     connect(suspend, &button::clicked, this,
             [this]() { jobs->job_suspend_action->triggered(); });
@@ -112,10 +98,6 @@ void toolbar_class::connections()
 
     connect(shared->zone_box, &combo_box::current_text_changed, update,
             &update_class::update);
-
-    connect(jobs_switch, &button::clicked, this, [this]() {
-        jobs->parentWidget()->setVisible(!jobs->parentWidget()->isVisible());
-    });
 
     connect(tasks_switch, &button::clicked, this, [this]() {
         tasks->tree->parentWidget()->setVisible(
@@ -132,9 +114,24 @@ void toolbar_class::connections()
             !groups->parentWidget()->isVisible());
     });
 
-    connect(log_switch, &button::clicked, this, [this]() {
-        properties->switch_widget("log");
-    });
+    connect(log_switch, &button::clicked, this,
+            [this]() { switch_widget("log"); });
+}
+
+void toolbar_class::switch_widget(QString widget_name)
+{
+    settings->set_checked(false);
+    log_switch->set_checked(false);
+    submit->set_checked(false);
+
+    bool visible = properties->switch_widget(widget_name);
+
+    if (widget_name == "settings")
+        settings->set_checked(visible);
+    else if (widget_name == "submit")
+        submit->set_checked(visible);
+    else if (widget_name == "log")
+        log_switch->set_checked(visible);
 }
 
 void toolbar_class::load_zones()

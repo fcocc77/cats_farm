@@ -31,7 +31,7 @@ void properties_class::setup_ui()
     properties_layout->addWidget(_submit);
 }
 
-void properties_class::switch_widget(QString widget_name)
+bool properties_class::switch_widget(QString widget_name)
 {
 
     if (widget_name == current_widget)
@@ -61,6 +61,8 @@ void properties_class::switch_widget(QString widget_name)
         }
 
         this->parentWidget()->setVisible(visible);
+
+        return visible;
     }
     else
     {
@@ -85,4 +87,6 @@ void properties_class::switch_widget(QString widget_name)
 
         this->parentWidget()->show();
     }
+
+    return true;
 }

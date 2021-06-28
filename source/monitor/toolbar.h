@@ -29,20 +29,21 @@ private:
     QWidget *settings_widget;
     properties_class *properties;
 
-    void setup_ui();
-    void connections();
-    void load_zones();
-
     button *resume;
     button *suspend;
     button *settings;
     button *submit;
 
-    button *jobs_switch;
     button *tasks_switch;
     button *groups_switch;
     button *servers_switch;
     button *log_switch;
+
+    void setup_ui();
+    void connections();
+    void load_zones();
+    void switch_widget(QString widget_name);
+
 
 public:
     toolbar_class(QMainWindow *_monitor, general_class *_global,

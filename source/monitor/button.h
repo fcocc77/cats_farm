@@ -10,12 +10,16 @@ private:
     QString icon_name;
 
     void change_icon(QString name);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 public:
-    button(QString text, QString icon_name = "");
+    button(QString text, QString icon_name = "", bool checkable = false,
+           bool checked = true);
     ~button();
 
     void set_icon(QString name);
+    void set_checked(bool checked);
 
 };
 
