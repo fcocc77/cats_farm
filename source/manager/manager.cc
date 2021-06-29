@@ -130,10 +130,10 @@ void manager::json_to_struct(QJsonObject info)
         _jobs->name = job["name"].toString();
         _jobs->status = job["status"].toString();
         _jobs->priority = job["priority"].toInt();
-        for (QJsonValue _server : job["server"].toArray())
-            _jobs->server.push_back(_server.toString());
+
         for (QJsonValue _group : job["server_group"].toArray())
             _jobs->server_group.push_back(_group.toString());
+
         _jobs->instances = job["instances"].toInt();
         _jobs->comment = job["comment"].toString();
         _jobs->submit_start = job["submit_start"].toString();
@@ -146,7 +146,7 @@ void manager::json_to_struct(QJsonObject info)
         _jobs->software = job["software"].toString();
         _jobs->project = job["project"].toString();
         _jobs->system = job["system"].toString();
-        _jobs->extra = job["extra"].toString();
+        _jobs->misc = job["misc"].toString();
         _jobs->errors = job["errors"].toInt();
         _jobs->render = job["render"].toString();
 
@@ -254,17 +254,12 @@ QJsonObject manager::struct_to_json()
         j["name"] = job->name;
         j["status"] = job->status;
         j["priority"] = job->priority;
-        // --------------------------------
-        QJsonArray serverList;
-        for (QString _server : job->server)
-            serverList.push_back(_server);
-        j["server"] = serverList;
-        // --------------------------------
+
         QJsonArray serverGroup;
         for (QString _group : job->server_group)
             serverGroup.push_back(_group);
         j["server_group"] = serverGroup;
-        // --------------------------------
+
         j["instances"] = job->instances;
         j["comment"] = job->comment;
         j["submit_start"] = job->submit_start;
@@ -277,14 +272,14 @@ QJsonObject manager::struct_to_json()
         j["software"] = job->software;
         j["project"] = job->project;
         j["system"] = job->system;
-        j["extra"] = job->extra;
+        j["misc"] = job->misc;
         j["errors"] = job->errors;
-        // --------------------------------
+
         QJsonArray vetoed_servers;
         for (QString s : job->vetoed_servers)
             vetoed_servers.push_back(s);
         j["vetoed_servers"] = vetoed_servers;
-        // --------------------------------
+
         j["render"] = job->render;
         j["progres"] = job->progres;
         j["waiting_task"] = job->waiting_task;
@@ -315,7 +310,6 @@ QJsonObject manager::struct_to_json()
     }
 
     info["jobs"] = _jobs;
-    //------------------------------------------------------------------------------
 
     QJsonObject _servers;
     for (auto server : servers)
@@ -335,13 +329,13 @@ QJsonObject manager::struct_to_json()
         s["temp"] = server->temp;
         s["mac"] = server->mac;
         s["response_time"] = server->response_time;
-        // --------------------------------
+
         QJsonArray _instances;
         for (auto instance : server->instances)
             _instances.push_back({{instance->index, instance->status,
                                    instance->reset, instance->job_task}});
         s["instances"] = _instances;
-        // --------------------------------
+
         s["max_instances"] = server->max_instances;
         s["sshUser"] = server->sshUser;
         s["sshPass"] = server->sshPass;
@@ -352,7 +346,6 @@ QJsonObject manager::struct_to_json()
     }
 
     info["servers"] = _servers;
-    //------------------------------------------------------------------------------
 
     QJsonObject _groups;
 

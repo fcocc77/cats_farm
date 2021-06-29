@@ -5,7 +5,7 @@
 
 button::button(QString text, QString _icon_name, bool checkable, bool checked)
     : QPushButton(text)
-    , size_icon(22)
+    , size_icon(20)
     , icon_name(_icon_name)
 {
     set_icon(icon_name);

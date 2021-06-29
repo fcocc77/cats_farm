@@ -39,11 +39,11 @@ void manager::send_to_render(job_struct *job)
     // espera que los proyectos natron esten creados con los
     // datos del proyecto del usuario para poder enviarlo a renderizar
 
-    QJsonObject _extra = jofs(job->extra);
+    QJsonObject _misc = jofs(job->misc);
 
-    QString user = _extra["user"].toString();
-    QString project_name = _extra["project_name"].toString();
-    QString _module = _extra["module"].toString();
+    QString user = _misc["user"].toString();
+    QString project_name = _misc["project_name"].toString();
+    QString _module = _misc["module"].toString();
 
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
     QString api = VINARENDER_PATH + "/modules/natron/api.py";
@@ -61,16 +61,16 @@ void manager::send_to_render(job_struct *job)
         job_delete(job->name);
 }
 
-void manager::post_render(QJsonObject extra, int last_frame, QString job_name)
+void manager::post_render(QJsonObject misc, int last_frame, QString job_name)
 {
-    QString output_file = extra["output"].toString();
+    QString output_file = misc["output"].toString();
     QString output_dir = os::dirname(output_file);
     QString output_name = os::basename(output_file);
 
     output_name = output_name.split(".")[0];
 
     QString output = output_dir + "/" + output_name + "_audio.mp4";
-    QString song = extra["song"].toString();
+    QString song = misc["song"].toString();
 
     float frame_rate = 30.0;
     float duration = last_frame / frame_rate;
@@ -88,11 +88,11 @@ void manager::post_render(QJsonObject extra, int last_frame, QString job_name)
 
     os::sh(cmd);
 
-    samples_export(output, extra["ranges"].toArray());
+    samples_export(output, misc["ranges"].toArray());
 
     // copia el video con audio, a la carpeta s3 del usuario
-    QString project_name = extra["project_name"].toString();
-    QString user_id = extra["user_id"].toString();
+    QString project_name = misc["project_name"].toString();
+    QString user_id = misc["user_id"].toString();
     QString s3_project_folder =
         as3 + "/public/" + user_id + "/projects/" + project_name;
     QString s3_video_path = s3_project_folder + "/" + project_name + ".mp4";

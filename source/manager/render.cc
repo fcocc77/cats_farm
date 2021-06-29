@@ -11,20 +11,18 @@ void manager::render_job()
         sort(jobs.begin(), jobs.end(), [](job_struct *a, job_struct *b) {
             bool cmp;
             cmp = a->priority < b->priority;
-            // si prioridad es igual compara el submit_start
+
             if (a->priority == b->priority)
-            {
                 cmp = a->submit_start < b->submit_start;
-            }
+
             return cmp;
         });
-        //----------------------------------------------------------------
 
         // si el trabajo esta en cola se manda a render
         for (auto job : jobs)
         {
-            // hace una lista con los servidores listos para renderear
-            QStringList machinesList;
+            // hace una lista con los servidores listos para renderizar
+            QStringList server_list;
             for (auto sg : job->server_group)
             {
                 if (not groups.empty())
@@ -32,64 +30,54 @@ void manager::render_job()
                     auto group = get_group(sg);
 
                     for (auto s : group->server)
-                        machinesList.push_back(s->name);
+                        server_list.push_back(s->name);
                 }
             }
 
-            for (auto s : job->server)
-                if (not machinesList.contains(s))
-                    machinesList.push_back(s);
-            //------------------------------------------------------
-
             for (auto server : servers)
             {
-                // Checkea si esl servidor esta prendido y tammbien si esta en
+                // Checkea si esl servidor esta prendido y tambien si esta en
                 // el grupo del jobs
-                bool serverOK = 0;
-                if (machinesList.contains(server->name) and
+                bool server_ok = 0;
+                if (server_list.contains(server->name) and
                     server->status != "absent")
-                    serverOK = 1;
-                //------------------------------------------------------------------------
+                    server_ok = 1;
 
                 for (int ins = 0; ins < server->max_instances; ins++)
                 {
                     // si la instancia esta dentro del trabajo renderea
-                    bool instanceOK = 0;
+                    bool instance_ok = 0;
                     for (int i = 0; i < job->instances; i++)
                         if (i == ins)
-                            instanceOK = 1;
+                            instance_ok = 1;
 
-                    if (serverOK)
+                    if (server_ok && instance_ok)
                     {
-                        if (instanceOK)
+                        if (job->status == "Queue" ||
+                            job->status == "Rendering..." ||
+                            job->status == "Failed")
                         {
-                            if (job->status == "Queue" or
-                                job->status == "Rendering..." or
-                                job->status == "Failed")
-                            {
-                                // Veta los servers que fallaron mas de dos
-                                // veces
-                                int vetoed_times = 0;
-                                for (auto s : job->vetoed_servers)
-                                    if (server->name == s)
-                                        vetoed_times++;
+                            // Veta los servers que fallaron mas de dos
+                            // veces
+                            int vetoed_times = 0;
+                            for (auto s : job->vetoed_servers)
+                                if (server->name == s)
+                                    vetoed_times++;
 
-                                if (not(vetoed_times >= 10))
-                                { // este numero es la cantidad de veces que
-                                  // puede fallar el servidor antes que se
-                                  // bloquee
+                            if (not(vetoed_times >= 10))
+                            { // este numero es la cantidad de veces que
+                              // puede fallar el servidor antes que se
+                              // bloquee
 
-                                    if (job->waiting_task)
+                                if (job->waiting_task)
+                                {
+                                    auto instance = server->instances[ins];
+                                    int active = instance->status;
+                                    if (not active)
                                     {
-                                        auto instance = server->instances[ins];
-                                        int active = instance->status;
-                                        if (not active)
-                                        {
-                                            instance->status = 1;
-                                            threading(&manager::render_task,
-                                                      this, server, instance,
-                                                      job);
-                                        }
+                                        instance->status = 1;
+                                        threading(&manager::render_task, this,
+                                                  server, instance, job);
                                     }
                                 }
                             }
@@ -118,8 +106,8 @@ void manager::render_task(server_struct *server, inst_struct *instance,
 {
     instance->reset = 0;
 
-    auto software = job->software;
-    auto extra = job->extra;
+    QString software = job->software.toLower();
+    auto misc = job->misc;
     auto render = job->render;
 
     auto system = server->system;
@@ -140,7 +128,6 @@ void manager::render_task(server_struct *server, inst_struct *instance,
 
         // pone en la instancia que job se esta rendereando
         instance->job_task = job->name + " : " + task->name;
-        //-------------------------------------------------
 
         if (instance->reset || server->status == "absent")
         {
@@ -148,7 +135,6 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             break;
         }
 
-        //-----------------------------------------
         // envia la tarea al servidor para que la procese, si es que el status
         // es waiting
         if (status == "waiting")
@@ -159,14 +145,14 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             task->server =
                 server->name + ":" + QString::number(instance->index);
             int time1 = time(0);
-            //------------------------------
+
             job->status = "Rendering...";
             mutex.unlock();
 
             // Envia a renderar la tarea al servidor que le corresponde
             QJsonArray pks = {project,     software,   instance->index,
                               first_frame, last_frame, jobSystem,
-                              extra,       render};
+                              misc,       render};
 
             QString result =
                 tcpClient(server->host, server_port, jats({0, pks}));
@@ -189,7 +175,6 @@ void manager::render_task(server_struct *server, inst_struct *instance,
 
                 else
                 { // if failed
-                    result == "failed";
                     mutex.lock();
                     job->vetoed_servers.push_back(server->name);
 
@@ -270,7 +255,7 @@ void manager::render_task(server_struct *server, inst_struct *instance,
     {
         QJsonArray system_path =
             preferences["paths"].toObject()["system"].toArray();
-        // obtiene ruta correcta
+
         QString src_path, dst_path, aux;
         for (QJsonValue p1 : system_path)
         {
@@ -291,14 +276,12 @@ void manager::render_task(server_struct *server, inst_struct *instance,
                 break;
         }
 
-        if (software == "Nuke")
+        if (software == "nuke")
             nuke_completed(job, src_path, dst_path);
-        if (software == "AE")
-            ae_completed(job);
-        if (software == "Natron")
-            natron_completed(job, src_path, dst_path);
-        if (software == "Ntp")
-            ntp_completed(job);
+        else if (software == "vinacomp")
+            vinarender_completed(job, src_path, dst_path);
+        else if (software == "ffmpeg")
+            ffmpeg_completed(job, src_path, dst_path);
 
         QString submit_finish = currentDateTime(0);
 
@@ -309,21 +292,18 @@ void manager::render_task(server_struct *server, inst_struct *instance,
     }
 }
 
-void manager::ae_completed(job_struct *job) {}
-
 void manager::nuke_completed(job_struct *job, QString src_path,
                              QString dst_path)
 {
-    QString ext = job->extra.split(".").last();
+    QString ext = job->misc.split(".").last();
     if (ext == "mov")
     {
         job->status = "Concatenate";
 
         // obtiene nombre de carpeta de renders
-        QString _dirname = os::dirname(job->extra);
-        QString _basename = os::basename(job->extra);
+        QString _dirname = os::dirname(job->misc);
+        QString _basename = os::basename(job->misc);
         _basename.replace(".mov", "");
-        //-----------------------------------------
 
         _dirname.replace(src_path, dst_path);
 
@@ -332,36 +312,12 @@ void manager::nuke_completed(job_struct *job, QString src_path,
     }
 }
 
-void manager::ntp_completed(job_struct *job)
+void manager::vinarender_completed(job_struct *job, QString src_path,
+                                   QString dst_path)
 {
-    send_to_render(job);
 }
 
-void manager::natron_completed(job_struct *job, QString src_path,
+void manager::ffmpeg_completed(job_struct *job, QString src_path,
                                QString dst_path)
 {
-    QJsonObject _extra = jofs(job->extra);
-    QString output_file = _extra["output"].toString();
-    bool production = _extra["production"].toBool();
-    QString ext = output_file.split(".").last();
-
-    if (ext == "mov" || ext == "mp4")
-    {
-        QString output_dir = os::dirname(output_file);
-        QString output_name = os::basename(output_file);
-        output_name = output_name.split(".")[0];
-
-        QString output_render = output_dir + "/" + output_name;
-
-        job->status = "Concatenate";
-
-        output_render.replace(src_path, dst_path);
-        //-----------------------------------------
-
-        if (os::isdir(output_render))
-            concat(output_render, ext);
-
-        if (production)
-            post_render(_extra, job->last_frame, job->name);
-    }
 }

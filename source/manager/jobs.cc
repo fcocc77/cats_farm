@@ -33,7 +33,6 @@ void manager::update_jobs()
         {
             // tiempo actual de inicio de los dias
             int current_time = QTime::currentTime().msecsSinceStartOfDay();
-            // ---------------------------
 
             int add = 0;
             if (job->time_elapsed_running)
@@ -47,7 +46,6 @@ void manager::update_jobs()
             // que al inicio es cero.
             if (job->time_elapsed > 50000000)
                 job->time_elapsed = 0;
-            // ---------------------------
 
             int estimated_time;
             if (job->progres)
@@ -71,7 +69,6 @@ void manager::update_jobs()
             else
                 job->estimated_time = "...";
             job->total_render_time = secToTime(job->time_elapsed / 1000);
-            // ------------------------------
 
             job->last_time = current_time;
             job->time_elapsed_running = true;
@@ -87,15 +84,11 @@ void manager::update_jobs()
 QString manager::make_job(QJsonArray recv)
 {
     QString _job_name = recv[0].toString();
-    //------------------------------
-    QStringList _server;
-    if (recv[1].toString() != "None")
-        _server.push_back(recv[1].toString());
-    //------------------------------
+
     QStringList _server_group;
     if (recv[2].toString() != "None")
         _server_group.push_back(recv[2].toString());
-    //------------------------------
+
     int _first_frame = recv[3].toInt();
     int _last_frame = recv[4].toInt();
     int _task_size = recv[5].toInt();
@@ -104,10 +97,12 @@ QString manager::make_job(QJsonArray recv)
     QString _comment = recv[8].toString();
     QString _software = recv[9].toString();
     QString _project = recv[10].toString();
-    QString _extra = recv[11].toString();
+    QString _misc = recv[11].toString();
     QString _system = recv[12].toString();
     int _instances = recv[13].toInt();
     QString _render = recv[14].toString();
+
+    print(recv);
 
     QString status, submit_start;
 
@@ -133,7 +128,6 @@ QString manager::make_job(QJsonArray recv)
         else
             break;
     }
-    //----------------------------------------------------------------------
 
     auto tasks = make_task(_first_frame, _last_frame, _task_size);
 
@@ -142,7 +136,6 @@ QString manager::make_job(QJsonArray recv)
     _job->name = job_name;
     _job->status = status;
     _job->priority = _priority;
-    _job->server = _server;
     _job->server_group = _server_group;
     _job->instances = _instances;
     _job->comment = _comment;
@@ -156,7 +149,7 @@ QString manager::make_job(QJsonArray recv)
     _job->software = _software;
     _job->project = _project;
     _job->system = _system;
-    _job->extra = _extra;
+    _job->misc = _misc;
     _job->render = _render;
     _job->progres = 0;
     _job->errors = 0;
@@ -261,14 +254,10 @@ QString manager::job_options(QJsonArray pks)
 
         if (action == "write")
         {
-            job->server.clear();
-            for (QJsonValue s : options[0].toArray())
-                job->server.push_back(s.toString());
-            //------------------------
             job->server_group.clear();
             for (QJsonValue sg : options[1].toArray())
                 job->server_group.push_back(sg.toString());
-            //------------------------
+
             job->priority = options[2].toInt();
             job->comment = options[3].toString();
             job->instances = options[4].toInt();
@@ -283,7 +272,6 @@ QString manager::job_options(QJsonArray pks)
             else
                 job->name = name + "_" + QString::number(num);
             num++;
-            //------------------------------------------------
 
             // si el first_frame, last_frame y task_size no se modifican no crea
             // las tares otra vez
@@ -353,15 +341,11 @@ QString manager::job_options(QJsonArray pks)
 
         if (action == "read")
         {
-            QJsonArray _server;
-            for (QString s : job->server)
-                _server.push_back(s);
-            //----------------------------------------------------
             QJsonArray _server_group;
             for (QString sg : job->server_group)
                 _server_group.push_back(sg);
-            //----------------------------------------------------
-            return jats({_server, _server_group, job->priority, job->comment,
+
+            return jats({"", _server_group, job->priority, job->comment,
                          job->instances, job->task_size, job->name,
                          job->first_frame, job->last_frame});
         }

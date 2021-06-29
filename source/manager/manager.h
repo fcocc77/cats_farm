@@ -43,7 +43,6 @@ public:
     QString as3 = env_videovina["s3"].toString();
     QString vinarender = env_videovina["vinarender"].toString();
     QString vv_local_folder = env_videovina["local"].toString();
-    // -------------------------------
 
     manager();
 
@@ -82,12 +81,10 @@ public:
     void videovina(QJsonArray recv);
     void send_to_render(job_struct *job);
     void post_render(QJsonObject extra, int last_frame, QString job_name);
-    // ---------------------
 
-    void ae_completed(job_struct *job);
     void nuke_completed(job_struct *job, QString src_path, QString dst_path);
-    void ntp_completed(job_struct *job);
-    void natron_completed(job_struct *job, QString src_path, QString dst_path);
+    void vinarender_completed(job_struct *job, QString src_path, QString dst_path);
+    void ffmpeg_completed(job_struct *job, QString src_path, QString dst_path);
 
     QString update_server_thread(QJsonArray recv);
     void update_server();

@@ -23,10 +23,8 @@ public:
     bool nuke(int ins);
     bool maya(int ins);
     bool houdini(int ins);
-    bool ntp(int ins);
-    void natron_monitoring(int ins);
-    bool natron(int ins);
-    bool ae(int ins);
+    bool ffmpeg(int ins);
+    bool vinacomp(int ins);
 };
 
 #endif // RENDER_HPP

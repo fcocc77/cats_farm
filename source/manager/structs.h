@@ -22,7 +22,6 @@ struct job_struct
     QString name;
     QString status;
     int priority;
-    QStringList server;
     QStringList server_group;
     int instances;
     QString comment;
@@ -38,7 +37,7 @@ struct job_struct
     QString software;
     QString project;
     QString system;
-    QString extra;
+    QString misc;
     QString render;
     QStringList vetoed_servers;
     int progres;

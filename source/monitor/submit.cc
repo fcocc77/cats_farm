@@ -347,16 +347,22 @@ void submit::update_server_groups()
 void submit::submit_start(QString software)
 {
     QString system = _linux ? "Linux" : "Windows";
+    QString misc = project_dir_edit->text();
 
-    QJsonArray info = {job_name->text(), "", server_group_box->get_current_text(),
+    QJsonArray info = {job_name->text(),
+                       "",
+                       server_group_box->get_current_text(),
                        first_frame_edit->text().toInt(),
                        last_frame_edit->text().toInt(),
-                       task_size_edit->text().toInt(), priority->get_current_text(),
-                       suspend_box->isChecked(), comment_edit->text(), software,
-                       // project,
-                       // extra,
+                       task_size_edit->text().toInt(),
+                       priority->get_current_text(),
+                       suspend_box->isChecked(),
+                       comment_edit->text(),
+                       software,
+                       project_edit->text(),
+                       misc,
                        system,
-                       // instances.toInt(),
+                       1,
                        render_node_edit->text()};
 
     bool ok = true;
