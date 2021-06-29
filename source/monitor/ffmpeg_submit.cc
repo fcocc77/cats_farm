@@ -25,12 +25,12 @@ void ffmpeg_submit::setup_ui()
 
     QWidget *command_widget = new QWidget;
     QHBoxLayout *command_layout = new QHBoxLayout(command_widget);
-    QLabel *command_label = new QLabel("Command");
+    QLabel *command_label = new QLabel("Args:");
     command_edit = new QLineEdit();
 
     QWidget *preset_widget = new QWidget;
     QHBoxLayout *preset_layout = new QHBoxLayout(preset_widget);
-    QLabel *preset_label = new QLabel("Preset");
+    QLabel *preset_label = new QLabel("Preset:");
     preset_box = new combo_box();
     preset_add = new QPushButton();
     preset_delete = new QPushButton();

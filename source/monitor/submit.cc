@@ -42,6 +42,8 @@ submit::submit(QWidget *__monitor)
 
     ui();
     connections();
+
+    set_software("ffmpeg");
 }
 
 submit::~submit() {}
@@ -254,7 +256,7 @@ void submit::connections()
             &submit::update_server_groups);
 
     connect(software_box, &combo_box::current_text_changed, this,
-            &submit::update_software_box);
+            &submit::set_software);
 
     connect(project_dir_button, &QPushButton::clicked, this, [this]() {
         QString file_path = QFileDialog::getExistingDirectory(
@@ -276,30 +278,42 @@ void submit::connections()
             [this]() { submit_start(software_box->get_current_text()); });
 }
 
-void submit::update_software_box(QString software)
+void submit::set_software(QString software)
 {
-    if (software == "Maya")
+    software = software.toLower();
+
+    ffmpeg_widget->hide();
+
+    project_dir_label->hide();
+    project_dir_edit->hide();
+    project_dir_button->hide();
+
+    render_node_label->hide();
+    render_node_edit->hide();
+
+    if (software == "maya")
     {
-        project_dir_edit->setDisabled(0);
-        project_dir_button->setDisabled(0);
-        render_node_edit->setDisabled(1);
+        project_dir_label->show();
+        project_dir_edit->show();
+        project_dir_button->show();
 
         project_dir_label->setText("Project Folder:");
-        render_node_label->setText("...");
-        render_node_edit->setText("");
     }
 
-    else if (software == "Houdini")
+    else if (software == "houdini")
     {
-        project_dir_edit->setDisabled(1);
-        project_dir_button->setDisabled(1);
-        render_node_edit->setDisabled(0);
+        render_node_label->show();
+        render_node_edit->show();
 
-        project_dir_label->setText("...");
         render_node_label->setText("Engine:");
         render_node_edit->setText("/out/arnold1");
-        project_dir_edit->setText("");
     }
+    else if (software == "ffmpeg")
+    {
+        ffmpeg_widget->show();
+    }
+
+    software_box->set_current_text(software);
 }
 
 void submit::update_server_groups()

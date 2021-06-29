@@ -24,7 +24,7 @@ private:
 
     void submit_start(QString software);
     void update_server_groups();
-    void update_software_box(QString software);
+    void set_software(QString software);
 
     combo_box *software_box;
     ffmpeg_submit *ffmpeg_widget;

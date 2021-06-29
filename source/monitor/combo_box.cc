@@ -78,7 +78,7 @@ int combo_box::get_index(QString text) const
     for (int i = 0; i < actions.count(); i++)
     {
         QAction *action = actions[i];
-        if (action->text() == text)
+        if (action->text().toLower() == text.toLower())
             return i;
     }
 
