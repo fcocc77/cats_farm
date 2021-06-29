@@ -1,0 +1,15 @@
+{
+    "comment": "",
+    "ffmpeg_presets": "None",
+    "first_frame": "1",
+    "job_name": "",
+    "last_frame": "100",
+    "priority": "Normal",
+    "project": "",
+    "project_dir": "",
+    "render_node": "",
+    "server_group": "",
+    "software": "FFmpeg",
+    "suspend": false,
+    "task_size": "10"
+}
