@@ -26,6 +26,7 @@ private:
     QPlainTextEdit *maya_text;
     QPlainTextEdit *nuke_text;
     QPlainTextEdit *houdini_text;
+    QPlainTextEdit *ffmpeg_text;
     QPlainTextEdit *vinacomp_text;
 
     QPushButton *cancel_button;

@@ -1,42 +1,29 @@
 {
-    "groups": [
-        "CAsas",
-        "Nuke",
-        "videovina"
-    ],
     "paths": {
-        "ae": [
-            "C:/Program Files (x86)/Adobe/Adobe After Effects 7.0/Support Files/aerender.exe"
-        ],
-        "ntp": [
-            "/opt/Natron2/NatronRenderer"
-        ],
-        "natron": [
-            "/opt/Natron2/NatronRenderer"
-        ],
         "houdini": [
             "/opt/hfs16.5.439/bin/hython",
-            "C:/Program Files/Side Effects Software/Houdini 16.5.439/bin/hython.exe",
-            "/usr/local/Applications/Houdini/Houdini16.5.439/Frameworks/Houdini.framework/Versions/16.5.439/Resources/bin/hython",
-            "/Applications/Houdini/Houdini16.5.439/Frameworks/Houdini.framework/Versions/16.5.439/Resources/bin/hython"
+            "C:/Program Files/Side Effects Software/Houdini 16.5.439/bin/hython.exe"
         ],
         "maya": [
-            "/usr/autodesk/maya2017/bin/Render",
-            "C:/Program Files/Autodesk/Maya2017/bin/Render.exe",
-            "/usr/local/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render",
-            "/Applications/Autodesk/Maya2017/Maya.app/Contents/bin/Render"
+            "/usr/autodesk/maya2020/bin/Render",
+            "/usr/autodesk/maya2021/bin/Render",
+            "C:/Program Files/Autodesk/Maya2020/bin/Render.exe",
+            "C:/Program Files/Autodesk/Maya2021/bin/Render.exe"
         ],
         "nuke": [
-            "/opt/Nuke9.0v9/Nuke9.0"
+            "/opt/Nuke12.1v2/Nuke12.1"
+        ],
+        "vinacomp": [
+            "/opt/vinacomp/bin/engine"
+        ],
+        "ffmpeg": [
+            "/usr/bin/ffmpeg",
+            "C:/Program Files/vinarender/win/ffmpeg/ffmpeg.exe"
         ],
         "system": [
             "/mnt/Documents",
             "/home/pancho/Documents",
             "/"
         ]
-    },
-    "servers": [
-        "pancho",
-        "server1"
-    ]
+    }
 }

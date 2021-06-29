@@ -64,6 +64,9 @@ void settings_class::setup_ui()
                 houdini_text = new QPlainTextEdit();
                 addTab("Houdini", houdini_text);
 
+                ffmpeg_text = new QPlainTextEdit();
+                addTab("FFmpeg", ffmpeg_text);
+
                 vinacomp_text = new QPlainTextEdit();
                 addTab("VinaComp", vinacomp_text);
             }
@@ -114,7 +117,6 @@ void settings_class::ok()
     QJsonObject manager = shared->settings["manager"].toObject();
     manager["ip"] = host_edit->text();
     shared->settings["manager"] = manager;
-    // ---------------------------
 
     // guarda lista de ips de QString a un json, y borra los espacios
     QString zones = zones_edit->text();
@@ -123,14 +125,13 @@ void settings_class::ok()
         json_hosts.push_back(zone.replace(" ", ""));
 
     shared->settings["hosts"] = json_hosts;
-    // -----------------------------
+
     jwrite(VINARENDER_CONF_PATH + "/settings.json", shared->settings);
 
     // agrega las ips al combobox de zonas
     shared->zone_box->clear();
     for (QJsonValue ip : json_hosts)
         shared->zone_box->add_item(ip.toString());
-    // -------------------------
 }
 
 void settings_class::path_read()
@@ -150,18 +151,20 @@ void settings_class::path_read()
     if (not preferences.empty())
     {
         QJsonObject paths = preferences["paths"].toObject();
-        QString system, nuke, maya, houdini, vinacomp;
+        QString system, nuke, maya, houdini, ffmpeg, vinacomp;
 
         system = array_to_string(paths["system"].toArray());
         nuke = array_to_string(paths["nuke"].toArray());
         houdini = array_to_string(paths["houdini"].toArray());
         maya = array_to_string(paths["maya"].toArray());
+        ffmpeg = array_to_string(paths["ffmpeg"].toArray());
         vinacomp = array_to_string(paths["vinacomp"].toArray());
 
         paths_text->setPlainText(system);
         nuke_text->setPlainText(nuke);
         maya_text->setPlainText(maya);
         houdini_text->setPlainText(houdini);
+        ffmpeg_text->setPlainText(ffmpeg);
         vinacomp_text->setPlainText(vinacomp);
 
         // setea los hosts guardados
@@ -171,18 +174,15 @@ void settings_class::path_read()
         hosts = hosts.left(hosts.length() - 2);
 
         zones_edit->setText(hosts);
-        // ------------------------------
 
         // setea el host del manager
         QString host = shared->settings["manager"].toObject()["ip"].toString();
         host_edit->setText(host);
-        // ------------------
     }
 }
 
 void settings_class::path_write()
 {
-
     QJsonObject paths;
 
     QJsonArray system;
@@ -204,6 +204,11 @@ void settings_class::path_write()
     for (auto l : houdini_text->toPlainText().split("\n"))
         houdini.push_back(l);
     paths["houdini"] = houdini;
+
+    QJsonArray ffmpeg;
+    for (auto l : ffmpeg_text->toPlainText().split("\n"))
+        ffmpeg.push_back(l);
+    paths["ffmpeg"] = ffmpeg;
 
     QJsonArray vinacomp;
     for (auto l : vinacomp_text->toPlainText().split("\n"))
