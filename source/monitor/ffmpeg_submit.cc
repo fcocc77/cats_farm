@@ -188,6 +188,7 @@ void ffmpeg_submit::set_preset(QString preset_name)
 
     command_edit->setText(command);
     command_edit->setCursorPosition(0);
+    preset_box->set_current_text(preset_name);
 }
 
 void ffmpeg_submit::open_preset()

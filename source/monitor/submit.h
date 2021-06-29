@@ -19,13 +19,6 @@ private:
     QVBoxLayout *layout;
     bool savePanel = false;
 
-    void ui();
-    void connections();
-
-    void submit_start(QString software);
-    void update_server_groups();
-    void set_software(QString software);
-
     combo_box *software_box;
     ffmpeg_submit *ffmpeg_widget;
 
@@ -49,6 +42,17 @@ private:
     QLineEdit *last_frame_edit;
     QCheckBox *suspend_box;
     QPushButton *submit_button;
+
+    void ui();
+    void connections();
+
+    void submit_start(QString software);
+    void update_server_groups();
+    void set_software(QString software);
+    void panel_save();
+    void panel_open();
+
+    void hideEvent(QHideEvent *event) override;
 
 public:
     submit(QWidget *_monitor);

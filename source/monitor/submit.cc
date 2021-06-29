@@ -44,6 +44,7 @@ submit::submit(QWidget *__monitor)
     connections();
 
     set_software("ffmpeg");
+    panel_open();
 }
 
 submit::~submit() {}
@@ -186,7 +187,7 @@ void submit::ui()
 
 
     // Settings
-    QStringList items = {"Maya", "Houdini", "FFMpeg"};
+    QStringList items = {"Maya", "Houdini", "FFmpeg"};
     software_box->add_items(items);
 
     priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
@@ -404,4 +405,53 @@ void submit::submit_start(QString software)
         msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msg->show();
     }
+}
+
+void submit::panel_save()
+{
+    QJsonObject panel = {{"software", software_box->get_current_text()},
+                         {"ffmpeg_presets", ffmpeg_widget->get_preset()},
+                         {"project_dir", project_dir_edit->text()},
+                         {"project", project_edit->text()},
+                         {"render_node", render_node_edit->text()},
+                         {"job_name", job_name->text()},
+                         {"first_frame", first_frame_edit->text()},
+                         {"last_frame", last_frame_edit->text()},
+                         {"task_size", task_size_edit->text()},
+                         {"priority", priority->get_current_text()},
+                         {"server_group", server_group_box->get_current_text()},
+                         {"comment", comment_edit->text()},
+                         {"suspend", suspend_box->isChecked()}};
+
+    jwrite(VINARENDER_CONF_PATH + "/submit_panel.json", panel);
+}
+
+void submit::panel_open()
+{
+    QJsonObject panel = jread(VINARENDER_CONF_PATH + "/submit_panel.json");
+
+    software_box->set_current_text(panel["software"].toString(), true);
+    ffmpeg_widget->set_preset(panel["ffmpeg_presets"].toString());
+
+    project_dir_edit->setText(panel["project_dir"].toString());
+    project_edit->setText(panel["project"].toString());
+    render_node_edit->setText(panel["render_node"].toString());
+
+    job_name->setText(panel["job_name"].toString());
+
+    first_frame_edit->setText(panel["first_frame"].toString());
+    last_frame_edit->setText(panel["last_frame"].toString());
+    task_size_edit->setText(panel["task_size"].toString());
+
+    priority->set_current_text(panel["priority"].toString());
+    server_group_box->set_current_text(panel["server_group"].toString());
+
+    comment_edit->setText(panel["comment"].toString());
+    suspend_box->setChecked(panel["suspend"].toBool());
+}
+
+void submit::hideEvent(QHideEvent *event)
+{
+    panel_save();
+    QWidget::hideEvent(event);
 }

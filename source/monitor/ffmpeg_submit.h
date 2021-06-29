@@ -34,11 +34,18 @@ private:
     void open_preset();
     void save_preset();
     void update_preset_box();
-    void set_preset(QString preset_name);
     void delete_current_preset();
 
 public:
     ffmpeg_submit(QList<int> params);
+
+    void set_preset(QString preset_name);
+    inline QString get_preset() const;
 };
+
+inline QString ffmpeg_submit::get_preset() const
+{
+    return preset_box->get_current_text();
+}
 
 #endif // FFMPEG_SUBMIT_H
