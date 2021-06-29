@@ -64,8 +64,9 @@ void general_class::connections()
     connect(show_action, &QAction::triggered, this,
             [this]() { _monitor->show(); });
 
-    connect(properties_hide, &QAction::triggered, this,
-            [this]() { properties->parentWidget()->hide(); });
+    connect(properties_hide, &QAction::triggered, this, [this]() {
+        static_cast<monitor *>(_monitor)->get_toolbar()->hide_properties();
+    });
 
     properties_hide->setShortcut(QString("Esc"));
 

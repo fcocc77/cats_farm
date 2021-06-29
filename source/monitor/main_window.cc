@@ -24,13 +24,13 @@ QWidget *monitor::add_title(QWidget *widget, QString title)
     // le agrega un titilo superior al 'widget'
     QWidget *container = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
+    layout->setMargin(0);
 
     container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     container->setLayout(layout);
 
     QLabel *label = new QLabel(title);
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     label->setObjectName("widget_title");
     layout->addWidget(label);
     layout->addWidget(widget);
@@ -42,6 +42,7 @@ void monitor::setup_ui()
 {
     shared = new shared_variables();
     shared->settings = jread(VINARENDER_CONF_PATH + "/settings.json");
+    print(VINARENDER_CONF_PATH);
     shared->manager_host =
         shared->settings["manager"].toObject()["ip"].toString();
     shared->manager_port =

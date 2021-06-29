@@ -54,6 +54,7 @@ public:
     ~toolbar_class();
 
     void switch_widget(QString widget_name);
+    void hide_properties();
 };
 
 #endif // TOOLBAR_HPP

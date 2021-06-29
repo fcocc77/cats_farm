@@ -26,10 +26,9 @@
 @mixin treeitem
     alternate-background-color: $b18
     background-color: $b15
-    border: 1px solid $b18
     QWidget
         background: transparent
-    &::item 
+    &::item
         border-bottom: 1px solid $b20
         border-top: 1px solid transparent
         height: 30px
@@ -44,19 +43,17 @@
                     &:horizontal 
                         background: rgba($b30,.2)
             &::chunk
-                &:horizontal 
+                &:horizontal
                     border-radius: 2px
                     background: $blue
 
     QHeaderView
         border-bottom: 1px solid $b10
-        &::section 
+        &::section
             background-color: $b18
             padding: 5px 10px 5px 10px
             border: 0px solid transparent
-            margin-left: 1px
-            margin-top: 1px
-            margin-bottom: 1px
+            border-left: 1px solid $b13
 @mixin button
     padding: 3px
     border-radius: 3px

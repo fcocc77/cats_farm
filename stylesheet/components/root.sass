@@ -7,109 +7,102 @@
     background-color: white
     border: 0px
     font-size: 11px
+
 QWidget
     background: $b10
+
 QMainWindow
     qproperty-windowIcon: url('#{$path}/icons/icon.png')
-    #centralwidget
-        border: 1px solid transparent
-        &::hover
-            border-color: rgba($base, .5)
-    &::separator 
-        background: $b7
+    &::separator
+        background: red
         width: 4px
         border-style: outset
-        border-width: 1px    
+        border-width: 1px
         &:hover
             background: rgba($base,.2)
             border-color: rgba($base,.5)
-    QMessageBox
-        background: $b13
-        QLabel
-            font-size: 13px
-            background: transparent
-        QPushButton
-            @include button
-    QInputDialog
-        background: $b14
-        width: 500px
-        QLabel
-            background: transparent
-            font-size: 13px
-        QPushButton
-            @include button
-        QLineEdit
-            @include textedit
-            margin-bottom: 20px
-    QScrollBar
+
+#centralwidget
+    border: 1px solid transparent
+    &::hover
+        border-color: rgba($base, .5)
+QMessageBox
+    background: $b13
+    QLabel
+        font-size: 13px
+        background: transparent
+    QPushButton
+        @include button
+QInputDialog
+    background: $b14
+    width: 500px
+    QLabel
+        background: transparent
+        font-size: 13px
+    QPushButton
+        @include button
+    QLineEdit
+        @include textedit
+        margin-bottom: 20px
+QScrollBar
+    &::horizontal 
+        height: 10px
+    &:vertical 
+        width: 10px
+    &::handle
+        &:horizontal, &:vertical
+            background: $b25
+            min-height: 20px
+            border-radius: 5px
+            &:hover
+                background: $base
+        &:horizontal
+            margin-left: 7px
+            margin-right: 7px
+        &:vertical
+            margin-top: 7px
+            margin-bottom: 7px
+
+    &::add-line, &::sub-line
+        &:horizontal, &:vertical
+            background: none
+    &::add-page, &::sub-page
+        &:horizontal, &:vertical
+            background: none
+QMenu
+    background-color: $b17
+    border: 1px solid mix($base, $b15, 20%)
+    border-radius: 2px
+    &::icon
+        padding-left: 15px
+    &::item
+        padding: 4px 15px 4px 15px
+        &:selected
+            background: $b22
+            color: $base
+        &:checked
+            text-decoration: underline
+    &::separator
+        background-color: $b20
+        margin: 5px
+        height: 1px
+
+
+QSplitter
+    &::handle
+        $width: 1px
+        &::horizontal, &::vertical
+            background: $b7
+            &:hover
+                background: mix($base, $b10, 80%)
         &::horizontal 
-            height: 10px
-        &:vertical 
-            width: 10px
-        &::handle
-            &:horizontal, &:vertical 
-                background: $b25
-                min-height: 20px
-                border-radius: 5px
-                margin-left: 11
-                margin-right: 11
-                &:hover
-                    background: $base
-        &::add-line, &::sub-line
-            &:horizontal, &:vertical
-                background: $b25
-        &::right-arrow:horizontal 
-            image: url(#{$images}/right_arrow.png)
-            width: 7px
-            height: 7px
-        &::left-arrow:horizontal 
-            image: url(#{$images}/left_arrow.png)
-            width: 7px
-            height: 7px
-        &::up-arrow:vertical 
-            image: url(#{$images}/up_arrow.png)
-            width: 7px
-            height: 7px
-        &::down-arrow:vertical 
-            image: url(#{$images}/down_arrow.png)
-            width: 7px
-            height: 7px
-        &::add-page, &::sub-page
-            &:horizontal, &:vertical
-                background: none
-    QMenu
-        background-color: $b17
-        border: 1px solid mix($base, $b15, 20%)
-        border-radius: 2px
-        &::icon
-            padding-left: 15px
-        &::item
-            padding: 4px 15px 4px 15px
-            &:selected
-                background: $b22
-                color: $base
-            &:checked
-                text-decoration: underline
-        &::separator
-            background-color: $b20
-            margin: 5px
-            height: 1px
+            width: $width
+        &::vertical
+            height: $width
 
-
-    QSplitter
-        &::handle
-            $width: 3px
-            &::horizontal, &::vertical
-                background: $b10
-                &:hover
-                    background: mix($base, $b10, 80%)
-            &::horizontal 
-                width: $width
-            &::vertical 
-                height: $width
-
-    #widget_title
-        font-weight: bold
-        color: $b70
-        qproperty-alignment: AlignCenter
-        padding: 0px
+#widget_title
+    font-weight: bold
+    color: $b70
+    qproperty-alignment: AlignCenter
+    padding: 3px
+    background: $b10

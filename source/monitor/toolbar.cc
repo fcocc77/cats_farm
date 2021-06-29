@@ -133,6 +133,15 @@ void toolbar_class::switch_widget(QString widget_name)
         log_switch->set_checked(visible);
 }
 
+void toolbar_class::hide_properties()
+{
+    properties->parentWidget()->hide();
+
+    settings->set_checked(false);
+    log_switch->set_checked(false);
+    submit->set_checked(false);
+}
+
 void toolbar_class::load_zones()
 {
     QJsonArray zones = shared->settings["hosts"].toArray();
