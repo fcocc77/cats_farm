@@ -131,8 +131,8 @@ void submit::ui()
 
     main_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
-    project_dir_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
-    project_layout->setContentsMargins(h_margin, v_margin, h_margin, v_margin);
+    project_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
+    project_dir_layout->setContentsMargins(h_margin, v_margin, h_margin, v_margin);
     render_node_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
 
     job_layout->setContentsMargins(h_margin, v_padding, h_margin, v_padding);
@@ -227,8 +227,8 @@ void submit::ui()
     comment_layout->addWidget(comment_label);
     comment_layout->addWidget(comment_edit);
 
-    box_a_layout->addWidget(project_dir_widget);
     box_a_layout->addWidget(project_widget);
+    box_a_layout->addWidget(project_dir_widget);
     box_a_layout->addWidget(render_node_widget);
     box_b_layout->addWidget(job_widget);
     box_c_layout->addWidget(frame_range_widget);
@@ -239,8 +239,8 @@ void submit::ui()
     box_e_layout->addWidget(suspend_box);
 
     main_layout->addWidget(software_box);
-    main_layout->addWidget(box_a_widget);
     main_layout->addWidget(ffmpeg_widget);
+    main_layout->addWidget(box_a_widget);
     main_layout->addWidget(box_b_widget);
     main_layout->addWidget(box_c_widget);
     main_layout->addWidget(box_d_widget);
@@ -297,6 +297,7 @@ void submit::set_software(QString software)
         project_dir_edit->show();
         project_dir_button->show();
 
+        project_label->setText("Scene File:");
         project_dir_label->setText("Project Folder:");
     }
 
@@ -307,9 +308,23 @@ void submit::set_software(QString software)
 
         render_node_label->setText("Engine:");
         render_node_edit->setText("/out/arnold1");
+
+        project_label->setText("Project:");
     }
     else if (software == "ffmpeg")
     {
+        project_dir_label->show();
+        project_dir_edit->show();
+        project_dir_button->show();
+        project_dir_label->setText("Output Folder:");
+
+        render_node_label->show();
+        render_node_edit->show();
+        render_node_label->setText("Movie Name:");
+        render_node_edit->setText("");
+
+        project_label->setText("Input File:");
+
         ffmpeg_widget->show();
     }
 
