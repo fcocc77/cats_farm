@@ -102,7 +102,7 @@ QString server::recieveManager(QString _recv)
             int pid = render->pid[i.toInt()];
             if (pid)
             {
-                render->taskKill[i.toInt()] = true;
+                render->task_kill[i.toInt()] = true;
                 os::kill(pid);
             }
         }

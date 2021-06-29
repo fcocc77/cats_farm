@@ -308,7 +308,7 @@ void manager::nuke_completed(job_struct *job, QString src_path,
         _dirname.replace(src_path, dst_path);
 
         if (os::isdir(_dirname))
-            concat(_dirname + "/" + _basename);
+            video::concat(_dirname + "/" + _basename, job->task_size);
     }
 }
 
@@ -320,4 +320,17 @@ void manager::vinarender_completed(job_struct *job, QString src_path,
 void manager::ffmpeg_completed(job_struct *job, QString src_path,
                                QString dst_path)
 {
+    job->status = "Concatenate";
+
+    QJsonObject _misc = jofs(job->misc);
+
+    QString output_folder = _misc["output_dir"].toString();
+    QString movie_name = _misc["movie_name"].toString();
+
+    output_folder.replace(src_path, dst_path);
+
+    QString dir_file = output_folder + "/" + movie_name;
+
+    if (os::isdir(dir_file))
+        video::concat(dir_file, job->task_size);
 }

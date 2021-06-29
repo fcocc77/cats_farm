@@ -41,7 +41,14 @@ public:
 
     void set_preset(QString preset_name);
     inline QString get_preset() const;
+    inline QString get_command() const;
+    inline QString get_movie_name() const;
 };
+
+inline QString ffmpeg_submit::get_command() const
+{
+    return command_edit->text();
+}
 
 inline QString ffmpeg_submit::get_preset() const
 {

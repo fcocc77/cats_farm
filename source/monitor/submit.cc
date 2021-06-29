@@ -10,7 +10,10 @@
 #include "main_window.h"
 #include "os.h"
 #include "submit.h"
+#include "util.h"
 #include "tcp.h"
+#include "path_utils.h"
+#include "video.h"
 
 submit::submit(QWidget *__monitor)
     : _monitor(__monitor)
@@ -273,10 +276,13 @@ void submit::connections()
 
         if (not file_name.isEmpty())
             project_edit->setText(file_name);
+
+        update_ffmpeg_panel();
     });
 
-    connect(submit_button, &QPushButton::clicked, this,
-            [this]() { submit_start(software_box->get_current_text()); });
+    connect(submit_button, &QPushButton::clicked, this, [this]() {
+        submit_start(software_box->get_current_text().toLower());
+    });
 }
 
 void submit::set_software(QString software)
@@ -347,7 +353,15 @@ void submit::update_server_groups()
 void submit::submit_start(QString software)
 {
     QString system = _linux ? "Linux" : "Windows";
-    QString misc = project_dir_edit->text();
+    QString misc;
+
+    if (software == "ffmpeg")
+    {
+        QJsonObject misc_obj = {{"output_dir", project_dir_edit->text()},
+                                {"movie_name", render_node_edit->text()},
+                                {"command", ffmpeg_widget->get_command()}};
+        misc = jots(misc_obj);
+    }
 
     QJsonArray info = {job_name->text(),
                        "",
@@ -454,6 +468,23 @@ void submit::panel_open()
 
     comment_edit->setText(panel["comment"].toString());
     suspend_box->setChecked(panel["suspend"].toBool());
+}
+
+void submit::update_ffmpeg_panel()
+{
+    if (software_box->get_current_text().toLower() != "ffmpeg")
+        return;
+
+    QString src_movie = project_edit->text();
+    project_dir_edit->setText(os::dirname(src_movie));
+
+    QString movie_name = path_util::basename_no_ext(src_movie);
+    render_node_edit->setText(movie_name + "_output");
+
+    int frame_count = video::get_meta_data(src_movie).frames;
+
+    first_frame_edit->setText("0");
+    last_frame_edit->setText(QString::number(frame_count));
 }
 
 void submit::hideEvent(QHideEvent *event)

@@ -102,8 +102,6 @@ QString manager::make_job(QJsonArray recv)
     int _instances = recv[13].toInt();
     QString _render = recv[14].toString();
 
-    print(recv);
-
     QString status, submit_start;
 
     if (_suspend)

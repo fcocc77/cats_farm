@@ -52,6 +52,8 @@ private:
     void panel_save();
     void panel_open();
 
+    void update_ffmpeg_panel();
+
     void hideEvent(QHideEvent *event) override;
 
 public:
