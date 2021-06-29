@@ -1,18 +1,22 @@
+testing:
+    ☐ hacer un script que valla matando el proceso de manager cada cierto tiempo, para probar que los archivos json, no se corrompan, y que siga el render
+    ☐ probar cortando el internet ( la red ) cuando esta el natron renderizando, al volver el internet queda pegado en activo
+
 general:
-    ☐ opcion para poder renderizar videos con ffmpeg
+    ✔ opcion para poder renderizar videos con ffmpeg @done(2021-06-28 23:33)
     ☐ crear un log general, con cada paso que va haciendo el manager y server cuando esta renderizando,( log de vinarender no de los softwares)
+
 manager:
     ☐ hacer que siga funcionando la cola de render al desconectarse, por un corte de luz o baja del internet, y si demora mas de 2 minutos en volver, transferir todos los trabajos a otra zona
     ✔ corregir tiempo estimado y tiempo total @done (5/28/2020, 9:48:00 AM)
     ☐ no funciona el tiempo estimado, cuando va el progreso pasa el 50%
     ☐ al exportar un solo frame, cuando termina a veces queda en 'queue', pasa cuando exportamos con Natron los frame de referencia, hacer un check a todos los job casa 10 segundos y si estan todas las tareas hechas, ponerla como completado
     ☐ a veces queda en queue, y terminaron todas las tareas, hacer un loop que valla verificando si todas las tareas estan en 'Complete'
-    ☐ hacer un script que valla matando el proceso de manager cada cierto tiempo, para probar que los archivos json, no se corrompan, y que siga el render
     ☐ verificar que cuando se borre un 'jobs' no quede en la memoria, hay que utilizar 'delete jobs->'
-    ☐ probar cortando el internet ( la red ) cuando esta el natron renderizando, al volver el internet queda pegado en activo
     ☐ al activar el cortafuegos en pleno render, y se desabilita el servidor en el monitor, luego se de desactiva el cortafuego, la tarea se queda pegada en 'active' (solo si el servidor no es el local)
+
 render:
-    ☐ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios
+    ✘ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios @cancelled(2021-06-28 23:34)
 
 monitor:
     ☐ el over del puntero de la tableta, que da pegado en los bordes
@@ -21,23 +25,27 @@ monitor:
     ✔ cambiar de QDockWidget a QSpliter @done (9/27/2020, 8:23:16 PM)
     toolbar:
         ✔ crear opciones de layout, y que queden fijos a un tamanio especifico @done (9/27/2020, 8:23:50 PM)
-        ☐ poner icono a los botones finales
-        ☐ que los iconos cambien de color cuando esta en 'check'
+        ✔ poner icono a los botones finales @done(2021-06-28 23:31)
+        ✔ que los iconos cambien de color cuando esta en 'check' @done(2021-06-28 23:31)
     jobs:
         ☐ no funciona el ctrl-a para seleccionar todos
         ☐ al borrar un jobs incompleto, que borre tambien la carpeta que se creo
+        ☐ poder arrastrar archivos de video y proyectos @hi
+        ☐ en item poner un boton de lapiz para editar @hi
     servers:
         ☐ al seleccionar y borrar con suprimir, no se borran los servidores sino los jobs
         ☐ uso de ram a veces queda negativo, ponerle un abc()
         ✔ mostrar cpu i/o en otro color @done (10/4/2020, 12:52:25 PM)
         ✔ mostrar memoria cache en otro color @done (10/4/2020, 12:52:21 PM)
-        ☐ crear un toolbar con las opciones del 'server', cuando esta seleccionado poner los iconos en blanco y si no desabilitados
+        ✘ crear un toolbar con las opciones del 'server', cuando esta seleccionado poner los iconos en blanco y si no desabilitados @cancelled(2021-06-28 23:32)
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
+        ☐ algunos label quedan en color negro @hi
     
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
         ✔ al presionar ok, se cierra el widget de 'propieties', solo deberia cerrarse el widget de 'job_options' @done (10/9/2020, 2:55:26 PM)
+        ☐ al editar multiples jobs, deberian verse el nombre de cada job a editar @hi
 
     settings:
         ☐ al presionar cancelar o escape, que los valores queden como estaban, ahora si se modifica el 'QPlainText' se mantiene.
