@@ -1,0 +1,12 @@
+{
+    "Apple ProRes: 1280x720 / 24": "-framerate 24 -vf scale=1280:720 -vcodec prores ",
+    "Apple ProRes: 1280x720 / 30": "-framerate 30 -vf scale=1280:720 -vcodec prores ",
+    "Apple ProRes: 1920x1080 / 24": "-framerate 24 -vf scale=1920:1080 -vcodec prores ",
+    "Apple ProRes: 1920x1080 / 30": "-framerate 30 -vf scale=1920:1080 -vcodec prores ",
+    "Apple ProRes: auto / auto": "-vcodec prores ",
+    "MP4: 1280x720 / 24": "-framerate 24 -vf scale=1280:720 -vcodec libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p",
+    "MP4: 1280x720 / 30": "-framerate 30 -vf scale=1280:720 -vcodec libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p",
+    "MP4: 1920x1080 / 24": "-framerate 24 -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p",
+    "MP4: 1920x1080 / 30": "-framerate 30 -vf scale=1920:1080 -vcodec libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p",
+    "MP4: auto / auto": "-vcodec libx264 -profile:v baseline -level 3.0 -pix_fmt yuv420p"
+}

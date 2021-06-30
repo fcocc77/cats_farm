@@ -14,7 +14,7 @@ private:
     QPushButton *preset_add_button, *preset_delete_button,
         *preset_cancel_button;
     QPushButton *preset_add, *preset_delete;
-    QLineEdit *preset_name, *command_edit;
+    QLineEdit *preset_name_edit, *command_edit;
 
     int label_width;
     int h_margin;

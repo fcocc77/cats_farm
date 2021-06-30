@@ -34,7 +34,7 @@ void ffmpeg_submit::setup_ui()
     preset_box = new combo_box();
     preset_add = new QPushButton();
     preset_delete = new QPushButton();
-    preset_name = new QLineEdit();
+    preset_name_edit = new QLineEdit();
     preset_add_button = new QPushButton("Add");
     preset_delete_button = new QPushButton("Delete");
     preset_cancel_button = new QPushButton("Cancel");
@@ -110,7 +110,7 @@ void ffmpeg_submit::setup_ui()
     preset_layout->addWidget(preset_box);
     preset_layout->addWidget(preset_add);
     preset_layout->addWidget(preset_delete);
-    preset_layout->addWidget(preset_name);
+    preset_layout->addWidget(preset_name_edit);
     preset_layout->addWidget(preset_add_button);
     preset_layout->addWidget(preset_delete_button);
     preset_layout->addWidget(preset_cancel_button);
@@ -124,7 +124,7 @@ void ffmpeg_submit::preset_dialog(bool visible)
     preset_add->setVisible(!visible);
     preset_delete->setVisible(!visible);
 
-    preset_name->setVisible(visible);
+    preset_name_edit->setVisible(visible);
     preset_add_button->setVisible(visible);
     preset_delete_button->setVisible(visible);
     preset_cancel_button->setVisible(visible);
@@ -132,7 +132,7 @@ void ffmpeg_submit::preset_dialog(bool visible)
 
 void ffmpeg_submit::add_preset()
 {
-    QString name = preset_name->text();
+    QString name = preset_name_edit->text();
     if (name.isEmpty())
         return;
 
@@ -152,7 +152,7 @@ void ffmpeg_submit::add_preset()
 void ffmpeg_submit::delete_preset()
 {
     preset_dialog(true);
-    preset_name->hide();
+    preset_name_edit->hide();
     preset_add_button->hide();
 }
 
@@ -190,6 +190,7 @@ void ffmpeg_submit::set_preset(QString preset_name)
     command_edit->setText(command);
     command_edit->setCursorPosition(0);
     preset_box->set_current_text(preset_name);
+    preset_name_edit->setText(preset_name);
 }
 
 void ffmpeg_submit::open_preset()

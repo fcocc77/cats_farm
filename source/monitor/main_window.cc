@@ -69,7 +69,8 @@ void monitor::setup_ui()
     properties = new properties_class(log, options, settings, _submit);
     QWidget *properties_parent = add_title(properties, "Properties");
     properties_parent->hide();
-    properties_parent->setMaximumWidth(500);
+    properties_parent->setMinimumWidth(400);
+    properties_parent->setMaximumWidth(1000);
 
     // Servers
     servers = new servers_class(this, shared, log);
