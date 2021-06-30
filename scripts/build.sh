@@ -21,7 +21,7 @@ function update_monitor() {
     sudo rm "$bin/vmonitor"
     sudo cp './release/vmonitor' "$bin/vmonitor"
 
-    mate-terminal -e "sh -c \"$bin/vmonitor\"" --geometry 70x18+0+475
+    mate-terminal -e "sh -c \"$bin/vmonitor\"" --geometry 70x20+0+475
 }
 
 function update_manager() {

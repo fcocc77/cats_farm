@@ -29,10 +29,9 @@ private:
     QWidget *settings_widget;
     properties_class *properties;
 
-    button *resume;
-    button *suspend;
     button *settings;
     button *submit;
+    button *options_button;
 
     button *tasks_switch;
     button *groups_switch;

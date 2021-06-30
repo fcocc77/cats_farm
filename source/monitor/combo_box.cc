@@ -28,7 +28,6 @@ combo_box::combo_box()
     arrow->setObjectName("arrow");
 
     label->setObjectName("combobox_label");
-    label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     connect(menu, &QMenu::triggered, this,
             [=](QAction *action) { set_current_text(action->text(), true); });

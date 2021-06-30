@@ -1,3 +1,5 @@
+cd $(dirname "$0")
+cd ..
 
 source utils/shell/svg2png.sh
 

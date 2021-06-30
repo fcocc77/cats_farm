@@ -36,11 +36,10 @@ void toolbar_class::setup_ui()
     this->setContentsMargins(0, 0, 0, 0);
     this->setLayout(main_layout);
 
-    resume = new button("RESUME JOB", "play_arrow");
-    suspend = new button("SUSPEND JOB", "pause");
     settings = new button("SETTINGS", "settings", true, false);
     submit = new button("SUBMIT", "submit", true, false);
-    log_switch = new button("Log", "log", true, false);
+    log_switch = new button("LOG", "log", true, false);
+    options_button = new button("JOBS SETTINGS", "options", true, false);
 
     QLabel *zone = new QLabel("ZONE:");
     zone->setObjectName("zone");
@@ -63,10 +62,8 @@ void toolbar_class::setup_ui()
     // Layout
     main_layout->addWidget(settings);
     main_layout->addWidget(log_switch);
+    main_layout->addWidget(options_button);
     main_layout->addWidget(submit);
-
-    main_layout->addWidget(resume);
-    main_layout->addWidget(suspend);
 
     main_layout->addWidget(zone);
     main_layout->addWidget(shared->zone_box);
@@ -88,12 +85,6 @@ void toolbar_class::connections()
 
     connect(submit, &button::clicked, this,
             [this]() { switch_widget("submit"); });
-
-    connect(suspend, &button::clicked, this,
-            [this]() { jobs->job_suspend_action->triggered(); });
-
-    connect(resume, &button::clicked, this,
-            [this]() { jobs->job_resume_action->triggered(); });
 
     connect(shared->zone_box, &combo_box::current_text_changed, update,
             &update_class::update);
