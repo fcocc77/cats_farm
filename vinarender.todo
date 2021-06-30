@@ -40,7 +40,7 @@ monitor:
         ✘ crear un toolbar con las opciones del 'server', cuando esta seleccionado poner los iconos en blanco y si no desabilitados @cancelled(2021-06-28 23:32)
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
-        ☐ algunos label quedan en color negro @hi
+        ✔ algunos label quedan en color negro @hi @done(2021-06-29 22:27)
     
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
