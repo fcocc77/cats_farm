@@ -1,12 +1,12 @@
 #include <QAction>
+#include <QInputDialog>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMessageBox>
-#include <QLineEdit>
-#include <QInputDialog>
 
-#include <tcp.h>
-#include "groups.h"
 #include "../global/global.h"
+#include "groups.h"
+#include <tcp.h>
 
 groups_class::groups_class(QWidget *__monitor, shared_variables *_shared,
                            servers_class *_servers)
@@ -74,8 +74,6 @@ void groups_class::connections()
 
     connect(delete_action, &QAction::triggered, this,
             &groups_class::group_delete);
-
-    //--------------------------------------------------------------------
 }
 
 void groups_class::popup()
@@ -125,7 +123,6 @@ void groups_class::create_window()
         make_server(item, machines);
         // submitUpdateBox();
     };
-    //-----------------------------------------------
 
     bool ok;
     QString group_name = QInputDialog::getText(
@@ -135,13 +132,9 @@ void groups_class::create_window()
     if (ok)
     {
         if (not group_name.isEmpty())
-        {
             group_create(group_name);
-        }
         else
-        {
             group_create("Nameless");
-        }
     }
 }
 
@@ -167,7 +160,6 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
     QWidget *name_widget = new QWidget();
     name_widget->setStyleSheet("QWidget{background-color: rgba(0,0,0,0);}");
     name_widget->setLayout(name_layout);
-    //-----------------------------------------------------------------------
 
     // On Machines
     ElidedLabel *on_label = new ElidedLabel();
@@ -185,7 +177,6 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
 
     QWidget *on_widget = new QWidget();
     on_widget->setLayout(on_layaout);
-    //------------------------------------------------
 
     // Off Machines
     ElidedLabel *off_label = new ElidedLabel();
@@ -203,7 +194,6 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
 
     QWidget *off_widget = new QWidget();
     off_widget->setLayout(off_layaout);
-    //-----------------------------------------------
 
     // All Machines
     ElidedLabel *all_label = new ElidedLabel();
@@ -221,7 +211,6 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
 
     QWidget *all_widget = new QWidget();
     all_widget->setLayout(all_layaout);
-    //-----------------------------------------------
 
     // Union de on y off widget
     QVBoxLayout *on_off_layout = new QVBoxLayout();
@@ -234,7 +223,6 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
 
     QWidget *on_off_widget = new QWidget();
     on_off_widget->setLayout(on_off_layout);
-    //------------------------------------------
 
     // Status Columm
     QHBoxLayout *status_layout = new QHBoxLayout();
@@ -247,8 +235,6 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
 
     QWidget *status_widget = new QWidget();
     status_widget->setLayout(status_layout);
-    status_widget->setStyleSheet("QWidget{background-color: rgba(0,0,0,0);}");
-    //--------------------------------------------------------------------------
 
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(2, group_name);
@@ -268,7 +254,6 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
         QTreeWidgetItem *item;
         QString status;
     };
-
     // crea lista de los childItem antiguos
     QList<_name_item> oldChild;
     QStringList oldChildName;
@@ -280,7 +265,6 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
         oldChild.push_back({childName, childItem, NULL});
         oldChildName.push_back(childName);
     }
-    //-------------------------------------------------
 
     // crea lista de los nuevos childItem
     QList<_name_item> newChild;
@@ -297,7 +281,6 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
         newChild.push_back({server_name, childItem, status});
         newChildName.push_back(server_name);
     }
-    //-------------------------------------------
 
     // si los nuevos childItem no estan en el antiguo, los crea
     for (auto child : newChild)
@@ -310,7 +293,6 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
             item->addChild(childItem);
         }
     }
-    //-------------------------------------------------------
 
     // si los antiguos childItem no estan en los nuevos, los borra
     for (auto child : oldChild)
@@ -322,7 +304,6 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
             child.item->parent()->removeChild(child.item);
         }
     }
-    //---------------------------------------------------------
 
     // Actualiza el status del childItem
     for (int i = 0; i < item->childCount(); ++i)
@@ -348,8 +329,6 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
             }
         }
     }
-
-    //---------------------------------------------
 }
 
 void groups_class::add_machine()
@@ -365,8 +344,6 @@ void groups_class::add_machine()
         server_list.push_back(server_name);
     }
 
-    //-----------------------------------------------
-
     QJsonArray group_machine;
     for (auto item : this->selectedItems())
     {
@@ -380,7 +357,6 @@ void groups_class::add_machine()
             QString childName = childItem->text(0);
             oldChild.push_back(childName);
         }
-        //-------------------------------------------------
 
         for (QJsonValue serverName : server_list)
         {
@@ -428,7 +404,6 @@ void groups_class::group_delete()
 
             for (auto item : this->selectedItems())
             {
-
                 if (item->parent())
                 {
                     QString group_name = item->parent()->text(2);
@@ -464,6 +439,4 @@ QStringList groups_class::get_groups() const
         QTreeWidgetItem *item = this->topLevelItem(i);
         groups.push_back(item->text(2));
     }
-
-    return groups;
 }
