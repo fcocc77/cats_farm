@@ -439,4 +439,6 @@ QStringList groups_class::get_groups() const
         QTreeWidgetItem *item = this->topLevelItem(i);
         groups.push_back(item->text(2));
     }
+
+    return groups;
 }

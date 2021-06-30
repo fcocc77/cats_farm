@@ -93,7 +93,7 @@ void ffmpeg_submit::setup_ui()
 
     connect(command_edit, &QLineEdit::textChanged, [=](QString text) {
         QString current_command =
-            presets[preset_box->get_current_text()].toString();
+            presets.value(preset_box->get_current_text()).toString();
 
         if (current_command != text)
         {
@@ -144,6 +144,7 @@ void ffmpeg_submit::add_preset()
 
     update_preset_box();
     save_preset();
+    preset_box->set_current_text(name);
 
     preset_dialog(false);
 }
@@ -168,7 +169,7 @@ void ffmpeg_submit::update_preset_box()
 {
     preset_box->clear();
 
-    preset_box->add_item("None");
+    preset_box->add_item("Custom");
     preset_box->add_separator();
 
     QStringList preset_list;
@@ -181,9 +182,9 @@ void ffmpeg_submit::update_preset_box()
 
 void ffmpeg_submit::set_preset(QString preset_name)
 {
-    QString command = presets[preset_name].toString();
+    QString command = presets.value(preset_name).toString();
 
-    if (preset_name == "None")
+    if (preset_name == "Custom")
         command = custom_preset;
 
     command_edit->setText(command);

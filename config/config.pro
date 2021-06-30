@@ -10,6 +10,9 @@ CONFIG += warn_off
 CONFIG += c++11
 CONFIG -= app_bundle
 
+# ! solo poner en desarrollo
+CONFIG += debug
+
 DESTDIR = release
 OBJECTS_DIR = release/.obj
 MOC_DIR = release/.moc
