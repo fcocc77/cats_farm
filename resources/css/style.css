@@ -104,6 +104,12 @@ QScrollBar::add-line:horizontal, QScrollBar::add-line:vertical, QScrollBar::sub-
 QScrollBar::add-page:horizontal, QScrollBar::add-page:vertical, QScrollBar::sub-page:horizontal, QScrollBar::sub-page:vertical {
   background: none; }
 
+QToolTip {
+  background: #17191c;
+  padding: 3px;
+  border: 1px solid #103f60;
+  border-radius: 2px; }
+
 QMenu {
   background-color: #272b2f;
   border: 1px solid #1c3d54;

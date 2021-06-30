@@ -36,6 +36,7 @@ submit::submit(QWidget *__monitor)
     job_name = new QLineEdit();
     server_group_box = new combo_box();
     priority = new combo_box();
+    task_size_box = new combo_box();
     task_size_edit = new QLineEdit();
     comment_edit = new QLineEdit();
     first_frame_edit = new QLineEdit();
@@ -196,6 +197,12 @@ void submit::ui()
     priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
     priority->set_index(2);
 
+    task_size_box->add_items({"Custom", "5 Tasks", "10 Tasks", "15 Tasks",
+                              "20 Tasks", "30 Tasks", "40 Tasks", "50 Tasks"});
+    task_size_box->set_index(0);
+    task_size_box->setToolTip("Task divisions: calculate the size of the task "
+                              "from the number of divisions");
+
     scrollArea->setWidget(main_widget);
     scrollArea->setWidgetResizable(true);
 
@@ -220,6 +227,7 @@ void submit::ui()
     frame_range_layout->addWidget(last_frame_edit);
 
     task_size_layout->addWidget(task_size_label);
+    task_size_layout->addWidget(task_size_box);
     task_size_layout->addWidget(task_size_edit);
 
     priority_layout->addWidget(priority_label);

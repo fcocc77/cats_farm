@@ -36,6 +36,7 @@ private:
     QLineEdit *job_name;
     combo_box *server_group_box;
     combo_box *priority;
+    combo_box *task_size_box;;
     QLineEdit *task_size_edit;
     QLineEdit *comment_edit;
     QLineEdit *first_frame_edit;
