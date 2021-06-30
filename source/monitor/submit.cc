@@ -485,6 +485,11 @@ void submit::update_ffmpeg_panel()
 
     first_frame_edit->setText("0");
     last_frame_edit->setText(QString::number(frame_count));
+
+    int task_size = frame_count / 25;
+    task_size = task_size < 50 ? 50 : task_size;
+
+    task_size_edit->setText(QString::number(task_size));
 }
 
 void submit::hideEvent(QHideEvent *event)
