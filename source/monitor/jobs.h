@@ -8,6 +8,7 @@
 #include "log.h"
 #include "properties.h"
 #include "servers.h"
+#include "submit.h"
 
 class jobs_class : public QTreeWidget
 {
@@ -20,8 +21,8 @@ private:
     options_class *options;
     groups_class *groups;
     properties_class *properties;
+    submit *_submit;
     void connections();
-    virtual void mousePressEvent(QMouseEvent *event);
 
     // Jobs Funcions
     void setup_ui();
@@ -36,18 +37,22 @@ private:
                  QString ask, QString tile, jobs_class *_class);
 
     void item_delete();
-    //-----------------------------
+
     QTreeWidgetItem *first_job_item;
 
-    // log
     QString log_server;
-    // --------------------------
+
+    virtual void mousePressEvent(QMouseEvent *event) override;
+
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 public:
     jobs_class(shared_variables *_shared, QMainWindow *_monitor,
                log_class *_log, servers_class *_servers,
                options_class *_options, groups_class *_groups,
-               properties_class *_properties);
+               properties_class *_properties, submit *_submit);
     ~jobs_class();
 
     // Job Acciones
@@ -58,7 +63,6 @@ public:
     QAction *job_unlock_servers_action;
     QAction *job_log_action;
     QAction *job_modify_action;
-    //------------------------------------------------
 };
 
 #endif // JOBS_HPP

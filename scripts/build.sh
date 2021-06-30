@@ -4,7 +4,7 @@ path="$(dirname "$(pwd)")"
 thread=8
 bin='/opt/vinarender/bin'
 
-function update_monitor() {
+update_monitor() {
     # Icons update
     sh "$path/scripts/svg_converter.sh"
     sudo rm -rf /opt/vinarender/resources
@@ -24,7 +24,7 @@ function update_monitor() {
     mate-terminal -e "sh -c \"$bin/vmonitor\"" --geometry 70x20+0+475
 }
 
-function update_manager() {
+update_manager() {
     sudo systemctl stop vmanager
     sudo pkill -9 vmanager
 
@@ -40,7 +40,7 @@ function update_manager() {
     mate-terminal -e "sh -c \"echo vfx | sudo -S /opt/vinarender/bin/vmanager\"" --geometry 70x10+0+0
 }
 
-function update_server() {
+update_server() {
     sudo systemctl stop vserver
     sudo pkill -9 vserver
 

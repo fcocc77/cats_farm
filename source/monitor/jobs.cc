@@ -1,18 +1,17 @@
-#include <QPixmap>
 #include <QAction>
-#include <QMessageBox>
 #include <QMenu>
+#include <QMessageBox>
+#include <QPixmap>
 
-#include "util.h"
-#include "tcp.h"
-#include "jobs.h"
 #include "../global/global.h"
-
+#include "jobs.h"
+#include "tcp.h"
+#include "util.h"
 
 jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
                        log_class *_log, servers_class *_servers,
                        options_class *_options, groups_class *_groups,
-                       properties_class *_properties)
+                       properties_class *_properties, submit *__submit)
 
     : shared(_shared)
     , monitor(_monitor)
@@ -21,7 +20,10 @@ jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
     , options(_options)
     , groups(_groups)
     , properties(_properties)
+    , _submit(__submit)
 {
+    this->setAcceptDrops(true);
+
     delete_action = new QAction("Delete");
     job_suspend_action = new QAction("Suspend");
     job_resume_action = new QAction("Resume");
@@ -66,12 +68,11 @@ void jobs_class::setup_ui()
 
     this->setHeaderLabels(columns);
 
-    this->setSelectionMode(
-        QAbstractItemView::ExtendedSelection); // multi seleccion
-    this->setAlternatingRowColors(true);       // item con color alternativos
-    this->setIndentation(0); // elimina el margen del principio
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    this->setAlternatingRowColors(true);
+    this->setIndentation(0);
 
-    this->setColumnWidth(0, 200); // ajusta el largo de las columnas
+    this->setColumnWidth(0, 200);
     this->setColumnWidth(1, 80);
     this->setColumnWidth(2, 100);
     this->setColumnWidth(3, 200);
@@ -129,7 +130,6 @@ void jobs_class::connections()
             &jobs_class::options_ok);
     connect(options->cancel_button, &QPushButton::clicked,
             [this]() { properties->parentWidget()->hide(); });
-    //-----------------------------------------------------------------------
 }
 
 void jobs_class::popup()
@@ -172,7 +172,6 @@ void jobs_class::show_log()
             if (_job["name"].toString() == job_name)
                 job = _job;
         }
-        //--------------------------------------
 
         for (QJsonValue t : job["task"].toArray())
         {
@@ -258,7 +257,6 @@ void jobs_class::modify()
         QString recv = tcpClient(shared->manager_host, shared->manager_port,
                                  jats({3, send}));
         QJsonArray pks = jafs(recv);
-        //-----------------------------------------
 
         QStringList serverGroupExist;
         for (QJsonValue sg : pks[1].toArray())
@@ -293,7 +291,6 @@ void jobs_class::modify()
                 current_group = name;
         }
         options->group_combobox->setCurrentText(current_group);
-        // ---------------------------------
     }
 }
 
@@ -304,7 +301,6 @@ void jobs_class::options_ok()
     QJsonArray group;
     QString current_group = options->group_combobox->currentText();
     group.push_back(current_group);
-    // -------------------------------
 
     int priority = options->priority_combobox->currentIndex();
     int first_frame = options->first_frame_edit->text().toInt();
@@ -333,7 +329,6 @@ void jobs_class::options_ok()
         if (not repeatItem.contains(job_name))
             pks.push_back({{job_name, options, "write"}});
         repeatItem.push_back(job_name);
-        //-------------------------------------------------------
     }
     pks = {"jobOptions", pks};
 
@@ -427,5 +422,37 @@ void jobs_class::mousePressEvent(QMouseEvent *event)
     // si se clickea no en un item, borra las tareas de la lista
     if (not selected)
         shared->tasks_tree->clear();
-    //----------------------------------------------------
+}
+
+void jobs_class::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void jobs_class::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->acceptProposedAction();
+}
+
+void jobs_class::dropEvent(QDropEvent *event)
+{
+    QStringList files;
+
+    for (QUrl url : event->mimeData()->urls())
+    {
+        QString file = url.toLocalFile();
+
+        if (os::isdir(file))
+        {
+            for (QString deep_file : os::listdir(file))
+                if (!os::isdir(deep_file))
+                    files.push_back(deep_file);
+        }
+        else
+            files.push_back(file);
+    }
+
+    _submit->submit_files(files);
+
+    event->acceptProposedAction();
 }

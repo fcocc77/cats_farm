@@ -408,12 +408,7 @@ void submit::submit_start(QString software)
 
     if (ok)
     {
-        QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-        int port = settings["manager"].toObject()["port"].toInt();
-        QString host = settings["current_manager"].toString();
-
-        tcpClient(host, port, jats({4, info}));
-
+        send_job(info);
         msg->setText("The " + job_name->text() + " job has sended.");
         msg->show();
     }
@@ -425,6 +420,57 @@ void submit::submit_start(QString software)
         msg->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msg->show();
     }
+}
+
+void submit::send_job(QJsonArray info)
+{
+    QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
+    int port = settings["manager"].toObject()["port"].toInt();
+    QString host = settings["current_manager"].toString();
+
+    tcpClient(host, port, jats({4, info}));
+}
+
+void submit::submit_file(QString file)
+{
+    QString ext = path_util::get_ext(file).toLower();
+
+    QString software;
+    QString job_name = path_util::basename_no_ext(file);
+    QString system = _linux ? "Linux" : "Windows";
+
+    int first_frame = 1;
+    int last_frame = 100;
+    int task_size = 10;
+
+    if (ext == "mov" || ext == "mp4")
+    {
+        software = "FFmpeg";
+        calc_ffmpeg_data(file, &first_frame, &last_frame, &task_size);
+    }
+
+    else if (ext == "mb" || ext == "ma")
+        software = "Maya";
+
+    else if (ext == "nk")
+        software = "Nuke";
+
+    else if (ext == "vina")
+        software = "VinaComp";
+    else
+        return;
+
+    QJsonArray info = {job_name,  "",       "auto", first_frame, last_frame,
+                       task_size, "Normal", true,   software,    software,
+                       file,      "",       system, 1,           ""};
+
+    send_job(info);
+}
+
+void submit::submit_files(QStringList files)
+{
+    for (QString file : files)
+        submit_file(file);
 }
 
 void submit::panel_save()
@@ -483,15 +529,26 @@ void submit::update_ffmpeg_panel()
 
     job_name->setText(movie_name);
 
-    int frame_count = video::get_meta_data(src_movie).frames;
+    int first_frame, last_frame, task_size;
+    calc_ffmpeg_data(src_movie, &first_frame, &last_frame, &task_size);
 
-    first_frame_edit->setText("0");
-    last_frame_edit->setText(QString::number(frame_count));
-
-    int task_size = frame_count / 25;
-    task_size = task_size < 50 ? 50 : task_size;
-
+    first_frame_edit->setText(QString::number(first_frame));
+    last_frame_edit->setText(QString::number(last_frame));
     task_size_edit->setText(QString::number(task_size));
+}
+
+void submit::calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,
+                              int *task_size)
+{
+    int frame_count = video::get_meta_data(file).frames;
+
+    *first_frame = 0;
+    *last_frame = frame_count;
+
+    int _task_size = frame_count / 25;
+    _task_size = _task_size < 50 ? 50 : _task_size;
+
+    *task_size = _task_size;
 }
 
 void submit::hideEvent(QHideEvent *event)
