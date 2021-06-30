@@ -227,19 +227,12 @@ int get_cpu_temp()
     if (_linux)
     {
         QString sensors = os::sh("sensors");
-        if (not sensors.contains("No sensors found!"))
-        {
-            int cores = sensors.count("Core ");
+        if (!sensors.contains("No sensors found!"))
 
-            int sumCores = 0;
-            for (int i = 0; i < cores; i++)
-                sumCores += sensors.split("Core " + QString::number(i) + ":")[1]
-                                .split(".")[0]
-                                .replace("+", "")
-                                .toInt();
-
-            temp = sumCores / cores;
-        }
+            temp = sensors.split("Package id")[1]
+                       .split('.')[0]
+                       .split('+')[1]
+                       .toInt();
     }
 
     if (_win32)
@@ -283,29 +276,6 @@ int get_cpu_temp()
                 }
             }
         }
-    }
-
-    if (_darwin)
-    {
-        // static int times;
-
-        // if ( times == 0 ){
-        // 	QString cmd = path + "/os/mac/sensor/tempmonitor -l -a";
-        // 	QString temp_out = os::sh( cmd );
-
-        // 	try{
-        // 		temp = stoi( between( temp_out, "SMC CPU A HEAT SINK: ",
-        // "C") );
-        // 	}
-        // 	catch(...){
-        // 		try{ temp = stoi( between( temp_out, "SMC CPU A
-        // PROXIMITY:
-        // ", "C") ); } 		catch(...){}
-        // 	}
-        // }
-
-        // times++;
-        // if ( times == 15 ) times = 0;
     }
 
     return temp;
