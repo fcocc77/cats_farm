@@ -5,16 +5,17 @@
 
 #include "../global/global.h"
 #include "jobs.h"
+#include "main_window.h"
 #include "tcp.h"
 #include "util.h"
 
-jobs_class::jobs_class(shared_variables *_shared, QMainWindow *_monitor,
+jobs_class::jobs_class(shared_variables *_shared, QWidget *__monitor,
                        log_class *_log, servers_class *_servers,
                        options_class *_options, groups_class *_groups,
                        properties_class *_properties, submit *__submit)
 
     : shared(_shared)
-    , monitor(_monitor)
+    , _monitor(__monitor)
     , log(_log)
     , servers(_servers)
     , options(_options)
@@ -91,7 +92,9 @@ void jobs_class::setup_ui()
 
 void jobs_class::connections()
 {
-    connect(this, &QTreeWidget::itemDoubleClicked, this, &jobs_class::modify);
+    connect(this, &QTreeWidget::itemDoubleClicked, options,
+            &options_class::open_panel);
+
     connect(this, &QTreeWidget::customContextMenuRequested, this,
             &jobs_class::popup);
 
@@ -121,15 +124,8 @@ void jobs_class::connections()
             [this]() { to_action("unlock"); });
 
     connect(job_log_action, &QAction::triggered, this, &jobs_class::show_log);
+
     job_log_action->setShortcut(QString("L"));
-
-    connect(job_modify_action, &QAction::triggered, this, &jobs_class::modify);
-    job_modify_action->setShortcut(QString("M"));
-
-    connect(options->ok_button, &QPushButton::clicked, this,
-            &jobs_class::options_ok);
-    connect(options->cancel_button, &QPushButton::clicked,
-            [this]() { properties->parentWidget()->hide(); });
 }
 
 void jobs_class::popup()
@@ -137,7 +133,7 @@ void jobs_class::popup()
     auto selected = this->selectedItems();
     if (not selected.empty())
     {
-        QMenu *menu = new QMenu(monitor);
+        QMenu *menu = new QMenu(_monitor);
 
         menu->addAction(job_suspend_action);
         menu->addAction(job_resume_action);
@@ -157,7 +153,6 @@ void jobs_class::popup()
 
 void jobs_class::show_log()
 {
-
     auto selected = this->selectedItems();
     if (not selected.empty())
     {
@@ -240,111 +235,6 @@ void jobs_class::show_log()
     }
 }
 
-void jobs_class::modify()
-{
-    properties->switch_widget("options");
-
-    // Recive los servers del jobs que estan en el manager
-    auto selected = this->selectedItems();
-    first_job_item = selected[0];
-
-    if (not selected.empty())
-    {
-        QString job_name = selected.takeLast()->text(0);
-
-        QJsonArray send = {QJsonArray({job_name, "options", "read"})};
-        send = {"jobOptions", send};
-        QString recv = tcpClient(shared->manager_host, shared->manager_port,
-                                 jats({3, send}));
-        QJsonArray pks = jafs(recv);
-
-        QStringList serverGroupExist;
-        for (QJsonValue sg : pks[1].toArray())
-            serverGroupExist.push_back(sg.toString());
-
-        int priority = pks[2].toInt();
-        QString comment = pks[3].toString();
-        int instances = pks[4].toInt();
-        int task_size = pks[5].toInt();
-        QString _job_name = pks[6].toString();
-        int first_frame = pks[7].toInt();
-        int last_frame = pks[8].toInt();
-
-        options->priority_combobox->setCurrentIndex(priority);
-        options->first_frame_edit->setText(QString::number(first_frame));
-        options->last_frame_edit->setText(QString::number(last_frame));
-        options->job_name_edit->setText(_job_name);
-        options->task_size_edit->setText(QString::number(task_size));
-        options->comment_edit->setText(comment);
-        options->instances_edit->setText(QString::number(instances));
-
-        // Agrega grupos al combobox y establese el item correspondiente
-        options->group_combobox->clear();
-        options->group_combobox->addItem("None");
-        QString current_group = "None";
-        for (int i = 0; i < groups->topLevelItemCount(); ++i)
-        {
-            QString name = groups->topLevelItem(i)->text(2);
-            options->group_combobox->addItem(name);
-
-            if (serverGroupExist.contains(name))
-                current_group = name;
-        }
-        options->group_combobox->setCurrentText(current_group);
-    }
-}
-
-void jobs_class::options_ok()
-{
-    QJsonArray machines = {};
-    // guarda el grupo del combobox en el array
-    QJsonArray group;
-    QString current_group = options->group_combobox->currentText();
-    group.push_back(current_group);
-
-    int priority = options->priority_combobox->currentIndex();
-    int first_frame = options->first_frame_edit->text().toInt();
-    int last_frame = options->last_frame_edit->text().toInt();
-    int task_size = options->task_size_edit->text().toInt();
-    QString comment = options->comment_edit->text();
-    QString _job_name = options->job_name_edit->text();
-
-    int instances = options->instances_edit->text().toInt();
-    if (instances > 16)
-        instances = 16;
-
-    QJsonArray pks;
-    auto selected = this->selectedItems();
-    selected.push_front(first_job_item);
-
-    QStringList repeatItem;
-    for (auto item : selected)
-    {
-        QString job_name = item->text(0);
-        QJsonArray options = {machines,   group,     priority,
-                              comment,    instances, first_frame,
-                              last_frame, task_size, _job_name};
-        // el primer item se repite asi que si esta 2 veces no lo agrega otra
-        // vez
-        if (not repeatItem.contains(job_name))
-            pks.push_back({{job_name, options, "write"}});
-        repeatItem.push_back(job_name);
-    }
-    pks = {"jobOptions", pks};
-
-    QString ask = "Sure you want to send the changes? \nSome frames will be "
-                  "lost due to the size of the tasks.";
-
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(monitor, "Job Options", ask,
-                                  QMessageBox::Yes | QMessageBox::No);
-    if (reply == QMessageBox::Yes)
-    {
-        tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
-        properties->parentWidget()->hide();
-    }
-}
-
 void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,
                          QString ask, QString tile, jobs_class *_class)
 {
@@ -354,7 +244,7 @@ void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,
     {
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask,
+        reply = QMessageBox::question(_monitor, tile, ask,
                                       QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
@@ -418,10 +308,17 @@ void jobs_class::mousePressEvent(QMouseEvent *event)
 {
     QTreeView::mousePressEvent(event);
 
-    bool selected = selectionModel()->isSelected(indexAt(event->pos()));
-    // si se clickea no en un item, borra las tareas de la lista
-    if (not selected)
-        shared->tasks_tree->clear();
+    if (shared->tasks_tree->isVisible())
+    {
+        static_cast<monitor *>(_monitor)->get_update()->get_task();
+
+        bool selected = selectionModel()->isSelected(indexAt(event->pos()));
+
+        if (!selected)
+            shared->tasks_tree->clear();
+    }
+
+    options->update_panel();
 }
 
 void jobs_class::dragEnterEvent(QDragEnterEvent *event)

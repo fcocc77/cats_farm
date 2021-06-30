@@ -1,30 +1,24 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
-#include <QPushButton>
-#include <QLineEdit>
 #include <QComboBox>
+#include <QLineEdit>
+#include <QPushButton>
 
 class options_class : public QWidget
 {
 private:
+    QWidget *_monitor;
+
     void setup_ui();
+    void options_ok();
 
 public:
-    options_class();
+    options_class(QWidget *monitor);
     ~options_class();
 
-    QPushButton *cancel_button;
-    QPushButton *ok_button;
-
-    QLineEdit *job_name_edit;
-    QComboBox *priority_combobox;
-    QLineEdit *first_frame_edit;
-    QLineEdit *last_frame_edit;
-    QLineEdit *task_size_edit;
-    QLineEdit *comment_edit;
-    QLineEdit *instances_edit;
-    QComboBox *group_combobox;
+    void open_panel();
+    void update_panel();
 };
 
 #endif // OPTIONS_H

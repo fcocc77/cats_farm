@@ -17,16 +17,7 @@ update_class::update_class(shared_variables *_shared, groups_class *_groups,
     , tasks(_tasks_tree)
     , settings(_settings)
 {
-    connections();
-
-    // Iniciar hilo para tasks
     get_task_thread = new QThread();
-    // -----------------------
-}
-
-void update_class::connections()
-{
-    connect(jobs, &QTreeWidget::itemClicked, this, &update_class::get_task);
 }
 
 void update_class::update(QString host)
@@ -720,7 +711,6 @@ void update_class::update_groups(QJsonObject recv)
 
 void update_class::get_task()
 {
-
     task_first_add = false;
 
     if (get_task_thread->isRunning())

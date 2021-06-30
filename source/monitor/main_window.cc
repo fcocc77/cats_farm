@@ -42,7 +42,7 @@ void monitor::setup_ui()
 {
     shared = new shared_variables();
     shared->settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    print(VINARENDER_CONF_PATH);
+
     shared->manager_host =
         shared->settings["manager"].toObject()["ip"].toString();
     shared->manager_port =
@@ -58,7 +58,7 @@ void monitor::setup_ui()
     QSplitter *splitter_bottom = new QSplitter(this);
 
     log = new log_class();
-    options = new options_class();
+    options = new options_class(this);
     settings = new settings_class(shared);
 
     _submit = new submit(this);
@@ -84,6 +84,7 @@ void monitor::setup_ui()
 
     update =
         new update_class(shared, groups, jobs, servers, tasks->tree, settings);
+
     general = new general_class(this, shared, properties);
 
     main_menu = new main_menu_class(general, jobs, servers, groups, tasks);

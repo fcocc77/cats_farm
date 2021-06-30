@@ -56,7 +56,19 @@ public:
 
     inline QWidget *get_groups_widget() const;
     inline toolbar_class *get_toolbar() const;
+    inline properties_class *get_properties() const;
+    inline update_class *get_update() const;
 };
+
+inline update_class *monitor::get_update() const
+{
+    return update;
+}
+
+inline properties_class *monitor::get_properties() const
+{
+    return properties;
+}
 
 inline toolbar_class *monitor::get_toolbar() const
 {

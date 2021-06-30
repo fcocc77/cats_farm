@@ -3,9 +3,9 @@
 
 #include <QTreeWidget>
 
-#include "options.h"
 #include "groups.h"
 #include "log.h"
+#include "options.h"
 #include "properties.h"
 #include "servers.h"
 #include "submit.h"
@@ -15,21 +15,22 @@ class jobs_class : public QTreeWidget
 private:
     QTreeWidget *jobs;
     shared_variables *shared;
-    QMainWindow *monitor;
+    QWidget *_monitor;
     log_class *log;
     servers_class *servers;
     options_class *options;
     groups_class *groups;
     properties_class *properties;
     submit *_submit;
+    QTreeWidgetItem *first_job_item;
+    QString log_server;
+
     void connections();
 
     // Jobs Funcions
     void setup_ui();
     void popup();
     void show_log();
-    void modify();
-    void options_ok();
     void delete_start(QString action);
     void to_action(QString action);
 
@@ -38,10 +39,6 @@ private:
 
     void item_delete();
 
-    QTreeWidgetItem *first_job_item;
-
-    QString log_server;
-
     virtual void mousePressEvent(QMouseEvent *event) override;
 
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -49,10 +46,10 @@ private:
     void dropEvent(QDropEvent *event) override;
 
 public:
-    jobs_class(shared_variables *_shared, QMainWindow *_monitor,
-               log_class *_log, servers_class *_servers,
-               options_class *_options, groups_class *_groups,
-               properties_class *_properties, submit *_submit);
+    jobs_class(shared_variables *_shared, QWidget *_monitor, log_class *_log,
+               servers_class *_servers, options_class *_options,
+               groups_class *_groups, properties_class *_properties,
+               submit *_submit);
     ~jobs_class();
 
     // Job Acciones
