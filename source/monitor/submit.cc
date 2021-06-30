@@ -481,6 +481,8 @@ void submit::update_ffmpeg_panel()
     QString movie_name = path_util::basename_no_ext(src_movie);
     render_node_edit->setText(movie_name + "_output");
 
+    job_name->setText(movie_name);
+
     int frame_count = video::get_meta_data(src_movie).frames;
 
     first_frame_edit->setText("0");
