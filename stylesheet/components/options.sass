@@ -1,24 +1,19 @@
+@import mixin
+
 #options
-    max-height: 550px
-    QWidget
-        background: transparent
+    #box_widget
+        background: $b15
+        border-radius: 3px
+        > QWidget
+            background: none
     QLabel
-        background: transparent
-        margin-left: 10px
+        background: none
+
     QLineEdit
         @include textedit
-        margin-right: 10px
-    QPushButton
-        background: $b20
-        border: 1px solid $b20
-        padding: 10px
-        border-radius: 3px
-        font-size: 12px
-        &:hover
-            border-color: $base
-            color: $base
-    QComboBox
+
+    #combo_box
         @include combobox
-    #first_knobs, #second_knobs, #third_knobs
-        background: $b13
-        border-radius: 2px
+
+    QPushButton
+        @include button

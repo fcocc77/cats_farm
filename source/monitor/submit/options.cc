@@ -69,6 +69,11 @@ void options_class::setup_ui()
     // Ajustes
     priority_box->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
 
+    box_a_widget->setObjectName("box_widget");
+    box_b_widget->setObjectName("box_widget");
+    box_c_widget->setObjectName("box_widget");
+    box_dialog->setObjectName("box_widget");
+
     // Layout
     job_name_layout->addWidget(job_name_label);
     job_name_layout->addWidget(job_name_edit);

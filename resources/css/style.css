@@ -457,52 +457,56 @@ QMenuBar {
     border-color: #0099ff;
     color: #0099ff; }
 
-#options {
-  max-height: 550px; }
-  #options QWidget {
-    background: transparent; }
-  #options QLabel {
-    background: transparent;
-    margin-left: 10px; }
-  #options QLineEdit {
-    background: #2e3238;
-    border: 1px solid #2e3238;
-    padding: 3px;
-    border-radius: 2px;
-    margin-right: 10px; }
-    #options QLineEdit:hover {
-      background: #3a3f45;
-      border-color: #464b53; }
-    #options QLineEdit:focus {
-      background: #3a3f45;
-      border-color: #0099ff; }
-  #options QPushButton {
-    background: #2e3238;
-    border: 1px solid #2e3238;
-    padding: 10px;
-    border-radius: 3px;
-    font-size: 12px; }
-    #options QPushButton:hover {
-      border-color: #0099ff;
-      color: #0099ff; }
-  #options QComboBox #combobox_label {
-    background: #2e3238;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    padding-left: 9px;
-    padding-right: 9px; }
-    #options QComboBox #combobox_label:hover {
-      background: #33373d;
-      color: white; }
-  #options QComboBox #arrow {
-    background: #2e3238;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px; }
-    #options QComboBox #arrow:hover {
-      background: #3a3f45; }
-  #options #first_knobs, #options #second_knobs, #options #third_knobs {
-    background: #1e2124;
-    border-radius: 2px; }
+#options #box_widget {
+  background: #23262a;
+  border-radius: 3px; }
+  #options #box_widget > QWidget {
+    background: none; }
+
+#options QLabel {
+  background: none; }
+
+#options QLineEdit {
+  background: #2e3238;
+  border: 1px solid #2e3238;
+  padding: 3px;
+  border-radius: 2px; }
+  #options QLineEdit:hover {
+    background: #3a3f45;
+    border-color: #464b53; }
+  #options QLineEdit:focus {
+    background: #3a3f45;
+    border-color: #0099ff; }
+
+#options #combo_box #combobox_label {
+  background: #2e3238;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  padding-left: 9px;
+  padding-right: 9px; }
+  #options #combo_box #combobox_label:hover {
+    background: #33373d;
+    color: white; }
+
+#options #combo_box #arrow {
+  background: #2e3238;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px; }
+  #options #combo_box #arrow:hover {
+    background: #3a3f45; }
+
+#options QPushButton {
+  padding: 3px;
+  border-radius: 3px;
+  background: #2e3238;
+  border: 1px solid #2e3238; }
+  #options QPushButton:hover {
+    background: #33373d;
+    color: white;
+    border-color: #464b53; }
+  #options QPushButton:pressed {
+    border-color: #0099ff;
+    color: #0099ff; }
 
 #submit_widget #box_widget {
   background: #23262a;

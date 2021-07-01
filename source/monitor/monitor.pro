@@ -3,7 +3,7 @@ include(../../config/config.pro)
 TEMPLATE = app
 TARGET = "vmonitor"
 
-INCLUDEPATH += ./
+INCLUDEPATH += $$files(*)
 INCLUDEPATH += ../utils
 INCLUDEPATH += ../../utils/c++
 INCLUDEPATH += ../../global
@@ -16,14 +16,14 @@ RC_ICONS = ../../resources/icons/icon.ico
 
 QT += core gui widgets multimedia
 
-HEADERS +=  ./* \
+HEADERS +=  $$system(ls */*.h) \
 			../utils/video.h \
 			../global/*.h \
 			../../utils/c++/*.h \
 			../manager/structs.h \
 			$$system(ls ../../libs/QCodeEditor/include/KGL/*/*.hpp) \
 
-SOURCES += 	./*.cc \
+SOURCES += 	$$system(ls */*.cc) \
 			../utils/video.cc \
 			../../utils/c++/*.cc \
 			$$system(ls ../../libs/QCodeEditor/src/*/*.cpp) \
