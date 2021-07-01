@@ -28,13 +28,22 @@ public:
     void set_current_text(QString text, bool emmit_signal = false);
     void set_index(int index, bool emmit_signal = false);
     void clear();
+
+    inline void set_label_text(QString label_text);
+
     inline QString get_current_text() const;
     inline void add_separator();
 
 signals:
     void clicked();
-    void current_text_changed(QString text);
+    void text_changed(QString text);
+    void index_changed(int index);
 };
+
+inline void combo_box::set_label_text(QString label_text)
+{
+    label->setText(label_text);
+}
 
 inline QString combo_box::get_current_text() const
 {

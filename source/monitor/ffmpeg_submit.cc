@@ -88,7 +88,7 @@ void ffmpeg_submit::setup_ui()
     connect(preset_cancel_button, &QPushButton::clicked, this,
             [=]() { preset_dialog(false); });
 
-    connect(preset_box, &combo_box::current_text_changed,
+    connect(preset_box, &combo_box::text_changed,
             [=](QString text) { set_preset(text); });
 
     connect(command_edit, &QLineEdit::textChanged, [=](QString text) {

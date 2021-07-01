@@ -200,6 +200,7 @@ void submit::ui()
     task_size_box->add_items({"Custom", "5 Tasks", "10 Tasks", "15 Tasks",
                               "20 Tasks", "30 Tasks", "40 Tasks", "50 Tasks"});
     task_size_box->set_index(0);
+    task_size_box->setFixedWidth(120);
     task_size_box->setToolTip("Task divisions: calculate the size of the task "
                               "from the number of divisions");
 
@@ -267,8 +268,11 @@ void submit::connections()
     connect(server_group_box, &combo_box::clicked, this,
             &submit::update_server_groups);
 
-    connect(software_box, &combo_box::current_text_changed, this,
+    connect(software_box, &combo_box::text_changed, this,
             &submit::set_software);
+
+    connect(task_size_box, &combo_box::text_changed, this,
+            &submit::calculate_task_size);
 
     connect(project_dir_button, &QPushButton::clicked, this, [this]() {
         QString file_path = QFileDialog::getExistingDirectory(
@@ -290,6 +294,17 @@ void submit::connections()
 
     connect(submit_button, &QPushButton::clicked, this, [this]() {
         submit_start(software_box->get_current_text().toLower());
+    });
+
+    connect(task_size_edit, &QLineEdit::textChanged, this,
+            [=](QString text) { calculate_task_divition(text.toInt()); });
+
+    connect(first_frame_edit, &QLineEdit::textChanged, this, [=](QString text) {
+        calculate_task_size(task_size_box->get_current_text());
+    });
+
+    connect(last_frame_edit, &QLineEdit::textChanged, this, [=](QString text) {
+        calculate_task_size(task_size_box->get_current_text());
     });
 }
 
@@ -481,6 +496,36 @@ void submit::submit_files(QStringList files)
         submit_file(file);
 }
 
+void submit::calculate_task_size(QString item_text)
+{
+    int divisions = item_text.split("Tasks")[0].toInt();
+
+    if (!divisions)
+        return;
+
+    int first_frame = first_frame_edit->text().toInt();
+    int last_frame = last_frame_edit->text().toInt();
+    int frame_count = last_frame - first_frame + 1;
+
+    int task_size = frame_count / divisions;
+
+    task_size_edit->setText(QString::number(task_size));
+}
+
+void submit::calculate_task_divition(int task_size)
+{
+    if (!task_size)
+        return;
+
+    int first_frame = first_frame_edit->text().toInt();
+    int last_frame = last_frame_edit->text().toInt();
+
+    int frame_count = last_frame - first_frame + 1;
+
+    int divisions = frame_count / task_size;
+    task_size_box->set_label_text(QString::number(divisions) + " Tasks");
+}
+
 void submit::panel_save()
 {
     QJsonObject panel = {{"software", software_box->get_current_text()},
@@ -542,7 +587,8 @@ void submit::update_ffmpeg_panel()
 
     first_frame_edit->setText(QString::number(first_frame));
     last_frame_edit->setText(QString::number(last_frame));
-    task_size_edit->setText(QString::number(task_size));
+
+    task_size_box->set_current_text("30 Tasks", true);
 }
 
 void submit::calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,

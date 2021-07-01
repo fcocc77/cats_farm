@@ -55,6 +55,9 @@ private:
     void panel_open();
     void submit_file(QString file);
 
+    void calculate_task_size(QString item_text);
+    void calculate_task_divition(int task_size);
+
     void update_ffmpeg_panel();
     void calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,
                           int *task_size);

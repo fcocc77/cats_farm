@@ -86,7 +86,7 @@ void toolbar_class::connections()
     connect(submit, &button::clicked, this,
             [this]() { switch_widget("submit"); });
 
-    connect(shared->zone_box, &combo_box::current_text_changed, update,
+    connect(shared->zone_box, &combo_box::text_changed, update,
             &update_class::update);
 
     connect(tasks_switch, &button::clicked, this, [this]() {

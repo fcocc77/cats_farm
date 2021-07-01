@@ -64,7 +64,10 @@ void combo_box::set_index(int _index, bool emmit_signal)
     label->setText(text);
 
     if (emmit_signal)
-        current_text_changed(text);
+    {
+        text_changed(text);
+        index_changed(index);
+    }
 }
 
 void combo_box::set_current_text(QString text, bool emmit_signal)
