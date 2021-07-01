@@ -7,6 +7,8 @@
 #include <QWidget>
 
 #include "combo_box.h"
+#include "file_knob.h"
+#include "text_knob.h"
 
 class ffmpeg_knobs : public QWidget
 {
@@ -19,6 +21,9 @@ private:
     combo_box *preset_box;
     QJsonObject presets;
     QString custom_preset;
+
+    file_knob *input_file, *output_folder;
+    text_knob *movie_name_text;
 
     void setup_ui();
     void preset_dialog(bool visible);

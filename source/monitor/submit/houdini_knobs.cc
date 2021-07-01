@@ -15,25 +15,15 @@ houdini_knobs::houdini_knobs()
     layout->setSpacing(0);
 
     project_file = new file_knob("Scene File", "Open");
-
-    QWidget *engine_widget = new QWidget();
-    QHBoxLayout *engine_layout = new QHBoxLayout(engine_widget);
-    QLabel *engine_label = new QLabel("Engine Node:");
-    QLineEdit *engine_edit = new QLineEdit();
+    engine_text = new text_knob("Engine Node");
 
     int h = HORIZONTAL_MARGIN;
     int v = VERTICAL_MARGIN;
     int s = SPACING;
 
     project_file->layout()->setContentsMargins(h, v, h, s);
-    engine_layout->setContentsMargins(h, s, h, v);
-
-    engine_label->setFixedWidth(INIT_LABEL_WIDTH);
-    engine_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-
-    engine_layout->addWidget(engine_label);
-    engine_layout->addWidget(engine_edit);
+    engine_text->layout()->setContentsMargins(h, s, h, v);
 
     layout->addWidget(project_file);
-    layout->addWidget(engine_widget);
+    layout->addWidget(engine_text);
 }

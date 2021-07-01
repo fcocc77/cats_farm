@@ -39,11 +39,18 @@ void ffmpeg_knobs::setup_ui()
     preset_delete_button = new QPushButton("Delete");
     preset_cancel_button = new QPushButton("Cancel");
 
+    input_file = new file_knob("Input File", "Open");
+    output_folder = new file_knob("Output Folder", "Set");
+    movie_name_text = new text_knob("Movie Name");
+
     // Layout Settings
     int h = HORIZONTAL_MARGIN;
     int v = VERTICAL_MARGIN;
     int s = SPACING;
 
+    input_file->layout()->setContentsMargins(h, v, h, s);
+    output_folder->layout()->setContentsMargins(h, s, h, s);
+    movie_name_text->layout()->setContentsMargins(h, s, h, s);
     preset_layout->setContentsMargins(h, v, h, s);
     command_layout->setContentsMargins(h, s, h, v);
 
@@ -119,6 +126,9 @@ void ffmpeg_knobs::setup_ui()
     preset_layout->addWidget(preset_delete_button);
     preset_layout->addWidget(preset_cancel_button);
 
+    layout->addWidget(input_file);
+    layout->addWidget(output_folder);
+    layout->addWidget(movie_name_text);
     layout->addWidget(preset_widget);
     layout->addWidget(command_widget);
 }

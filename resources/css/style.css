@@ -466,15 +466,15 @@ QMenuBar {
 #submit_widget QLabel, #options QLabel {
   background: none; }
 
-#submit_widget QLineEdit, #options QLineEdit {
+#submit_widget QLineEdit, #submit_widget QTextEdit, #options QLineEdit, #options QTextEdit {
   background: #2e3238;
   border: 1px solid #2e3238;
   padding: 3px;
   border-radius: 2px; }
-  #submit_widget QLineEdit:hover, #options QLineEdit:hover {
+  #submit_widget QLineEdit:hover, #submit_widget QTextEdit:hover, #options QLineEdit:hover, #options QTextEdit:hover {
     background: #3a3f45;
     border-color: #464b53; }
-  #submit_widget QLineEdit:focus, #options QLineEdit:focus {
+  #submit_widget QLineEdit:focus, #submit_widget QTextEdit:focus, #options QLineEdit:focus, #options QTextEdit:focus {
     background: #3a3f45;
     border-color: #0099ff; }
 
