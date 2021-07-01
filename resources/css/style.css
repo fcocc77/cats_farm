@@ -457,105 +457,54 @@ QMenuBar {
     border-color: #0099ff;
     color: #0099ff; }
 
-#options #box_widget {
+#submit_widget #box_widget, #submit_widget #knobs_box, #options #box_widget, #options #knobs_box {
   background: #23262a;
   border-radius: 3px; }
-  #options #box_widget > QWidget {
+  #submit_widget #box_widget > QWidget, #submit_widget #knobs_box > QWidget, #options #box_widget > QWidget, #options #knobs_box > QWidget {
     background: none; }
 
-#options QLabel {
+#submit_widget QLabel, #options QLabel {
   background: none; }
 
-#options QLineEdit {
+#submit_widget QLineEdit, #options QLineEdit {
   background: #2e3238;
   border: 1px solid #2e3238;
   padding: 3px;
   border-radius: 2px; }
-  #options QLineEdit:hover {
+  #submit_widget QLineEdit:hover, #options QLineEdit:hover {
     background: #3a3f45;
     border-color: #464b53; }
-  #options QLineEdit:focus {
+  #submit_widget QLineEdit:focus, #options QLineEdit:focus {
     background: #3a3f45;
     border-color: #0099ff; }
 
-#options #combo_box #combobox_label {
+#submit_widget #combo_box #combobox_label, #options #combo_box #combobox_label {
   background: #2e3238;
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px;
   padding-left: 9px;
   padding-right: 9px; }
-  #options #combo_box #combobox_label:hover {
+  #submit_widget #combo_box #combobox_label:hover, #options #combo_box #combobox_label:hover {
     background: #33373d;
     color: white; }
 
-#options #combo_box #arrow {
+#submit_widget #combo_box #arrow, #options #combo_box #arrow {
   background: #2e3238;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px; }
-  #options #combo_box #arrow:hover {
+  #submit_widget #combo_box #arrow:hover, #options #combo_box #arrow:hover {
     background: #3a3f45; }
 
-#options QPushButton {
+#submit_widget QPushButton, #options QPushButton {
   padding: 3px;
   border-radius: 3px;
   background: #2e3238;
   border: 1px solid #2e3238; }
-  #options QPushButton:hover {
+  #submit_widget QPushButton:hover, #options QPushButton:hover {
     background: #33373d;
     color: white;
     border-color: #464b53; }
-  #options QPushButton:pressed {
-    border-color: #0099ff;
-    color: #0099ff; }
-
-#submit_widget #box_widget, #submit_widget #knobs_box {
-  background: #23262a;
-  border-radius: 3px; }
-  #submit_widget #box_widget > QWidget, #submit_widget #knobs_box > QWidget {
-    background: none; }
-
-#submit_widget QLabel {
-  background: none; }
-
-#submit_widget QLineEdit {
-  background: #2e3238;
-  border: 1px solid #2e3238;
-  padding: 3px;
-  border-radius: 2px; }
-  #submit_widget QLineEdit:hover {
-    background: #3a3f45;
-    border-color: #464b53; }
-  #submit_widget QLineEdit:focus {
-    background: #3a3f45;
-    border-color: #0099ff; }
-
-#submit_widget #combo_box #combobox_label {
-  background: #2e3238;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  padding-left: 9px;
-  padding-right: 9px; }
-  #submit_widget #combo_box #combobox_label:hover {
-    background: #33373d;
-    color: white; }
-
-#submit_widget #combo_box #arrow {
-  background: #2e3238;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px; }
-  #submit_widget #combo_box #arrow:hover {
-    background: #3a3f45; }
-
-#submit_widget QPushButton {
-  padding: 3px;
-  border-radius: 3px;
-  background: #2e3238;
-  border: 1px solid #2e3238; }
-  #submit_widget QPushButton:hover {
-    background: #33373d;
-    color: white;
-    border-color: #464b53; }
-  #submit_widget QPushButton:pressed {
+  #submit_widget QPushButton:pressed, #options QPushButton:pressed {
     border-color: #0099ff;
     color: #0099ff; }
 

@@ -20,6 +20,9 @@ void options_class::setup_ui()
     this->setObjectName("options");
 
     QVBoxLayout *main_layout = new QVBoxLayout(this);
+    main_layout->setMargin(0);
+
+    _time_knobs = new time_knobs();
 
     QWidget *box_a_widget = new QWidget();
     QWidget *box_b_widget = new QWidget();
@@ -108,6 +111,7 @@ void options_class::setup_ui()
     box_dialog_layout->addWidget(ok_button);
     box_dialog_layout->addWidget(cancel_button);
 
+    main_layout->addWidget(_time_knobs);
     main_layout->addWidget(box_a_widget);
     main_layout->addWidget(box_b_widget);
     main_layout->addWidget(box_c_widget);

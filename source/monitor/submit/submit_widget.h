@@ -10,8 +10,10 @@
 #include <QVBoxLayout>
 
 #include "combo_box.h"
-#include "ffmpeg_submit.h"
+#include "ffmpeg_knobs.h"
 #include "time_knobs.h"
+#include "maya_knobs.h"
+#include "houdini_knobs.h"
 
 class submit : public QWidget
 {
@@ -21,8 +23,10 @@ private:
     bool savePanel = false;
 
     combo_box *software_box;
-    ffmpeg_submit *ffmpeg_widget;
+    ffmpeg_knobs *_ffmpeg_knobs;
     time_knobs *_time_knobs;
+    maya_knobs *_maya_knobs;
+    houdini_knobs *_houdini_knobs;
 
     QLineEdit *project_dir_edit;
     QPushButton *project_dir_button;

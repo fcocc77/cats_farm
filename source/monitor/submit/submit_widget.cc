@@ -102,9 +102,11 @@ void submit::ui()
     QLabel *server_group_label = new QLabel("Server Group:");
     QLabel *comment_label = new QLabel("Comment:");
     QLabel *priority_label = new QLabel("Priority:");
-    ffmpeg_widget =
-        new ffmpeg_submit({label_width, h_margin, v_margin, v_padding});
+
+    _ffmpeg_knobs = new ffmpeg_knobs();
     _time_knobs = new time_knobs();
+    _maya_knobs = new maya_knobs();
+    _houdini_knobs = new houdini_knobs();
 
     QScrollArea *scrollArea = new QScrollArea();
 
@@ -145,14 +147,12 @@ void submit::ui()
     box_c_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     box_d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     box_e_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    ffmpeg_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     box_a_widget->setObjectName("box_widget");
     box_b_widget->setObjectName("box_widget");
     box_c_widget->setObjectName("box_widget");
     box_d_widget->setObjectName("box_widget");
     box_e_widget->setObjectName("box_widget");
-    ffmpeg_widget->setObjectName("box_widget");
 
     // Labels
     project_dir_label->setFixedWidth(label_width);
@@ -217,7 +217,9 @@ void submit::ui()
     box_e_layout->addWidget(suspend_box);
 
     main_layout->addWidget(software_box);
-    main_layout->addWidget(ffmpeg_widget);
+    main_layout->addWidget(_maya_knobs);
+    main_layout->addWidget(_houdini_knobs);
+    main_layout->addWidget(_ffmpeg_knobs);
     main_layout->addWidget(box_a_widget);
     main_layout->addWidget(box_b_widget);
     main_layout->addWidget(_time_knobs);
@@ -263,7 +265,7 @@ void submit::set_software(QString software)
 {
     software = software.toLower();
 
-    ffmpeg_widget->hide();
+    _ffmpeg_knobs->hide();
 
     project_dir_label->hide();
     project_dir_edit->hide();
@@ -306,7 +308,7 @@ void submit::set_software(QString software)
 
         project_label->setText("Input File:");
 
-        ffmpeg_widget->show();
+        _ffmpeg_knobs->show();
     }
 
     software_box->set_current_text(software);
@@ -333,7 +335,7 @@ void submit::submit_start(QString software)
     {
         QJsonObject misc_obj = {{"output_dir", project_dir_edit->text()},
                                 {"movie_name", render_node_edit->text()},
-                                {"command", ffmpeg_widget->get_command()}};
+                                {"command", _ffmpeg_knobs->get_command()}};
         misc = jots(misc_obj);
     }
 
@@ -450,7 +452,7 @@ void submit::submit_files(QStringList files)
 void submit::panel_save()
 {
     QJsonObject panel = {{"software", software_box->get_current_text()},
-                         {"ffmpeg_presets", ffmpeg_widget->get_preset()},
+                         {"ffmpeg_presets", _ffmpeg_knobs->get_preset()},
                          {"project_dir", project_dir_edit->text()},
                          {"project", project_edit->text()},
                          {"render_node", render_node_edit->text()},
@@ -471,7 +473,7 @@ void submit::panel_open()
     QJsonObject panel = jread(VINARENDER_CONF_PATH + "/submit_panel.json");
 
     software_box->set_current_text(panel["software"].toString(), true);
-    ffmpeg_widget->set_preset(panel["ffmpeg_presets"].toString());
+    _ffmpeg_knobs->set_preset(panel["ffmpeg_presets"].toString());
 
     project_dir_edit->setText(panel["project_dir"].toString());
     project_edit->setText(panel["project"].toString());

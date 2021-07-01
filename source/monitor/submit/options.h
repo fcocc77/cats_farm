@@ -5,10 +5,14 @@
 #include <QLineEdit>
 #include <QPushButton>
 
+#include "time_knobs.h"
+
 class options_class : public QWidget
 {
 private:
     QWidget *_monitor;
+
+    time_knobs *_time_knobs;
 
     void setup_ui();
     void options_ok();

@@ -3,22 +3,22 @@
 #include <QVBoxLayout>
 
 #include "../global/global.h"
-#include "ffmpeg_submit.h"
+#include "ffmpeg_knobs.h"
 #include "qt.h"
 #include "util.h"
+#include "submit_global.h"
 
-ffmpeg_submit::ffmpeg_submit(QList<int> params)
-    : label_width(params[0])
-    , h_margin(params[1])
-    , v_margin(params[2])
-    , v_padding(params[3])
+ffmpeg_knobs::ffmpeg_knobs()
 {
     setup_ui();
     open_preset();
 }
 
-void ffmpeg_submit::setup_ui()
+void ffmpeg_knobs::setup_ui()
 {
+    this->setObjectName("knobs_box");
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(0);
@@ -40,14 +40,18 @@ void ffmpeg_submit::setup_ui()
     preset_cancel_button = new QPushButton("Cancel");
 
     // Layout Settings
-    preset_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
-    command_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
+    int h = HORIZONTAL_MARGIN;
+    int v = VERTICAL_MARGIN;
+    int s = SPACING;
+
+    preset_layout->setContentsMargins(h, v, h, s);
+    command_layout->setContentsMargins(h, s, h, v);
 
     preset_layout->setAlignment(Qt::AlignLeft);
 
     // Parametros
-    command_label->setFixedWidth(label_width);
-    preset_label->setFixedWidth(label_width);
+    command_label->setFixedWidth(INIT_LABEL_WIDTH);
+    preset_label->setFixedWidth(INIT_LABEL_WIDTH);
 
     command_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     preset_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -119,7 +123,7 @@ void ffmpeg_submit::setup_ui()
     layout->addWidget(command_widget);
 }
 
-void ffmpeg_submit::preset_dialog(bool visible)
+void ffmpeg_knobs::preset_dialog(bool visible)
 {
     preset_add->setVisible(!visible);
     preset_delete->setVisible(!visible);
@@ -130,7 +134,7 @@ void ffmpeg_submit::preset_dialog(bool visible)
     preset_cancel_button->setVisible(visible);
 }
 
-void ffmpeg_submit::add_preset()
+void ffmpeg_knobs::add_preset()
 {
     QString name = preset_name_edit->text();
     if (name.isEmpty())
@@ -149,14 +153,14 @@ void ffmpeg_submit::add_preset()
     preset_dialog(false);
 }
 
-void ffmpeg_submit::delete_preset()
+void ffmpeg_knobs::delete_preset()
 {
     preset_dialog(true);
     preset_name_edit->hide();
     preset_add_button->hide();
 }
 
-void ffmpeg_submit::delete_current_preset()
+void ffmpeg_knobs::delete_current_preset()
 {
     QString preset_name = preset_box->get_current_text();
     presets.remove(preset_name);
@@ -165,7 +169,7 @@ void ffmpeg_submit::delete_current_preset()
     save_preset();
 }
 
-void ffmpeg_submit::update_preset_box()
+void ffmpeg_knobs::update_preset_box()
 {
     preset_box->clear();
 
@@ -180,7 +184,7 @@ void ffmpeg_submit::update_preset_box()
     preset_box->set_index(0);
 }
 
-void ffmpeg_submit::set_preset(QString preset_name)
+void ffmpeg_knobs::set_preset(QString preset_name)
 {
     QString command = presets.value(preset_name).toString();
 
@@ -193,13 +197,13 @@ void ffmpeg_submit::set_preset(QString preset_name)
     preset_name_edit->setText(preset_name);
 }
 
-void ffmpeg_submit::open_preset()
+void ffmpeg_knobs::open_preset()
 {
     presets = jread(VINARENDER_CONF_PATH + "/ffmpeg_presets.json");
     update_preset_box();
 }
 
-void ffmpeg_submit::save_preset()
+void ffmpeg_knobs::save_preset()
 {
     jwrite(VINARENDER_CONF_PATH + "/ffmpeg_presets.json", presets);
 }

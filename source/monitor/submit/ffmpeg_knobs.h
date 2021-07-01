@@ -8,18 +8,13 @@
 
 #include "combo_box.h"
 
-class ffmpeg_submit : public QWidget
+class ffmpeg_knobs : public QWidget
 {
 private:
     QPushButton *preset_add_button, *preset_delete_button,
         *preset_cancel_button;
     QPushButton *preset_add, *preset_delete;
     QLineEdit *preset_name_edit, *command_edit;
-
-    int label_width;
-    int h_margin;
-    int v_margin;
-    int v_padding;
 
     combo_box *preset_box;
     QJsonObject presets;
@@ -37,7 +32,7 @@ private:
     void delete_current_preset();
 
 public:
-    ffmpeg_submit(QList<int> params);
+    ffmpeg_knobs();
 
     void set_preset(QString preset_name);
     inline QString get_preset() const;
@@ -45,12 +40,12 @@ public:
     inline QString get_movie_name() const;
 };
 
-inline QString ffmpeg_submit::get_command() const
+inline QString ffmpeg_knobs::get_command() const
 {
     return command_edit->text();
 }
 
-inline QString ffmpeg_submit::get_preset() const
+inline QString ffmpeg_knobs::get_preset() const
 {
     return preset_box->get_current_text();
 }
