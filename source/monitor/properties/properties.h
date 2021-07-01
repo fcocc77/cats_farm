@@ -6,7 +6,7 @@
 #include "options.h"
 #include "settings.h"
 #include "log.h"
-#include "submit.h"
+#include "submit_widget.h"
 
 class properties_class : public QWidget
 {

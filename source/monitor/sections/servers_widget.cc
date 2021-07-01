@@ -3,7 +3,7 @@
 #include <QSignalMapper>
 
 #include "../global/global.h"
-#include "servers.h"
+#include "servers_widget.h"
 #include "tcp.h"
 #include "util.h"
 

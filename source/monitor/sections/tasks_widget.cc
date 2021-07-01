@@ -5,7 +5,7 @@
 
 #include "util.h"
 #include "tcp.h"
-#include "tasks.h"
+#include "tasks_widget.h"
 #include "../global/global.h"
 
 tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,

@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 #include "../global/global.h"
-#include "groups.h"
+#include "groups_widget.h"
 #include <tcp.h>
 
 groups_class::groups_class(QWidget *__monitor, shared_variables *_shared,

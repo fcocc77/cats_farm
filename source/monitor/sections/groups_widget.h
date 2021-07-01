@@ -6,7 +6,7 @@
 #include <QResizeEvent>
 #include <QTreeWidget>
 
-#include "servers.h"
+#include "servers_widget.h"
 
 class groups_class : public QTreeWidget
 {

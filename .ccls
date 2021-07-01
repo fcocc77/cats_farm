@@ -18,11 +18,15 @@ clang++
 -I./source/global
 -I./source/logger
 -I./source/manager
--I./source/server
 -I./source/submit
--I./source/monitor
 -I./source/utils
 -I./source/videovina
+
+-I./source/monitor/main
+-I./source/monitor/submit
+-I./source/monitor/sections
+-I./source/monitor/components
+-I./source/monitor/properties
 
 -I./utils/c++
 

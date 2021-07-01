@@ -4,7 +4,7 @@
 #include <QPixmap>
 
 #include "../global/global.h"
-#include "jobs.h"
+#include "jobs_widget.h"
 #include "main_window.h"
 #include "tcp.h"
 #include "util.h"

@@ -2,9 +2,9 @@
 #define UPDATE_HPP
 
 #include "tcp.h"
-#include "groups.h"
-#include "jobs.h"
-#include "servers.h"
+#include "groups_widget.h"
+#include "jobs_widget.h"
+#include "servers_widget.h"
 #include "settings.h"
 #include "progress_bar.h"
 

@@ -4,10 +4,10 @@
 #include <QMenuBar>
 
 #include "general.h"
-#include "groups.h"
-#include "servers.h"
-#include "tasks.h"
-#include "jobs.h"
+#include "groups_widget.h"
+#include "servers_widget.h"
+#include "tasks_widget.h"
+#include "jobs_widget.h"
 
 class main_menu_class : public QMenuBar
 {

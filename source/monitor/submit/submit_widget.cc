@@ -6,10 +6,10 @@
 #include <QTreeWidgetItem>
 
 #include "../global/global.h"
-#include "groups.h"
+#include "groups_widget.h"
 #include "main_window.h"
 #include "os.h"
-#include "submit.h"
+#include "submit_widget.h"
 #include "util.h"
 #include "tcp.h"
 #include "path_utils.h"

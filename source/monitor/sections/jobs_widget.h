@@ -3,12 +3,12 @@
 
 #include <QTreeWidget>
 
-#include "groups.h"
+#include "groups_widget.h"
 #include "log.h"
 #include "options.h"
 #include "properties.h"
-#include "servers.h"
-#include "submit.h"
+#include "servers_widget.h"
+#include "submit_widget.h"
 
 class jobs_class : public QTreeWidget
 {

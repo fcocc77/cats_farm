@@ -8,15 +8,15 @@
 #include "options.h"
 #include "settings.h"
 #include "properties.h"
-#include "servers.h"
-#include "groups.h"
-#include "jobs.h"
-#include "tasks.h"
+#include "servers_widget.h"
+#include "groups_widget.h"
+#include "jobs_widget.h"
+#include "tasks_widget.h"
 #include "update.h"
 #include "general.h"
 #include "main_menu.h"
 #include "toolbar.h"
-#include "submit.h"
+#include "submit_widget.h"
 
 
 using namespace std;

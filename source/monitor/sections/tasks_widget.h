@@ -1,7 +1,7 @@
 #ifndef TASKS_HPP
 #define TASKS_HPP
 
-#include "jobs.h"
+#include "jobs_widget.h"
 #include "shared_variables.h"
 
 class tasks_class : public QObject

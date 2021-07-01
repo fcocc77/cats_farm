@@ -4,13 +4,13 @@
 #include <QWidget>
 
 #include "general.h"
-#include "groups.h"
-#include "jobs.h"
+#include "groups_widget.h"
+#include "jobs_widget.h"
 #include "log.h"
 #include "properties.h"
-#include "servers.h"
+#include "servers_widget.h"
 #include "shared_variables.h"
-#include "tasks.h"
+#include "tasks_widget.h"
 #include "update.h"
 #include "button.h"
 
