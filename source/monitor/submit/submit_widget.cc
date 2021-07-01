@@ -36,11 +36,7 @@ submit::submit(QWidget *__monitor)
     job_name = new QLineEdit();
     server_group_box = new combo_box();
     priority = new combo_box();
-    task_size_box = new combo_box();
-    task_size_edit = new QLineEdit();
     comment_edit = new QLineEdit();
-    first_frame_edit = new QLineEdit();
-    last_frame_edit = new QLineEdit();
     suspend_box = new QCheckBox("Suspended");
     submit_button = new QPushButton("Submit");
 
@@ -90,12 +86,6 @@ void submit::ui()
     QWidget *job_widget = new QWidget();
     QHBoxLayout *job_layout = new QHBoxLayout(job_widget);
 
-    QWidget *frame_range_widget = new QWidget();
-    QHBoxLayout *frame_range_layout = new QHBoxLayout(frame_range_widget);
-
-    QWidget *task_size_widget = new QWidget();
-    QHBoxLayout *task_size_layout = new QHBoxLayout(task_size_widget);
-
     QWidget *priority_widget = new QWidget();
     QHBoxLayout *priority_layout = new QHBoxLayout(priority_widget);
 
@@ -109,13 +99,12 @@ void submit::ui()
     project_label = new QLabel("Project File:");
     render_node_label = new QLabel("Render Node:");
     QLabel *job_name_label = new QLabel("Job Name:");
-    QLabel *frame_range_label = new QLabel("Frame Range:");
-    QLabel *task_size_label = new QLabel("Task Size:");
     QLabel *server_group_label = new QLabel("Server Group:");
     QLabel *comment_label = new QLabel("Comment:");
     QLabel *priority_label = new QLabel("Priority:");
     ffmpeg_widget =
         new ffmpeg_submit({label_width, h_margin, v_margin, v_padding});
+    _time_knobs = new time_knobs();
 
     QScrollArea *scrollArea = new QScrollArea();
 
@@ -141,9 +130,6 @@ void submit::ui()
     render_node_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
 
     job_layout->setContentsMargins(h_margin, v_padding, h_margin, v_padding);
-
-    frame_range_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
-    task_size_layout->setContentsMargins(h_margin, v_margin, h_margin, v_margin);
     priority_layout->setContentsMargins(h_margin, v_margin, h_margin, v_padding);
 
     server_group_layout->setContentsMargins(h_margin, v_padding, h_margin, v_margin);
@@ -173,8 +159,6 @@ void submit::ui()
     project_label->setFixedWidth(label_width);
     render_node_label->setFixedWidth(label_width);
     job_name_label->setFixedWidth(label_width);
-    frame_range_label->setFixedWidth(label_width);
-    task_size_label->setFixedWidth(label_width);
     priority_label->setFixedWidth(label_width);
     server_group_label->setFixedWidth(label_width);
     comment_label->setFixedWidth(label_width);
@@ -183,8 +167,6 @@ void submit::ui()
     project_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     render_node_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     job_name_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    frame_range_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    task_size_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     priority_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     server_group_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     comment_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -196,13 +178,6 @@ void submit::ui()
 
     priority->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
     priority->set_index(2);
-
-    task_size_box->add_items({"Custom", "5 Tasks", "10 Tasks", "15 Tasks",
-                              "20 Tasks", "30 Tasks", "40 Tasks", "50 Tasks"});
-    task_size_box->set_index(0);
-    task_size_box->setFixedWidth(120);
-    task_size_box->setToolTip("Task divisions: calculate the size of the task "
-                              "from the number of divisions");
 
     scrollArea->setWidget(main_widget);
     scrollArea->setWidgetResizable(true);
@@ -223,14 +198,6 @@ void submit::ui()
     job_layout->addWidget(job_name_label);
     job_layout->addWidget(job_name);
 
-    frame_range_layout->addWidget(frame_range_label);
-    frame_range_layout->addWidget(first_frame_edit);
-    frame_range_layout->addWidget(last_frame_edit);
-
-    task_size_layout->addWidget(task_size_label);
-    task_size_layout->addWidget(task_size_box);
-    task_size_layout->addWidget(task_size_edit);
-
     priority_layout->addWidget(priority_label);
     priority_layout->addWidget(priority);
 
@@ -244,9 +211,7 @@ void submit::ui()
     box_a_layout->addWidget(project_dir_widget);
     box_a_layout->addWidget(render_node_widget);
     box_b_layout->addWidget(job_widget);
-    box_c_layout->addWidget(frame_range_widget);
-    box_c_layout->addWidget(task_size_widget);
-    box_c_layout->addWidget(priority_widget);
+    box_d_layout->addWidget(priority_widget);
     box_d_layout->addWidget(server_group_widget);
     box_d_layout->addWidget(comment_widget);
     box_e_layout->addWidget(suspend_box);
@@ -255,7 +220,7 @@ void submit::ui()
     main_layout->addWidget(ffmpeg_widget);
     main_layout->addWidget(box_a_widget);
     main_layout->addWidget(box_b_widget);
-    main_layout->addWidget(box_c_widget);
+    main_layout->addWidget(_time_knobs);
     main_layout->addWidget(box_d_widget);
     main_layout->addWidget(box_e_widget);
     main_layout->addWidget(submit_button);
@@ -270,9 +235,6 @@ void submit::connections()
 
     connect(software_box, &combo_box::text_changed, this,
             &submit::set_software);
-
-    connect(task_size_box, &combo_box::text_changed, this,
-            &submit::calculate_task_size);
 
     connect(project_dir_button, &QPushButton::clicked, this, [this]() {
         QString file_path = QFileDialog::getExistingDirectory(
@@ -294,17 +256,6 @@ void submit::connections()
 
     connect(submit_button, &QPushButton::clicked, this, [this]() {
         submit_start(software_box->get_current_text().toLower());
-    });
-
-    connect(task_size_edit, &QLineEdit::textChanged, this,
-            [=](QString text) { calculate_task_divition(text.toInt()); });
-
-    connect(first_frame_edit, &QLineEdit::textChanged, this, [=](QString text) {
-        calculate_task_size(task_size_box->get_current_text());
-    });
-
-    connect(last_frame_edit, &QLineEdit::textChanged, this, [=](QString text) {
-        calculate_task_size(task_size_box->get_current_text());
     });
 }
 
@@ -389,9 +340,9 @@ void submit::submit_start(QString software)
     QJsonArray info = {job_name->text(),
                        "",
                        server_group_box->get_current_text(),
-                       first_frame_edit->text().toInt(),
-                       last_frame_edit->text().toInt(),
-                       task_size_edit->text().toInt(),
+                       _time_knobs->get_first_frame(),
+                       _time_knobs->get_last_frame(),
+                       _time_knobs->get_task_size(),
                        priority->get_current_text(),
                        suspend_box->isChecked(),
                        comment_edit->text(),
@@ -405,26 +356,26 @@ void submit::submit_start(QString software)
     bool ok = true;
     QString details = "Incomplete Fiels:\n";
 
-    if (job_name->text().isEmpty())
-    {
-        details += "Job Name\n";
-        ok = false;
-    }
-    if (first_frame_edit->text().isEmpty())
-    {
-        details += "First Frame\n";
-        ok = false;
-    }
-    if (last_frame_edit->text().isEmpty())
-    {
-        details += "Last Frame\n";
-        ok = false;
-    }
-    if (task_size_edit->text().isEmpty())
-    {
-        details += "Task Size\n";
-        ok = false;
-    }
+    // if (job_name->text().isEmpty())
+    // {
+        // details += "Job Name\n";
+        // ok = false;
+    // }
+    // if (first_frame_edit->text().isEmpty())
+    // {
+        // details += "First Frame\n";
+        // ok = false;
+    // }
+    // if (last_frame_edit->text().isEmpty())
+    // {
+        // details += "Last Frame\n";
+        // ok = false;
+    // }
+    // if (task_size_edit->text().isEmpty())
+    // {
+        // details += "Task Size\n";
+        // ok = false;
+    // }
 
     QMessageBox *msg = new QMessageBox(this);
     msg->setWindowTitle("Submit Information");
@@ -496,36 +447,6 @@ void submit::submit_files(QStringList files)
         submit_file(file);
 }
 
-void submit::calculate_task_size(QString item_text)
-{
-    int divisions = item_text.split("Tasks")[0].toInt();
-
-    if (!divisions)
-        return;
-
-    int first_frame = first_frame_edit->text().toInt();
-    int last_frame = last_frame_edit->text().toInt();
-    int frame_count = last_frame - first_frame + 1;
-
-    int task_size = frame_count / divisions;
-
-    task_size_edit->setText(QString::number(task_size));
-}
-
-void submit::calculate_task_divition(int task_size)
-{
-    if (!task_size)
-        return;
-
-    int first_frame = first_frame_edit->text().toInt();
-    int last_frame = last_frame_edit->text().toInt();
-
-    int frame_count = last_frame - first_frame + 1;
-
-    int divisions = frame_count / task_size;
-    task_size_box->set_label_text(QString::number(divisions) + " Tasks");
-}
-
 void submit::panel_save()
 {
     QJsonObject panel = {{"software", software_box->get_current_text()},
@@ -534,9 +455,9 @@ void submit::panel_save()
                          {"project", project_edit->text()},
                          {"render_node", render_node_edit->text()},
                          {"job_name", job_name->text()},
-                         {"first_frame", first_frame_edit->text()},
-                         {"last_frame", last_frame_edit->text()},
-                         {"task_size", task_size_edit->text()},
+                         {"first_frame", _time_knobs->get_first_frame()},
+                         {"last_frame", _time_knobs->get_last_frame()},
+                         {"task_size", _time_knobs->get_task_size()},
                          {"priority", priority->get_current_text()},
                          {"server_group", server_group_box->get_current_text()},
                          {"comment", comment_edit->text()},
@@ -558,9 +479,9 @@ void submit::panel_open()
 
     job_name->setText(panel["job_name"].toString());
 
-    first_frame_edit->setText(panel["first_frame"].toString());
-    last_frame_edit->setText(panel["last_frame"].toString());
-    task_size_edit->setText(panel["task_size"].toString());
+    _time_knobs->set_first_frame(panel["first_frame"].toInt());
+    _time_knobs->set_last_frame(panel["last_frame"].toInt());
+    _time_knobs->set_task_size(panel["task_size"].toInt());
 
     priority->set_current_text(panel["priority"].toString());
     server_group_box->set_current_text(panel["server_group"].toString());
@@ -585,10 +506,10 @@ void submit::update_ffmpeg_panel()
     int first_frame, last_frame, task_size;
     calc_ffmpeg_data(src_movie, &first_frame, &last_frame, &task_size);
 
-    first_frame_edit->setText(QString::number(first_frame));
-    last_frame_edit->setText(QString::number(last_frame));
+    _time_knobs->set_first_frame(first_frame);
+    _time_knobs->set_last_frame(last_frame);
 
-    task_size_box->set_current_text("30 Tasks", true);
+    _time_knobs->set_task_divition(30);
 }
 
 void submit::calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,

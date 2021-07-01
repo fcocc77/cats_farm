@@ -11,6 +11,7 @@
 
 #include "combo_box.h"
 #include "ffmpeg_submit.h"
+#include "time_knobs.h"
 
 class submit : public QWidget
 {
@@ -21,6 +22,7 @@ private:
 
     combo_box *software_box;
     ffmpeg_submit *ffmpeg_widget;
+    time_knobs *_time_knobs;
 
     QLineEdit *project_dir_edit;
     QPushButton *project_dir_button;
@@ -36,11 +38,7 @@ private:
     QLineEdit *job_name;
     combo_box *server_group_box;
     combo_box *priority;
-    combo_box *task_size_box;;
-    QLineEdit *task_size_edit;
     QLineEdit *comment_edit;
-    QLineEdit *first_frame_edit;
-    QLineEdit *last_frame_edit;
     QCheckBox *suspend_box;
     QPushButton *submit_button;
 
@@ -54,9 +52,6 @@ private:
     void panel_save();
     void panel_open();
     void submit_file(QString file);
-
-    void calculate_task_size(QString item_text);
-    void calculate_task_divition(int task_size);
 
     void update_ffmpeg_panel();
     void calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,

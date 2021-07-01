@@ -508,10 +508,10 @@ QMenuBar {
     border-color: #0099ff;
     color: #0099ff; }
 
-#submit_widget #box_widget {
+#submit_widget #box_widget, #submit_widget #knobs_box {
   background: #23262a;
   border-radius: 3px; }
-  #submit_widget #box_widget > QWidget {
+  #submit_widget #box_widget > QWidget, #submit_widget #knobs_box > QWidget {
     background: none; }
 
 #submit_widget QLabel {
