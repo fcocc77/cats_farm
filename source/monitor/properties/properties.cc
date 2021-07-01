@@ -1,4 +1,5 @@
 #include <QVBoxLayout>
+#include <QScrollArea>
 
 #include <properties.h>
 
@@ -21,14 +22,22 @@ properties_class::properties_class(log_class *_log, options_class *_options,
 
 void properties_class::setup_ui()
 {
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setMargin(0);
 
-    QVBoxLayout *properties_layout = new QVBoxLayout();
-    this->setLayout(properties_layout);
+    QWidget *main_widget = new QWidget();
+    QVBoxLayout *main_layout = new QVBoxLayout(main_widget);
 
-    properties_layout->addWidget(log);
-    properties_layout->addWidget(options);
-    properties_layout->addWidget(settings);
-    properties_layout->addWidget(_submit);
+    main_layout->addWidget(log);
+    main_layout->addWidget(options);
+    main_layout->addWidget(settings);
+    main_layout->addWidget(_submit);
+
+    QScrollArea *scroll_area = new QScrollArea();
+    scroll_area->setWidget(main_widget);
+    scroll_area->setWidgetResizable(true);
+
+    layout->addWidget(scroll_area);
 }
 
 bool properties_class::switch_widget(QString widget_name)

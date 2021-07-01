@@ -2,7 +2,6 @@
 #include <QJsonArray>
 #include <QLabel>
 #include <QMessageBox>
-#include <QScrollArea>
 #include <QTreeWidgetItem>
 
 #include "../global/global.h"
@@ -29,14 +28,12 @@ void submit::ui()
 {
     layout = new QVBoxLayout(this);
     layout->setMargin(0);
+    layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
 
     this->setObjectName("submit_widget");
 
     software_box = new combo_box();
     submit_button = new QPushButton("Submit");
-
-    QWidget *main_widget = new QWidget();
-    QVBoxLayout *main_layout = new QVBoxLayout(main_widget);
 
     _ffmpeg_knobs = new ffmpeg_knobs();
     _time_knobs = new time_knobs();
@@ -44,29 +41,18 @@ void submit::ui()
     _houdini_knobs = new houdini_knobs();
     _misc_knobs = new misc_knobs(_monitor);
 
-    QScrollArea *scrollArea = new QScrollArea();
-
-    // Layouts Settings
-    main_layout->setMargin(0);
-    main_layout->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-
     // Settings
     QStringList items = {"Maya", "Houdini", "FFmpeg"};
     software_box->add_items(items);
 
-    scrollArea->setWidget(main_widget);
-    scrollArea->setWidgetResizable(true);
-
     // Layout
-    main_layout->addWidget(software_box);
-    main_layout->addWidget(_maya_knobs);
-    main_layout->addWidget(_houdini_knobs);
-    main_layout->addWidget(_ffmpeg_knobs);
-    main_layout->addWidget(_time_knobs);
-    main_layout->addWidget(_misc_knobs);
-    main_layout->addWidget(submit_button);
-
-    layout->addWidget(scrollArea);
+    layout->addWidget(software_box);
+    layout->addWidget(_maya_knobs);
+    layout->addWidget(_houdini_knobs);
+    layout->addWidget(_ffmpeg_knobs);
+    layout->addWidget(_time_knobs);
+    layout->addWidget(_misc_knobs);
+    layout->addWidget(submit_button);
 }
 
 void submit::connections()
@@ -235,15 +221,15 @@ void submit::submit_files(QStringList files)
 void submit::panel_save()
 {
     // QJsonObject panel = {{"software", software_box->get_current_text()},
-                         // {"ffmpeg_presets", _ffmpeg_knobs->get_preset()},
-                         // {"job_name", job_name->text()},
-                         // {"first_frame", _time_knobs->get_first_frame()},
-                         // {"last_frame", _time_knobs->get_last_frame()},
-                         // {"task_size", _time_knobs->get_task_size()},
-                         // {"priority", priority->get_current_text()},
-                         // {"server_group", server_group_box->get_current_text()},
-                         // {"comment", comment_edit->text()},
-                         // {"suspend", suspend_box->isChecked()}};
+    // {"ffmpeg_presets", _ffmpeg_knobs->get_preset()},
+    // {"job_name", job_name->text()},
+    // {"first_frame", _time_knobs->get_first_frame()},
+    // {"last_frame", _time_knobs->get_last_frame()},
+    // {"task_size", _time_knobs->get_task_size()},
+    // {"priority", priority->get_current_text()},
+    // {"server_group", server_group_box->get_current_text()},
+    // {"comment", comment_edit->text()},
+    // {"suspend", suspend_box->isChecked()}};
 
     // jwrite(VINARENDER_CONF_PATH + "/submit_panel.json", panel);
 }
