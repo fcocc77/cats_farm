@@ -36,7 +36,7 @@ private:
     void connections();
 
     void submit_start(QString software);
-    void send_job(QJsonArray info);
+    void send_job(QJsonObject info);
     void set_software(QString software);
     void panel_save();
     void panel_open();

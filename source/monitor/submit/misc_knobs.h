@@ -30,11 +30,19 @@ public:
     inline void set_comment(QString comment);
 
     inline QString get_priority() const;
+    inline int get_priority_index() const;
     inline void set_priority(QString priority);
 
     inline bool get_suspend() const;
     inline void set_suspend(bool suspended);
+
+    inline QString get_server_group() const;
 };
+
+inline QString misc_knobs::get_server_group() const
+{
+    return server_group_box->get_current_text();
+}
 
 inline QString misc_knobs::get_job_name() const
 {
@@ -59,6 +67,11 @@ inline void misc_knobs::set_comment(QString comment)
 inline QString misc_knobs::get_priority() const
 {
     return priority_box->get_current_text();
+}
+
+inline int misc_knobs::get_priority_index() const
+{
+    return priority_box->get_index();
 }
 
 inline void misc_knobs::set_priority(QString priority)

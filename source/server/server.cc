@@ -83,7 +83,7 @@ QString server::recieveManager(QString _recv)
     QString send;
 
     if (input == 0)
-        send = render->render_task(recv);
+        send = render->render_task(json[1].toObject());
 
     if (input == 1)
     {

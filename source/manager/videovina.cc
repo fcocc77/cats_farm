@@ -39,11 +39,9 @@ void manager::send_to_render(job_struct *job)
     // espera que los proyectos natron esten creados con los
     // datos del proyecto del usuario para poder enviarlo a renderizar
 
-    QJsonObject _misc = jofs(job->misc);
-
-    QString user = _misc["user"].toString();
-    QString project_name = _misc["project_name"].toString();
-    QString _module = _misc["module"].toString();
+    QString user = job->software_data["user"].toString();
+    QString project_name = job->software_data["project_name"].toString();
+    QString _module = job->software_data["module"].toString();
 
     QString natron_renderer = "/opt/Natron2/bin/NatronRenderer";
     QString api = VINARENDER_PATH + "/modules/natron/api.py";

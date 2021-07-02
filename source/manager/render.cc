@@ -1,4 +1,5 @@
 #include <manager.h>
+#include "path_utils.h"
 
 void manager::render_job()
 {
@@ -107,13 +108,6 @@ void manager::render_task(server_struct *server, inst_struct *instance,
     instance->reset = 0;
 
     QString software = job->software.toLower();
-    auto misc = job->misc;
-    auto render = job->render;
-
-    auto system = server->system;
-    auto jobSystem = job->system;
-
-    auto project = job->project;
 
     bool Completed = false;
     QString result = "";
@@ -150,9 +144,14 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             mutex.unlock();
 
             // Envia a renderar la tarea al servidor que le corresponde
-            QJsonArray pks = {project,     software,   instance->index,
-                              first_frame, last_frame, jobSystem,
-                              misc,       render};
+            QJsonObject pks = {
+                {"software", software},
+                {"software_data", job->software_data},
+                {"first_frame", first_frame},
+                {"last_frame", last_frame},
+                {"job_system", job->system},
+                {"instance", instance->index}
+            };
 
             QString result =
                 tcpClient(server->host, server_port, jats({0, pks}));
@@ -253,35 +252,12 @@ void manager::render_task(server_struct *server, inst_struct *instance,
     mutex.unlock();
     if (Completed)
     {
-        QJsonArray system_path =
-            preferences["paths"].toObject()["system"].toArray();
-
-        QString src_path, dst_path, aux;
-        for (QJsonValue p1 : system_path)
-        {
-            for (QJsonValue p2 : system_path)
-            {
-                aux = project;
-                aux.replace(p1.toString(), p2.toString());
-
-                if (os::isfile(aux))
-                {
-                    src_path = p1.toString();
-                    dst_path = p2.toString();
-                    break;
-                }
-            }
-
-            if (os::isfile(aux))
-                break;
-        }
-
         if (software == "nuke")
-            nuke_completed(job, src_path, dst_path);
+            nuke_completed(job);
         else if (software == "vinacomp")
-            vinarender_completed(job, src_path, dst_path);
+            vinarender_completed(job);
         else if (software == "ffmpeg")
-            ffmpeg_completed(job, src_path, dst_path);
+            ffmpeg_completed(job);
 
         QString submit_finish = currentDateTime(0);
 
@@ -292,17 +268,50 @@ void manager::render_task(server_struct *server, inst_struct *instance,
     }
 }
 
-void manager::nuke_completed(job_struct *job, QString src_path,
-                             QString dst_path)
+void manager::get_correct_path(QString filename, QString *src, QString *dst)
 {
-    QString ext = job->misc.split(".").last();
+    QJsonArray system_path =
+        preferences["paths"].toObject()["system"].toArray();
+
+    QString src_path, dst_path, aux;
+    for (QJsonValue p1 : system_path)
+    {
+        for (QJsonValue p2 : system_path)
+        {
+            aux = filename;
+            aux.replace(p1.toString(), p2.toString());
+
+            if (os::isfile(aux))
+            {
+                src_path = p1.toString();
+                dst_path = p2.toString();
+                break;
+            }
+        }
+
+        if (os::isfile(aux))
+            break;
+    }
+
+    *src = src_path;
+    *dst = dst_path;
+}
+
+void manager::nuke_completed(job_struct *job)
+{
+    QString output_movie = job->software_data["output_movie"].toString();
+    QString ext = path_util::get_ext(output_movie);
+
+    QString src_path, dst_path;
+    get_correct_path(output_movie, &src_path, &dst_path);
+
     if (ext == "mov")
     {
         job->status = "Concatenate";
 
         // obtiene nombre de carpeta de renders
-        QString _dirname = os::dirname(job->misc);
-        QString _basename = os::basename(job->misc);
+        QString _dirname = os::dirname(output_movie);
+        QString _basename = os::basename(output_movie);
         _basename.replace(".mov", "");
 
         _dirname.replace(src_path, dst_path);
@@ -312,22 +321,16 @@ void manager::nuke_completed(job_struct *job, QString src_path,
     }
 }
 
-void manager::vinarender_completed(job_struct *job, QString src_path,
-                                   QString dst_path)
+void manager::vinarender_completed(job_struct *job)
 {
 }
 
-void manager::ffmpeg_completed(job_struct *job, QString src_path,
-                               QString dst_path)
+void manager::ffmpeg_completed(job_struct *job)
 {
     job->status = "Concatenate";
 
-    QJsonObject _misc = jofs(job->misc);
-
-    QString output_folder = _misc["output_dir"].toString();
-    QString movie_name = _misc["movie_name"].toString();
-
-    output_folder.replace(src_path, dst_path);
+    QString output_folder = job->software_data["output_folder"].toString();
+    QString movie_name = job->software_data["movie_name"].toString();
 
     QString dir_file = output_folder + "/" + movie_name;
 

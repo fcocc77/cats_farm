@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QJsonObject>
 
 #include <iostream>
 #include <vector>
@@ -22,7 +23,7 @@ struct job_struct
     QString name;
     QString status;
     int priority;
-    QStringList server_group;
+    QString server_group;
     int instances;
     QString comment;
     QString submit_start;
@@ -35,10 +36,8 @@ struct job_struct
     QString total_render_time;
     QString estimated_time;
     QString software;
-    QString project;
+    QJsonObject software_data;
     QString system;
-    QString misc;
-    QString render;
     QStringList vetoed_servers;
     int progres;
     int waiting_task;

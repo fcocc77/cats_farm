@@ -1,4 +1,5 @@
 #include <manager.h>
+#include "util.h"
 
 void manager::update_jobs()
 {
@@ -81,74 +82,49 @@ void manager::update_jobs()
     }
 }
 
-QString manager::make_job(QJsonArray recv)
+void manager::make_job(QJsonObject __job)
 {
-    QString _job_name = recv[0].toString();
-
-    QStringList _server_group;
-    if (recv[2].toString() != "None")
-        _server_group.push_back(recv[2].toString());
-
-    int _first_frame = recv[3].toInt();
-    int _last_frame = recv[4].toInt();
-    int _task_size = recv[5].toInt();
-    int _priority = recv[6].toInt();
-    bool _suspend = recv[7].toBool();
-    QString _comment = recv[8].toString();
-    QString _software = recv[9].toString();
-    QString _project = recv[10].toString();
-    QString _misc = recv[11].toString();
-    QString _system = recv[12].toString();
-    int _instances = recv[13].toInt();
-    QString _render = recv[14].toString();
-
-    QString status, submit_start;
-
-    if (_suspend)
-        status = "Suspended";
-    else
-        status = "Queue";
-
-    submit_start = currentDateTime(0);
-
-    // checkea si el nombre esta en la lista, si esta le pone un padding
+    // verifica si el nombre esta en la lista, si esta le pone un padding
+    QString _job_name = __job["job_name"].toString();
     QString job_name = _job_name;
 
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0; i < 700; ++i)
     {
-        bool inside = false;
+        bool contains = false;
         for (auto j : jobs)
             if (job_name == j->name)
-                inside = true;
+                contains = true;
 
-        if (inside)
+        if (contains)
             job_name = _job_name + "_" + QString::number(i);
         else
             break;
     }
+
+    int _task_size = __job["task_size"].toInt();
+    int _first_frame = __job["first_frame"].toInt();
+    int _last_frame = __job["last_frame"].toInt();
 
     auto tasks = make_task(_first_frame, _last_frame, _task_size);
 
     job_struct *_job = new job_struct;
 
     _job->name = job_name;
-    _job->status = status;
-    _job->priority = _priority;
-    _job->server_group = _server_group;
-    _job->instances = _instances;
-    _job->comment = _comment;
-    _job->submit_start = submit_start;
+    _job->status = __job["suspended"].toBool() ? "Suspended" : "Queue";
+    _job->priority = __job["priority"].toInt();
+    _job->server_group = __job["server_group"].toString();
+    _job->instances = __job["instances"].toInt();
+    _job->comment = __job["comment"].toString();
+    _job->software = __job["software"].toString();
+    _job->software_data = __job["software_data"].toObject();
+    _job->system = __job["system"].toString();
+    _job->submit_start = currentDateTime(0);
     _job->submit_finish = "...";
     _job->time_elapsed = 0;
     _job->last_time = 0;
     _job->total_render_time = "...";
     _job->estimated_time = "...";
     _job->time_elapsed_running = 0;
-    _job->software = _software;
-    _job->project = _project;
-    _job->system = _system;
-    _job->misc = _misc;
-    _job->render = _render;
     _job->progres = 0;
     _job->errors = 0;
     _job->waiting_task = tasks.size();
@@ -162,8 +138,6 @@ QString manager::make_job(QJsonArray recv)
     _job->last_frame = _last_frame;
 
     jobs.push_back(_job);
-
-    return "";
 }
 
 void manager::job_delete(QString job_name)

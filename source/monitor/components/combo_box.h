@@ -28,6 +28,7 @@ public:
     void set_current_text(QString text, bool emmit_signal = false);
     void set_index(int index, bool emmit_signal = false);
     void clear();
+    inline int get_index() const;
 
     inline void set_label_text(QString label_text);
 
@@ -39,6 +40,11 @@ signals:
     void text_changed(QString text);
     void index_changed(int index);
 };
+
+inline int combo_box::get_index() const
+{
+    return index;
+}
 
 inline void combo_box::set_label_text(QString label_text)
 {

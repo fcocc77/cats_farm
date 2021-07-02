@@ -95,32 +95,37 @@ void submit::set_software(QString software)
 
 void submit::submit_start(QString software)
 {
-    QString system = _linux ? "Linux" : "Windows";
-    QString misc;
+    QJsonObject software_data;
 
-    // if (software == "ffmpeg")
-    // {
-    // QJsonObject misc_obj = {{"output_dir", project_dir_edit->text()},
-    // {"movie_name", render_node_edit->text()},
-    // {"command", _ffmpeg_knobs->get_command()}};
-    // misc = jots(misc_obj);
-    // }
+    if (software == "ffmpeg")
+        software_data = {{"input_file", _ffmpeg_knobs->get_input_file()},
+                         {"output_folder", _ffmpeg_knobs->get_output_folder()},
+                         {"movie_name", _ffmpeg_knobs->get_movie_name()},
+                         {"command", _ffmpeg_knobs->get_command()}};
 
-    // QJsonArray info = {job_name->text(),
-    // "",
-    // server_group_box->get_current_text(),
-    // _time_knobs->get_first_frame(),
-    // _time_knobs->get_last_frame(),
-    // _time_knobs->get_task_size(),
-    // priority->get_current_text(),
-    // suspend_box->isChecked(),
-    // comment_edit->text(),
-    // software,
-    // project_edit->text(),
-    // misc,
-    // system,
-    // 1,
-    // render_node_edit->text()};
+    else if (software == "maya")
+        software_data = {{"scene", _maya_knobs->get_scene()},
+                         {"project_folder", _maya_knobs->get_project_folder()}};
+
+    else if (software == "houdini")
+        software_data = {{"project", _houdini_knobs->get_project()},
+                         {"engine", _houdini_knobs->get_engine()}};
+
+    QJsonObject info = {
+        {"job_name", _misc_knobs->get_priority()},
+        {"comment", _misc_knobs->get_comment()},
+        {"suspended", _misc_knobs->get_suspend()},
+        {"server_group", _misc_knobs->get_server_group()},
+        {"priority", _misc_knobs->get_priority_index()},
+        {"software", software},
+        {"software_data", software_data},
+        {"system", _linux ? "Linux" : "Windows"},
+        {"first_frame", _time_knobs->get_first_frame()},
+        {"last_frame", _time_knobs->get_last_frame()},
+        {"task_size", _time_knobs->get_task_size()},
+        {"instances", 1},
+
+    };
 
     bool ok = true;
     QString details = "Incomplete Fiels:\n";
@@ -151,8 +156,8 @@ void submit::submit_start(QString software)
 
     if (ok)
     {
-        // send_job(info);
-        // msg->setText("The " + job_name->text() + " job has sended.");
+        send_job(info);
+        msg->setText("The " + _misc_knobs->get_job_name() + " job has sended.");
         msg->show();
     }
     else
@@ -165,7 +170,7 @@ void submit::submit_start(QString software)
     }
 }
 
-void submit::send_job(QJsonArray info)
+void submit::send_job(QJsonObject info)
 {
     QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
     int port = settings["manager"].toObject()["port"].toInt();
@@ -186,15 +191,22 @@ void submit::submit_file(QString file)
     int last_frame = 100;
     int task_size = 10;
 
+    QJsonObject software_data;
+
     if (ext == "mov" || ext == "mp4")
     {
         software = "FFmpeg";
         _ffmpeg_knobs->calc_ffmpeg_data(file, &first_frame, &last_frame,
                                         &task_size);
+
+        software_data = {{"input_file", file}};
     }
 
     else if (ext == "mb" || ext == "ma")
+    {
         software = "Maya";
+        software_data = {{"scene", file}};
+    }
 
     else if (ext == "nk")
         software = "Nuke";
@@ -204,9 +216,20 @@ void submit::submit_file(QString file)
     else
         return;
 
-    QJsonArray info = {job_name,  "",       "auto", first_frame, last_frame,
-                       task_size, "Normal", true,   software,    software,
-                       file,      "",       system, 1,           ""};
+    QJsonObject info = {
+        {"job_name", job_name},
+        {"comment", software},
+        {"suspended", true},
+        {"server_group", "auto"},
+        {"priority", 2},
+        {"software", software},
+        {"software_data", software_data},
+        {"system", _linux ? "Linux" : "Windows"},
+        {"first_frame", first_frame},
+        {"last_frame", last_frame},
+        {"task_size", task_size},
+        {"instances", 1},
+    };
 
     send_job(info);
 }

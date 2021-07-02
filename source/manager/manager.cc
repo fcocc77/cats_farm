@@ -6,7 +6,7 @@ manager::manager()
     QJsonObject info = jread(VINARENDER_CONF_PATH + "/info.json");
     if (not info.empty())
         json_to_struct(info);
-    //-----------------------------------------------
+
     reactive_all();
     // Recive la informacion del suministrador y crea un jobs con sus tareas
 
@@ -14,7 +14,6 @@ manager::manager()
     settings = jread(VINARENDER_CONF_PATH + "/settings.json");
     int port = settings["manager"].toObject()["port"].toInt();
     server_port = settings["server"].toObject()["port"].toInt();
-    // -------------------------------
 
     tcpServer(port, &manager::server_tcp, this);
     threading(&manager::update_all, this);
@@ -23,7 +22,6 @@ manager::manager()
 
 QString manager::server_tcp(QString _recv)
 {
-
     QJsonArray recv = jafs(_recv);
     int input = recv[0].toInt();
     QJsonArray pks = recv[1].toArray();
@@ -38,7 +36,7 @@ QString manager::server_tcp(QString _recv)
     else if (input == 3)
         send = recieve_monitor_thread(pks);
     else if (input == 4)
-        send = make_job(pks);
+        make_job(recv[1].toObject());
     else if (input == 5)
         send = pivot_to_server(pks);
     else if (input == 6)
@@ -144,11 +142,9 @@ void manager::json_to_struct(QJsonObject info)
         _jobs->estimated_time = job["estimated_time"].toString();
         _jobs->time_elapsed_running = job["time_elapsed_running"].toBool();
         _jobs->software = job["software"].toString();
-        _jobs->project = job["project"].toString();
+        _jobs->software_data = job["software_data"].toObject();
         _jobs->system = job["system"].toString();
-        _jobs->misc = job["misc"].toString();
         _jobs->errors = job["errors"].toInt();
-        _jobs->render = job["render"].toString();
 
         for (QJsonValue vs : job["vetoed_servers"].toArray())
             _jobs->vetoed_servers.push_back(vs.toString());
@@ -270,9 +266,8 @@ QJsonObject manager::struct_to_json()
         j["estimated_time"] = job->estimated_time;
         j["time_elapsed_running"] = job->time_elapsed_running;
         j["software"] = job->software;
-        j["project"] = job->project;
+        j["software_data"] = job->software_data;
         j["system"] = job->system;
-        j["misc"] = job->misc;
         j["errors"] = job->errors;
 
         QJsonArray vetoed_servers;
@@ -280,7 +275,6 @@ QJsonObject manager::struct_to_json()
             vetoed_servers.push_back(s);
         j["vetoed_servers"] = vetoed_servers;
 
-        j["render"] = job->render;
         j["progres"] = job->progres;
         j["waiting_task"] = job->waiting_task;
         j["tasks"] = job->tasks;

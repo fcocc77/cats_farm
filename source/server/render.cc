@@ -16,29 +16,24 @@ render_class::render_class(QMutex *_mutex)
         task_kill.push_back(false);
         render_instance.push_back(false);
 
-        project.push_back("none");
-        job_os.push_back("none");
-        misc.push_back("none");
-        render_node.push_back("none");
-        src_path.push_back("none");
-        dst_path.push_back("none");
+        software_data.push_back({});
+        job_system.push_back("none");
     }
 }
 
-QString render_class::render_task(QJsonArray recv)
+QString render_class::render_task(QJsonObject _task)
 {
     // comvierte lista de json en variables usables
     QString status;
 
     mutex->lock();
-    int ins = recv[2].toInt();
-    QString software = recv[1].toString().toLower();
-    project[ins] = recv[0].toString();
-    first_frame[ins] = recv[3].toInt();
-    last_frame[ins] = recv[4].toInt();
-    job_os[ins] = recv[5].toString();
-    misc[ins] = recv[6].toString();
-    render_node[ins] = recv[7].toString();
+    int ins = _task["instance"].toInt();
+    QString software = _task["software"].toString();
+
+    software_data[ins] = _task["software_data"].toObject();
+    first_frame[ins] = _task["first_frame"].toInt();
+    last_frame[ins] = _task["last_frame"].toInt();
+    job_system[ins] = _task["job_system"].toString();
 
     // si alguna de las instancias ya esta en render no renderea
     bool renderNow = false;
@@ -52,14 +47,6 @@ QString render_class::render_task(QJsonArray recv)
     mutex->unlock();
     if (renderNow)
     {
-        mutex->lock();
-
-        auto correctPath = find_correct_path(project[ins]);
-        src_path[ins] = correctPath[0];
-        dst_path[ins] = correctPath[1];
-
-        mutex->unlock();
-
         bool renderOK = false;
         if (software == "nuke")
             renderOK = nuke(ins);
@@ -102,34 +89,35 @@ QString render_class::render_task(QJsonArray recv)
     return status;
 }
 
-QList<QString> render_class::find_correct_path(QString file_path)
+void render_class::get_correct_path(QString filename, QString *src, QString *dst)
 {
-    QString _path = os::dirname(os::dirname(file_path));
+    QMutexLocker locker(mutex);
+
     QJsonArray system_path =
         preferences["paths"].toObject()["system"].toArray();
 
-    QString proj, src, dst;
-
+    QString src_path, dst_path, aux;
     for (QJsonValue p1 : system_path)
     {
         for (QJsonValue p2 : system_path)
         {
-            proj = _path;
-            proj.replace(p1.toString(), p2.toString());
+            aux = filename;
+            aux.replace(p1.toString(), p2.toString());
 
-            if (os::isfile(proj) || os::isdir(proj))
+            if (os::isfile(aux))
             {
-                src = p1.toString();
-                dst = p2.toString();
+                src_path = p1.toString();
+                dst_path = p2.toString();
                 break;
             }
         }
 
-        if (os::isfile(proj) || os::isdir(proj))
+        if (os::isfile(aux))
             break;
     }
 
-    return {src, dst};
+    *src = src_path;
+    *dst = dst_path;
 }
 
 QString render_class::qprocess(QString cmd, int ins, int timeout)
@@ -163,24 +151,30 @@ bool render_class::nuke(int ins)
 {
     mutex->lock();
 
-    auto correctPath = find_correct_path(misc[ins]);
+    QJsonObject data = software_data[ins];
+    QString src_path, dst_path;
 
-    QString proj = project[ins];
-    proj.replace(src_path[ins], dst_path[ins]);
+    QString output_movie = data["output_movie"].toString();
+    QString render_node = data["render_node"].toString();
+    QString proj = data["project"].toString();
+
+    get_correct_path(output_movie, &src_path, &dst_path);
+
+    output_movie.replace(src_path, dst_path);
+    proj.replace(src_path, dst_path);
 
     QString tmpProj = proj;
     tmpProj.replace(".nk", "_" + os::hostName() + ".nk");
 
     QString nk = fread(proj);
-    nk.replace(correctPath[0], correctPath[1]);
+    nk.replace(src_path, dst_path);
 
     fwrite(tmpProj, nk);
 
-    QString dirFile = misc[ins].replace(correctPath[0], correctPath[1]);
     mutex->unlock();
 
-    QString dirRender = os::dirname(dirFile);
-    QString fileRender = os::basename(dirFile);
+    QString dirRender = os::dirname(output_movie);
+    QString fileRender = os::basename(output_movie);
 
     QString ext = fileRender.split(".").last();
     fileRender = fileRender.split(".")[0];
@@ -203,26 +197,20 @@ bool render_class::nuke(int ins)
 
     // Si es hay licencia de nodo de render nuke_r poner true
     bool nuke_r = false;
-    QString xi = "";
-    if (not nuke_r)
-        xi = "-xi";
+    QString xi = nuke_r ? "" : "-xi";
 
     mutex->lock();
-    QString args = "-f " + xi + " -X " + render_node[ins] + " \"" + tmpProj +
-                   "\" " + QString::number(first_frame[ins]) + "-" +
-                   QString::number(last_frame[ins]);
-
-    // remapeo rutas de Nuke
-    QString nukeRemap =
-        " -remap \"" + src_path[ins] + "," + dst_path[ins] + "\" ";
-    args = args.replace(src_path[ins], dst_path[ins]);
-    args = nukeRemap + args;
 
     QString exe = get_executable("nuke");
+    QString cmd = "\"%1\" -remap \"%2,%3\" -f %4 -X %5 \"%6\" %7-%8";
+
+    cmd = cmd.arg(exe, src_path, dst_path, xi, render_node, tmpProj,
+                  QString::number(first_frame[ins]),
+                  QString::number(last_frame[ins]));
+
+    cmd = cmd.replace(src_path, dst_path);
 
     mutex->unlock();
-
-    QString cmd = '"' + exe + '"' + args;
 
     QString log_file =
         VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
@@ -256,19 +244,27 @@ bool render_class::nuke(int ins)
 
 bool render_class::maya(int ins)
 {
+    QJsonObject data = software_data[ins];
+
+    QString scene = data["scene"].toString();
+    QString project_folder = data["project_folder"].toString();
+
+    QString src_path, dst_path;
+    get_correct_path(scene, &src_path, &dst_path);
+
     QString log_file =
         VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
+
     os::remove(log_file);
 
-    QString args = " -r file -s " + QString::number(first_frame[ins]) + " -e " +
-                   QString::number(last_frame[ins]) + " -proj '" + misc[ins] +
-                   "' '" + project[ins] + "'" + " -log '" + log_file + "'";
+    QString cmd = "/bin/sh -c \"export MAYA_DISABLE_CIP=1 && \"%1\" -r file -s "
+                  "%2 -e %3 -proj \"%4\" \"%5\" -log \"%6\"";
 
-    QString exe = get_executable("maya");
-    args = args.replace(src_path[ins], dst_path[ins]);
+    cmd = cmd.arg(get_executable("maya"), QString::number(first_frame[ins]),
+                  QString::number(last_frame[ins]), project_folder, scene,
+                  log_file);
 
-    QString cmd = "/bin/sh -c \"export MAYA_DISABLE_CIP=1 && '" + exe + "' " +
-                  args + "\"";
+    cmd = cmd.replace(src_path, dst_path);
 
     qprocess(cmd, ins);
 
@@ -283,25 +279,21 @@ bool render_class::maya(int ins)
 bool render_class::houdini(int ins)
 {
 
-    // Obtiene el excecutable que existe en este sistema
-    QString exe;
-    for (auto e : preferences["paths"].toObject()["houdini"].toArray())
-    {
-        exe = e.toString();
-        if (os::isfile(exe))
-        {
-            break;
-        }
-    }
+    QJsonObject data = software_data[ins];
+    QString hip_file = data["project"].toString();
+    QString engine_node = data["engine"].toString();
 
-    QString hipFile = project[ins].replace(src_path[ins], dst_path[ins]);
+    QString src_path, dst_path;
+    get_correct_path(hip_file, &src_path, &dst_path);
 
-    QString render_file = VINARENDER_PATH + "/modules/houdiniVinaRender.py " +
-                          hipFile + " " + render_node[ins] + " " +
-                          QString::number(first_frame[ins]) + " " +
-                          QString::number(last_frame[ins]);
+    hip_file.replace(src_path, dst_path);
 
-    QString cmd = '"' + exe + "\" " + render_file;
+    QString cmd = "\"%1\" %2 %3 %4 %5 %6";
+
+    cmd = cmd.arg(get_executable("houdini"),
+                  VINARENDER_PATH + "/modules/houdiniVinaRender.py", hip_file,
+                  engine_node, QString::number(first_frame[ins]),
+                  QString::number(last_frame[ins]));
 
     QString log_file =
         VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
@@ -321,19 +313,20 @@ bool render_class::houdini(int ins)
 
 bool render_class::ffmpeg(int ins)
 {
-    QJsonObject _misc = jofs(misc[ins]);
+    QJsonObject data = software_data[ins];
 
-    QString src_movie = project[ins];
-    QString output_folder = _misc["output_dir"].toString();
-    QString movie_name = _misc["movie_name"].toString();
-    QString command = _misc["command"].toString();
+    QString input_file = data["input_file"].toString();
+    QString output_folder = data["output_folder"].toString();
+    QString movie_name = data["movie_name"].toString();
+    QString command = data["command"].toString();
     QString exe = get_executable("ffmpeg");
 
-    video::meta meta = video::get_meta_data(src_movie);
+    video::meta meta = video::get_meta_data(input_file);
 
-    auto correct_path = find_correct_path(output_folder);
+    QString src_path, dst_path;
+    get_correct_path(input_file, &src_path, &dst_path);
 
-    output_folder.replace(correct_path[0], correct_path[1]);
+    output_folder.replace(src_path, dst_path);
 
     float start_time =
         video::frame_to_seconds(first_frame[ins], meta.frame_rate);
@@ -357,7 +350,7 @@ bool render_class::ffmpeg(int ins)
 
     QString cmd = "\"%1\" -y -i \"%2\" -ss %3 -to %4 %5 \"%6\"";
 
-    cmd = cmd.arg(exe, src_movie, QString::number(start_time),
+    cmd = cmd.arg(exe, input_file, QString::number(start_time),
                   QString::number(end_time), command, out_movie);
 
     qprocess(cmd);

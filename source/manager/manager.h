@@ -46,7 +46,7 @@ public:
 
     manager();
 
-    QString make_job(QJsonArray recv);
+    void make_job(QJsonObject __job);
     QString pivot_to_server(QJsonArray recv);
     vector<task_struct *> make_task(int first_frame, int last_frame,
                                     int task_size);
@@ -82,9 +82,10 @@ public:
     void send_to_render(job_struct *job);
     void post_render(QJsonObject extra, int last_frame, QString job_name);
 
-    void nuke_completed(job_struct *job, QString src_path, QString dst_path);
-    void vinarender_completed(job_struct *job, QString src_path, QString dst_path);
-    void ffmpeg_completed(job_struct *job, QString src_path, QString dst_path);
+    void get_correct_path(QString filename, QString *src, QString *dst);
+    void nuke_completed(job_struct *job);
+    void vinarender_completed(job_struct *job);
+    void ffmpeg_completed(job_struct *job);
 
     QString update_server_thread(QJsonArray recv);
     void update_server();
