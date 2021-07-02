@@ -10,7 +10,6 @@
 #include "submit_widget.h"
 #include "tcp.h"
 #include "util.h"
-#include "video.h"
 
 submit::submit(QWidget *__monitor)
     : _monitor(__monitor)
@@ -60,15 +59,14 @@ void submit::connections()
     connect(software_box, &combo_box::text_changed, this,
             &submit::set_software);
 
-    // connect(project_button, &QPushButton::clicked, this, [this]() {
-    // QString file_name = QFileDialog::getOpenFileName(
-    // _monitor, "Project File", project_edit->text());
-
-    // if (not file_name.isEmpty())
-    // project_edit->setText(file_name);
-
-    // update_ffmpeg_panel();
-    // });
+    connect(_ffmpeg_knobs, &ffmpeg_knobs::movie_changed, this,
+            [=](int first_frame, int last_frame, int task_divition,
+                QString job_name) {
+                _time_knobs->set_first_frame(first_frame);
+                _time_knobs->set_last_frame(last_frame);
+                _time_knobs->set_task_divition(30);
+                _misc_knobs->set_job_name(job_name);
+            });
 
     connect(submit_button, &QPushButton::clicked, this, [this]() {
         submit_start(software_box->get_current_text().toLower());
@@ -191,7 +189,8 @@ void submit::submit_file(QString file)
     if (ext == "mov" || ext == "mp4")
     {
         software = "FFmpeg";
-        calc_ffmpeg_data(file, &first_frame, &last_frame, &task_size);
+        _ffmpeg_knobs->calc_ffmpeg_data(file, &first_frame, &last_frame,
+                                        &task_size);
     }
 
     else if (ext == "mb" || ext == "ma")
@@ -220,18 +219,28 @@ void submit::submit_files(QStringList files)
 
 void submit::panel_save()
 {
-    // QJsonObject panel = {{"software", software_box->get_current_text()},
-    // {"ffmpeg_presets", _ffmpeg_knobs->get_preset()},
-    // {"job_name", job_name->text()},
-    // {"first_frame", _time_knobs->get_first_frame()},
-    // {"last_frame", _time_knobs->get_last_frame()},
-    // {"task_size", _time_knobs->get_task_size()},
-    // {"priority", priority->get_current_text()},
-    // {"server_group", server_group_box->get_current_text()},
-    // {"comment", comment_edit->text()},
-    // {"suspend", suspend_box->isChecked()}};
+    QJsonObject panel = {{"software", software_box->get_current_text()},
 
-    // jwrite(VINARENDER_CONF_PATH + "/submit_panel.json", panel);
+                         {"ffmpeg_presets", _ffmpeg_knobs->get_preset()},
+                         {"ffmpeg_input_file", _ffmpeg_knobs->get_input_file()},
+                         {"ffmpeg_output_folder", _ffmpeg_knobs->get_output_folder()},
+                         {"ffmpeg_movie_name", _ffmpeg_knobs->get_movie_name()},
+
+                         {"maya_scene", _maya_knobs->get_scene()},
+                         {"maya_project", _maya_knobs->get_project_folder()},
+
+                         {"houdini_project", _houdini_knobs->get_project()},
+                         {"houdini_engine", _houdini_knobs->get_engine()},
+
+                         {"job_name", _misc_knobs->get_job_name()},
+                         {"first_frame", _time_knobs->get_first_frame()},
+                         {"last_frame", _time_knobs->get_last_frame()},
+                         {"task_size", _time_knobs->get_task_size()},
+                         {"priority", _misc_knobs->get_priority()},
+                         {"comment", _misc_knobs->get_comment()},
+                         {"suspend", _misc_knobs->get_suspend()}};
+
+    jwrite(VINARENDER_CONF_PATH + "/submit_panel.json", panel);
 }
 
 void submit::panel_open()
@@ -239,59 +248,26 @@ void submit::panel_open()
     QJsonObject panel = jread(VINARENDER_CONF_PATH + "/submit_panel.json");
 
     software_box->set_current_text(panel["software"].toString(), true);
+
     _ffmpeg_knobs->set_preset(panel["ffmpeg_presets"].toString());
+    _ffmpeg_knobs->set_input_file(panel["ffmpeg_input_file"].toString());
+    _ffmpeg_knobs->set_output_folder(panel["ffmpeg_output_folder"].toString());
+    _ffmpeg_knobs->set_movie_name(panel["ffmpeg_movie_name"].toString());
 
-    // project_dir_edit->setText(panel["project_dir"].toString());
-    // project_edit->setText(panel["project"].toString());
-    // render_node_edit->setText(panel["render_node"].toString());
+    _maya_knobs->set_scene(panel["maya_scene"].toString());
+    _maya_knobs->set_project_folder(panel["maya_project"].toString());
 
-    // job_name->setText(panel["job_name"].toString());
+    _houdini_knobs->set_project(panel["houdini_project"].toString());
+    _houdini_knobs->set_engine(panel["houdini_engine"].toString());
 
-    // _time_knobs->set_first_frame(panel["first_frame"].toInt());
-    // _time_knobs->set_last_frame(panel["last_frame"].toInt());
-    // _time_knobs->set_task_size(panel["task_size"].toInt());
+    _time_knobs->set_first_frame(panel["first_frame"].toInt());
+    _time_knobs->set_last_frame(panel["last_frame"].toInt());
+    _time_knobs->set_task_size(panel["task_size"].toInt());
 
-    // priority->set_current_text(panel["priority"].toString());
-    // server_group_box->set_current_text(panel["server_group"].toString());
-
-    // comment_edit->setText(panel["comment"].toString());
-    // suspend_box->setChecked(panel["suspend"].toBool());
-}
-
-void submit::update_ffmpeg_panel()
-{
-    // if (software_box->get_current_text().toLower() != "ffmpeg")
-    // return;
-
-    // QString src_movie = project_edit->text();
-    // project_dir_edit->setText(os::dirname(src_movie));
-
-    // QString movie_name = path_util::basename_no_ext(src_movie);
-    // render_node_edit->setText(movie_name + "_output");
-
-    // job_name->setText(movie_name);
-
-    // int first_frame, last_frame, task_size;
-    // calc_ffmpeg_data(src_movie, &first_frame, &last_frame, &task_size);
-
-    // _time_knobs->set_first_frame(first_frame);
-    // _time_knobs->set_last_frame(last_frame);
-
-    // _time_knobs->set_task_divition(30);
-}
-
-void submit::calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,
-                              int *task_size)
-{
-    int frame_count = video::get_meta_data(file).frames;
-
-    *first_frame = 0;
-    *last_frame = frame_count;
-
-    int _task_size = frame_count / 25;
-    _task_size = _task_size < 50 ? 50 : _task_size;
-
-    *task_size = _task_size;
+    _misc_knobs->set_job_name(panel["job_name"].toString());
+    _misc_knobs->set_priority(panel["priority"].toString());
+    _misc_knobs->set_comment(panel["comment"].toString());
+    _misc_knobs->set_suspend(panel["suspend"].toBool());
 }
 
 void submit::hideEvent(QHideEvent *event)

@@ -13,15 +13,15 @@ maya_knobs::maya_knobs()
     layout->setSpacing(0);
 
     scene_file = new file_knob("Project Folder", "Set", true);
-    project_file = new file_knob("Scene File", "Open");
+    project_dir = new file_knob("Scene File", "Open");
 
     int h = HORIZONTAL_MARGIN;
     int v = VERTICAL_MARGIN;
     int s = SPACING;
 
     scene_file->layout()->setContentsMargins(h, v, h, s);
-    project_file->layout()->setContentsMargins(h, s, h, v);
+    project_dir->layout()->setContentsMargins(h, s, h, v);
 
     layout->addWidget(scene_file);
-    layout->addWidget(project_file);
+    layout->addWidget(project_dir);
 }

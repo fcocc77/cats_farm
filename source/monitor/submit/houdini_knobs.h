@@ -14,6 +14,32 @@ private:
 
 public:
     houdini_knobs();
+
+    inline QString get_project() const;
+    inline void set_project(QString project);
+
+    inline QString get_engine() const;
+    inline void set_engine(QString engine);
 };
+
+inline QString houdini_knobs::get_project() const
+{
+    return project_file->get_path();
+}
+
+inline void houdini_knobs::set_project(QString project)
+{
+    project_file->set_path(project);
+}
+
+inline QString houdini_knobs::get_engine() const
+{
+    return engine_text->get_text();
+}
+
+inline void houdini_knobs::set_engine(QString engine)
+{
+    engine_text->set_text(engine);
+}
 
 #endif // HOUDINI_KNOBS_H

@@ -15,7 +15,7 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     layout->setMargin(0);
     layout->setSpacing(0);
 
-    job_name = new text_knob("Job Name");
+    job_name_edit = new text_knob("job name");
     comment_edit = new text_knob("Comment", false);
 
     suspend_check = new QCheckBox("Suspended");
@@ -38,7 +38,7 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     int v = VERTICAL_MARGIN;
     int s = SPACING;
 
-    job_name->layout()->setContentsMargins(h, v, h, s);
+    job_name_edit->layout()->setContentsMargins(h, v, h, s);
     comment_edit->layout()->setContentsMargins(h, s, h, v);
     server_group_layout->setContentsMargins(h, s, h, s);
     priority_layout->setContentsMargins(h, s, h, s);
@@ -63,7 +63,7 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     priority_layout->addWidget(priority_label);
     priority_layout->addWidget(priority_box);
 
-    layout->addWidget(job_name);
+    layout->addWidget(job_name_edit);
     layout->addWidget(server_group_widget);
     layout->addWidget(priority_widget);
     layout->addWidget(suspend_check);

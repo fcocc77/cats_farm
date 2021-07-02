@@ -7,6 +7,8 @@
 #include "qt.h"
 #include "util.h"
 #include "submit_global.h"
+#include "path_utils.h"
+#include "video.h"
 
 ffmpeg_knobs::ffmpeg_knobs()
 {
@@ -113,6 +115,9 @@ void ffmpeg_knobs::setup_ui()
         }
     });
 
+    connect(input_file, &file_knob::changed, this,
+            &ffmpeg_knobs::update_from_file);
+
     // Layout
     command_layout->addWidget(command_label);
     command_layout->addWidget(command_edit);
@@ -161,6 +166,21 @@ void ffmpeg_knobs::add_preset()
     preset_box->set_current_text(name);
 
     preset_dialog(false);
+}
+
+void ffmpeg_knobs::update_from_file()
+{
+    output_folder->set_path(os::dirname(input_file->get_path()));
+
+    QString movie_name = path_util::basename_no_ext(input_file->get_path());
+    movie_name_text->set_text(movie_name + "_output");
+
+
+    int first_frame, last_frame, task_size;
+    calc_ffmpeg_data(input_file->get_path(), &first_frame, &last_frame,
+                     &task_size);
+
+    movie_changed(first_frame, last_frame, 30, movie_name);
 }
 
 void ffmpeg_knobs::delete_preset()
@@ -217,3 +237,18 @@ void ffmpeg_knobs::save_preset()
 {
     jwrite(VINARENDER_CONF_PATH + "/ffmpeg_presets.json", presets);
 }
+
+void ffmpeg_knobs::calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,
+                              int *task_size)
+{
+    int frame_count = video::get_meta_data(file).frames;
+
+    *first_frame = 0;
+    *last_frame = frame_count;
+
+    int _task_size = frame_count / 25;
+    _task_size = _task_size < 50 ? 50 : _task_size;
+
+    *task_size = _task_size;
+}
+

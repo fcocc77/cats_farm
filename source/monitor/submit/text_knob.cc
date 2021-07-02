@@ -1,12 +1,12 @@
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
-#include <QTextEdit>
 
 #include "submit_global.h"
 #include "text_knob.h"
 
-text_knob::text_knob(QString label_name, bool line_edit)
+text_knob::text_knob(QString label_name, bool is_line_edit)
+    : line_edit(nullptr)
+    , text_edit(nullptr)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -15,10 +15,16 @@ text_knob::text_knob(QString label_name, bool line_edit)
 
     QWidget *edit;
 
-    if (line_edit)
-        edit = new QLineEdit();
+    if (is_line_edit)
+    {
+        line_edit = new QLineEdit();
+        edit = line_edit;
+    }
     else
-        edit = new QTextEdit();
+    {
+        text_edit = new QTextEdit();
+        edit = text_edit;
+    }
 
     label->setFixedWidth(INIT_LABEL_WIDTH);
 

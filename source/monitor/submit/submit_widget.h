@@ -42,10 +42,6 @@ private:
     void panel_open();
     void submit_file(QString file);
 
-    void update_ffmpeg_panel();
-    void calc_ffmpeg_data(QString file, int *first_frame, int *last_frame,
-                          int *task_size);
-
     void hideEvent(QHideEvent *event) override;
 
 public:

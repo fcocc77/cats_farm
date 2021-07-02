@@ -1,7 +1,6 @@
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
 #include <QPushButton>
 
 #include "file_knob.h"
@@ -13,7 +12,7 @@ file_knob::file_knob(QString label_name, QString button_name, bool dir_method)
     layout->setMargin(0);
 
     QLabel *label = new QLabel(label_name + ":");
-    QLineEdit *edit = new QLineEdit();
+    edit = new QLineEdit();
     QPushButton *button = new QPushButton(button_name);
 
     label->setFixedWidth(INIT_LABEL_WIDTH);
