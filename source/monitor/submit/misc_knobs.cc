@@ -16,19 +16,23 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     layout->setSpacing(0);
 
     job_name_edit = new text_knob("job name");
+    instances_edit = new text_knob("Instances");
     comment_edit = new text_knob("Comment", false);
 
-    suspend_check = new QCheckBox("Suspended");
+    suspended_check = new check_box("Suspended");
+    suspended_check->setFixedWidth(100);
 
-    QWidget *server_group_widget = new QWidget();
-    QHBoxLayout *server_group_layout = new QHBoxLayout(server_group_widget);
+    QWidget *priority_and_group = new QWidget();
+    QHBoxLayout *priority_and_group_layout = new QHBoxLayout(priority_and_group);
     QLabel *server_group_label = new QLabel("Server Group:");
-    server_group_box = new combo_box();
-
-    QWidget *priority_widget = new QWidget();
-    QHBoxLayout *priority_layout = new QHBoxLayout(priority_widget);
     QLabel *priority_label = new QLabel("Priority:");
+
+    server_group_box = new combo_box();
     priority_box = new combo_box();
+
+    QWidget *suspended_widget = new QWidget();
+    QHBoxLayout *suspended_layout = new QHBoxLayout(suspended_widget);
+    QLabel *suspended_label = new QLabel();
 
     // Ajustes
     priority_box->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
@@ -38,35 +42,44 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     int v = VERTICAL_MARGIN;
     int s = SPACING;
 
+    priority_and_group_layout->setContentsMargins(h, v, h, s);
+    instances_edit->layout()->setContentsMargins(h, s, h, s);
+    suspended_layout->setContentsMargins(h, s, h, v);
     job_name_edit->layout()->setContentsMargins(h, v, h, s);
     comment_edit->layout()->setContentsMargins(h, s, h, v);
-    server_group_layout->setContentsMargins(h, s, h, s);
-    priority_layout->setContentsMargins(h, s, h, s);
 
-    priority_layout->setAlignment(Qt::AlignLeft);
-    server_group_layout->setAlignment(Qt::AlignLeft);
+    instances_edit->setFixedWidth(246);
+
+    priority_and_group_layout->setAlignment(Qt::AlignLeft);
+    suspended_layout->setAlignment(Qt::AlignLeft);
+
+    suspended_label->setFixedWidth(INIT_LABEL_WIDTH);
 
     server_group_label->setFixedWidth(INIT_LABEL_WIDTH);
     server_group_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    priority_label->setFixedWidth(INIT_LABEL_WIDTH);
+    priority_label->setFixedWidth(70);
     priority_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+    server_group_box->setMinimumWidth(100);
 
     // Conecciones
     connect(server_group_box, &combo_box::clicked, this,
             &misc_knobs::update_server_groups);
 
     // Layout
-    server_group_layout->addWidget(server_group_label);
-    server_group_layout->addWidget(server_group_box);
+    priority_and_group_layout->addWidget(server_group_label);
+    priority_and_group_layout->addWidget(server_group_box);
+    priority_and_group_layout->addWidget(priority_label);
+    priority_and_group_layout->addWidget(priority_box);
 
-    priority_layout->addWidget(priority_label);
-    priority_layout->addWidget(priority_box);
+    suspended_layout->addWidget(suspended_label);
+    suspended_layout->addWidget(suspended_check);
 
+    layout->addWidget(priority_and_group);
+    layout->addWidget(instances_edit);
+    layout->addWidget(suspended_widget);
     layout->addWidget(job_name_edit);
-    layout->addWidget(server_group_widget);
-    layout->addWidget(priority_widget);
-    layout->addWidget(suspend_check);
     layout->addWidget(comment_edit);
 }
 

@@ -26,13 +26,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
         jwrite(VINARENDER_CONF_PATH + "/preferences_s.json", render->preferences);
     }
 
-    QString system;
-    if (_linux)
-        system = "Linux";
-    else if (_win32)
-        system = "Windows";
-    else
-        system = "Mac";
+    QString system = _linux ? "Linux" : "Windows";
 
     // get ssh user
     bool usr = false;
@@ -52,7 +46,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
             userpass = "vfx";
         }
         usr = true;
-    } //------------------------------------------
+    }
 
     QJsonArray server_info = {os::hostName(),
                               os::ip(),
@@ -120,7 +114,6 @@ QString server::recieveManager(QString _recv)
                 os::sh("kill " + pid);
             }
         }
-        // -------------------------------------------
     }
 
     if (input == 4)

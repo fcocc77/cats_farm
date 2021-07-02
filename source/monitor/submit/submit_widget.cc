@@ -123,7 +123,7 @@ void submit::submit_start(QString software)
         {"first_frame", _time_knobs->get_first_frame()},
         {"last_frame", _time_knobs->get_last_frame()},
         {"task_size", _time_knobs->get_task_size()},
-        {"instances", 1},
+        {"instances", _misc_knobs->get_instances()},
 
     };
 
@@ -261,7 +261,8 @@ void submit::panel_save()
                          {"task_size", _time_knobs->get_task_size()},
                          {"priority", _misc_knobs->get_priority()},
                          {"comment", _misc_knobs->get_comment()},
-                         {"suspend", _misc_knobs->get_suspend()}};
+                         {"suspend", _misc_knobs->get_suspend()},
+                         {"instances", _misc_knobs->get_instances()}};
 
     jwrite(VINARENDER_CONF_PATH + "/submit_panel.json", panel);
 }
@@ -291,6 +292,7 @@ void submit::panel_open()
     _misc_knobs->set_priority(panel["priority"].toString());
     _misc_knobs->set_comment(panel["comment"].toString());
     _misc_knobs->set_suspend(panel["suspend"].toBool());
+    _misc_knobs->set_instances(panel["instances"].toInt());
 }
 
 void submit::hideEvent(QHideEvent *event)

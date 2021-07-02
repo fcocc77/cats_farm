@@ -1,10 +1,10 @@
 #ifndef MISC_KNOBS_H
 #define MISC_KNOBS_H
 
-#include <QCheckBox>
 #include <QWidget>
 
 #include "combo_box.h"
+#include "check_box.h"
 #include "text_knob.h"
 
 class misc_knobs : public QWidget
@@ -13,7 +13,8 @@ private:
     QWidget *_monitor;
     text_knob *job_name_edit;
     text_knob *comment_edit;
-    QCheckBox *suspend_check;
+    text_knob *instances_edit;
+    check_box *suspended_check;
 
     combo_box *server_group_box;
     combo_box *priority_box;
@@ -36,8 +37,21 @@ public:
     inline bool get_suspend() const;
     inline void set_suspend(bool suspended);
 
+    inline int get_instances() const;
+    inline void set_instances(int instances);
+
     inline QString get_server_group() const;
 };
+
+inline int misc_knobs::get_instances() const
+{
+    return instances_edit->get_text().toInt();
+}
+
+inline void misc_knobs::set_instances(int instances)
+{
+    instances_edit->set_text(QString::number(instances));
+}
 
 inline QString misc_knobs::get_server_group() const
 {
@@ -81,12 +95,12 @@ inline void misc_knobs::set_priority(QString priority)
 
 inline bool misc_knobs::get_suspend() const
 {
-    return suspend_check->isChecked();
+    return suspended_check->is_checked();
 }
 
 inline void misc_knobs::set_suspend(bool suspended)
 {
-    suspend_check->setChecked(suspended);
+    suspended_check->set_checked(suspended);
 }
 
 #endif // MISC_KNOBS_H
