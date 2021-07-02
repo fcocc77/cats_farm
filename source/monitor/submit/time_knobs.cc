@@ -1,4 +1,5 @@
 #include <QHBoxLayout>
+#include <QIntValidator>
 #include <QLabel>
 
 #include "time_knobs.h"
@@ -28,6 +29,14 @@ time_knobs::time_knobs()
     task_size_edit = new QLineEdit();
 
     // Ajustes
+    first_frame_edit->setPlaceholderText("First Frame");
+    last_frame_edit->setPlaceholderText("Last Frame");
+    task_size_edit->setPlaceholderText("Task Size");
+
+    first_frame_edit->setValidator(new QIntValidator(-100000, 100000, this));
+    last_frame_edit->setValidator(new QIntValidator(-100000, 100000, this));
+    task_size_edit->setValidator(new QIntValidator(0, 100000, this));
+
     task_size_box->add_items({"Custom", "5 Tasks", "10 Tasks", "15 Tasks",
                               "20 Tasks", "30 Tasks", "40 Tasks", "50 Tasks"});
     task_size_box->set_index(0);

@@ -1,4 +1,5 @@
 #include <QVBoxLayout>
+#include <QIntValidator>
 
 #include "groups_widget.h"
 #include "main_window.h"
@@ -35,6 +36,10 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     QLabel *suspended_label = new QLabel();
 
     // Ajustes
+    instances_edit->get_line_edit()->setValidator(
+        new QIntValidator(1, 16, this));
+    instances_edit->get_line_edit()->setPlaceholderText("Number 1-16");
+
     priority_box->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
     priority_box->set_index(2);
 

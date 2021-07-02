@@ -16,10 +16,16 @@ public:
 
     inline QString get_text() const;
     inline void set_text(QString text);
+    inline QLineEdit *get_line_edit() const;
 
 signals:
     void changed(QString file_path);
 };
+
+inline QLineEdit *text_knob::get_line_edit() const
+{
+    return line_edit;
+}
 
 inline QString text_knob::get_text() const
 {
