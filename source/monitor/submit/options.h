@@ -6,6 +6,7 @@
 #include <QPushButton>
 
 #include "time_knobs.h"
+#include "misc_knobs.h"
 
 class options_class : public QWidget
 {
@@ -13,6 +14,7 @@ private:
     QWidget *_monitor;
 
     time_knobs *_time_knobs;
+    misc_knobs *_misc_knobs;
 
     void setup_ui();
     void options_ok();

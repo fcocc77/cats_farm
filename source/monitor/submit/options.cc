@@ -23,163 +23,20 @@ void options_class::setup_ui()
     main_layout->setMargin(0);
 
     _time_knobs = new time_knobs();
+    _misc_knobs = new misc_knobs(_monitor);
 
-    QWidget *box_a_widget = new QWidget();
-    QWidget *box_b_widget = new QWidget();
-    QWidget *box_c_widget = new QWidget();
     QWidget *box_dialog = new QWidget();
-
-    QVBoxLayout *box_a_layout = new QVBoxLayout(box_a_widget);
-    QVBoxLayout *box_b_layout = new QVBoxLayout(box_b_widget);
-    QVBoxLayout *box_c_layout = new QVBoxLayout(box_c_widget);
     QHBoxLayout *box_dialog_layout = new QHBoxLayout(box_dialog);
-
-    QWidget *job_name_widget = new QWidget();
-    QWidget *priority_widget = new QWidget();
-    QWidget *frame_range_widget = new QWidget();
-    QWidget *task_size_widget = new QWidget();
-    QWidget *instances_widget = new QWidget();
-    QWidget *comment_widget = new QWidget();
-
-    QHBoxLayout *job_name_layout = new QHBoxLayout(job_name_widget);
-    QHBoxLayout *priority_layout = new QHBoxLayout(priority_widget);
-    QHBoxLayout *frame_range_layout = new QHBoxLayout(frame_range_widget);
-    QHBoxLayout *task_size_layout = new QHBoxLayout(task_size_widget);
-    QHBoxLayout *instances_layout = new QHBoxLayout(instances_widget);
-    QHBoxLayout *comment_layout = new QHBoxLayout(comment_widget);
-
-    QLabel *job_name_label = new QLabel("Job Name:");
-    QLabel *priority_label = new QLabel("Priority:");
-    QLabel *server_group_label = new QLabel("Server Group:");
-    QLabel *frame_range_label = new QLabel("Frame Range:");
-    QLabel *task_size_label = new QLabel("Task Size:");
-    QLabel *instances_label = new QLabel("Instances:");
-    QLabel *comment_label = new QLabel("Comment:");
-
-    QLineEdit *job_name_edit = new QLineEdit();
-    QLineEdit *first_frame_edit = new QLineEdit();
-    QLineEdit *last_frame_edit = new QLineEdit();
-    QLineEdit *task_size_edit = new QLineEdit();
-    QLineEdit *instances_edit = new QLineEdit();
-    QLineEdit *comment_edit = new QLineEdit();
-
-    combo_box *priority_box = new combo_box();
-    combo_box *server_group_box = new combo_box();
 
     QPushButton *ok_button = new QPushButton("Ok");
     QPushButton *cancel_button = new QPushButton("Cancel");
-
-    // Ajustes
-    priority_box->add_items({"Very High", "High", "Normal", "Low", "Very Low"});
-
-    box_a_widget->setObjectName("box_widget");
-    box_b_widget->setObjectName("box_widget");
-    box_c_widget->setObjectName("box_widget");
-    box_dialog->setObjectName("box_widget");
-
-    // Layout
-    job_name_layout->addWidget(job_name_label);
-    job_name_layout->addWidget(job_name_edit);
-
-    priority_layout->addWidget(priority_label);
-    priority_layout->addWidget(priority_box);
-    priority_layout->addWidget(server_group_label);
-    priority_layout->addWidget(server_group_box);
-
-    frame_range_layout->addWidget(frame_range_label);
-    frame_range_layout->addWidget(first_frame_edit);
-    frame_range_layout->addWidget(last_frame_edit);
-
-    task_size_layout->addWidget(task_size_label);
-    task_size_layout->addWidget(task_size_edit);
-
-    instances_layout->addWidget(instances_label);
-    instances_layout->addWidget(instances_edit);
-
-    comment_layout->addWidget(comment_label);
-    comment_layout->addWidget(comment_edit);
-
-    box_a_layout->addWidget(job_name_widget);
-    box_a_layout->addWidget(priority_widget);
-
-    box_b_layout->addWidget(frame_range_widget);
-    box_b_layout->addWidget(task_size_widget);
-    box_b_layout->addWidget(instances_widget);
-
-    box_c_layout->addWidget(comment_widget);
 
     box_dialog_layout->addWidget(ok_button);
     box_dialog_layout->addWidget(cancel_button);
 
     main_layout->addWidget(_time_knobs);
-    main_layout->addWidget(box_a_widget);
-    main_layout->addWidget(box_b_widget);
-    main_layout->addWidget(box_c_widget);
+    main_layout->addWidget(_misc_knobs);
     main_layout->addWidget(box_dialog);
-
-    // QLayout *first_knobs = qlayout(main_layout, "v", "first_knobs");
-    // QLayout *name_knobs = qlayout(first_knobs, "h");
-    // QLabel *name_label = new QLabel("Job Name:");
-
-    // job_name_edit = new QLineEdit();
-    // QLayout *priority_knobs = qlayout(first_knobs, "h");
-    // QLabel *priority_label = new QLabel("Priority:");
-
-    // priority_combobox = new QComboBox();
-    // priority_combobox->addItem("Very High");
-    // priority_combobox->addItem("High");
-    // priority_combobox->addItem("Normal");
-    // priority_combobox->addItem("Low");
-    // priority_combobox->addItem("Very Low");
-
-    // QLabel *group_label = new QLabel("Server Group:");
-
-    // group_combobox = new QComboBox();
-
-    // QLayout *second_knobs = qlayout(main_layout, "v", "second_knobs");
-    // QLayout *range_knobs = qlayout(second_knobs, "h");
-    // QLabel *range_label = new QLabel("Frame Range:");
-
-    // first_frame_edit = new QLineEdit();
-
-    // last_frame_edit = new QLineEdit();
-    // QLayout *task_knobs = qlayout(second_knobs, "h");
-    // QLabel *task_size_label = new QLabel("Task Size:");
-
-    // task_size_edit = new QLineEdit();
-    // QLayout *instances_knobs = qlayout(second_knobs, "h");
-    // QLabel *instances_label = new QLabel("Instances:");
-
-    // instances_edit = new QLineEdit();
-
-    // QLayout *third_knobs = qlayout(main_layout, "v", "third_knobs");
-    // QLayout *comment_knobs = qlayout(third_knobs, "h");
-    // QLabel *comment_label = new QLabel("Comment:");
-
-    // comment_edit = new QLineEdit();
-
-    // QLayout *fourth_knobs = qlayout(main_layout, "v");
-    // QLayout *button_knobs = qlayout(fourth_knobs, "h");
-    // cancel_button = new QPushButton("Cancel");
-
-    // ok_button = new QPushButton("OK");
-
-    // name_knobs->addWidget(name_label);
-    // name_knobs->addWidget(job_name_edit);
-    // priority_knobs->addWidget(priority_label);
-    // priority_knobs->addWidget(priority_combobox);
-    // priority_knobs->addWidget(group_label);
-    // priority_knobs->addWidget(group_combobox);
-    // range_knobs->addWidget(range_label);
-    // range_knobs->addWidget(first_frame_edit);
-    // range_knobs->addWidget(last_frame_edit);
-    // task_knobs->addWidget(task_size_label);
-    // task_knobs->addWidget(task_size_edit);
-    // instances_knobs->addWidget(instances_label);
-    // instances_knobs->addWidget(instances_edit);
-    // comment_knobs->addWidget(comment_label);
-    // comment_knobs->addWidget(comment_edit);
-    // button_knobs->addWidget(cancel_button);
 
     // Connecciones
 

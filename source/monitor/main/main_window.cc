@@ -59,7 +59,7 @@ void monitor::setup_ui()
 
     log = new log_class();
     options = new options_class(this);
-    settings = new settings_class(shared);
+    settings = new settings_class(this, shared);
 
     _submit = new submit(this);
 

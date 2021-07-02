@@ -398,34 +398,33 @@ QMenuBar {
       #groups::branch:has-children:closed {
         image: url("/opt/vinarender/resources/images/arrow_right_normal.png"); }
 
-#settings #zones_knobs, #settings #host_knobs {
+#settings #hosts_widget {
   background: #2a2d32;
   border-radius: 2px; }
-  #settings #zones_knobs QLabel, #settings #host_knobs QLabel {
-    background: transparent;
-    margin: 10px; }
-  #settings #zones_knobs QLineEdit, #settings #host_knobs QLineEdit {
+  #settings #hosts_widget QLabel {
+    background: transparent; }
+  #settings #hosts_widget QLineEdit {
     background: #2e3238;
     border: 1px solid #2e3238;
     padding: 3px;
     border-radius: 2px;
     background: #3a3f45;
     border-color: #464b53; }
-    #settings #zones_knobs QLineEdit:hover, #settings #host_knobs QLineEdit:hover {
+    #settings #hosts_widget QLineEdit:hover {
       background: #3a3f45;
       border-color: #464b53; }
-    #settings #zones_knobs QLineEdit:focus, #settings #host_knobs QLineEdit:focus {
+    #settings #hosts_widget QLineEdit:focus {
       background: #3a3f45;
       border-color: #0099ff; }
 
-#settings #third_knobs QWidget {
+#settings #tabs_widget QWidget {
   background: #2a2d32;
   padding: 10px;
   border-radius: 2px; }
 
-#settings #third_knobs QTabBar {
+#settings #tabs_widget QTabBar {
   background: transparent; }
-  #settings #third_knobs QTabBar::tab {
+  #settings #tabs_widget QTabBar::tab {
     padding: 4px;
     padding-left: 8px;
     padding-right: 8px;
@@ -433,13 +432,13 @@ QMenuBar {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     margin-right: 5px; }
-    #settings #third_knobs QTabBar::tab:hover {
+    #settings #tabs_widget QTabBar::tab:hover {
       color: #0099ff; }
-    #settings #third_knobs QTabBar::tab:selected {
+    #settings #tabs_widget QTabBar::tab:selected {
       background: #2a2d32;
       color: #0099ff; }
 
-#settings #third_knobs QPlainTextEdit {
+#settings #tabs_widget QPlainTextEdit {
   background: #23262a;
   border-radius: 2px;
   border: 1px solid #33373d; }

@@ -1,12 +1,16 @@
 #include <QVBoxLayout>
 
-#include "util.h"
-#include "tcp.h"
-#include "settings.h"
 #include "../global/global.h"
+#include "main_window.h"
+#include "toolbar.h"
+#include "settings.h"
+#include "submit_global.h"
+#include "tcp.h"
+#include "util.h"
 
-settings_class::settings_class(shared_variables *_shared)
-    : shared(_shared)
+settings_class::settings_class(QWidget *__monitor, shared_variables *_shared)
+    : _monitor(__monitor)
+    , shared(_shared)
 {
     setup_ui();
     connections();
@@ -20,86 +24,92 @@ void settings_class::setup_ui()
     QVBoxLayout *main_layout = new QVBoxLayout(this);
     main_layout->setMargin(0);
 
-    {
-        QLayout *zones_knobs = qlayout(main_layout, "h", "zones_knobs");
-        {
-            QLabel *zones_label = new QLabel("Manager ZONES:");
-            zones_knobs->addWidget(zones_label);
+    QWidget *hosts_widget = new QWidget;
+    hosts_widget->setObjectName("hosts_widget");
+    QVBoxLayout *hosts_layout = new QVBoxLayout(hosts_widget);
+    hosts_layout->setMargin(0);
+    hosts_layout->setSpacing(0);
 
-            zones_edit = new QLineEdit();
-            zones_knobs->addWidget(zones_edit);
-        }
-        QLayout *host_knobs = qlayout(main_layout, "h", "host_knobs");
-        {
-            QLabel *host_label = new QLabel("Manager HOST:");
-            host_knobs->addWidget(host_label);
+    zones_edit = new text_knob("Manager ZONES");
+    host_edit = new text_knob("Manager HOST");
 
-            host_edit = new QLineEdit();
-            host_knobs->addWidget(host_edit);
-        }
+    int h = HORIZONTAL_MARGIN;
+    int v = VERTICAL_MARGIN;
+    int s = SPACING;
 
-        QLayout *third_knobs = qlayout(main_layout, "v", "third_knobs");
-        {
-            QTabWidget *settings_tab = new QTabWidget();
-            third_knobs->addWidget(settings_tab);
-            third_knobs->setMargin(0);
-            {
-                auto addTab = [=](QString name, QPlainTextEdit *text) {
-                    QWidget *tab = new QWidget();
-                    QVBoxLayout *tab_layout = new QVBoxLayout();
-                    tab->setLayout(tab_layout);
-                    tab_layout->addWidget(text);
-                    settings_tab->addTab(tab, name);
-                };
+    zones_edit->layout()->setContentsMargins(h, v, h, s);
+    host_edit->layout()->setContentsMargins(h, s, h, v);
 
-                paths_text = new QPlainTextEdit();
-                addTab("Paths", paths_text);
+    QWidget *tabs_widget = new QWidget;
+    tabs_widget->setObjectName("tabs_widget");
+    QVBoxLayout *tabs_layout = new QVBoxLayout(tabs_widget);
 
-                maya_text = new QPlainTextEdit();
-                addTab("Maya", maya_text);
+    QTabWidget *settings_tab = new QTabWidget();
 
-                nuke_text = new QPlainTextEdit();
-                addTab("Nuke", nuke_text);
+    tabs_layout->setMargin(0);
 
-                houdini_text = new QPlainTextEdit();
-                addTab("Houdini", houdini_text);
+    auto addTab = [=](QString name, QPlainTextEdit *text) {
+        QWidget *tab = new QWidget();
+        QVBoxLayout *tab_layout = new QVBoxLayout();
+        tab->setLayout(tab_layout);
+        tab_layout->addWidget(text);
+        settings_tab->addTab(tab, name);
+    };
 
-                ffmpeg_text = new QPlainTextEdit();
-                addTab("FFmpeg", ffmpeg_text);
+    paths_text = new QPlainTextEdit();
+    addTab("Paths", paths_text);
 
-                vinacomp_text = new QPlainTextEdit();
-                addTab("VinaComp", vinacomp_text);
-            }
-        }
+    maya_text = new QPlainTextEdit();
+    addTab("Maya", maya_text);
 
-        QLayout *fourth_knobs = qlayout(main_layout, "v");
-        {
-            QLayout *button_knobs = qlayout(fourth_knobs, "h");
-            fourth_knobs->setMargin(0);
-            button_knobs->setMargin(0);
-            {
-                cancel_button = new QPushButton("Cancel");
-                button_knobs->addWidget(cancel_button);
+    nuke_text = new QPlainTextEdit();
+    addTab("Nuke", nuke_text);
 
-                apply_button = new QPushButton("Apply");
-                button_knobs->addWidget(apply_button);
+    houdini_text = new QPlainTextEdit();
+    addTab("Houdini", houdini_text);
 
-                ok_button = new QPushButton("OK");
-                button_knobs->addWidget(ok_button);
-            }
-        }
-    }
+    ffmpeg_text = new QPlainTextEdit();
+    addTab("FFmpeg", ffmpeg_text);
+
+    vinacomp_text = new QPlainTextEdit();
+    addTab("VinaComp", vinacomp_text);
+
+    QWidget *buttons_widget = new QWidget;
+    QHBoxLayout *buttons_layout = new QHBoxLayout(buttons_widget);
+
+    buttons_layout->setMargin(0);
+
+    cancel_button = new QPushButton("Cancel");
+    apply_button = new QPushButton("Apply");
+    ok_button = new QPushButton("OK");
+
+    // Layout
+    hosts_layout->addWidget(zones_edit);
+    hosts_layout->addWidget(host_edit);
+
+    tabs_layout->addWidget(settings_tab);
+
+    buttons_layout->addWidget(cancel_button);
+    buttons_layout->addWidget(apply_button);
+    buttons_layout->addWidget(ok_button);
+
+    main_layout->addWidget(hosts_widget);
+    main_layout->addWidget(tabs_widget);
+    main_layout->addWidget(buttons_widget);
 }
 
 void settings_class::connections()
 {
-    connect(cancel_button, &QPushButton::clicked, this,
-            [this]() { this->parentWidget()->parentWidget()->hide(); });
+    connect(cancel_button, &QPushButton::clicked, this, [this]() {
+        static_cast<monitor *>(_monitor)->get_toolbar()->hide_properties();
+    });
+
     connect(apply_button, &QPushButton::clicked, this,
             [this]() { this->ok(); });
+
     connect(ok_button, &QPushButton::clicked, this, [this]() {
         this->ok();
-        this->parentWidget()->parentWidget()->hide();
+        static_cast<monitor *>(_monitor)->get_toolbar()->hide_properties();
     });
 }
 
@@ -115,11 +125,11 @@ void settings_class::ok()
 
     // guarda host del manager
     QJsonObject manager = shared->settings["manager"].toObject();
-    manager["ip"] = host_edit->text();
+    manager["ip"] = host_edit->get_text();
     shared->settings["manager"] = manager;
 
     // guarda lista de ips de QString a un json, y borra los espacios
-    QString zones = zones_edit->text();
+    QString zones = zones_edit->get_text();
     QJsonArray json_hosts;
     for (QString zone : zones.split(","))
         json_hosts.push_back(zone.replace(" ", ""));
@@ -173,11 +183,11 @@ void settings_class::path_read()
             hosts += host.toString() + ", ";
         hosts = hosts.left(hosts.length() - 2);
 
-        zones_edit->setText(hosts);
+        zones_edit->set_text(hosts);
 
         // setea el host del manager
         QString host = shared->settings["manager"].toObject()["ip"].toString();
-        host_edit->setText(host);
+        host_edit->set_text(host);
     }
 }
 
@@ -214,7 +224,6 @@ void settings_class::path_write()
     for (auto l : vinacomp_text->toPlainText().split("\n"))
         vinacomp.push_back(l);
     paths["vinacomp"] = vinacomp;
-
 
     tcpClient(shared->manager_host, shared->manager_port,
               jats({3, {{"preferences", {{"write", paths}}}}}));

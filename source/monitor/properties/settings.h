@@ -7,6 +7,7 @@
 #include <QPlainTextEdit>
 
 #include "shared_variables.h"
+#include "text_knob.h"
 
 class settings_class : public QWidget
 {
@@ -17,10 +18,11 @@ private:
     void path_write();
     void ok();
 
+    QWidget *_monitor;
     shared_variables *shared;
 
-    QLineEdit *zones_edit;
-    QLineEdit *host_edit;
+    text_knob *zones_edit;
+    text_knob *host_edit;
 
     QPlainTextEdit *paths_text;
     QPlainTextEdit *maya_text;
@@ -34,7 +36,7 @@ private:
     QPushButton *ok_button;
 
 public:
-    settings_class(shared_variables *_shared);
+    settings_class(QWidget *_monitor, shared_variables *_shared);
     ~settings_class();
     void update(QString host);
 };
