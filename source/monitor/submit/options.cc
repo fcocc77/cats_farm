@@ -81,13 +81,21 @@ void options_class::update_panel(bool clear)
 
 void options_class::uptate_panel_from_job(QString job_name)
 {
-    QJsonArray send = {QJsonArray({job_name, "options", "read"})};
-    send = {"job_options", send};
+    QJsonObject options = {{"job_name", job_name}, {"action", "read"}};
+    QJsonArray send = {"job_options", options};
 
-    QString recv =
+    QString response =
         tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
 
-    // QJsonArray pks = jafs(recv);
+    QJsonObject _response = jofs(response);
+
+    _time_knobs->set_first_frame(_response["first_frame"].toInt());
+    _time_knobs->set_last_frame(_response["last_frame"].toInt());
+    _time_knobs->set_task_size(_response["task_size"].toInt());
+
+    _misc_knobs->set_instances(_response["instances"].toInt());
+    _misc_knobs->set_job_name(_response["job_name"].toString());
+    _misc_knobs->set_comment(_response["comment"].toString());
 }
 
 void options_class::options_ok()

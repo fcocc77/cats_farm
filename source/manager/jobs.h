@@ -17,6 +17,8 @@ private:
 
     QList<job_struct *> *items;
     void job_delete(QString job_name);
+    QJsonObject get_options(QString job_name) const;
+    void write_options(QString job_name, QJsonObject options);
 
 public:
     jobs(void *manager);
@@ -24,10 +26,10 @@ public:
     inline QList<job_struct *> *get_items();
     void make_job(QJsonObject __job);
     void update();
-    job_struct *get_job(QString name);
+    job_struct *get_job(QString name) const;
 
     void job_action(QJsonArray pks);
-    QString job_options(QJsonArray pks);
+    QString update_options(QJsonObject pks);
     QString job_log_action(QString pks);
 };
 

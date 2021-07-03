@@ -172,7 +172,7 @@ QString manager::recieve_monitor_thread(QJsonArray recv)
             _jobs->job_action(pks);
 
         if (id == "job_options")
-            return _jobs->job_options(pks);
+            return _jobs->update_options(recv[1].toObject());
 
         if (id == "serverAction")
             return _servers->server_action(pks);

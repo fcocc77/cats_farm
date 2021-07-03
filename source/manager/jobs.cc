@@ -1,10 +1,10 @@
 #include <QTime>
 
-#include "jobs.h"
-#include "util.h"
-#include "threading.h"
 #include "items_util.h"
+#include "jobs.h"
 #include "manager.h"
+#include "threading.h"
+#include "util.h"
 
 jobs::jobs(void *__manager)
     : _manager(__manager)
@@ -216,7 +216,7 @@ void jobs::job_action(QJsonArray pks)
     }
 }
 
-job_struct *jobs::get_job(QString name)
+job_struct *jobs::get_job(QString name) const
 {
     for (auto job : *items)
         if (job->name == name)
@@ -225,118 +225,113 @@ job_struct *jobs::get_job(QString name)
     return items->value(0);
 }
 
-QString jobs::job_options(QJsonArray pks)
+QJsonObject jobs::get_options(QString job_name) const
+{
+    auto job = get_job(job_name);
+
+    QJsonArray _server_group;
+
+    for (QString sg : job->server_group)
+        _server_group.push_back(sg);
+
+    QJsonObject options = {
+        {"server_group", job->server_group}, {"priority", job->priority},
+        {"comment", job->comment},           {"instances", job->instances},
+        {"task_size", job->task_size},       {"job_name", job->name},
+        {"first_frame", job->first_frame},   {"last_frame", job->last_frame}};
+
+    return options;
+}
+
+void jobs::write_options(QString job_name, QJsonObject options)
 {
     servers *_servers = static_cast<manager *>(_manager)->get_servers();
 
-    int num = 0;
-    QString _name;
-    for (QJsonValue j : pks)
+    auto job = get_job(job_name);
+
+    job->server_group = options["server_group"].toString();
+    job->priority = options["priority"].toInt();
+    job->comment = options["comment"].toString();
+    job->instances = options["instances"].toInt();
+
+    int _first_frame = options["first_frame"].toInt();
+    int _last_frame = options["last_frame"].toInt();
+    int _task_size = options["task_size"].toInt();
+    QString name = options["job_name"].toString();
+
+    // si el first_frame, last_frame y task_size no se modifican no crea
+    // las tares otra vez
+    if ((job->first_frame != _first_frame) ||
+        (job->last_frame != _last_frame) || (job->task_size != _task_size))
     {
-        QJsonArray _job = j.toArray();
-        QString job_name = _job[0].toString();
-        QJsonArray options = _job[1].toArray();
-        QString action = _job[2].toString();
 
-        auto job = get_job(job_name);
+        job->first_frame = _first_frame;
+        job->last_frame = _last_frame;
+        job->task_size = _task_size;
 
-        if (action == "write")
+        // obtiene los frames segun el estado
+        QList<int> finished;
+        QList<int> suspended;
+        for (auto task : job->task)
         {
-            job->server_group.clear();
-            for (QJsonValue sg : options[1].toArray())
-                job->server_group.push_back(sg.toString());
+            if ((task->status == "suspended"))
+                for (int i = task->first_frame; i <= task->last_frame; ++i)
+                    suspended.push_back(i);
 
-            job->priority = options[2].toInt();
-            job->comment = options[3].toString();
-            job->instances = options[4].toInt();
-            int _first_frame = options[5].toInt();
-            int _last_frame = options[6].toInt();
-            int _task_size = options[7].toInt();
+            if ((task->status == "finished"))
+                for (int i = task->first_frame; i <= task->last_frame; ++i)
+                    finished.push_back(i);
+        }
 
-            // el nombre se repite se pone un numero al final del nombre
-            QString name = options[8].toString();
-            if (not num)
-                job->name = name;
-            else
-                job->name = name + "_" + QString::number(num);
-            num++;
+        auto tasks =
+            tasks::make_task(job->first_frame, job->last_frame, job->task_size);
+        job->task = tasks;
+        job->waiting_task = tasks.size();
+        job->tasks = tasks.size();
 
-            // si el first_frame, last_frame y task_size no se modifican no crea
-            // las tares otra vez
-            if ((job->first_frame != _first_frame) or
-                (job->last_frame != _last_frame) or
-                (job->task_size != _task_size))
+        int progres = 0;
+        for (auto task : job->task)
+        {
+            int task_size = task->last_frame - task->first_frame + 1;
+
+            int _finished = 0;
+            int _suspended = 0;
+
+            for (int i = task->first_frame; i <= task->last_frame; ++i)
             {
-
-                job->first_frame = _first_frame;
-                job->last_frame = _last_frame;
-                job->task_size = _task_size;
-
-                // obtiene los frames segun el estado
-                QList<int> finished;
-                QList<int> suspended;
-                for (auto task : job->task)
-                {
-                    if ((task->status == "suspended"))
-                        for (int i = task->first_frame; i <= task->last_frame;
-                             ++i)
-                            suspended.push_back(i);
-
-                    if ((task->status == "finished"))
-                        for (int i = task->first_frame; i <= task->last_frame;
-                             ++i)
-                            finished.push_back(i);
-                }
-
-                auto tasks = tasks::make_task(job->first_frame, job->last_frame,
-                                       job->task_size);
-                job->task = tasks;
-                job->waiting_task = tasks.size();
-                job->tasks = tasks.size();
-
-                int progres = 0;
-                for (auto task : job->task)
-                {
-                    int task_size = task->last_frame - task->first_frame + 1;
-
-                    int _finished = 0;
-                    int _suspended = 0;
-
-                    for (int i = task->first_frame; i <= task->last_frame; ++i)
-                    {
-                        for (int f : finished)
-                            if (i == f)
-                                _finished++;
-                        for (int s : suspended)
-                            if (i == s)
-                                _suspended++;
-                    }
-
-                    if (task_size == _finished)
-                    {
-                        task->status = "finished";
-                        progres++;
-                    }
-                    if (task_size == _suspended)
-                        task->status = "suspended";
-                }
-                job->progres = progres;
+                for (int f : finished)
+                    if (i == f)
+                        _finished++;
+                for (int s : suspended)
+                    if (i == s)
+                        _suspended++;
             }
 
-            _servers->reset_all_servers();
+            if (task_size == _finished)
+            {
+                task->status = "finished";
+                progres++;
+            }
+            if (task_size == _suspended)
+                task->status = "suspended";
         }
-
-        if (action == "read")
-        {
-            QJsonArray _server_group;
-            for (QString sg : job->server_group)
-                _server_group.push_back(sg);
-
-            return jats({"", _server_group, job->priority, job->comment,
-                         job->instances, job->task_size, job->name,
-                         job->first_frame, job->last_frame});
-        }
+        job->progres = progres;
     }
+
+    _servers->reset_all_servers();
+}
+
+QString jobs::update_options(QJsonObject pks)
+{
+    QString action = pks["action"].toString();
+    QString job_name = pks["job_name"].toString();
+    QJsonObject options = pks["options"].toObject();
+
+    if (action == "write")
+        write_options(job_name, options);
+
+    else if (action == "read")
+        return jots(get_options(job_name));
 
     return "";
 }
