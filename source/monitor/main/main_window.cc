@@ -45,8 +45,10 @@ void monitor::setup_ui()
 
     shared->manager_host =
         shared->settings["manager"].toObject()["ip"].toString();
+
     shared->manager_port =
         shared->settings["manager"].toObject()["port"].toInt();
+
     shared->server_port = shared->settings["server"].toObject()["port"].toInt();
 
     // Splitter
@@ -58,9 +60,8 @@ void monitor::setup_ui()
     QSplitter *splitter_bottom = new QSplitter(this);
 
     log = new log_class();
-    options = new options_class(this);
+    options = new options_class(this, shared);
     settings = new settings_class(this, shared);
-
     _submit = new submit(this);
 
     // Widget de propiedades

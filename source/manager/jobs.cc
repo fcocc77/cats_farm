@@ -196,7 +196,6 @@ void manager::job_action(QJsonArray pks)
                 task->server = "...";
                 task->time = "...";
             }
-            //-------------------------------------
         }
 
         reset_all_servers();
@@ -271,7 +270,6 @@ QString manager::job_options(QJsonArray pks)
                              ++i)
                             finished.push_back(i);
                 }
-                //----------------------------------------------------
 
                 auto tasks = make_task(job->first_frame, job->last_frame,
                                        job->task_size);
@@ -306,7 +304,7 @@ QString manager::job_options(QJsonArray pks)
                         task->status = "suspended";
                 }
                 job->progres = progres;
-            } //----------------------------------------
+            }
 
             reset_all_servers();
         }

@@ -58,7 +58,13 @@ public:
     inline toolbar_class *get_toolbar() const;
     inline properties_class *get_properties() const;
     inline update_class *get_update() const;
+    inline jobs_class *get_jobs_widget() const;
 };
+
+inline jobs_class *monitor::get_jobs_widget() const
+{
+    return jobs;
+}
 
 inline update_class *monitor::get_update() const
 {

@@ -98,7 +98,6 @@ void jobs_class::connections()
     connect(this, &QTreeWidget::customContextMenuRequested, this,
             &jobs_class::popup);
 
-    // Job Acciones
     connect(delete_action, &QAction::triggered, this, &jobs_class::item_delete);
 
     delete_action->setShortcut(QString("Del"));
@@ -308,17 +307,16 @@ void jobs_class::mousePressEvent(QMouseEvent *event)
 {
     QTreeView::mousePressEvent(event);
 
+    bool selected_item = selectionModel()->isSelected(indexAt(event->pos()));
+
     if (shared->tasks_tree->isVisible())
     {
         static_cast<monitor *>(_monitor)->get_update()->get_task();
-
-        bool selected = selectionModel()->isSelected(indexAt(event->pos()));
-
-        if (!selected)
+        if (!selected_item)
             shared->tasks_tree->clear();
     }
 
-    options->update_panel();
+    options->update_panel(!selected_item);
 }
 
 void jobs_class::dragEnterEvent(QDragEnterEvent *event)

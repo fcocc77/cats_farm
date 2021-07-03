@@ -86,6 +86,12 @@ void toolbar_class::connections()
     connect(submit, &button::clicked, this,
             [this]() { switch_widget("submit"); });
 
+    connect(log_switch, &button::clicked, this,
+            [this]() { switch_widget("log"); });
+
+    connect(options_button, &button::clicked, this,
+            [this]() { switch_widget("options"); });
+
     connect(shared->zone_box, &combo_box::text_changed, update,
             &update_class::update);
 
@@ -103,9 +109,6 @@ void toolbar_class::connections()
         groups->parentWidget()->setVisible(
             !groups->parentWidget()->isVisible());
     });
-
-    connect(log_switch, &button::clicked, this,
-            [this]() { switch_widget("log"); });
 }
 
 void toolbar_class::switch_widget(QString widget_name)
@@ -113,15 +116,21 @@ void toolbar_class::switch_widget(QString widget_name)
     settings->set_checked(false);
     log_switch->set_checked(false);
     submit->set_checked(false);
+    options_button->set_checked(false);
 
     bool visible = properties->switch_widget(widget_name);
 
     if (widget_name == "settings")
         settings->set_checked(visible);
+
     else if (widget_name == "submit")
         submit->set_checked(visible);
+
     else if (widget_name == "log")
         log_switch->set_checked(visible);
+
+    else if (widget_name == "options")
+        options_button->set_checked(visible);
 }
 
 void toolbar_class::hide_properties()

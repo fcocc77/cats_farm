@@ -41,7 +41,10 @@ monitor:
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
         ✔ algunos label quedan en color negro @hi @done(2021-06-29 22:27)
-    
+
+    options:
+        ☐ los cambios se pueden hacer solo en los jobs que estan suspendidos y no en rendering
+
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
         ✔ al presionar ok, se cierra el widget de 'propieties', solo deberia cerrarse el widget de 'job_options' @done (10/9/2020, 2:55:26 PM)

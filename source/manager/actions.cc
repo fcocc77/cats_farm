@@ -10,7 +10,6 @@ void manager::reset_all_servers()
             server->instances[i]->reset = 1;
 
     reset_render = true;
-    //--------------------------------------------------
 }
 
 QString manager::recieve_monitor_thread(QJsonArray recv)
@@ -23,18 +22,25 @@ QString manager::recieve_monitor_thread(QJsonArray recv)
     {
         if (id == "jobAction")
             job_action(pks);
-        if (id == "jobOptions")
+
+        if (id == "job_options")
             return job_options(pks);
+
         if (id == "serverAction")
             return server_action(pks);
+
         if (id == "groupAction")
             group_action(pks);
+
         if (id == "taskAction")
             task_action(pks);
+
         if (id == "groupCreate")
             group_create(pks);
+
         if (id == "preferences")
             return preferences_action(pks);
+
         if (id == "jobLogAction")
             return job_log_action(recv[0].toString());
     }

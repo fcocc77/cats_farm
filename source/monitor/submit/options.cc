@@ -1,4 +1,3 @@
-#include <QLabel>
 #include <QVBoxLayout>
 
 #include "options.h"
@@ -7,8 +6,9 @@
 #include "main_window.h"
 #include "properties.h"
 
-options_class::options_class(QWidget *__monitor)
+options_class::options_class(QWidget *__monitor, shared_variables *_shared)
     : _monitor(__monitor)
+    , shared(_shared)
 {
     setup_ui();
 }
@@ -25,6 +25,8 @@ void options_class::setup_ui()
     _time_knobs = new time_knobs();
     _misc_knobs = new misc_knobs(_monitor);
 
+    selected_jobs_label = new QLabel("selected jobs");
+
     QWidget *box_dialog = new QWidget();
     QHBoxLayout *box_dialog_layout = new QHBoxLayout(box_dialog);
 
@@ -34,6 +36,7 @@ void options_class::setup_ui()
     box_dialog_layout->addWidget(ok_button);
     box_dialog_layout->addWidget(cancel_button);
 
+    main_layout->addWidget(selected_jobs_label);
     main_layout->addWidget(_time_knobs);
     main_layout->addWidget(_misc_knobs);
     main_layout->addWidget(box_dialog);
@@ -49,12 +52,42 @@ void options_class::setup_ui()
             // [this]() { properties->parentWidget()->hide(); });
 }
 
-void options_class::update_panel()
+void options_class::update_panel(bool clear)
 {
     if (!isVisible())
         return;
 
-    print("update panel");
+    jobs_class *jobs = static_cast<monitor *>(_monitor)->get_jobs_widget();
+
+    int count = jobs->selectedItems().count();
+
+    QString selected_items;
+
+    for (QTreeWidgetItem *item : jobs->selectedItems())
+        selected_items += item->text(0) + "  -   ";
+
+    if (clear)
+    {
+        selected_items = "";
+        count = 0;
+    }
+
+    selected_jobs_label->setText(selected_items + "\n" +
+                                 QString::number(count) + " Jobs Selected");
+
+    if (count == 1)
+        uptate_panel_from_job(jobs->selectedItems()[0]->text(0));
+}
+
+void options_class::uptate_panel_from_job(QString job_name)
+{
+    QJsonArray send = {QJsonArray({job_name, "options", "read"})};
+    send = {"job_options", send};
+
+    QString recv =
+        tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
+
+    // QJsonArray pks = jafs(recv);
 }
 
 void options_class::options_ok()
