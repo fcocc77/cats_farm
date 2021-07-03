@@ -1,6 +1,18 @@
-#include <manager.h>
+#include "tasks.h"
+#include "jobs.h"
+#include "manager.h"
+#include "items_util.h"
+#include "tcp.h"
 
-vector<task_struct *> manager::make_task(int first_frame, int last_frame,
+tasks::tasks(void *__manager)
+    : _manager(__manager)
+{
+    manager *___manager = static_cast<manager *>(_manager);
+    settings = ___manager->get_settings();
+    server_port = settings->value("server").toObject()["port"].toInt();
+}
+
+QList<task_struct *> tasks::make_task(int first_frame, int last_frame,
                                          int task_size)
 {
     // Crea una lista de tareas con los 'frames' de inicio y final
@@ -30,7 +42,7 @@ vector<task_struct *> manager::make_task(int first_frame, int last_frame,
     }
 
     // Creacion de tareas
-    vector<task_struct *> tasks;
+    QList<task_struct *> _tasks;
 
     int num = 0;
     QString task_name;
@@ -45,23 +57,27 @@ vector<task_struct *> manager::make_task(int first_frame, int last_frame,
         else
             task_name = "Task_0" + QString::number(num);
 
-        task_struct *_tasks = new task_struct;
+        task_struct *_task = new task_struct;
 
-        _tasks->name = task_name;
-        _tasks->status = "waiting";
-        _tasks->first_frame = i[0];
-        _tasks->last_frame = i[1];
-        _tasks->server = "...";
-        _tasks->time = "...";
+        _task->name = task_name;
+        _task->status = "waiting";
+        _task->first_frame = i[0];
+        _task->last_frame = i[1];
+        _task->server = "...";
+        _task->time = "...";
 
-        tasks.push_back(_tasks);
+        _tasks.push_back(_task);
     }
 
-    return tasks;
+    return _tasks;
 }
 
-void manager::kill_tasks(job_struct *job, bool _delete)
+void tasks::kill_tasks(void *_job, bool _delete)
 {
+    job_struct *job = static_cast<job_struct*>(_job);
+    jobs *_jobs = static_cast<manager *>(_manager)->get_jobs();
+    servers *_servers = static_cast<manager *>(_manager)->get_servers();
+
     // desactica servers que estaban activos por este job
     QStringList active_server;
     for (auto task : job->task)
@@ -78,27 +94,30 @@ void manager::kill_tasks(job_struct *job, bool _delete)
     }
 
     if (_delete)
-        erase_by_name(jobs, job->name);
+        erase_by_name(_jobs->get_items(), job->name);
 
     QJsonArray kill_ins;
     for (int i = 0; i < 15; i++)
         kill_ins.push_back(i);
 
-    for (auto server : servers)
+    for (auto server : *_servers->get_items())
         if (active_server.contains(server->name))
             tcpClient(server->host, server_port, jats({3, kill_ins}));
 }
 
-task_struct *manager::get_task(vector<task_struct *> tasks, QString name)
+task_struct *tasks::get_task(QList<task_struct *> tasks, QString name)
 {
     for (auto task : tasks)
         if (task->name == name)
             return task;
+
     return tasks[0];
 }
 
-void manager::task_action(QJsonArray pks)
+void tasks::task_action(QJsonArray pks)
 {
+    jobs *_jobs = static_cast<manager *>(_manager)->get_jobs();
+
     for (QJsonValue t : pks)
     {
         QJsonArray _task = t.toArray();
@@ -106,7 +125,7 @@ void manager::task_action(QJsonArray pks)
         QString task_name = _task[1].toString();
         QString task_action = _task[2].toString();
 
-        auto job = get_job(job_name);
+        auto job = _jobs->get_job(job_name);
         auto task = get_task(job->task, task_name);
 
         if (task_action == "suspend")

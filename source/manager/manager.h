@@ -1,125 +1,87 @@
 #ifndef MANAGER_HPP
 #define MANAGER_HPP
 
-#include <iostream>
-#include <vector>
-using namespace std;
-#include <QCoreApplication>
-#include <QDebug>
-#include <QJsonArray>
 #include <QJsonObject>
-#include <QMutex>
-#include <QObject>
 #include <QString>
-#include <QTime>
-#include <algorithm> //sort
-#include <ctime>     // time_t
-#include <thread>    // thread
-#include <unistd.h>  // sleep usleep
 
-#include "../utils/tcp.h"
-#include "../utils/threading.h"
-#include "../utils/video.h"
 #include "../global/global.h"
-#include <os.h>
-#include <structs.h>
-#include <util.h>
+#include "groups.h"
+#include "jobs.h"
+#include "renderer.h"
+#include "servers.h"
+#include "tasks.h"
 
 class manager : public QObject
 {
-public:
-    vector<job_struct *> jobs;
-    vector<server_struct *> servers;
-    vector<group_struct *> groups;
-    QJsonObject preferences = jread(VINARENDER_CONF_PATH + "/preferences.json");
-    bool reset_render;
-    QMutex mutex;
-    QJsonObject settings;
+private:
+    jobs *_jobs;
+    servers *_servers;
+    groups *_groups;
+    tasks *_tasks;
+    renderer *_renderer;
+
+    QMutex *mutex;
+
+    QJsonObject *preferences;
+    QJsonObject *settings;
     int server_port;
 
-    // rutas generales para videovina
-    QJsonObject env_videovina = jread(VINARENDER_CONF_PATH + "/videovina.json");
-    QString assets = env_videovina["assets"].toString();
-    QString as3 = env_videovina["s3"].toString();
-    QString vinarender = env_videovina["vinarender"].toString();
-    QString vv_local_folder = env_videovina["local"].toString();
-
-    manager();
-
-    void make_job(QJsonObject __job);
     QString pivot_to_server(QJsonArray recv);
-    vector<task_struct *> make_task(int first_frame, int last_frame,
-                                    int task_size);
-    void reset_all_servers();
-    void kill_tasks(job_struct *job, bool _delete);
-    void render_job();
-    void render_task(server_struct *server, inst_struct *instance,
-                     job_struct *job);
     QString send_to_monitor_thread();
     QString send_to_logger();
-    QJsonObject struct_to_json();
-    void json_to_struct(QJsonObject info);
     void reactive_all();
     QString recieve_monitor_thread(QJsonArray recv);
-    QString server_action(QJsonArray pks);
-    void group_action(QJsonArray pks);
-    void task_action(QJsonArray pks);
-    void group_create(QJsonArray pks);
     QString preferences_action(QJsonArray pks);
-    void server_set_state(server_struct *server, bool state);
     QString server_tcp(QString recv);
 
-    // jobs
-    void job_delete(QString job_name);
-    void job_action(QJsonArray pks);
-    QString job_options(QJsonArray pks);
-    QString job_log_action(QString pks);
-
-    // funciones para videovina
-    void sample_render(QString video, int frame, int index);
-    void samples_export(QString video, QJsonArray ranges);
-    void videovina(QJsonArray recv);
-    void send_to_render(job_struct *job);
-    void post_render(QJsonObject extra, int last_frame, QString job_name);
-
-    void get_correct_path(QString filename, QString *src, QString *dst);
-    void nuke_completed(job_struct *job);
-    void vinarender_completed(job_struct *job);
-    void ffmpeg_completed(job_struct *job);
-
-    QString update_server_thread(QJsonArray recv);
-    void update_server();
-    void update_group();
-    void update_jobs();
     void container_save();
     void update_all();
-    job_struct *get_job(QString name);
-    server_struct *get_server(QString name);
-    group_struct *get_group(QString name);
-    task_struct *get_task(vector<task_struct *> tasks, QString name);
 
-    template <typename T> bool is_struct(T lista, QString name)
-    {
-        for (auto s : lista)
-            if (s->name == name)
-                return true;
+public:
+    manager();
 
-        return false;
-    }
-
-    template <typename T> void erase_by_name(T &lista, QString name)
-    {
-        int i = 0;
-        for (auto s : lista)
-        {
-            if (s->name == name)
-                break;
-
-            i++;
-        }
-
-        lista.erase(lista.begin() + i, lista.begin() + i + 1);
-    }
+    inline jobs *get_jobs() const;
+    inline servers *get_servers() const;
+    inline groups *get_groups() const;
+    inline tasks *get_tasks() const;
+    inline QJsonObject *get_preferences() const;
+    inline QJsonObject *get_settings() const;
+    inline renderer *get_renderer() const;
 };
+
+inline renderer *manager::get_renderer() const
+{
+    return _renderer;
+}
+
+inline QJsonObject *manager::get_settings() const
+{
+    return settings;
+}
+
+inline QJsonObject *manager::get_preferences() const
+{
+    return preferences;
+}
+
+inline jobs *manager::get_jobs() const
+{
+    return _jobs;
+}
+
+inline servers *manager::get_servers() const
+{
+    return _servers;
+}
+
+inline groups *manager::get_groups() const
+{
+    return _groups;
+}
+
+inline tasks *manager::get_tasks() const
+{
+    return _tasks;
+}
 
 #endif // MANAGER_HPP

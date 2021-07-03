@@ -1,23 +1,35 @@
-#include <manager.h>
+#include "manager.h"
+#include "struct_transform.h"
+#include "tcp.h"
+#include "threading.h"
 
 manager::manager()
+    : mutex(new QMutex)
+    , preferences(new QJsonObject)
+    , settings(new QJsonObject)
 {
-    // Carga la informacion guardada de Jobs, Servers y Groups
+    *preferences = jread(VINARENDER_CONF_PATH + "/preferences.json");
+
+    _servers = new servers(this);
+    _tasks = new tasks(this);
+    _jobs = new jobs(this);
+    _groups = new groups(this);
+
+    _renderer = new renderer(this, mutex, _jobs, _servers, _groups);
+
     QJsonObject info = jread(VINARENDER_CONF_PATH + "/info.json");
     if (not info.empty())
-        json_to_struct(info);
+        json_to_struct(info, _jobs, _servers, _groups);
 
     reactive_all();
     // Recive la informacion del suministrador y crea un jobs con sus tareas
 
-    // obtiene los puertos del manager y server
-    settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    int port = settings["manager"].toObject()["port"].toInt();
-    server_port = settings["server"].toObject()["port"].toInt();
+    *settings = jread(VINARENDER_CONF_PATH + "/settings.json");
+    int port = settings->value("manager").toObject()["port"].toInt();
+    server_port = settings->value("server").toObject()["port"].toInt();
 
     tcpServer(port, &manager::server_tcp, this);
     threading(&manager::update_all, this);
-    threading(&manager::render_job, this);
 }
 
 QString manager::server_tcp(QString _recv)
@@ -28,30 +40,30 @@ QString manager::server_tcp(QString _recv)
 
     QString send;
 
-    mutex.lock();
+    mutex->lock();
+
     if (input == 1)
-        send = update_server_thread(pks);
+        send = _servers->update_server_thread(pks);
     else if (input == 2)
         send = send_to_monitor_thread();
     else if (input == 3)
         send = recieve_monitor_thread(pks);
     else if (input == 4)
-        make_job(recv[1].toObject());
+        _jobs->make_job(recv[1].toObject());
     else if (input == 5)
         send = pivot_to_server(pks);
     else if (input == 6)
         send = send_to_logger();
-    mutex.unlock();
-    if (input == 7)
-        videovina(pks);
+
+    mutex->unlock();
 
     return send;
 }
 
 QString manager::send_to_logger()
 {
-    QJsonObject _jobs;
-    for (auto job : jobs)
+    QJsonObject __jobs;
+    for (auto job : *_jobs->get_items())
     {
         QJsonObject j;
 
@@ -73,11 +85,11 @@ QString manager::send_to_logger()
         j["first_frame"] = job->first_frame;
         j["last_frame"] = job->last_frame;
 
-        _jobs[job->name] = j;
+        __jobs[job->name] = j;
     }
 
-    return jots(_jobs);
-} //-----------------------------------------
+    return jots(__jobs);
+}
 
 QString manager::pivot_to_server(QJsonArray recv)
 {
@@ -89,9 +101,8 @@ QString manager::pivot_to_server(QJsonArray recv)
 
 void manager::reactive_all()
 {
-
     // si el manager se apaga cuando esta rendereando se resetea todo a cola
-    for (auto &job : jobs)
+    for (auto &job : *_jobs->get_items())
     {
         if (job->status == "Rendering...")
             job->status = "Queue";
@@ -104,7 +115,7 @@ void manager::reactive_all()
             }
     }
 
-    for (auto &server : servers)
+    for (auto &server : *_servers->get_items())
         for (auto &instance : server->instances)
         {
             if (instance->status == 1)
@@ -116,249 +127,87 @@ void manager::reactive_all()
 QString manager::send_to_monitor_thread()
 {
     // Envia informacion de los 'jobs' al vmonitor
-    return jots(struct_to_json());
+    return jots(struct_to_json(_jobs, _servers, _groups));
 }
 
-void manager::json_to_struct(QJsonObject info)
+void manager::update_all()
 {
-    for (auto j : info["jobs"].toObject())
+    while (true)
     {
-        job_struct *_jobs = new job_struct;
-        QJsonObject job = j.toObject();
-        _jobs->name = job["name"].toString();
-        _jobs->status = job["status"].toString();
-        _jobs->priority = job["priority"].toInt();
+        mutex->lock();
 
-        for (QJsonValue _group : job["server_group"].toArray())
-            _jobs->server_group.push_back(_group.toString());
+        _jobs->update();
+        container_save();
+        _servers->update();
+        _groups->update();
 
-        _jobs->instances = job["instances"].toInt();
-        _jobs->comment = job["comment"].toString();
-        _jobs->submit_start = job["submit_start"].toString();
-        _jobs->submit_finish = job["submit_finish"].toString();
-        _jobs->time_elapsed = job["time_elapsed"].toInt();
-        _jobs->last_time = job["last_time"].toInt();
-        _jobs->total_render_time = job["total_render_time"].toString();
-        _jobs->estimated_time = job["estimated_time"].toString();
-        _jobs->time_elapsed_running = job["time_elapsed_running"].toBool();
-        _jobs->software = job["software"].toString();
-        _jobs->software_data = job["software_data"].toObject();
-        _jobs->system = job["system"].toString();
-        _jobs->errors = job["errors"].toInt();
+        mutex->unlock();
 
-        for (QJsonValue vs : job["vetoed_servers"].toArray())
-            _jobs->vetoed_servers.push_back(vs.toString());
-
-        _jobs->progres = job["progres"].toInt();
-        _jobs->waiting_task = job["waiting_task"].toInt();
-        _jobs->tasks = job["tasks"].toInt();
-        _jobs->suspended_task = job["suspended_task"].toInt();
-        _jobs->failed_task = job["failed_task"].toInt();
-        _jobs->active_task = job["active_task"].toInt();
-        _jobs->task_size = job["task_size"].toInt();
-        _jobs->first_frame = job["first_frame"].toInt();
-        _jobs->last_frame = job["last_frame"].toInt();
-
-        for (QJsonValue _t : job["task"].toArray())
-        {
-            task_struct *_tasks = new task_struct;
-            QJsonObject t = _t.toObject();
-            _tasks->name = t["name"].toString();
-            _tasks->status = t["status"].toString();
-            _tasks->first_frame = t["first_frame"].toInt();
-            _tasks->last_frame = t["last_frame"].toInt();
-            _tasks->server = t["server"].toString();
-            _tasks->time = t["time"].toString();
-            _jobs->task.push_back(_tasks);
-        }
-
-        jobs.push_back(_jobs);
-    }
-
-    for (QJsonValue s : info["servers"].toObject())
-    {
-        QJsonObject server = s.toObject();
-        server_struct *_server = new server_struct;
-        _server->name = server["name"].toString();
-        _server->status = server["status"].toString();
-        _server->host = server["host"].toString();
-        _server->system = server["system"].toString();
-        _server->cpu = server["cpu"].toInt();
-        _server->cpu_iowait = server["cpu_iowait"].toInt();
-        _server->cpu_cores = server["cpu_cores"].toInt();
-        _server->ram = server["ram"].toInt();
-        _server->ram_used = server["ram_used"].toDouble();
-        _server->ram_cached = server["ram_cached"].toInt();
-        _server->ram_total = server["ram_total"].toDouble();
-        _server->temp = server["temp"].toInt();
-        _server->mac = server["mac"].toString();
-        _server->response_time = server["response_time"].toInt();
-
-        for (QJsonValue i : server["instances"].toArray())
-        {
-            QJsonArray ins = i.toArray();
-            inst_struct *_ins = new inst_struct;
-            _ins->index = ins[0].toInt();
-            _ins->status = ins[1].toInt();
-            _ins->reset = ins[2].toBool();
-            _ins->job_task = ins[3].toString();
-
-            _server->instances.push_back(_ins);
-        }
-
-        _server->max_instances = server["max_instances"].toInt();
-        _server->sshUser = server["sshUser"].toString();
-        _server->sshPass = server["sshPass"].toString();
-        _server->vmSoftware = server["vmSoftware"].toString();
-
-        servers.push_back(_server);
-    }
-
-    for (QJsonValue g : info["groups"].toObject())
-    {
-        QJsonObject group = g.toObject();
-        group_struct *_group = new group_struct;
-        _group->name = group["name"].toString();
-        _group->status = group["status"].toBool();
-        _group->totaMachine = group["totaMachine"].toInt();
-        _group->activeMachine = group["activeMachine"].toInt();
-
-        for (QJsonValue s : group["server"].toArray())
-        {
-            QJsonArray server = s.toArray();
-            serverFromGroupStruct *_server = new serverFromGroupStruct;
-            _server->name = server[0].toString();
-            _server->status = server[1].toBool();
-            _group->server.push_back(_server);
-        }
-
-        groups.push_back(_group);
+        sleep(1);
     }
 }
 
-QJsonObject manager::struct_to_json()
+void manager::container_save()
 {
-    // combierte todas las estructuras de Jobs y las combierte a JSON para poder
-    // enviarlas y guardarlas
-    QJsonObject info;
+    static int sec;
+    sec++;
 
-    QJsonObject _jobs;
-    for (auto job : jobs)
+    // guarda informacion a json cada 10 seg
+    if (sec > 10)
     {
-        QJsonObject j;
+        jwrite(VINARENDER_CONF_PATH + "/info.json",
+               struct_to_json(_jobs, _servers, _groups));
+        sec = 0;
+    }
+}
 
-        j["name"] = job->name;
-        j["status"] = job->status;
-        j["priority"] = job->priority;
+QString manager::recieve_monitor_thread(QJsonArray recv)
+{
+    QString id = recv[0].toString();
+    QJsonArray pks = recv[1].toArray();
 
-        QJsonArray serverGroup;
-        for (QString _group : job->server_group)
-            serverGroup.push_back(_group);
-        j["server_group"] = serverGroup;
+    if (not recv.empty())
+    {
+        if (id == "jobAction")
+            _jobs->job_action(pks);
 
-        j["instances"] = job->instances;
-        j["comment"] = job->comment;
-        j["submit_start"] = job->submit_start;
-        j["submit_finish"] = job->submit_finish;
-        j["time_elapsed"] = job->time_elapsed;
-        j["last_time"] = job->last_time;
-        j["total_render_time"] = job->total_render_time;
-        j["estimated_time"] = job->estimated_time;
-        j["time_elapsed_running"] = job->time_elapsed_running;
-        j["software"] = job->software;
-        j["software_data"] = job->software_data;
-        j["system"] = job->system;
-        j["errors"] = job->errors;
+        if (id == "job_options")
+            return _jobs->job_options(pks);
 
-        QJsonArray vetoed_servers;
-        for (QString s : job->vetoed_servers)
-            vetoed_servers.push_back(s);
-        j["vetoed_servers"] = vetoed_servers;
+        if (id == "serverAction")
+            return _servers->server_action(pks);
 
-        j["progres"] = job->progres;
-        j["waiting_task"] = job->waiting_task;
-        j["tasks"] = job->tasks;
-        j["suspended_task"] = job->suspended_task;
-        j["failed_task"] = job->failed_task;
-        j["active_task"] = job->active_task;
-        j["task_size"] = job->task_size;
-        j["first_frame"] = job->first_frame;
-        j["last_frame"] = job->last_frame;
+        if (id == "groupAction")
+            _groups->group_action(pks);
 
-        QJsonArray _tasks;
-        for (auto task : job->task)
-        {
-            QJsonObject t;
-            t["name"] = task->name;
-            t["status"] = task->status;
-            t["first_frame"] = task->first_frame;
-            t["last_frame"] = task->last_frame;
-            t["server"] = task->server;
-            t["time"] = task->time;
+        if (id == "taskAction")
+            _tasks->task_action(pks);
 
-            _tasks.push_back(t);
-        }
-        j["task"] = _tasks;
+        if (id == "groupCreate")
+            _groups->group_create(pks);
 
-        _jobs[job->name] = j;
+        if (id == "preferences")
+            return preferences_action(pks);
+
+        if (id == "jobLogAction")
+            return _jobs->job_log_action(recv[0].toString());
     }
 
-    info["jobs"] = _jobs;
+    return "";
+}
 
-    QJsonObject _servers;
-    for (auto server : servers)
+QString manager::preferences_action(QJsonArray _pks)
+{
+    QString action = _pks[0].toString();
+
+    if (action == "read")
+        return jots(jread(VINARENDER_CONF_PATH + "/preferences.json"));
+    else
     {
-        QJsonObject s;
-        s["name"] = server->name;
-        s["status"] = server->status;
-        s["host"] = server->host;
-        s["system"] = server->system;
-        s["cpu"] = server->cpu;
-        s["cpu_iowait"] = server->cpu_iowait;
-        s["cpu_cores"] = server->cpu_cores;
-        s["ram"] = server->ram;
-        s["ram_cached"] = server->ram_cached;
-        s["ram_used"] = server->ram_used;
-        s["ram_total"] = server->ram_total;
-        s["temp"] = server->temp;
-        s["mac"] = server->mac;
-        s["response_time"] = server->response_time;
-
-        QJsonArray _instances;
-        for (auto instance : server->instances)
-            _instances.push_back({{instance->index, instance->status,
-                                   instance->reset, instance->job_task}});
-        s["instances"] = _instances;
-
-        s["max_instances"] = server->max_instances;
-        s["sshUser"] = server->sshUser;
-        s["sshPass"] = server->sshPass;
-        s["vmSoftware"] = server->vmSoftware;
-        s["log"] = server->log;
-
-        _servers[server->name] = s;
+        QJsonObject pks = _pks[1].toObject();
+        preferences->insert("paths", pks);
+        jwrite(VINARENDER_CONF_PATH + "/preferences.json", *preferences);
     }
 
-    info["servers"] = _servers;
-
-    QJsonObject _groups;
-
-    for (auto group : groups)
-    {
-        QJsonObject g;
-        g["name"] = group->name;
-        g["status"] = group->status;
-        g["totaMachine"] = group->totaMachine;
-        g["activeMachine"] = group->activeMachine;
-        QJsonArray serverList;
-        for (auto server : group->server)
-            serverList.push_back({{server->name, server->status}});
-        g["server"] = serverList;
-
-        _groups[group->name] = g;
-    }
-
-    info["groups"] = _groups;
-
-    return info;
+    return "";
 }

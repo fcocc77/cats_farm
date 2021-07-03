@@ -1,17 +1,32 @@
-#include <manager.h>
+#include "groups.h"
+#include "items_util.h"
+#include "manager.h"
+#include "jobs.h"
+#include "servers.h"
 
-void manager::update_group()
+groups::groups(void *__manager)
+    : _manager(__manager)
+    , items(new QList<group_struct *>)
 {
+}
+
+void groups::update()
+{
+    manager *__manager = static_cast<manager *>(_manager);
+
+    jobs *_jobs = __manager->get_jobs();
+    servers *_servers = __manager->get_servers();
+
     // Obtiene todos los grupos que estan activos
     QStringList groups_used;
-    for (auto job : jobs)
+    for (auto job : *_jobs->get_items())
         if (job->active_task)
             for (QString sg : job->server_group)
                 groups_used.push_back(sg);
 
     QJsonArray grouplist;
 
-    for (auto group : groups)
+    for (auto group : *items)
     {
         grouplist.push_back(group->name);
         int totaMachine = 0, activeMachine = 0;
@@ -19,9 +34,9 @@ void manager::update_group()
         for (auto _server : group->server)
         {
 
-            if (is_struct(servers, _server->name))
+            if (is_struct(_servers->get_items(), _server->name))
             {
-                auto server = get_server(_server->name);
+                auto server = _servers->get_server(_server->name);
 
                 totaMachine++;
                 if (server->status == "absent")
@@ -34,7 +49,7 @@ void manager::update_group()
             }
             else
             {
-                erase_by_name(group->server, _server->name);
+                erase_by_name(&group->server, _server->name);
             }
         }
         bool server_status;
@@ -48,11 +63,13 @@ void manager::update_group()
         group->activeMachine = activeMachine;
     }
 
-    preferences["groups"] = grouplist;
+    __manager->get_preferences()->insert("groups", grouplist);
 }
 
-void manager::group_action(QJsonArray pks)
+void groups::group_action(QJsonArray pks)
 {
+    servers *_servers = static_cast<manager *>(_manager)->get_servers();
+
     QJsonArray group_list = pks[0].toArray();
     QJsonArray group_machine = pks[1].toArray();
     QString group_action = pks[2].toString();
@@ -70,10 +87,10 @@ void manager::group_action(QJsonArray pks)
             for (QJsonValue s : serverList)
             {
                 QString server = s.toString();
-                if (not is_struct(group->server, server))
+                if (not is_struct(&group->server, server))
                 {
 
-                    QString status = get_server(server)->status;
+                    QString status = _servers->get_server(server)->status;
                     bool _status = true;
 
                     if (status == "absent")
@@ -100,23 +117,24 @@ void manager::group_action(QJsonArray pks)
 
             auto group = get_group(name);
 
-            erase_by_name(group->server, server);
+            erase_by_name(&group->server, server);
         }
 
         for (QJsonValue group : group_list)
-            erase_by_name(groups, group.toString());
+            erase_by_name(items, group.toString());
     }
 }
 
-group_struct *manager::get_group(QString name)
+group_struct *groups::get_group(QString name)
 {
-    for (auto group : groups)
+    for (auto group : *items)
         if (group->name == name)
             return group;
-    return groups[0];
+
+    return items->value(0);
 }
 
-void manager::group_create(QJsonArray pks)
+void groups::group_create(QJsonArray pks)
 {
 
     QString group_name_in = pks[0].toString();
@@ -130,7 +148,7 @@ void manager::group_create(QJsonArray pks)
     while (1)
     {
         pad += 1;
-        if (is_struct(groups, group_name))
+        if (is_struct(items, group_name))
             group_name = group_name_in + "_" + QString::number(pad);
         else
             break;
@@ -153,7 +171,6 @@ void manager::group_create(QJsonArray pks)
         _server.push_back(sg);
     }
     group->server = _server;
-    //-----------------------------------------------
 
-    groups.push_back(group);
+    items->push_back(group);
 }

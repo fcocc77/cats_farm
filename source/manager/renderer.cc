@@ -1,41 +1,72 @@
-#include <manager.h>
-#include "path_utils.h"
+#include <unistd.h>
 
-void manager::render_job()
+#include "renderer.h"
+#include "path_utils.h"
+#include "threading.h"
+#include "video.h"
+#include "util.h"
+#include "manager.h"
+#include "tcp.h"
+
+renderer::renderer(void *__manager, QMutex *_mutex, jobs *__jobs,
+                   servers *__servers, groups *__groups)
+
+    : _manager(__manager)
+    , mutex(_mutex)
+    , _jobs(__jobs)
+    , _servers(__servers)
+    , _groups(__groups)
+    , reset_render(false)
 {
+    server_port = static_cast<manager *>(_manager)
+                      ->get_settings()
+                      ->value("server")
+                      .toObject()["port"]
+                      .toInt();
+
+    threading(&renderer::render_job, this);
+}
+
+void renderer::render_job()
+{
+    auto *jobs_items = _jobs->get_items();
+    auto *groups_items = _groups->get_items();
+    auto *servers_items = _servers->get_items();
+
     while (1)
     {
-        mutex.lock();
+        mutex->lock();
         reset_render = false;
 
         // lee las listas del trabajo creadas y las ordena segun prioridad
-        sort(jobs.begin(), jobs.end(), [](job_struct *a, job_struct *b) {
-            bool cmp;
-            cmp = a->priority < b->priority;
+        std::sort(jobs_items->begin(), jobs_items->end(),
+                  [](job_struct *a, job_struct *b) {
+                      bool cmp;
+                      cmp = a->priority < b->priority;
 
-            if (a->priority == b->priority)
-                cmp = a->submit_start < b->submit_start;
+                      if (a->priority == b->priority)
+                          cmp = a->submit_start < b->submit_start;
 
-            return cmp;
-        });
+                      return cmp;
+                  });
 
         // si el trabajo esta en cola se manda a render
-        for (auto job : jobs)
+        for (auto job : *jobs_items)
         {
             // hace una lista con los servidores listos para renderizar
             QStringList server_list;
             for (auto sg : job->server_group)
             {
-                if (not groups.empty())
+                if (not groups_items->empty())
                 {
-                    auto group = get_group(sg);
+                    auto group = _groups->get_group(sg);
 
                     for (auto s : group->server)
                         server_list.push_back(s->name);
                 }
             }
 
-            for (auto server : servers)
+            for (auto server : *servers_items)
             {
                 // Checkea si esl servidor esta prendido y tambien si esta en
                 // el grupo del jobs
@@ -77,7 +108,7 @@ void manager::render_job()
                                     if (not active)
                                     {
                                         instance->status = 1;
-                                        threading(&manager::render_task, this,
+                                        threading(&renderer::render_task, this,
                                                   server, instance, job);
                                     }
                                 }
@@ -97,12 +128,12 @@ void manager::render_job()
                 break;
         }
 
-        mutex.unlock();
+        mutex->unlock();
         sleep(1);
     }
 }
 
-void manager::render_task(server_struct *server, inst_struct *instance,
+void renderer::render_task(server_struct *server, inst_struct *instance,
                           job_struct *job)
 {
     instance->reset = 0;
@@ -115,7 +146,7 @@ void manager::render_task(server_struct *server, inst_struct *instance,
     // renderea las tareas por cada trabajo, solo si status es igual a waiting
     for (auto task : job->task)
     {
-        mutex.lock();
+        mutex->lock();
         int first_frame = task->first_frame;
         int last_frame = task->last_frame;
         QString status = task->status;
@@ -125,7 +156,7 @@ void manager::render_task(server_struct *server, inst_struct *instance,
 
         if (instance->reset || server->status == "absent")
         {
-            mutex.unlock();
+            mutex->unlock();
             break;
         }
 
@@ -141,7 +172,7 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             int time1 = time(0);
 
             job->status = "Rendering...";
-            mutex.unlock();
+            mutex->unlock();
 
             // Envia a renderar la tarea al servidor que le corresponde
             QJsonObject pks = {
@@ -160,7 +191,7 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             {
                 if (result == "kill")
                 {
-                    mutex.lock();
+                    mutex->lock();
                     int active_task = job->active_task - 1;
                     if (active_task >= 0)
                         job->active_task = active_task;
@@ -168,13 +199,13 @@ void manager::render_task(server_struct *server, inst_struct *instance,
                     task->status = "waiting";
                     task->time = "...";
                     task->server = "...";
-                    mutex.unlock();
+                    mutex->unlock();
                     break;
                 }
 
                 else
                 { // if failed
-                    mutex.lock();
+                    mutex->lock();
                     job->vetoed_servers.push_back(server->name);
 
                     job->failed_task = 1;
@@ -185,19 +216,19 @@ void manager::render_task(server_struct *server, inst_struct *instance,
                         job->active_task = active_task;
 
                     task->status = "failed";
-                    mutex.unlock();
+                    mutex->unlock();
                     sleep(4);
-                    mutex.lock();
+                    mutex->lock();
                     task->status = "waiting";
                     task->time = "...";
                     task->server = "...";
-                    mutex.unlock();
+                    mutex->unlock();
 
                     break;
                 }
             }
 
-            mutex.lock();
+            mutex->lock();
             int active_task = job->active_task - 1;
             if (active_task >= 0)
                 job->active_task = active_task;
@@ -224,16 +255,16 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             if (tasks == after_progres)
                 Completed = true;
 
-            mutex.unlock();
+            mutex->unlock();
         }
         else
         {
-            mutex.unlock();
+            mutex->unlock();
         }
     }
 
     reset_render = true;
-    mutex.lock();
+    mutex->lock();
     if (result == "failed")
     {
         instance->status = 3;
@@ -249,7 +280,7 @@ void manager::render_task(server_struct *server, inst_struct *instance,
             instance->job_task = "...";
         }
     }
-    mutex.unlock();
+    mutex->unlock();
     if (Completed)
     {
         if (software == "nuke")
@@ -261,17 +292,20 @@ void manager::render_task(server_struct *server, inst_struct *instance,
 
         QString submit_finish = currentDateTime(0);
 
-        mutex.lock();
+        mutex->lock();
         job->submit_finish = submit_finish;
         job->status = "Completed";
-        mutex.unlock();
+        mutex->unlock();
     }
 }
 
-void manager::get_correct_path(QString filename, QString *src, QString *dst)
+void renderer::get_correct_path(QString filename, QString *src, QString *dst)
 {
-    QJsonArray system_path =
-        preferences["paths"].toObject()["system"].toArray();
+    QJsonArray system_path = static_cast<manager *>(_manager)
+                                 ->get_preferences()
+                                 ->value("paths")
+                                 .toObject()["system"]
+                                 .toArray();
 
     QString src_path, dst_path, aux;
     for (QJsonValue p1 : system_path)
@@ -297,7 +331,7 @@ void manager::get_correct_path(QString filename, QString *src, QString *dst)
     *dst = dst_path;
 }
 
-void manager::nuke_completed(job_struct *job)
+void renderer::nuke_completed(job_struct *job)
 {
     QString output_movie = job->software_data["output_movie"].toString();
     QString ext = path_util::get_ext(output_movie);
@@ -321,11 +355,11 @@ void manager::nuke_completed(job_struct *job)
     }
 }
 
-void manager::vinarender_completed(job_struct *job)
+void renderer::vinarender_completed(job_struct *job)
 {
 }
 
-void manager::ffmpeg_completed(job_struct *job)
+void renderer::ffmpeg_completed(job_struct *job)
 {
     job->status = "Concatenate";
 

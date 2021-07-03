@@ -1,22 +1,11 @@
-#ifndef STRUCT_HPP
-#define STRUCT_HPP
+#ifndef JOBS_STRUCT_H
+#define JOBS_STRUCT_H
 
 #include <QString>
-#include <QStringList>
 #include <QJsonObject>
+#include <QStringList>
 
-#include <iostream>
-#include <vector>
-
-struct task_struct
-{
-    QString name;
-    QString status;
-    int first_frame;
-    int last_frame;
-    QString server;
-    QString time;
-};
+#include "tasks_struct.h"
 
 struct job_struct
 {
@@ -48,54 +37,7 @@ struct job_struct
     int task_size;
     int first_frame;
     int last_frame;
-    std::vector<task_struct *> task;
-};
-
-struct inst_struct
-{
-    int index;
-    int status;
-    bool reset;
-    QString job_task;
-};
-
-struct server_struct
-{
-    QString name;
-    QString status;
-    QString host;
-    QString system;
-    int cpu;
-    int cpu_iowait;
-    int cpu_cores;
-    int ram;
-    int ram_cached;
-    float ram_used;
-    float ram_total;
-    int temp;
-    QString mac;
-    int response_time;
-    QList<inst_struct *> instances;
-    int max_instances;
-    QString sshUser;
-    QString sshPass;
-    QString vmSoftware;
-    QString log;
-};
-
-struct serverFromGroupStruct
-{
-    QString name;
-    bool status;
-};
-
-struct group_struct
-{
-    QString name;
-    bool status;
-    int totaMachine;
-    int activeMachine;
-    QList<serverFromGroupStruct *> server;
+    QList<task_struct *> task;
 };
 
 struct makejob_struct
@@ -117,4 +59,4 @@ struct makejob_struct
     QString render;
 };
 
-#endif // STRUCT_HPP
+#endif // JOBS_STRUCT_H

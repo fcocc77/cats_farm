@@ -1,6 +1,22 @@
-#include <manager.h>
+#include "servers.h"
+#include "threading.h"
+#include "os.h"
+#include "items_util.h"
+#include "manager.h"
+#include "tcp.h"
 
-QString manager::update_server_thread(QJsonArray recv)
+servers::servers(void *__manager)
+    : _manager(__manager)
+    , items(new QList<server_struct *>)
+{
+    manager *___manager = static_cast<manager *>(_manager);
+    preferences = ___manager->get_preferences();
+    settings = ___manager->get_settings();
+
+    server_port = settings->value("server").toObject()["port"].toInt();
+}
+
+QString servers::update_server_thread(QJsonArray recv)
 {
     if (not recv.empty())
     {
@@ -22,7 +38,7 @@ QString manager::update_server_thread(QJsonArray recv)
 
         int response_time = time(0);
 
-        if (not is_struct(servers, name))
+        if (not is_struct(items, name))
         {
             QList<inst_struct *> instances;
 
@@ -57,7 +73,7 @@ QString manager::update_server_thread(QJsonArray recv)
             server->sshUser = sshUser;
             server->sshPass = sshPass;
             server->log = log;
-            servers.push_back(server);
+            items->push_back(server);
         }
 
         else
@@ -80,19 +96,18 @@ QString manager::update_server_thread(QJsonArray recv)
     // copiando informacion en "preferences" si no el programa se cae
     QString ret;
 
-    ret = jots(preferences);
+    ret = jots(*preferences);
 
     return ret;
-    //---------------------------------------------------------------
 }
 
-void manager::update_server()
+void servers::update()
 {
     int t1 = time(0);
 
     QJsonArray serverList;
 
-    for (auto server : servers)
+    for (auto server : *items)
     {
         serverList.push_back(server->name);
 
@@ -128,10 +143,21 @@ void manager::update_server()
         }
     }
 
-    preferences["servers"] = serverList;
+    preferences->insert("servers", serverList);
 }
 
-QString manager::server_action(QJsonArray pks)
+void servers::reset_all_servers()
+{
+    // Resetea todos los servidores para que empiece otra vez
+    for (auto server : *items)
+        for (int i = 0; i < server->max_instances; i++)
+            server->instances[i]->reset = 1;
+
+    static_cast<manager *>(_manager)->get_renderer()->to_reset_render();
+}
+
+
+QString servers::server_action(QJsonArray pks)
 {
     for (QJsonValue s : pks)
     {
@@ -155,7 +181,7 @@ QString manager::server_action(QJsonArray pks)
 
         if (server_action == "delete")
             if (not(server->status == "active"))
-                erase_by_name(servers, name);
+                erase_by_name(items, name);
 
         if (server_action == "ssh")
             return jats({server->sshUser, server->sshPass, server->host});
@@ -164,7 +190,7 @@ QString manager::server_action(QJsonArray pks)
     return "{}";
 }
 
-void manager::server_set_state(server_struct *server, bool state)
+void servers::server_set_state(server_struct *server, bool state)
 {
 
     if (state)
@@ -196,10 +222,11 @@ void manager::server_set_state(server_struct *server, bool state)
     }
 }
 
-server_struct *manager::get_server(QString name)
+server_struct *servers::get_server(QString name)
 {
-    for (auto server : servers)
+    for (auto server : *items)
         if (server->name == name)
             return server;
-    return servers[0];
+
+    return items->value(0);
 }

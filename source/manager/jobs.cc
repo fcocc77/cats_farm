@@ -1,9 +1,20 @@
-#include <manager.h>
-#include "util.h"
+#include <QTime>
 
-void manager::update_jobs()
+#include "jobs.h"
+#include "util.h"
+#include "threading.h"
+#include "items_util.h"
+#include "manager.h"
+
+jobs::jobs(void *__manager)
+    : _manager(__manager)
+    , items(new QList<job_struct *>)
 {
-    for (auto job : jobs)
+}
+
+void jobs::update()
+{
+    for (auto job : *items)
     {
         int waiting = job->tasks -
                       (job->suspended_task + job->progres + job->active_task);
@@ -82,7 +93,7 @@ void manager::update_jobs()
     }
 }
 
-void manager::make_job(QJsonObject __job)
+void jobs::make_job(QJsonObject __job)
 {
     // verifica si el nombre esta en la lista, si esta le pone un padding
     QString _job_name = __job["job_name"].toString();
@@ -91,7 +102,7 @@ void manager::make_job(QJsonObject __job)
     for (int i = 0; i < 700; ++i)
     {
         bool contains = false;
-        for (auto j : jobs)
+        for (auto j : *items)
             if (job_name == j->name)
                 contains = true;
 
@@ -105,7 +116,7 @@ void manager::make_job(QJsonObject __job)
     int _first_frame = __job["first_frame"].toInt();
     int _last_frame = __job["last_frame"].toInt();
 
-    auto tasks = make_task(_first_frame, _last_frame, _task_size);
+    auto tasks = tasks::make_task(_first_frame, _last_frame, _task_size);
 
     job_struct *_job = new job_struct;
 
@@ -137,16 +148,19 @@ void manager::make_job(QJsonObject __job)
     _job->first_frame = _first_frame;
     _job->last_frame = _last_frame;
 
-    jobs.push_back(_job);
+    items->push_back(_job);
 }
 
-void manager::job_delete(QString job_name)
+void jobs::job_delete(QString job_name)
 {
-    erase_by_name(jobs, job_name);
+    erase_by_name(items, job_name);
 }
 
-void manager::job_action(QJsonArray pks)
+void jobs::job_action(QJsonArray pks)
 {
+    tasks *_tasks = static_cast<manager *>(_manager)->get_tasks();
+    servers *_servers = static_cast<manager *>(_manager)->get_servers();
+
     for (QJsonValue j : pks)
     {
         QJsonArray _job = j.toArray();
@@ -156,14 +170,14 @@ void manager::job_action(QJsonArray pks)
         auto job = get_job(job_name);
 
         if (job_action == "delete")
-            kill_tasks(job, true);
+            _tasks->kill_tasks(job, true);
 
         if (job_action == "suspend")
         {
             if (not(job->status == "Completed"))
                 job->status = "Suspended";
 
-            kill_tasks(job, false);
+            _tasks->kill_tasks(job, false);
         }
 
         if (job_action == "unlock")
@@ -176,7 +190,7 @@ void manager::job_action(QJsonArray pks)
         if (job_action == "restart")
         {
 
-            kill_tasks(job, false);
+            _tasks->kill_tasks(job, false);
 
             job->status = "Queue";
             job->progres = 0;
@@ -198,20 +212,23 @@ void manager::job_action(QJsonArray pks)
             }
         }
 
-        reset_all_servers();
+        _servers->reset_all_servers();
     }
 }
 
-job_struct *manager::get_job(QString name)
+job_struct *jobs::get_job(QString name)
 {
-    for (auto job : jobs)
+    for (auto job : *items)
         if (job->name == name)
             return job;
-    return jobs[0];
+
+    return items->value(0);
 }
 
-QString manager::job_options(QJsonArray pks)
+QString jobs::job_options(QJsonArray pks)
 {
+    servers *_servers = static_cast<manager *>(_manager)->get_servers();
+
     int num = 0;
     QString _name;
     for (QJsonValue j : pks)
@@ -271,7 +288,7 @@ QString manager::job_options(QJsonArray pks)
                             finished.push_back(i);
                 }
 
-                auto tasks = make_task(job->first_frame, job->last_frame,
+                auto tasks = tasks::make_task(job->first_frame, job->last_frame,
                                        job->task_size);
                 job->task = tasks;
                 job->waiting_task = tasks.size();
@@ -306,7 +323,7 @@ QString manager::job_options(QJsonArray pks)
                 job->progres = progres;
             }
 
-            reset_all_servers();
+            _servers->reset_all_servers();
         }
 
         if (action == "read")
@@ -324,9 +341,11 @@ QString manager::job_options(QJsonArray pks)
     return "";
 }
 
-QString manager::job_log_action(QString server_name)
+QString jobs::job_log_action(QString server_name)
 {
-    auto server = get_server(server_name);
+    servers *_servers = static_cast<manager *>(_manager)->get_servers();
+
+    auto server = _servers->get_server(server_name);
     QString result = server->log;
 
     return result;
