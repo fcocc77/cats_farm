@@ -1,7 +1,8 @@
 #include <QProgressBar>
 
 #include "../global/global.h"
-#include "../manager/structs.h"
+#include "jobs_struct.h"
+#include "servers_struct.h"
 #include "threading.h"
 #include "update.h"
 #include "util.h"

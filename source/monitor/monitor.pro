@@ -5,6 +5,7 @@ TARGET = "vmonitor"
 
 INCLUDEPATH += $$files(*)
 INCLUDEPATH += ../utils
+INCLUDEPATH += ../manager
 INCLUDEPATH += ../../utils/c++
 INCLUDEPATH += ../../global
 INCLUDEPATH += ../../libs/QCodeEditor/include
@@ -20,7 +21,7 @@ HEADERS +=  $$system(ls */*.h) \
 			../utils/video.h \
 			../global/*.h \
 			../../utils/c++/*.h \
-			../manager/structs.h \
+			../manager/*.h \
 			$$system(ls ../../libs/QCodeEditor/include/KGL/*/*.hpp) \
 
 SOURCES += 	$$system(ls */*.cc) \
