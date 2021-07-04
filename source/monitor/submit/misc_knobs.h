@@ -24,6 +24,9 @@ private:
 public:
     misc_knobs(QWidget *monitor);
 
+    void clear();
+    void set_disabled(bool disable, QString knob_name = "");
+
     inline QString get_job_name() const;
     inline void set_job_name(QString job_name);
 

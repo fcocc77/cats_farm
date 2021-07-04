@@ -3,6 +3,7 @@
 
 #include <QLineEdit>
 #include <QWidget>
+#include <QLabel>
 
 #include "combo_box.h"
 
@@ -13,11 +14,15 @@ private:
     QLineEdit *task_size_edit;
     combo_box *task_size_box;
 
+    QLabel *frame_range_label, *task_size_label;
+
     void calculate_task_size(QString item_text);
     void calculate_task_divition(int task_size);
 
 public:
     time_knobs();
+
+    void set_disabled(bool disable, QString knob_name = "");
 
     inline int get_first_frame() const;
     inline int get_last_frame() const;
@@ -28,6 +33,8 @@ public:
     inline void set_task_size(int task_size);
 
     inline void set_task_divition(int divitions);
+
+    void clear();
 };
 
 inline void time_knobs::set_task_divition(int divitions)

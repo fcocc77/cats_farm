@@ -27,13 +27,13 @@ void options_class::setup_ui()
 
     selected_jobs_label = new QLabel("selected jobs");
 
-    QWidget *box_dialog = new QWidget();
+    box_dialog = new QWidget();
     QHBoxLayout *box_dialog_layout = new QHBoxLayout(box_dialog);
 
-    QPushButton *ok_button = new QPushButton("Ok");
+    QPushButton *save_button = new QPushButton("Save");
     QPushButton *cancel_button = new QPushButton("Cancel");
 
-    box_dialog_layout->addWidget(ok_button);
+    box_dialog_layout->addWidget(save_button);
     box_dialog_layout->addWidget(cancel_button);
 
     main_layout->addWidget(selected_jobs_label);
@@ -46,7 +46,7 @@ void options_class::setup_ui()
     // connect(job_modify_action, &QAction::triggered, this, &jobs_class::modify);
     // job_modify_action->setShortcut(QString("M"));
 
-    connect(ok_button, &QPushButton::clicked, this, &options_class::options_ok);
+    connect(save_button, &QPushButton::clicked, this, &options_class::options_ok);
 
     // connect(cancel_button, &QPushButton::clicked,
             // [this]() { properties->parentWidget()->hide(); });
@@ -70,6 +70,7 @@ void options_class::update_panel(bool clear)
     {
         selected_items = "";
         count = 0;
+        set_disabled_all(true);
     }
 
     selected_jobs_label->setText(selected_items + "\n" +
@@ -79,8 +80,21 @@ void options_class::update_panel(bool clear)
         uptate_panel_from_job(jobs->selectedItems()[0]->text(0));
 }
 
+void options_class::set_disabled_all(bool disable)
+{
+    _time_knobs->clear();
+    _time_knobs->set_disabled(disable);
+
+    box_dialog->setDisabled(disable);
+
+    _misc_knobs->clear();
+    _misc_knobs->set_disabled(disable);
+}
+
 void options_class::uptate_panel_from_job(QString job_name)
 {
+    set_disabled_all(false);
+
     QJsonObject options = {{"job_name", job_name}, {"action", "read"}};
     QJsonArray send = {"job_options", options};
 

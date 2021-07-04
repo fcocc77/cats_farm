@@ -11,7 +11,7 @@ text_knob::text_knob(QString label_name, bool is_line_edit)
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
 
-    QLabel *label = new QLabel(label_name + ":");
+    label = new QLabel(label_name + ":");
 
     QWidget *edit;
 
@@ -40,3 +40,12 @@ text_knob::text_knob(QString label_name, bool is_line_edit)
     layout->addWidget(label);
     layout->addWidget(edit);
 }
+
+void text_knob::set_disabled(bool disable)
+{
+    line_edit ? line_edit->setDisabled(disable)
+              : text_edit->setDisabled(disable);
+
+    label->setDisabled(disable);
+}
+

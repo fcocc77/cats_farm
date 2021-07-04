@@ -20,10 +20,12 @@ private:
     misc_knobs *_misc_knobs;
 
     QLabel *selected_jobs_label;
+    QWidget *box_dialog;
 
     void setup_ui();
     void options_ok();
     void uptate_panel_from_job(QString job_name);
+    void set_disabled_all(bool disable);
 
 public:
     options_class(QWidget *monitor, shared_variables *shared);

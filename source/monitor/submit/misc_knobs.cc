@@ -36,6 +36,9 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     QLabel *suspended_label = new QLabel();
 
     // Ajustes
+    comment_edit->set_placeholder_text("Write your comment here");
+    job_name_edit->set_placeholder_text("Name");
+
     instances_edit->get_line_edit()->setValidator(
         new QIntValidator(1, 16, this));
     instances_edit->get_line_edit()->setPlaceholderText("Number 1-16");
@@ -98,4 +101,24 @@ void misc_knobs::update_server_groups()
 
     for (QString group : groups->get_groups())
         server_group_box->add_items({group});
+}
+
+void misc_knobs::clear()
+{
+    job_name_edit->clear();
+    comment_edit->clear();
+    instances_edit->clear();
+}
+
+void misc_knobs::set_disabled(bool disable, QString knob_name)
+{
+    this->setDisabled(disable);
+
+    job_name_edit->set_disabled(disable);
+    comment_edit->set_disabled(disable);
+    instances_edit->set_disabled(disable);
+
+    server_group_box->set_disabled(disable);
+    priority_box->set_disabled(disable);
+    suspended_check->set_disabled(disable);
 }

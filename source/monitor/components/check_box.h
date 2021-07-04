@@ -9,11 +9,13 @@ private:
     bool checked;
 
     void mousePressEvent(QMouseEvent *event) override;
+    void set_icon(QString icon_name, QString state);
 public:
     check_box(QString label, bool checked = true);
 
     inline bool is_checked() const;
     void set_checked(bool _checked);
+    void set_disabled(bool disable);
 };
 
 inline bool check_box::is_checked() const

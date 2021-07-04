@@ -4,7 +4,7 @@ cd ..
 source utils/shell/svg2png.sh
 
 normal_color="rgb(170,170,170)"
-disable_color="rgb(80,80,80)"
+disable_color="rgb(60,60,60)"
 checked_color="#0099ff"
 
 images="resources/images"

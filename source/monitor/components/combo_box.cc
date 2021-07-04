@@ -19,13 +19,10 @@ combo_box::combo_box()
     this->setFixedHeight(23);
     this->setMinimumWidth(70);
 
-    QLabel *arrow = new QLabel;
-    QPixmap pixmap(VINARENDER_PATH + "/resources/images/arrow_down_normal.png");
-    arrow->setPixmap(
-        pixmap.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-
+    arrow = new QLabel;
     arrow->setFixedWidth(22);
     arrow->setObjectName("arrow");
+    update_arrow("normal");
 
     label->setObjectName("combobox_label");
 
@@ -38,6 +35,15 @@ combo_box::combo_box()
 }
 
 combo_box::~combo_box() {}
+
+void combo_box::update_arrow(QString state)
+{
+    QPixmap pixmap(VINARENDER_PATH + "/resources/images/arrow_down_" + state +
+                   ".png");
+
+    arrow->setPixmap(
+        pixmap.scaled(22, 22, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+}
 
 void combo_box::add_item(QString item)
 {
@@ -104,4 +110,10 @@ void combo_box::mousePressEvent(QMouseEvent *event)
     menu->show();
 
     QWidget::mousePressEvent(event);
+}
+
+void combo_box::set_disabled(bool disable)
+{
+    this->setDisabled(disable);
+    disable ? update_arrow("disable") : update_arrow("normal");
 }

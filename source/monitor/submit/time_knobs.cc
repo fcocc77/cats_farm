@@ -19,8 +19,8 @@ time_knobs::time_knobs()
     QHBoxLayout *frame_range_layout = new QHBoxLayout(frame_range_widget);
     QHBoxLayout *task_size_layout = new QHBoxLayout(task_size_widget);
 
-    QLabel *frame_range_label = new QLabel("Frame Range:");
-    QLabel *task_size_label = new QLabel("Task Size:");
+    frame_range_label = new QLabel("Frame Range:");
+    task_size_label = new QLabel("Task Size:");
 
     first_frame_edit = new QLineEdit();
     last_frame_edit = new QLineEdit();
@@ -111,4 +111,23 @@ void time_knobs::calculate_task_divition(int task_size)
 
     int divisions = frame_count / task_size;
     task_size_box->set_label_text(QString::number(divisions) + " Tasks");
+}
+
+void time_knobs::set_disabled(bool disable, QString knob_name)
+{
+    first_frame_edit->setDisabled(disable);
+    last_frame_edit->setDisabled(disable);
+    task_size_edit->setDisabled(disable);
+
+    frame_range_label->setDisabled(disable);
+    task_size_label->setDisabled(disable);
+
+    task_size_box->set_disabled(disable);
+}
+
+void time_knobs::clear()
+{
+    first_frame_edit->clear();
+    last_frame_edit->clear();
+    task_size_edit->clear();
 }

@@ -11,11 +11,12 @@ class combo_box : public QWidget
     Q_OBJECT
 private:
     QMenu *menu;
-    QLabel *label;
+    QLabel *label, *arrow;
     QList<QAction *> actions;
     int index;
 
     int get_index(QString text) const;
+    void update_arrow(QString state);
 
     void mousePressEvent(QMouseEvent *event) override;
 
@@ -28,6 +29,8 @@ public:
     void set_current_text(QString text, bool emmit_signal = false);
     void set_index(int index, bool emmit_signal = false);
     void clear();
+    void set_disabled(bool disable);
+
     inline int get_index() const;
 
     inline void set_label_text(QString label_text);

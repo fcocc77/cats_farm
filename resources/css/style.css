@@ -45,6 +45,8 @@ QMessageBox {
     QMessageBox QPushButton:pressed {
       border-color: #0099ff;
       color: #0099ff; }
+    QMessageBox QPushButton:disabled {
+      color: #515861; }
 
 QInputDialog {
   background: #202327;
@@ -64,6 +66,8 @@ QInputDialog {
     QInputDialog QPushButton:pressed {
       border-color: #0099ff;
       color: #0099ff; }
+    QInputDialog QPushButton:disabled {
+      color: #515861; }
   QInputDialog QLineEdit {
     background: #2e3238;
     border: 1px solid #2e3238;
@@ -76,6 +80,8 @@ QInputDialog {
     QInputDialog QLineEdit:focus {
       background: #3a3f45;
       border-color: #0099ff; }
+    QInputDialog QLineEdit:disabled {
+      color: #515861; }
 
 QScrollBar::horizontal {
   height: 10px; }
@@ -416,6 +422,8 @@ QMenuBar {
     #settings #hosts_widget QLineEdit:focus {
       background: #3a3f45;
       border-color: #0099ff; }
+    #settings #hosts_widget QLineEdit:disabled {
+      color: #515861; }
 
 #settings #tabs_widget QWidget {
   background: #2a2d32;
@@ -455,6 +463,8 @@ QMenuBar {
   #settings QPushButton:pressed {
     border-color: #0099ff;
     color: #0099ff; }
+  #settings QPushButton:disabled {
+    color: #515861; }
 
 #submit_widget #box_widget, #submit_widget #knobs_box, #options #box_widget, #options #knobs_box {
   background: #23262a;
@@ -464,6 +474,8 @@ QMenuBar {
 
 #submit_widget QLabel, #options QLabel {
   background: none; }
+  #submit_widget QLabel:disabled, #options QLabel:disabled {
+    color: #515861; }
 
 #submit_widget QLineEdit, #submit_widget QTextEdit, #options QLineEdit, #options QTextEdit {
   background: #2e3238;
@@ -476,6 +488,8 @@ QMenuBar {
   #submit_widget QLineEdit:focus, #submit_widget QTextEdit:focus, #options QLineEdit:focus, #options QTextEdit:focus {
     background: #3a3f45;
     border-color: #0099ff; }
+  #submit_widget QLineEdit:disabled, #submit_widget QTextEdit:disabled, #options QLineEdit:disabled, #options QTextEdit:disabled {
+    color: #515861; }
 
 #submit_widget #combo_box #combobox_label, #options #combo_box #combobox_label {
   background: #2e3238;
@@ -506,4 +520,6 @@ QMenuBar {
   #submit_widget QPushButton:pressed, #options QPushButton:pressed {
     border-color: #0099ff;
     color: #0099ff; }
+  #submit_widget QPushButton:disabled, #options QPushButton:disabled {
+    color: #515861; }
 
