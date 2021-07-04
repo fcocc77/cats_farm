@@ -21,6 +21,7 @@ render:
 monitor:
     ☐ el over del puntero de la tableta, que da pegado en los bordes
     ☐ que tenga control-z
+    ☐ al reescalar, los splitter deben conservar su tamaño
     ✔ columna de errores; contador de errores @done (9/27/2020, 8:23:29 PM)
     ✔ cambiar de QDockWidget a QSpliter @done (9/27/2020, 8:23:16 PM)
     toolbar:
@@ -46,7 +47,6 @@ monitor:
         ☐ los cambios se pueden hacer solo en los jobs que estan pausados y no en rendering
         ☐ al arrastras la seleccion sin click en lo jobs, el panel no se actualiza
 
-    job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
         ✔ al presionar ok, se cierra el widget de 'propieties', solo deberia cerrarse el widget de 'job_options' @done (10/9/2020, 2:55:26 PM)
         ☐ al editar multiples jobs, deberian verse el nombre de cada job a editar @hi

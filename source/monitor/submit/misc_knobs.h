@@ -44,7 +44,14 @@ public:
 
     inline QString get_server_group() const;
     inline void set_server_group(QString server_group);
+
+    inline QWidget *get_paused_widget() const;
 };
+
+inline QWidget *misc_knobs::get_paused_widget() const
+{
+    return paused_check;
+}
 
 inline int misc_knobs::get_instances() const
 {

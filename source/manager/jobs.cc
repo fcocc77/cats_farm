@@ -234,11 +234,16 @@ QJsonObject jobs::get_options(QString job_name) const
     for (QString sg : job->server_group)
         _server_group.push_back(sg);
 
-    QJsonObject options = {
-        {"server_group", job->server_group}, {"priority", job->priority},
-        {"comment", job->comment},           {"instances", job->instances},
-        {"task_size", job->task_size},       {"job_name", job->name},
-        {"first_frame", job->first_frame},   {"last_frame", job->last_frame}};
+    QJsonObject options = {{"server_group", job->server_group},
+                           {"priority", job->priority},
+                           {"comment", job->comment},
+                           {"instances", job->instances},
+                           {"task_size", job->task_size},
+                           {"job_name", job->name},
+                           {"first_frame", job->first_frame},
+                           {"last_frame", job->last_frame},
+                           {"software", job->software},
+                           {"software_data", job->software_data}};
 
     return options;
 }
@@ -258,7 +263,9 @@ void jobs::write_options(QString job_name, QJsonObject options)
     int _last_frame = options["last_frame"].toInt();
     int _task_size = options["task_size"].toInt();
     QString name = options["job_name"].toString();
-    job->name = get_available_name(name);
+
+    if (name != job_name)
+        job->name = get_available_name(name);
 
     // si el first_frame, last_frame y task_size no se modifican no crea
     // las tares otra vez

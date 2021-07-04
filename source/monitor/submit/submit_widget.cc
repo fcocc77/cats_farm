@@ -125,7 +125,6 @@ void submit::submit_start(QString software)
         {"instances", _misc_knobs->get_instances()},
 
     };
-    print(info);
 
     bool ok = true;
     QString details = "Incomplete Fiels:\n";

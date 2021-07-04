@@ -8,6 +8,9 @@
 
 #include "time_knobs.h"
 #include "misc_knobs.h"
+#include "ffmpeg_knobs.h"
+#include "maya_knobs.h"
+#include "houdini_knobs.h"
 #include "shared_variables.h"
 
 class options_class : public QWidget
@@ -18,6 +21,9 @@ private:
 
     time_knobs *_time_knobs;
     misc_knobs *_misc_knobs;
+    ffmpeg_knobs *_ffmpeg_knobs;
+    maya_knobs *_maya_knobs;
+    houdini_knobs * _houdini_knobs;
 
     QStringList selected_jobs;
 

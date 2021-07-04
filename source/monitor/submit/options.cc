@@ -20,10 +20,16 @@ void options_class::setup_ui()
     this->setObjectName("options");
 
     QVBoxLayout *main_layout = new QVBoxLayout(this);
+    main_layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     main_layout->setMargin(0);
 
     _time_knobs = new time_knobs();
     _misc_knobs = new misc_knobs(_monitor);
+    _ffmpeg_knobs = new ffmpeg_knobs();
+    _maya_knobs = new maya_knobs();
+    _houdini_knobs = new houdini_knobs();
+
+    _misc_knobs->get_paused_widget()->hide();
 
     selected_jobs_label = new QLabel("selected jobs");
 
@@ -39,6 +45,9 @@ void options_class::setup_ui()
     box_dialog_layout->addWidget(close_button);
 
     main_layout->addWidget(selected_jobs_label);
+    main_layout->addWidget(_ffmpeg_knobs);
+    main_layout->addWidget(_maya_knobs);
+    main_layout->addWidget(_houdini_knobs);
     main_layout->addWidget(_time_knobs);
     main_layout->addWidget(_misc_knobs);
     main_layout->addWidget(box_dialog);
@@ -62,8 +71,13 @@ void options_class::update_panel(bool clear)
 
     jobs_class *jobs = static_cast<monitor *>(_monitor)->get_jobs_widget();
 
+    _ffmpeg_knobs->hide();
+    _maya_knobs->hide();
+    _houdini_knobs->hide();
+
     int count = jobs->selectedItems().count();
     selected_jobs.clear();
+
 
     for (QTreeWidgetItem *item : jobs->selectedItems())
         selected_jobs.push_back(item->text(0));
@@ -108,6 +122,31 @@ void options_class::uptate_panel_from_job(QString job_name)
         tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
 
     QJsonObject _response = jofs(response);
+
+    QString software = _response["software"].toString();
+    QJsonObject sdata = _response["software_data"].toObject();
+
+    if (software == "ffmpeg")
+    {
+        _ffmpeg_knobs->set_input_file(sdata["input_file"].toString());
+        _ffmpeg_knobs->set_output_folder(sdata["output_folder"].toString());
+        _ffmpeg_knobs->set_movie_name(sdata["movie_name"].toString());
+        _ffmpeg_knobs->set_command(sdata["command"].toString());
+
+        _ffmpeg_knobs->show();
+    }
+    else if (software == "maya")
+    {
+        _maya_knobs->set_scene(sdata["scene"].toString());
+        _maya_knobs->set_project_folder(sdata["project_folder"].toString());
+
+        _maya_knobs->show();
+    }
+    else if (software == "houdini")
+    {
+        _houdini_knobs->set_project(sdata["project"].toString());
+        _houdini_knobs->set_engine(sdata["engine"].toString());
+    }
 
     _time_knobs->set_first_frame(_response["first_frame"].toInt());
     _time_knobs->set_last_frame(_response["last_frame"].toInt());

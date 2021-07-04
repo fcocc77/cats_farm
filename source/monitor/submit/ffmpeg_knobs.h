@@ -47,6 +47,7 @@ public:
     ffmpeg_knobs();
 
     void set_preset(QString preset_name);
+    void set_command(QString command);
 
     inline QString get_preset() const;
     inline QString get_command() const;

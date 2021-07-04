@@ -252,3 +252,17 @@ void ffmpeg_knobs::calc_ffmpeg_data(QString file, int *first_frame, int *last_fr
     *task_size = _task_size;
 }
 
+void ffmpeg_knobs::set_command(QString command)
+{
+    command_edit->setText(command);
+
+    for (QString preset_name : presets.keys())
+    {
+        QString _command = presets[preset_name].toString();
+        if (_command == command)
+        {
+            preset_box->set_current_text(preset_name);
+            break;
+        }
+    }
+}
