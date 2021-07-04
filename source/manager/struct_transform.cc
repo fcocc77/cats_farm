@@ -36,7 +36,7 @@ void json_to_struct(QJsonObject info, jobs *__jobs, servers *__servers,
         _jobs->progres = job["progres"].toInt();
         _jobs->waiting_task = job["waiting_task"].toInt();
         _jobs->tasks = job["tasks"].toInt();
-        _jobs->suspended_task = job["suspended_task"].toInt();
+        _jobs->paused_task = job["paused_task"].toInt();
         _jobs->failed_task = job["failed_task"].toInt();
         _jobs->active_task = job["active_task"].toInt();
         _jobs->task_size = job["task_size"].toInt();
@@ -162,7 +162,7 @@ QJsonObject struct_to_json(jobs *__jobs, servers *__servers, groups *__groups)
         j["progres"] = job->progres;
         j["waiting_task"] = job->waiting_task;
         j["tasks"] = job->tasks;
-        j["suspended_task"] = job->suspended_task;
+        j["paused_task"] = job->paused_task;
         j["failed_task"] = job->failed_task;
         j["active_task"] = job->active_task;
         j["task_size"] = job->task_size;

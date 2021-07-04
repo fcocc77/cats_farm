@@ -277,7 +277,7 @@ void update_class::update_jobs(QJsonObject recv)
                             item->setForeground(i, QColor(200, 200, 200));
                     }
 
-                    if (status == "Suspended")
+                    if (status == "Paused")
                     {
                         QString bar_color = "QProgressBar::chunk:horizontal "
                                             "{background: rgb(140, 140, 0);}";
@@ -741,7 +741,7 @@ void update_class::update_task()
                 job = _job.toObject();
                 break;
             }
-        } //-------------------------------------------------
+        }
 
         for (QJsonValue t : job["task"].toArray())
         {
@@ -789,7 +789,7 @@ void update_class::update_task()
                 }
             }
 
-            if (status == "suspended")
+            if (status == "paused")
             {
                 for (int i = 0; i < 5; ++i)
                 {

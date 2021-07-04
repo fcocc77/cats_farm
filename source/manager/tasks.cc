@@ -128,12 +128,12 @@ void tasks::task_action(QJsonArray pks)
         auto job = _jobs->get_job(job_name);
         auto task = get_task(job->task, task_name);
 
-        if (task_action == "suspend")
+        if (task_action == "pause")
         {
             if (task->status == "waiting")
             {
-                job->suspended_task += 1;
-                task->status = "suspended";
+                job->paused_task += 1;
+                task->status = "paused";
                 job->status = "Queue ";
             }
         }
@@ -142,8 +142,8 @@ void tasks::task_action(QJsonArray pks)
         {
             if (not(task->status == "active"))
             {
-                if (task->status == "suspended")
-                    job->suspended_task -= 1;
+                if (task->status == "paused")
+                    job->paused_task -= 1;
 
                 if (task->status == "finished")
                     job->progres -= 1;

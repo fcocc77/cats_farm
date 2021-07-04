@@ -14,7 +14,7 @@ private:
     text_knob *job_name_edit;
     text_knob *comment_edit;
     text_knob *instances_edit;
-    check_box *suspended_check;
+    check_box *paused_check;
 
     combo_box *server_group_box;
     combo_box *priority_box;
@@ -33,17 +33,17 @@ public:
     inline QString get_comment() const;
     inline void set_comment(QString comment);
 
-    inline QString get_priority() const;
-    inline int get_priority_index() const;
-    inline void set_priority(QString priority);
+    inline int get_priority() const;
+    inline void set_priority(int priority);
 
-    inline bool get_suspend() const;
-    inline void set_suspend(bool suspended);
+    inline bool get_paused() const;
+    inline void set_paused(bool paused);
 
     inline int get_instances() const;
     inline void set_instances(int instances);
 
     inline QString get_server_group() const;
+    inline void set_server_group(QString server_group);
 };
 
 inline int misc_knobs::get_instances() const
@@ -59,6 +59,12 @@ inline void misc_knobs::set_instances(int instances)
 inline QString misc_knobs::get_server_group() const
 {
     return server_group_box->get_current_text();
+}
+
+inline void misc_knobs::set_server_group(QString server_group)
+{
+    update_server_groups();
+    server_group_box->set_current_text(server_group);
 }
 
 inline QString misc_knobs::get_job_name() const
@@ -81,29 +87,24 @@ inline void misc_knobs::set_comment(QString comment)
     comment_edit->set_text(comment);
 }
 
-inline QString misc_knobs::get_priority() const
-{
-    return priority_box->get_current_text();
-}
-
-inline int misc_knobs::get_priority_index() const
+inline int misc_knobs::get_priority() const
 {
     return priority_box->get_index();
 }
 
-inline void misc_knobs::set_priority(QString priority)
+inline void misc_knobs::set_priority(int priority)
 {
-    priority_box->set_current_text(priority);
+    priority_box->set_index(priority);
 }
 
-inline bool misc_knobs::get_suspend() const
+inline bool misc_knobs::get_paused() const
 {
-    return suspended_check->is_checked();
+    return paused_check->is_checked();
 }
 
-inline void misc_knobs::set_suspend(bool suspended)
+inline void misc_knobs::set_paused(bool paused)
 {
-    suspended_check->set_checked(suspended);
+    paused_check->set_checked(paused);
 }
 
 #endif // MISC_KNOBS_H

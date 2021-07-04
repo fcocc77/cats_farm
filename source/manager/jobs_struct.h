@@ -31,7 +31,7 @@ struct job_struct
     int progres;
     int waiting_task;
     int tasks;
-    int suspended_task;
+    int paused_task;
     int failed_task;
     int active_task;
     int task_size;
@@ -49,7 +49,7 @@ struct makejob_struct
     int last_frame;
     int task_size;
     int priority;
-    bool suspend;
+    bool paused;
     QString comment;
     QString software;
     QString project;

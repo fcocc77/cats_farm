@@ -78,7 +78,7 @@ QString manager::send_to_logger()
         j["progres"] = job->progres;
         j["waiting_task"] = job->waiting_task;
         j["tasks"] = job->tasks;
-        j["suspended_task"] = job->suspended_task;
+        j["paused_task"] = job->paused_task;
         j["failed_task"] = job->failed_task;
         j["active_task"] = job->active_task;
         j["task_size"] = job->task_size;

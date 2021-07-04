@@ -20,8 +20,8 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     instances_edit = new text_knob("Instances");
     comment_edit = new text_knob("Comment", false);
 
-    suspended_check = new check_box("Suspended");
-    suspended_check->setFixedWidth(100);
+    paused_check = new check_box("Paused");
+    paused_check->setFixedWidth(100);
 
     QWidget *priority_and_group = new QWidget();
     QHBoxLayout *priority_and_group_layout = new QHBoxLayout(priority_and_group);
@@ -31,9 +31,9 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     server_group_box = new combo_box();
     priority_box = new combo_box();
 
-    QWidget *suspended_widget = new QWidget();
-    QHBoxLayout *suspended_layout = new QHBoxLayout(suspended_widget);
-    QLabel *suspended_label = new QLabel();
+    QWidget *paused_widget = new QWidget();
+    QHBoxLayout *paused_layout = new QHBoxLayout(paused_widget);
+    QLabel *paused_label = new QLabel();
 
     // Ajustes
     comment_edit->set_placeholder_text("Write your comment here");
@@ -52,16 +52,16 @@ misc_knobs::misc_knobs(QWidget *__monitor)
 
     priority_and_group_layout->setContentsMargins(h, v, h, s);
     instances_edit->layout()->setContentsMargins(h, s, h, s);
-    suspended_layout->setContentsMargins(h, s, h, v);
+    paused_layout->setContentsMargins(h, s, h, v);
     job_name_edit->layout()->setContentsMargins(h, v, h, s);
     comment_edit->layout()->setContentsMargins(h, s, h, v);
 
     instances_edit->setFixedWidth(246);
 
     priority_and_group_layout->setAlignment(Qt::AlignLeft);
-    suspended_layout->setAlignment(Qt::AlignLeft);
+    paused_layout->setAlignment(Qt::AlignLeft);
 
-    suspended_label->setFixedWidth(INIT_LABEL_WIDTH);
+    paused_label->setFixedWidth(INIT_LABEL_WIDTH);
 
     server_group_label->setFixedWidth(INIT_LABEL_WIDTH);
     server_group_label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -81,12 +81,12 @@ misc_knobs::misc_knobs(QWidget *__monitor)
     priority_and_group_layout->addWidget(priority_label);
     priority_and_group_layout->addWidget(priority_box);
 
-    suspended_layout->addWidget(suspended_label);
-    suspended_layout->addWidget(suspended_check);
+    paused_layout->addWidget(paused_label);
+    paused_layout->addWidget(paused_check);
 
     layout->addWidget(priority_and_group);
     layout->addWidget(instances_edit);
-    layout->addWidget(suspended_widget);
+    layout->addWidget(paused_widget);
     layout->addWidget(job_name_edit);
     layout->addWidget(comment_edit);
 }
@@ -120,5 +120,5 @@ void misc_knobs::set_disabled(bool disable, QString knob_name)
 
     server_group_box->set_disabled(disable);
     priority_box->set_disabled(disable);
-    suspended_check->set_disabled(disable);
+    paused_check->set_disabled(disable);
 }

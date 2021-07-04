@@ -18,7 +18,6 @@ submit::submit(QWidget *__monitor)
     connections();
 
     set_software("ffmpeg");
-    panel_open();
 }
 
 submit::~submit() {}
@@ -114,9 +113,9 @@ void submit::submit_start(QString software)
     QJsonObject info = {
         {"job_name", _misc_knobs->get_priority()},
         {"comment", _misc_knobs->get_comment()},
-        {"suspended", _misc_knobs->get_suspend()},
+        {"paused", _misc_knobs->get_paused()},
         {"server_group", _misc_knobs->get_server_group()},
-        {"priority", _misc_knobs->get_priority_index()},
+        {"priority", _misc_knobs->get_priority()},
         {"software", software},
         {"software_data", software_data},
         {"system", _linux ? "Linux" : "Windows"},
@@ -219,7 +218,7 @@ void submit::submit_file(QString file)
     QJsonObject info = {
         {"job_name", job_name},
         {"comment", software},
-        {"suspended", true},
+        {"paused", true},
         {"server_group", "auto"},
         {"priority", 2},
         {"software", software},
@@ -260,8 +259,9 @@ void submit::panel_save()
                          {"last_frame", _time_knobs->get_last_frame()},
                          {"task_size", _time_knobs->get_task_size()},
                          {"priority", _misc_knobs->get_priority()},
+                         {"server_group", _misc_knobs->get_server_group()},
                          {"comment", _misc_knobs->get_comment()},
-                         {"suspend", _misc_knobs->get_suspend()},
+                         {"paused", _misc_knobs->get_paused()},
                          {"instances", _misc_knobs->get_instances()}};
 
     jwrite(VINARENDER_CONF_PATH + "/submit_panel.json", panel);
@@ -289,9 +289,10 @@ void submit::panel_open()
     _time_knobs->set_task_size(panel["task_size"].toInt());
 
     _misc_knobs->set_job_name(panel["job_name"].toString());
-    _misc_knobs->set_priority(panel["priority"].toString());
+    _misc_knobs->set_priority(panel["priority"].toInt());
+    _misc_knobs->set_server_group(panel["server_group"].toString());
     _misc_knobs->set_comment(panel["comment"].toString());
-    _misc_knobs->set_suspend(panel["suspend"].toBool());
+    _misc_knobs->set_paused(panel["paused"].toBool());
     _misc_knobs->set_instances(panel["instances"].toInt());
 }
 
@@ -299,4 +300,10 @@ void submit::hideEvent(QHideEvent *event)
 {
     panel_save();
     QWidget::hideEvent(event);
+}
+
+void submit::showEvent(QShowEvent *event)
+{
+    panel_open();
+    QWidget::showEvent(event);
 }

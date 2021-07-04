@@ -19,11 +19,13 @@ private:
     time_knobs *_time_knobs;
     misc_knobs *_misc_knobs;
 
+    QStringList selected_jobs;
+
     QLabel *selected_jobs_label;
     QWidget *box_dialog;
 
     void setup_ui();
-    void options_ok();
+    void save();
     void uptate_panel_from_job(QString job_name);
     void set_disabled_all(bool disable);
 

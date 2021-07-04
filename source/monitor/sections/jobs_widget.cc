@@ -26,7 +26,7 @@ jobs_class::jobs_class(shared_variables *_shared, QWidget *__monitor,
     this->setAcceptDrops(true);
 
     delete_action = new QAction("Delete");
-    job_suspend_action = new QAction("Suspend");
+    job_pause_action = new QAction("Pause");
     job_resume_action = new QAction("Resume");
     job_restart_action = new QAction("Restart");
     job_unlock_servers_action = new QAction("Enable blocked servers");
@@ -39,7 +39,7 @@ jobs_class::jobs_class(shared_variables *_shared, QWidget *__monitor,
     };
 
     delete_action->setIcon(icon("delete"));
-    job_suspend_action->setIcon(icon("pause"));
+    job_pause_action->setIcon(icon("pause"));
     job_resume_action->setIcon(icon("play_arrow"));
     job_restart_action->setIcon(icon("restart"));
     job_unlock_servers_action->setIcon(icon("unlock"));
@@ -102,10 +102,10 @@ void jobs_class::connections()
 
     delete_action->setShortcut(QString("Del"));
 
-    connect(job_suspend_action, &QAction::triggered, this, [this]() {
-        QString ask = "Sure you want to suspend the job?";
-        QString tile = "Job Suspend";
-        QString action = "suspend";
+    connect(job_pause_action, &QAction::triggered, this, [this]() {
+        QString ask = "Sure you want to pause the job?";
+        QString tile = "Job Pause";
+        QString action = "pause";
         message(&jobs_class::to_action, action, ask, tile, this);
     });
 
@@ -134,7 +134,7 @@ void jobs_class::popup()
     {
         QMenu *menu = new QMenu(_monitor);
 
-        menu->addAction(job_suspend_action);
+        menu->addAction(job_pause_action);
         menu->addAction(job_resume_action);
         menu->addAction(delete_action);
         menu->addAction(job_restart_action);

@@ -17,7 +17,7 @@ private:
     void message(QString action, QString ask, QString tile);
     void to_action(QString action);
     void connections();
-    //-----------------
+
     shared_variables *shared;
     jobs_class *jobs;
 
@@ -27,10 +27,9 @@ public:
     ~tasks_class();
 
     // Task Action
-    QAction *suspend_action;
+    QAction *pause_action;
     QAction *restart_action;
     QAction *render_server_action;
-    //-----------------------------
 
     QTreeWidget *tree;
 };

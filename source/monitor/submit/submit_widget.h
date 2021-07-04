@@ -43,6 +43,7 @@ private:
     void submit_file(QString file);
 
     void hideEvent(QHideEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 public:
     submit(QWidget *_monitor);

@@ -48,7 +48,7 @@ void main_menu_class::connections()
     QMenu *jobs_menu = new QMenu("Jobs", this);
     this->addMenu(jobs_menu);
     jobs_menu->addAction(jobs->job_resume_action);
-    jobs_menu->addAction(jobs->job_suspend_action);
+    jobs_menu->addAction(jobs->job_pause_action);
     jobs_menu->addAction(jobs->delete_action);
     jobs_menu->addAction(jobs->job_restart_action);
     jobs_menu->addSeparator();
@@ -57,7 +57,7 @@ void main_menu_class::connections()
 
     QMenu *tasks_menu = new QMenu("Tasks", this);
     this->addMenu(tasks_menu);
-    tasks_menu->addAction(tasks->suspend_action);
+    tasks_menu->addAction(tasks->pause_action);
     tasks_menu->addSeparator();
     tasks_menu->addAction(tasks->restart_action);
 

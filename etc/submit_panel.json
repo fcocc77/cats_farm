@@ -10,6 +10,6 @@
     "render_node": "",
     "server_group": "",
     "software": "FFmpeg",
-    "suspend": false,
+    "paused": false,
     "task_size": "10"
 }

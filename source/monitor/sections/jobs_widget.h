@@ -54,7 +54,7 @@ public:
 
     // Job Acciones
     QAction *delete_action;
-    QAction *job_suspend_action;
+    QAction *job_pause_action;
     QAction *job_resume_action;
     QAction *job_restart_action;
     QAction *job_unlock_servers_action;

@@ -17,7 +17,7 @@ void jobs::update()
     for (auto job : *items)
     {
         int waiting = job->tasks -
-                      (job->suspended_task + job->progres + job->active_task);
+                      (job->paused_task + job->progres + job->active_task);
         job->waiting_task = waiting;
 
         if (job->failed_task)
@@ -32,7 +32,7 @@ void jobs::update()
         }
         else
         {
-            if ((job->status == "Suspended") or (job->status == "Completed") or
+            if ((job->status == "Paused") or (job->status == "Completed") or
                 (job->status == "Failed") or (job->status == "Concatenate"))
                 ;
             else if (job->active_task)
@@ -121,7 +121,7 @@ void jobs::make_job(QJsonObject __job)
     job_struct *_job = new job_struct;
 
     _job->name = job_name;
-    _job->status = __job["suspended"].toBool() ? "Suspended" : "Queue";
+    _job->status = __job["paused"].toBool() ? "Paused" : "Queue";
     _job->priority = __job["priority"].toInt();
     _job->server_group = __job["server_group"].toString();
     _job->instances = __job["instances"].toInt();
@@ -140,7 +140,7 @@ void jobs::make_job(QJsonObject __job)
     _job->errors = 0;
     _job->waiting_task = tasks.size();
     _job->tasks = tasks.size();
-    _job->suspended_task = 0;
+    _job->paused_task = 0;
     _job->failed_task = 0;
     _job->active_task = 0;
     _job->task_size = _task_size;
@@ -172,10 +172,10 @@ void jobs::job_action(QJsonArray pks)
         if (job_action == "delete")
             _tasks->kill_tasks(job, true);
 
-        if (job_action == "suspend")
+        if (job_action == "pause")
         {
             if (not(job->status == "Completed"))
-                job->status = "Suspended";
+                job->status = "Paused";
 
             _tasks->kill_tasks(job, false);
         }
@@ -194,7 +194,7 @@ void jobs::job_action(QJsonArray pks)
 
             job->status = "Queue";
             job->progres = 0;
-            job->suspended_task = 0;
+            job->paused_task = 0;
             job->active_task = 0;
             job->time_elapsed = 0;
             job->last_time = 0;
@@ -271,12 +271,12 @@ void jobs::write_options(QString job_name, QJsonObject options)
 
         // obtiene los frames segun el estado
         QList<int> finished;
-        QList<int> suspended;
+        QList<int> paused;
         for (auto task : job->task)
         {
-            if ((task->status == "suspended"))
+            if ((task->status == "paused"))
                 for (int i = task->first_frame; i <= task->last_frame; ++i)
-                    suspended.push_back(i);
+                    paused.push_back(i);
 
             if ((task->status == "finished"))
                 for (int i = task->first_frame; i <= task->last_frame; ++i)
@@ -295,16 +295,16 @@ void jobs::write_options(QString job_name, QJsonObject options)
             int task_size = task->last_frame - task->first_frame + 1;
 
             int _finished = 0;
-            int _suspended = 0;
+            int _paused = 0;
 
             for (int i = task->first_frame; i <= task->last_frame; ++i)
             {
                 for (int f : finished)
                     if (i == f)
                         _finished++;
-                for (int s : suspended)
+                for (int s : paused)
                     if (i == s)
-                        _suspended++;
+                        _paused++;
             }
 
             if (task_size == _finished)
@@ -312,8 +312,8 @@ void jobs::write_options(QString job_name, QJsonObject options)
                 task->status = "finished";
                 progres++;
             }
-            if (task_size == _suspended)
-                task->status = "suspended";
+            if (task_size == _paused)
+                task->status = "paused";
         }
         job->progres = progres;
     }

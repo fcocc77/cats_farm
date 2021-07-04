@@ -15,7 +15,7 @@ tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
     , shared(_shared)
     , jobs(_jobs)
 {
-    suspend_action = new QAction("Suspend");
+    pause_action = new QAction("Pause");
     restart_action = new QAction("Restart");
     render_server_action = new QAction("Select server tasks");
 
@@ -24,7 +24,7 @@ tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
                      "_normal.png");
     };
 
-    suspend_action->setIcon(icon("pause"));
+    pause_action->setIcon(icon("pause"));
     restart_action->setIcon(icon("play_arrow"));
 
     tree = new QTreeWidget();
@@ -68,13 +68,12 @@ void tasks_class::connections()
             &tasks_class::popup);
 
     // Task Action
-    connect(suspend_action, &QAction::triggered, this,
-            [this]() { to_action("suspend"); });
+    connect(pause_action, &QAction::triggered, this,
+            [this]() { to_action("pause"); });
     connect(restart_action, &QAction::triggered, this, &tasks_class::restart);
 
     connect(render_server_action, &QAction::triggered, this,
             &tasks_class::render_server);
-    //-----------------------------------------------------
 }
 
 void tasks_class::popup()
@@ -84,7 +83,7 @@ void tasks_class::popup()
     {
         QMenu *menu = new QMenu(monitor);
 
-        menu->addAction(suspend_action);
+        menu->addAction(pause_action);
         menu->addSeparator();
         menu->addAction(restart_action);
         menu->addAction(render_server_action);

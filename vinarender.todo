@@ -43,7 +43,7 @@ monitor:
         ✔ algunos label quedan en color negro @hi @done(2021-06-29 22:27)
 
     options:
-        ☐ los cambios se pueden hacer solo en los jobs que estan suspendidos y no en rendering
+        ☐ los cambios se pueden hacer solo en los jobs que estan pausados y no en rendering
 
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre
