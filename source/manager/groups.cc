@@ -34,7 +34,7 @@ void groups::update()
         for (auto _server : group->server)
         {
 
-            if (is_struct(_servers->get_items(), _server->name))
+            if (contains(_servers->get_items(), _server->name))
             {
                 auto server = _servers->get_server(_server->name);
 
@@ -87,7 +87,7 @@ void groups::group_action(QJsonArray pks)
             for (QJsonValue s : serverList)
             {
                 QString server = s.toString();
-                if (not is_struct(&group->server, server))
+                if (not contains(&group->server, server))
                 {
 
                     QString status = _servers->get_server(server)->status;
@@ -148,7 +148,7 @@ void groups::group_create(QJsonArray pks)
     while (1)
     {
         pad += 1;
-        if (is_struct(items, group_name))
+        if (contains(items, group_name))
             group_name = group_name_in + "_" + QString::number(pad);
         else
             break;

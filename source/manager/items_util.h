@@ -3,27 +3,27 @@
 
 #include <QString>
 
-template <typename T> bool is_struct(T *lista, QString name)
+template <typename T> bool contains(T *items, QString name)
 {
-    for (auto s : *lista)
-        if (s->name == name)
+    for (auto item : *items)
+        if (item->name == name)
             return true;
 
     return false;
 }
 
-template <typename T> void erase_by_name(T *lista, QString name)
+template <typename T> void erase_by_name(T *items, QString name)
 {
     int i = 0;
-    for (auto s : *lista)
+    for (auto item : *items)
     {
-        if (s->name == name)
+        if (item->name == name)
             break;
 
         i++;
     }
 
-    lista->erase(lista->begin() + i, lista->begin() + i + 1);
+    items->erase(items->begin() + i, items->begin() + i + 1);
 }
 
 #endif // ITEMS_UTIL_H

@@ -31,9 +31,11 @@ void options_class::setup_ui()
     QHBoxLayout *box_dialog_layout = new QHBoxLayout(box_dialog);
 
     QPushButton *save_button = new QPushButton("Save");
+    QPushButton *save_and_start = new QPushButton("Save and Start Render");
     QPushButton *close_button = new QPushButton("Close");
 
     box_dialog_layout->addWidget(save_button);
+    box_dialog_layout->addWidget(save_and_start);
     box_dialog_layout->addWidget(close_button);
 
     main_layout->addWidget(selected_jobs_label);

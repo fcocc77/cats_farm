@@ -38,7 +38,7 @@ QString servers::update_server_thread(QJsonArray recv)
 
         int response_time = time(0);
 
-        if (not is_struct(items, name))
+        if (not contains(items, name))
         {
             QList<inst_struct *> instances;
 

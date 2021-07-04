@@ -111,7 +111,7 @@ void submit::submit_start(QString software)
                          {"engine", _houdini_knobs->get_engine()}};
 
     QJsonObject info = {
-        {"job_name", _misc_knobs->get_priority()},
+        {"job_name", _misc_knobs->get_job_name()},
         {"comment", _misc_knobs->get_comment()},
         {"paused", _misc_knobs->get_paused()},
         {"server_group", _misc_knobs->get_server_group()},
@@ -125,6 +125,7 @@ void submit::submit_start(QString software)
         {"instances", _misc_knobs->get_instances()},
 
     };
+    print(info);
 
     bool ok = true;
     QString details = "Incomplete Fiels:\n";

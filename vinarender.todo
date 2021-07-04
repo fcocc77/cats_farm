@@ -44,6 +44,7 @@ monitor:
 
     options:
         ☐ los cambios se pueden hacer solo en los jobs que estan pausados y no en rendering
+        ☐ al arrastras la seleccion sin click en lo jobs, el panel no se actualiza
 
     job_options:
         ☐ al seleccionar todos los jobs, y cambio el rango o las 'instances', se modifican todos los job con el mismo nombre

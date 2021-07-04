@@ -93,25 +93,25 @@ void jobs::update()
     }
 }
 
-void jobs::make_job(QJsonObject __job)
+QString jobs::get_available_name(QString name)
 {
-    // verifica si el nombre esta en la lista, si esta le pone un padding
-    QString _job_name = __job["job_name"].toString();
-    QString job_name = _job_name;
+    if (!contains(items, name))
+        return name;
 
-    for (int i = 0; i < 700; ++i)
+    QString new_name;
+
+    for (int i = 2; i < 10000; i++)
     {
-        bool contains = false;
-        for (auto j : *items)
-            if (job_name == j->name)
-                contains = true;
-
-        if (contains)
-            job_name = _job_name + "_" + QString::number(i);
-        else
-            break;
+        new_name = name + '-' + QString::number(i);
+        if (!contains(items, new_name))
+            return new_name;
     }
 
+    return name;
+}
+
+void jobs::make_job(QJsonObject __job)
+{
     int _task_size = __job["task_size"].toInt();
     int _first_frame = __job["first_frame"].toInt();
     int _last_frame = __job["last_frame"].toInt();
@@ -120,7 +120,7 @@ void jobs::make_job(QJsonObject __job)
 
     job_struct *_job = new job_struct;
 
-    _job->name = job_name;
+    _job->name = get_available_name(__job["job_name"].toString());
     _job->status = __job["paused"].toBool() ? "Paused" : "Queue";
     _job->priority = __job["priority"].toInt();
     _job->server_group = __job["server_group"].toString();
@@ -258,6 +258,7 @@ void jobs::write_options(QString job_name, QJsonObject options)
     int _last_frame = options["last_frame"].toInt();
     int _task_size = options["task_size"].toInt();
     QString name = options["job_name"].toString();
+    job->name = get_available_name(name);
 
     // si el first_frame, last_frame y task_size no se modifican no crea
     // las tares otra vez
