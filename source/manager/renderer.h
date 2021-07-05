@@ -20,7 +20,6 @@ private:
     groups *_groups;
 
     bool reset_render;
-    int server_port;
 
     void render_job();
     void render_task(server_struct *server, inst_struct *instance,

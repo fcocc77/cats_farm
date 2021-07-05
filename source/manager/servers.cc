@@ -11,9 +11,6 @@ servers::servers(void *__manager)
 {
     manager *___manager = static_cast<manager *>(_manager);
     preferences = ___manager->get_preferences();
-    settings = ___manager->get_settings();
-
-    server_port = settings->value("server").toObject()["port"].toInt();
 }
 
 QString servers::update_server_thread(QJsonArray recv)
@@ -218,7 +215,7 @@ void servers::server_set_state(server_struct *server, bool state)
             kill_ins.push_back(i);
         }
 
-        tcpClient(server->host, server_port, jats({3, kill_ins}));
+        tcpClient(server->host, SERVER_PORT, jats({3, kill_ins}));
     }
 }
 

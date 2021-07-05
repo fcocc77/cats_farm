@@ -148,7 +148,7 @@ void settings_class::path_read()
 {
     QJsonArray send = {"preferences", QJsonArray({"read", "none"})};
     QString recv =
-        tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
+        tcpClient(shared->manager_host, MANAGER_PORT, jats({3, send}));
     QJsonObject preferences = jofs(recv);
 
     auto array_to_string = [](QJsonArray array) {
@@ -225,6 +225,6 @@ void settings_class::path_write()
         vinacomp.push_back(l);
     paths["vinacomp"] = vinacomp;
 
-    tcpClient(shared->manager_host, shared->manager_port,
+    tcpClient(shared->manager_host, MANAGER_PORT,
               jats({3, {{"preferences", {{"write", paths}}}}}));
 }

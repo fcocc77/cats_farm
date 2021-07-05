@@ -7,6 +7,7 @@
 #include "util.h"
 #include "manager.h"
 #include "tcp.h"
+#include "../global/global.h"
 
 renderer::renderer(void *__manager, QMutex *_mutex, jobs *__jobs,
                    servers *__servers, groups *__groups)
@@ -18,11 +19,6 @@ renderer::renderer(void *__manager, QMutex *_mutex, jobs *__jobs,
     , _groups(__groups)
     , reset_render(false)
 {
-    server_port = static_cast<manager *>(_manager)
-                      ->get_settings()
-                      ->value("server")
-                      .toObject()["port"]
-                      .toInt();
 
     threading(&renderer::render_job, this);
 }
@@ -185,7 +181,7 @@ void renderer::render_task(server_struct *server, inst_struct *instance,
             };
 
             QString result =
-                tcpClient(server->host, server_port, jats({0, pks}));
+                tcpClient(server->host, SERVER_PORT, jats({0, pks}));
 
             if (not(result == "ok"))
             {

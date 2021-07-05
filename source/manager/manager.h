@@ -24,7 +24,6 @@ private:
 
     QJsonObject *preferences;
     QJsonObject *settings;
-    int server_port;
 
     QString pivot_to_server(QJsonArray recv);
     QString send_to_monitor_thread();

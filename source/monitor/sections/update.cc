@@ -46,8 +46,9 @@ void update_class::update(QString host)
 
     if (_linux)
     {
-        QString nmap = os::sh("nmap -Pn " + host + " -p " +
-                              QString::number(shared->manager_port));
+        QString nmap =
+            os::sh("nmap -Pn " + host + " -p " + QString::number(MANAGER_PORT));
+
         if (!nmap.contains("open"))
         {
             shared->conection->setText("Connection failed: " + host);
@@ -59,10 +60,10 @@ void update_class::update(QString host)
     settings->update(host);
 
     // actualiza una ves antes del loop.
-    QString recv = tcpClient(host, shared->manager_port, jats({2, "none"}));
+    QString recv = tcpClient(host, MANAGER_PORT, jats({2, "none"}));
     manager_recieve_update(recv, {});
 
-    manager = tcpClient(host, shared->manager_port,
+    manager = tcpClient(host, MANAGER_PORT,
                         &update_class::manager_recieve_update, this, true);
     update_started = true;
 }

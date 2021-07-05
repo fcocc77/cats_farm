@@ -272,8 +272,8 @@ void servers_class::to_log()
         QString host = (selected[0]->text(7));
 
         QJsonArray send = {host, QJsonArray({1, true})};
-        QString result = tcpClient(shared->manager_host, shared->manager_port,
-                                   jats({5, send}));
+        QString result =
+            tcpClient(shared->manager_host, MANAGER_PORT, jats({5, send}));
 
         log->set_text(result);
         log->parentWidget()->show();
@@ -318,7 +318,7 @@ QString servers_class::to_action(QString action, QString info)
     pks = {"serverAction", pks};
 
     QString recv =
-        tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
+        tcpClient(shared->manager_host, MANAGER_PORT, jats({3, pks}));
 
     return recv;
 }
@@ -332,7 +332,7 @@ QString servers_class::send_to_vserver(QString action, QString info)
         QString host = item->text(7);
 
         QJsonArray send = {host, QJsonArray({4, {{action, info}}})};
-        tcpClient(shared->manager_host, shared->manager_port, jats({5, send}));
+        tcpClient(shared->manager_host, MANAGER_PORT, jats({5, send}));
     }
 
     return "none";

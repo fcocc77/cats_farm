@@ -158,5 +158,5 @@ void tasks_class::to_action(QString action)
 
     pks = {"taskAction", pks};
 
-    tcpClient(shared->manager_host, shared->manager_port, jats({3, pks}));
+    tcpClient(shared->manager_host, MANAGER_PORT, jats({3, pks}));
 }

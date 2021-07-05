@@ -19,4 +19,7 @@
 
 #endif
 
+#define MANAGER_PORT 771
+#define SERVER_PORT 772
+
 #endif // GLOBAL_H

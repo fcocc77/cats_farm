@@ -25,10 +25,8 @@ manager::manager()
     // Recive la informacion del suministrador y crea un jobs con sus tareas
 
     *settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    int port = settings->value("manager").toObject()["port"].toInt();
-    server_port = settings->value("server").toObject()["port"].toInt();
 
-    tcpServer(port, &manager::server_tcp, this);
+    tcpServer(MANAGER_PORT, &manager::server_tcp, this);
     threading(&manager::update_all, this);
 }
 
@@ -96,7 +94,7 @@ QString manager::pivot_to_server(QJsonArray recv)
     QString host = recv[0].toString();
     QJsonArray pks = recv[1].toArray();
 
-    return tcpClient(host, server_port, jats(pks));
+    return tcpClient(host, SERVER_PORT, jats(pks));
 }
 
 void manager::reactive_all()

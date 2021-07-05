@@ -18,8 +18,6 @@ struct shared_variables
     bool stopUpdate;
     bool app_close;
     QString manager_host;
-    int manager_port;
-    int server_port;
     combo_box *zone_box;
     QLabel *conection;
     QLabel *jobs_count;

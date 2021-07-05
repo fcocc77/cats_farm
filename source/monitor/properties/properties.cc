@@ -13,6 +13,7 @@ properties_class::properties_class(log_class *_log, options_class *_options,
 {
     setup_ui();
 
+    this->hide();
     log->hide();
     options->hide();
     _submit->hide();

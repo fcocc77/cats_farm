@@ -14,8 +14,6 @@ private:
 
     QList<server_struct *> *items;
     QJsonObject *preferences;
-    QJsonObject *settings;
-    int server_port;
 
     void server_set_state(server_struct *server, bool state);
 

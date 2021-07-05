@@ -12,7 +12,6 @@ class tasks
 private:
     void *_manager;
     QJsonObject *settings;
-    int server_port;
 
     task_struct *get_task(QList<task_struct *> tasks, QString name);
 

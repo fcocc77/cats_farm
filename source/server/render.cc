@@ -152,6 +152,7 @@ bool render_class::nuke(int ins)
     mutex->lock();
 
     QJsonObject data = software_data[ins];
+    print(data);
     QString src_path, dst_path;
 
     QString output_movie = data["output_movie"].toString();

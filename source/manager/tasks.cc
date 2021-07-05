@@ -7,9 +7,6 @@
 tasks::tasks(void *__manager)
     : _manager(__manager)
 {
-    manager *___manager = static_cast<manager *>(_manager);
-    settings = ___manager->get_settings();
-    server_port = settings->value("server").toObject()["port"].toInt();
 }
 
 QList<task_struct *> tasks::make_task(int first_frame, int last_frame,
@@ -102,7 +99,7 @@ void tasks::kill_tasks(void *_job, bool _delete)
 
     for (auto server : *_servers->get_items())
         if (active_server.contains(server->name))
-            tcpClient(server->host, server_port, jats({3, kill_ins}));
+            tcpClient(server->host, SERVER_PORT, jats({3, kill_ins}));
 }
 
 task_struct *tasks::get_task(QList<task_struct *> tasks, QString name)

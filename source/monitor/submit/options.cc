@@ -5,6 +5,7 @@
 #include "combo_box.h"
 #include "main_window.h"
 #include "properties.h"
+#include "../global/global.h"
 
 options_class::options_class(QWidget *__monitor, shared_variables *_shared)
     : _monitor(__monitor)
@@ -120,7 +121,7 @@ void options_class::uptate_panel_from_job(QString job_name)
     QJsonArray send = {"job_options", options};
 
     QString response =
-        tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
+        tcpClient(shared->manager_host, MANAGER_PORT, jats({3, send}));
 
     QJsonObject _response = jofs(response);
 
@@ -190,7 +191,7 @@ void options_class::save()
 
         QJsonArray send = {"job_options", data};
 
-        tcpClient(shared->manager_host, shared->manager_port, jats({3, send}));
+        tcpClient(shared->manager_host, MANAGER_PORT, jats({3, send}));
     }
 }
 
