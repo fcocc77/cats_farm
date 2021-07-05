@@ -43,7 +43,7 @@ private:
 
     void item_delete();
 
-    virtual void mousePressEvent(QMouseEvent *event) override;
+    void selection_changed();
 
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragMoveEvent(QDragMoveEvent *event) override;

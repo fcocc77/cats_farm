@@ -106,7 +106,10 @@ void jobs_class::connections()
     connect(tree, &QTreeWidget::itemDoubleClicked, options,
             &options_class::open_panel);
 
-    connect(this, &QTreeWidget::customContextMenuRequested, this,
+    connect(tree, &QTreeWidget::itemSelectionChanged, this,
+            &jobs_class::selection_changed);
+
+    connect(tree, &QTreeWidget::customContextMenuRequested, this,
             &jobs_class::popup);
 
     connect(delete_action, &QAction::triggered, this, &jobs_class::item_delete);
@@ -314,20 +317,12 @@ void jobs_class::item_delete()
     message(&jobs_class::delete_start, action, ask, tile, this);
 }
 
-void jobs_class::mousePressEvent(QMouseEvent *event)
+void jobs_class::selection_changed()
 {
-    // QTreeView::mousePressEvent(event);
+    if (shared->tasks_tree->isVisible())
+        static_cast<monitor *>(_monitor)->get_update()->get_task();
 
-    // bool selected_item = selectionModel()->isSelected(indexAt(event->pos()));
-
-    // if (shared->tasks_tree->isVisible())
-    // {
-        // static_cast<monitor *>(_monitor)->get_update()->get_task();
-        // if (!selected_item)
-            // shared->tasks_tree->clear();
-    // }
-
-    // options->update_panel(!selected_item);
+    options->update_panel();
 }
 
 void jobs_class::dragEnterEvent(QDragEnterEvent *event)

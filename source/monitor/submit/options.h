@@ -40,7 +40,7 @@ public:
     ~options_class();
 
     void open_panel();
-    void update_panel(bool clear);
+    void update_panel();
 };
 
 #endif // OPTIONS_H

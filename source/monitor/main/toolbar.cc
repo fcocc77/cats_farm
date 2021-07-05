@@ -96,19 +96,14 @@ void toolbar_class::connections()
             &update_class::update);
 
     connect(tasks_switch, &button::clicked, this, [this]() {
-        tasks->get_tree()->parentWidget()->setVisible(
-            !tasks->get_tree()->parentWidget()->isVisible());
+        tasks->get_widget()->setVisible(!tasks->get_widget()->isVisible());
     });
 
-    connect(servers_switch, &button::clicked, this, [this]() {
-        servers->parentWidget()->setVisible(
-            !servers->parentWidget()->isVisible());
-    });
+    connect(servers_switch, &button::clicked, this,
+            [this]() { servers->setVisible(!servers->isVisible()); });
 
-    connect(groups_switch, &button::clicked, this, [this]() {
-        groups->parentWidget()->setVisible(
-            !groups->parentWidget()->isVisible());
-    });
+    connect(groups_switch, &button::clicked, this,
+            [this]() { groups->setVisible(!groups->isVisible()); });
 }
 
 void toolbar_class::switch_widget(QString widget_name)
@@ -135,7 +130,7 @@ void toolbar_class::switch_widget(QString widget_name)
 
 void toolbar_class::hide_properties()
 {
-    properties->parentWidget()->hide();
+    properties->hide();
 
     settings->set_checked(false);
     log_switch->set_checked(false);

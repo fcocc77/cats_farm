@@ -64,7 +64,7 @@ void options_class::setup_ui()
     });
 }
 
-void options_class::update_panel(bool clear)
+void options_class::update_panel()
 {
     if (!isVisible())
         return;
@@ -74,6 +74,7 @@ void options_class::update_panel(bool clear)
     _ffmpeg_knobs->hide();
     _maya_knobs->hide();
     _houdini_knobs->hide();
+
 
     int count = jobs->get_tree()->selectedItems().count();
     selected_jobs.clear();
@@ -86,7 +87,7 @@ void options_class::update_panel(bool clear)
     for (QString job_name : selected_jobs)
         selected_items += job_name + "  -   ";
 
-    if (clear)
+    if (!count)
     {
         selected_items = "";
         count = 0;
