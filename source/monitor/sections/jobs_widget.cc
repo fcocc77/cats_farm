@@ -22,6 +22,9 @@ jobs_class::jobs_class(shared_variables *_shared, QWidget *__monitor,
     , groups(_groups)
     , properties(_properties)
     , _submit(__submit)
+    , tree(new QTreeWidget)
+    , layout(new QVBoxLayout(this))
+    , _title_bar(new title_bar("Jobs"))
 {
     this->setAcceptDrops(true);
 
@@ -55,7 +58,11 @@ jobs_class::~jobs_class() {}
 void jobs_class::setup_ui()
 {
     this->setObjectName("jobs");
-    this->setColumnCount(10);
+
+    layout->setMargin(0);
+    layout->setSpacing(0);
+
+    tree->setColumnCount(10);
     QStringList columns{"Job Name",
                         "Priority",
                         "Software",
@@ -67,32 +74,36 @@ void jobs_class::setup_ui()
                         "Total Render Time",
                         "Errors"};
 
-    this->setHeaderLabels(columns);
+    tree->setHeaderLabels(columns);
 
-    this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    this->setAlternatingRowColors(true);
-    this->setIndentation(0);
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tree->setAlternatingRowColors(true);
+    tree->setIndentation(0);
 
-    this->setColumnWidth(0, 200);
-    this->setColumnWidth(1, 80);
-    this->setColumnWidth(2, 100);
-    this->setColumnWidth(3, 200);
-    this->setColumnWidth(4, 100);
-    this->setColumnWidth(5, 150);
-    this->setColumnWidth(6, 150);
-    this->setColumnWidth(7, 150);
-    this->setColumnWidth(8, 150);
+    tree->setColumnWidth(0, 200);
+    tree->setColumnWidth(1, 80);
+    tree->setColumnWidth(2, 100);
+    tree->setColumnWidth(3, 200);
+    tree->setColumnWidth(4, 100);
+    tree->setColumnWidth(5, 150);
+    tree->setColumnWidth(6, 150);
+    tree->setColumnWidth(7, 150);
+    tree->setColumnWidth(8, 150);
 
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    tree->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    this->setSortingEnabled(true);
-    this->setFocusPolicy(Qt::NoFocus);
-    this->sortByColumn(5, Qt::AscendingOrder);
+    tree->setSortingEnabled(true);
+    tree->setFocusPolicy(Qt::NoFocus);
+    tree->sortByColumn(5, Qt::AscendingOrder);
+
+    // Layout
+    layout->addWidget(_title_bar);
+    layout->addWidget(tree);
 }
 
 void jobs_class::connections()
 {
-    connect(this, &QTreeWidget::itemDoubleClicked, options,
+    connect(tree, &QTreeWidget::itemDoubleClicked, options,
             &options_class::open_panel);
 
     connect(this, &QTreeWidget::customContextMenuRequested, this,
@@ -129,7 +140,7 @@ void jobs_class::connections()
 
 void jobs_class::popup()
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
         QMenu *menu = new QMenu(_monitor);
@@ -152,7 +163,7 @@ void jobs_class::popup()
 
 void jobs_class::show_log()
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
 
@@ -181,9 +192,9 @@ void jobs_class::show_log()
                 QStringList all_host;
                 QStringList all_name;
 
-                for (int i = 0; i < servers->topLevelItemCount(); ++i)
+                for (int i = 0; i < servers->get_tree()->topLevelItemCount(); ++i)
                 {
-                    auto item = servers->topLevelItem(i);
+                    auto item = servers->get_tree()->topLevelItem(i);
                     QString name = item->text(0);
                     QString _host = item->text(7);
 
@@ -237,7 +248,7 @@ void jobs_class::show_log()
 void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,
                          QString ask, QString tile, jobs_class *_class)
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
 
     if (not selected.empty())
     {
@@ -255,8 +266,8 @@ void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,
 void jobs_class::delete_start(QString action)
 {
 
-    auto root = this->invisibleRootItem();
-    auto selected = this->selectedItems();
+    auto root = tree->invisibleRootItem();
+    auto selected = tree->selectedItems();
 
     QJsonArray pks;
 
@@ -280,7 +291,7 @@ void jobs_class::to_action(QString action)
 {
     shared->stopUpdate = true;
 
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
 
     QJsonArray pks;
     for (auto item : selected)
@@ -305,18 +316,18 @@ void jobs_class::item_delete()
 
 void jobs_class::mousePressEvent(QMouseEvent *event)
 {
-    QTreeView::mousePressEvent(event);
+    // QTreeView::mousePressEvent(event);
 
-    bool selected_item = selectionModel()->isSelected(indexAt(event->pos()));
+    // bool selected_item = selectionModel()->isSelected(indexAt(event->pos()));
 
-    if (shared->tasks_tree->isVisible())
-    {
-        static_cast<monitor *>(_monitor)->get_update()->get_task();
-        if (!selected_item)
-            shared->tasks_tree->clear();
-    }
+    // if (shared->tasks_tree->isVisible())
+    // {
+        // static_cast<monitor *>(_monitor)->get_update()->get_task();
+        // if (!selected_item)
+            // shared->tasks_tree->clear();
+    // }
 
-    options->update_panel(!selected_item);
+    // options->update_panel(!selected_item);
 }
 
 void jobs_class::dragEnterEvent(QDragEnterEvent *event)

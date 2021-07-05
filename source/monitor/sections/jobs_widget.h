@@ -9,11 +9,11 @@
 #include "properties.h"
 #include "servers_widget.h"
 #include "submit_widget.h"
+#include "title_bar.h"
 
-class jobs_class : public QTreeWidget
+class jobs_class : public QWidget
 {
 private:
-    QTreeWidget *jobs;
     shared_variables *shared;
     QWidget *_monitor;
     log_class *log;
@@ -24,6 +24,10 @@ private:
     submit *_submit;
     QTreeWidgetItem *first_job_item;
     QString log_server;
+
+    QTreeWidget *tree;
+    QVBoxLayout *layout;
+    title_bar *_title_bar;
 
     void connections();
 
@@ -60,6 +64,13 @@ public:
     QAction *job_unlock_servers_action;
     QAction *job_log_action;
     QAction *job_modify_action;
+
+    inline QTreeWidget *get_tree() const;
 };
+
+inline QTreeWidget *jobs_class::get_tree() const
+{
+    return tree;
+}
 
 #endif // JOBS_HPP

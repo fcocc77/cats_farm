@@ -14,6 +14,9 @@ groups_class::groups_class(QWidget *__monitor, shared_variables *_shared,
     : _monitor(__monitor)
     , shared(_shared)
     , servers(_servers)
+    , layout(new QVBoxLayout(this))
+    , tree(new QTreeWidget)
+    , _title_bar(new title_bar("Groups"))
 {
 
     // Group Action
@@ -38,25 +41,28 @@ groups_class::~groups_class() {}
 
 void groups_class::setup_ui()
 {
+    layout->setMargin(0);
+    layout->setSpacing(0);
+
     this->setObjectName("groups");
 
     QStringList columns = {"Group Name", "Status"};
-    this->setColumnCount(3);
-    this->setHeaderLabels(columns); // pone el nombre de las columnas
+    tree->setColumnCount(3);
+    tree->setHeaderLabels(columns);
 
-    this->setSelectionMode(
-        QAbstractItemView::ExtendedSelection); // multi seleccion
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tree->setColumnHidden(2, true);
 
-    this->setColumnHidden(2, true);
+    tree->setColumnWidth(0, 150);
+    tree->setColumnWidth(1, 70);
+    tree->setColumnWidth(2, 70);
 
-    // ajusta el largo de las columnas
-    this->setColumnWidth(0, 150);
-    this->setColumnWidth(1, 70);
-    this->setColumnWidth(2, 70);
+    tree->setContextMenuPolicy(Qt::CustomContextMenu);
+    tree->setSortingEnabled(true);
 
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
-
-    this->setSortingEnabled(true);
+    // Layout
+    layout->addWidget(_title_bar);
+    layout->addWidget(tree);
 }
 
 void groups_class::connections()
@@ -78,7 +84,7 @@ void groups_class::connections()
 
 void groups_class::popup()
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
 
     QMenu *menu = new QMenu(_monitor);
     if (not selected.empty())
@@ -102,7 +108,7 @@ void groups_class::create_window()
     auto group_create = [this](QString group_name) {
         qDebug() << group_name;
         shared->stopUpdate = true;
-        auto selected = servers->selectedItems();
+        auto selected = servers->get_tree()->selectedItems();
 
         QJsonArray machines_send;
         QJsonArray machines;
@@ -239,9 +245,9 @@ QTreeWidgetItem *groups_class::group_make(QString group_name, int totaMachine,
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(2, group_name);
 
-    this->addTopLevelItem(item);
-    this->setItemWidget(item, 0, name_widget);
-    this->setItemWidget(item, 1, status_widget);
+    tree->addTopLevelItem(item);
+    tree->setItemWidget(item, 0, name_widget);
+    tree->setItemWidget(item, 1, status_widget);
 
     return item;
 }
@@ -299,7 +305,7 @@ void groups_class::make_server(QTreeWidgetItem *item, QJsonArray machines)
     {
         if (not newChildName.contains(child.name))
         {
-            auto root = this->invisibleRootItem();
+            auto root = tree->invisibleRootItem();
             root->removeChild(child.item);
             child.item->parent()->removeChild(child.item);
         }
@@ -338,14 +344,14 @@ void groups_class::add_machine()
 
     // Obtiene server seleccionados
     QJsonArray server_list;
-    for (auto item : servers->selectedItems())
+    for (auto item : servers->get_tree()->selectedItems())
     {
         QString server_name = item->text(0);
         server_list.push_back(server_name);
     }
 
     QJsonArray group_machine;
-    for (auto item : this->selectedItems())
+    for (auto item : tree->selectedItems())
     {
         QString group_name = item->text(2);
 
@@ -383,7 +389,7 @@ void groups_class::add_machine()
 void groups_class::group_delete()
 {
 
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
 
@@ -398,11 +404,11 @@ void groups_class::group_delete()
 
             shared->stopUpdate = true;
 
-            auto root = this->invisibleRootItem();
+            auto root = tree->invisibleRootItem();
 
             QJsonArray group_machine, group_list;
 
-            for (auto item : this->selectedItems())
+            for (auto item : tree->selectedItems())
             {
                 if (item->parent())
                 {
@@ -434,9 +440,9 @@ void groups_class::group_delete()
 QStringList groups_class::get_groups() const
 {
     QStringList groups;
-    for (int i = 0; i < this->topLevelItemCount(); ++i)
+    for (int i = 0; i < tree->topLevelItemCount(); ++i)
     {
-        QTreeWidgetItem *item = this->topLevelItem(i);
+        QTreeWidgetItem *item = tree->topLevelItem(i);
         groups.push_back(item->text(2));
     }
 

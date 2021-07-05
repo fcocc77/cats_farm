@@ -145,124 +145,117 @@ QSplitter::handle::horizontal {
 QSplitter::handle::vertical {
   height: 1px; }
 
-#widget_title {
-  font-weight: bold;
-  color: #acb1b9;
-  qproperty-alignment: AlignCenter;
-  padding: 3px;
-  background: #17191c; }
-
-#jobs {
+#jobs QTreeWidget {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
   background: #272b2f; }
-  #jobs QWidget {
+  #jobs QTreeWidget QWidget {
     background: transparent; }
-  #jobs::item {
+  #jobs QTreeWidget::item {
     border-bottom: 1px solid #2e3238;
     border-top: 1px solid transparent;
     height: 30px; }
-    #jobs::item:first {
+    #jobs QTreeWidget::item:first {
       padding-left: 15px; }
-    #jobs::item:selected {
+    #jobs QTreeWidget::item:selected {
       background-color: rgba(0, 153, 255, 0.1);
       border-color: rgba(0, 153, 255, 0.5);
       color: #c7cbd1; }
-    #jobs::item:hover {
+    #jobs QTreeWidget::item:hover {
       background-color: rgba(0, 153, 255, 0.02);
       border-color: rgba(0, 153, 255, 0.5); }
-    #jobs::item QProgressBar {
+    #jobs QTreeWidget::item QProgressBar {
       max-height: 100px; }
-      #jobs::item QProgressBar:horizontal {
+      #jobs QTreeWidget::item QProgressBar:horizontal {
         text-align: center; }
-        #jobs::item QProgressBar:horizontal::chunk:horizontal {
+        #jobs QTreeWidget::item QProgressBar:horizontal::chunk:horizontal {
           background: rgba(70, 75, 83, 0.2); }
-      #jobs::item QProgressBar::chunk:horizontal {
+      #jobs QTreeWidget::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #jobs QHeaderView {
+  #jobs QTreeWidget QHeaderView {
     border-bottom: 1px solid #17191c; }
-    #jobs QHeaderView::section {
+    #jobs QTreeWidget QHeaderView::section {
       background-color: #2a2d32;
       padding: 5px 10px 5px 10px;
       border: 0px solid transparent;
       border-left: 1px solid #1e2124; }
 
-#tasks {
+#tasks QTreeWidget {
   alternate-background-color: #2a2d32;
   background-color: #23262a; }
-  #tasks QWidget {
+  #tasks QTreeWidget QWidget {
     background: transparent; }
-  #tasks::item {
+  #tasks QTreeWidget::item {
     border-bottom: 1px solid #2e3238;
     border-top: 1px solid transparent;
     height: 30px; }
-    #tasks::item:first {
+    #tasks QTreeWidget::item:first {
       padding-left: 15px; }
-    #tasks::item:selected {
+    #tasks QTreeWidget::item:selected {
       background-color: rgba(0, 153, 255, 0.1);
       border-color: rgba(0, 153, 255, 0.5);
       color: #c7cbd1; }
-    #tasks::item:hover {
+    #tasks QTreeWidget::item:hover {
       background-color: rgba(0, 153, 255, 0.02);
       border-color: rgba(0, 153, 255, 0.5); }
-    #tasks::item QProgressBar {
+    #tasks QTreeWidget::item QProgressBar {
       max-height: 100px; }
-      #tasks::item QProgressBar:horizontal {
+      #tasks QTreeWidget::item QProgressBar:horizontal {
         text-align: center; }
-        #tasks::item QProgressBar:horizontal::chunk:horizontal {
+        #tasks QTreeWidget::item QProgressBar:horizontal::chunk:horizontal {
           background: rgba(70, 75, 83, 0.2); }
-      #tasks::item QProgressBar::chunk:horizontal {
+      #tasks QTreeWidget::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #tasks QHeaderView {
+  #tasks QTreeWidget QHeaderView {
     border-bottom: 1px solid #17191c; }
-    #tasks QHeaderView::section {
+    #tasks QTreeWidget QHeaderView::section {
       background-color: #2a2d32;
       padding: 5px 10px 5px 10px;
       border: 0px solid transparent;
       border-left: 1px solid #1e2124; }
-  #tasks:item {
+  #tasks QTreeWidget:item {
     height: 20px; }
 
-#servers {
+#servers QTreeWidget {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
   background: #272b2f; }
-  #servers QWidget {
+  #servers QTreeWidget QWidget {
     background: transparent; }
-  #servers::item {
+  #servers QTreeWidget::item {
     border-bottom: 1px solid #2e3238;
     border-top: 1px solid transparent;
     height: 30px; }
-    #servers::item:first {
+    #servers QTreeWidget::item:first {
       padding-left: 15px; }
-    #servers::item:selected {
+    #servers QTreeWidget::item:selected {
       background-color: rgba(0, 153, 255, 0.1);
       border-color: rgba(0, 153, 255, 0.5);
       color: #c7cbd1; }
-    #servers::item:hover {
+    #servers QTreeWidget::item:hover {
       background-color: rgba(0, 153, 255, 0.02);
       border-color: rgba(0, 153, 255, 0.5); }
-    #servers::item QProgressBar {
+    #servers QTreeWidget::item QProgressBar {
       max-height: 100px; }
-      #servers::item QProgressBar:horizontal {
+      #servers QTreeWidget::item QProgressBar:horizontal {
         text-align: center; }
-        #servers::item QProgressBar:horizontal::chunk:horizontal {
+        #servers QTreeWidget::item QProgressBar:horizontal::chunk:horizontal {
           background: rgba(70, 75, 83, 0.2); }
-      #servers::item QProgressBar::chunk:horizontal {
+      #servers QTreeWidget::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #servers QHeaderView {
+  #servers QTreeWidget QHeaderView {
     border-bottom: 1px solid #17191c; }
-    #servers QHeaderView::section {
+    #servers QTreeWidget QHeaderView::section {
       background-color: #2a2d32;
       padding: 5px 10px 5px 10px;
       border: 0px solid transparent;
       border-left: 1px solid #1e2124; }
-  #servers::item #ram_bar::chunk:horizontal {
+  #servers QTreeWidget::item #ram_bar::chunk:horizontal {
     border-radius: 2px; }
-  #servers::item #cpu_bar::chunk:horizontal {
+  #servers QTreeWidget::item #cpu_bar::chunk:horizontal {
     border-radius: 2px;
     background: #325064; }
 
@@ -327,81 +320,81 @@ QMenuBar {
   #Log #QCodeEditorLineWidget {
     background-color: #1c1e21; }
 
-#groups {
+#groups QTreeWidget {
   alternate-background-color: #2a2d32;
   background-color: #23262a;
   alternate-background-color: #2a2d32; }
-  #groups QWidget {
+  #groups QTreeWidget QWidget {
     background: transparent; }
-  #groups::item {
+  #groups QTreeWidget::item {
     border-bottom: 1px solid #2e3238;
     border-top: 1px solid transparent;
     height: 30px; }
-    #groups::item:first {
+    #groups QTreeWidget::item:first {
       padding-left: 15px; }
-    #groups::item:selected {
+    #groups QTreeWidget::item:selected {
       background-color: rgba(0, 153, 255, 0.1);
       border-color: rgba(0, 153, 255, 0.5);
       color: #c7cbd1; }
-    #groups::item:hover {
+    #groups QTreeWidget::item:hover {
       background-color: rgba(0, 153, 255, 0.02);
       border-color: rgba(0, 153, 255, 0.5); }
-    #groups::item QProgressBar {
+    #groups QTreeWidget::item QProgressBar {
       max-height: 100px; }
-      #groups::item QProgressBar:horizontal {
+      #groups QTreeWidget::item QProgressBar:horizontal {
         text-align: center; }
-        #groups::item QProgressBar:horizontal::chunk:horizontal {
+        #groups QTreeWidget::item QProgressBar:horizontal::chunk:horizontal {
           background: rgba(70, 75, 83, 0.2); }
-      #groups::item QProgressBar::chunk:horizontal {
+      #groups QTreeWidget::item QProgressBar::chunk:horizontal {
         border-radius: 2px;
         background: #325064; }
-  #groups QHeaderView {
+  #groups QTreeWidget QHeaderView {
     border-bottom: 1px solid #17191c; }
-    #groups QHeaderView::section {
+    #groups QTreeWidget QHeaderView::section {
       background-color: #2a2d32;
       padding: 5px 10px 5px 10px;
       border: 0px solid transparent;
       border-left: 1px solid #1e2124; }
-  #groups::item {
+  #groups QTreeWidget::item {
     height: 12px;
     padding-top: 5px;
     padding-bottom: 5px; }
-    #groups::item QLabel {
+    #groups QTreeWidget::item QLabel {
       padding: 5px; }
-    #groups::item:has-children {
+    #groups QTreeWidget::item:has-children {
       min-height: 200px;
       background: #202327; }
-      #groups::item:has-children:selected {
+      #groups QTreeWidget::item:has-children:selected {
         background-color: rgba(0, 153, 255, 0.1);
         border-color: rgba(0, 153, 255, 0.5);
         color: #c7cbd1; }
-      #groups::item:has-children:hover {
+      #groups QTreeWidget::item:has-children:hover {
         background-color: rgba(0, 153, 255, 0.02);
         border-color: rgba(0, 153, 255, 0.5); }
-  #groups::branch {
+  #groups QTreeWidget::branch {
     background: transparent;
     border-top: 1px solid transparent;
     border-bottom: 1px solid #2e3238; }
-    #groups::branch:selected {
+    #groups QTreeWidget::branch:selected {
       background-color: rgba(0, 153, 255, 0.1);
       border-color: rgba(0, 153, 255, 0.5);
       color: #c7cbd1; }
-    #groups::branch:hover {
+    #groups QTreeWidget::branch:hover {
       background-color: rgba(0, 153, 255, 0.02);
       border-color: rgba(0, 153, 255, 0.5); }
-    #groups::branch:selected {
+    #groups QTreeWidget::branch:selected {
       background: #1f313f; }
-    #groups::branch:hover {
+    #groups QTreeWidget::branch:hover {
       background: #22282e; }
-    #groups::branch:has-children {
+    #groups QTreeWidget::branch:has-children {
       background: #202327; }
-      #groups::branch:has-children:selected {
+      #groups QTreeWidget::branch:has-children:selected {
         background: #1d303f; }
-      #groups::branch:has-children:hover {
+      #groups QTreeWidget::branch:has-children:hover {
         background: #20272d; }
-      #groups::branch:has-children:open {
+      #groups QTreeWidget::branch:has-children:open {
         image: url("/opt/vinarender/resources/images/arrow_down_checked.png"); }
-      #groups::branch:has-children:closed {
+      #groups QTreeWidget::branch:has-children:closed {
         image: url("/opt/vinarender/resources/images/arrow_right_normal.png"); }
 
 #settings #hosts_widget {
@@ -522,4 +515,12 @@ QMenuBar {
     color: #0099ff; }
   #submit_widget QPushButton:disabled, #options QPushButton:disabled {
     color: #515861; }
+
+#title_bar {
+  background: #17191c; }
+  #title_bar QLabel {
+    background: none;
+    font-weight: bold;
+    color: #acb1b9;
+    qproperty-alignment: AlignCenter; }
 

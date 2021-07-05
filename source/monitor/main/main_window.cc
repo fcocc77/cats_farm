@@ -19,25 +19,6 @@ monitor::~monitor()
     fwrite(openMonitor, "0");
 }
 
-QWidget *monitor::add_title(QWidget *widget, QString title)
-{
-    // le agrega un titilo superior al 'widget'
-    QWidget *container = new QWidget;
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->setSpacing(0);
-    layout->setMargin(0);
-
-    container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    container->setLayout(layout);
-
-    QLabel *label = new QLabel(title);
-    label->setObjectName("widget_title");
-    layout->addWidget(label);
-    layout->addWidget(widget);
-
-    return container;
-}
-
 void monitor::setup_ui()
 {
     shared = new shared_variables();
@@ -64,27 +45,17 @@ void monitor::setup_ui()
     settings = new settings_class(this, shared);
     _submit = new submit(this);
 
-    // Widget de propiedades
     properties = new properties_class(log, options, settings, _submit);
-    QWidget *properties_parent = add_title(properties, "Properties");
-    properties_parent->hide();
-    properties_parent->setMinimumWidth(400);
-    properties_parent->setMaximumWidth(1000);
-
     servers = new servers_class(this, shared, log);
-    QWidget *servers_parents = add_title(servers, "Servers");
-
     groups = new groups_class(this, shared, servers);
-    QWidget *groups_parent = add_title(groups, "Groups");
 
     jobs = new jobs_class(shared, this, log, servers, options, groups,
                           properties, _submit);
 
     tasks = new tasks_class(this, shared, jobs);
-    QWidget *tasks_parent = add_title(tasks->tree, "Tasks");
 
-    update =
-        new update_class(shared, groups, jobs, servers, tasks->tree, settings);
+    update = new update_class(shared, groups, jobs, servers, tasks->get_tree(),
+                              settings);
 
     general = new general_class(this, shared, properties);
 
@@ -96,12 +67,12 @@ void monitor::setup_ui()
     toolbar->setMaximumHeight(40);
 
     // Layout
-    splitter_top->addWidget(properties_parent);
-    splitter_top->addWidget(add_title(jobs, "Jobs"));
-    splitter_top->addWidget(tasks_parent);
+    splitter_top->addWidget(properties);
+    splitter_top->addWidget(jobs);
+    splitter_top->addWidget(tasks->get_widget());
 
-    splitter_bottom->addWidget(servers_parents);
-    splitter_bottom->addWidget(groups_parent);
+    splitter_bottom->addWidget(servers);
+    splitter_bottom->addWidget(groups);
 
     splitter_main->addWidget(toolbar);
     splitter_main->addWidget(splitter_top);

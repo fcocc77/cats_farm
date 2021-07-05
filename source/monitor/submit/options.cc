@@ -75,11 +75,11 @@ void options_class::update_panel(bool clear)
     _maya_knobs->hide();
     _houdini_knobs->hide();
 
-    int count = jobs->selectedItems().count();
+    int count = jobs->get_tree()->selectedItems().count();
     selected_jobs.clear();
 
 
-    for (QTreeWidgetItem *item : jobs->selectedItems())
+    for (QTreeWidgetItem *item : jobs->get_tree()->selectedItems())
         selected_jobs.push_back(item->text(0));
 
     QString selected_items;
@@ -97,7 +97,7 @@ void options_class::update_panel(bool clear)
                                  QString::number(count) + " Jobs Selected");
 
     if (count == 1)
-        uptate_panel_from_job(jobs->selectedItems()[0]->text(0));
+        uptate_panel_from_job(jobs->get_tree()->selectedItems()[0]->text(0));
 }
 
 void options_class::set_disabled_all(bool disable)

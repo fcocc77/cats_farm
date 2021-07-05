@@ -1,13 +1,14 @@
 #servers
-    @include treeitem
-    background: $b17
-    &::item
-        #ram_bar
-            &::chunk
-                &:horizontal 
-                    border-radius: 2px
-        #cpu_bar
-            &::chunk
-                &:horizontal 
-                    border-radius: 2px
-                    background: $blue
+    QTreeWidget
+        @include treeitem
+        background: $b17
+        &::item
+            #ram_bar
+                &::chunk
+                    &:horizontal 
+                        border-radius: 2px
+            #cpu_bar
+                &::chunk
+                    &:horizontal 
+                        border-radius: 2px
+                        background: $blue

@@ -96,8 +96,8 @@ void toolbar_class::connections()
             &update_class::update);
 
     connect(tasks_switch, &button::clicked, this, [this]() {
-        tasks->tree->parentWidget()->setVisible(
-            !tasks->tree->parentWidget()->isVisible());
+        tasks->get_tree()->parentWidget()->setVisible(
+            !tasks->get_tree()->parentWidget()->isVisible());
     });
 
     connect(servers_switch, &button::clicked, this, [this]() {

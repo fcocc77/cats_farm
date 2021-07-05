@@ -2,18 +2,23 @@
 #define SERVERS_HPP
 
 #include <QTreeWidget>
-#include <QMainWindow>
+#include <QVBoxLayout>
 
 #include "log.h"
 #include "shared_variables.h"
+#include "title_bar.h"
 
-class servers_class : public QTreeWidget
+class servers_class : public QWidget
 {
     Q_OBJECT
 private:
-    QMainWindow *monitor;
+    QWidget *_monitor;
     shared_variables *shared;
     log_class *log;
+
+    QVBoxLayout *layout;
+    QTreeWidget *tree;
+    title_bar *_title_bar;
 
     // Server Funcions
     void setup_ui();
@@ -30,7 +35,7 @@ private:
     QTreeWidgetItem *firstServerItem;
 
 public:
-    servers_class(QMainWindow *_monitor, shared_variables *_shared,
+    servers_class(QWidget *_monitor, shared_variables *_shared,
                   log_class *_log);
     ~servers_class();
 
@@ -53,8 +58,15 @@ public:
     QAction *server_show_log;
     QAction *delete_action;
 
+    inline QTreeWidget *get_tree() const;
+
 public slots:
     void server_max_instances(int);
 };
+
+inline QTreeWidget *servers_class::get_tree() const
+{
+    return tree;
+}
 
 #endif // SERVERS_HPP

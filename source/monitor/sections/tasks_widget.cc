@@ -14,6 +14,10 @@ tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
     : monitor(_monitor)
     , shared(_shared)
     , jobs(_jobs)
+    , tree(new QTreeWidget)
+    , tasks_widget(new QWidget)
+    , layout(new QVBoxLayout(tasks_widget))
+    , _title_bar(new title_bar("Tasks"))
 {
     pause_action = new QAction("Pause");
     restart_action = new QAction("Restart");
@@ -27,7 +31,6 @@ tasks_class::tasks_class(QMainWindow *_monitor, shared_variables *_shared,
     pause_action->setIcon(icon("pause"));
     restart_action->setIcon(icon("play_arrow"));
 
-    tree = new QTreeWidget();
     shared->tasks_tree = tree;
 
     setup_ui();
@@ -38,18 +41,20 @@ tasks_class::~tasks_class() {}
 
 void tasks_class::setup_ui()
 {
-    tree->setObjectName("tasks");
+    tasks_widget->setObjectName("tasks");
+
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
     QStringList columns = {"Task", "Frame Range", "Status", "Server",
                            "Task Time"};
     tree->setColumnCount(5);
-    tree->setHeaderLabels(columns); // pone el nombre de las columnas
+    tree->setHeaderLabels(columns);
 
-    tree->setSelectionMode(
-        QAbstractItemView::ExtendedSelection); // multi seleccion
-    tree->setAlternatingRowColors(true);       // item con color alternativos
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tree->setAlternatingRowColors(true);
     tree->setIndentation(0);
-    tree->setFocusPolicy(Qt::NoFocus); // elimina el margen del principio
+    tree->setFocusPolicy(Qt::NoFocus);
 
     tree->setColumnWidth(0, 100);
     tree->setColumnWidth(1, 100);
@@ -60,6 +65,10 @@ void tasks_class::setup_ui()
     tree->sortByColumn(0, Qt::AscendingOrder);
 
     tree->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    // Layout
+    layout->addWidget(_title_bar);
+    layout->addWidget(tree);
 }
 
 void tasks_class::connections()
@@ -67,7 +76,6 @@ void tasks_class::connections()
     connect(tree, &QTreeWidget::customContextMenuRequested, this,
             &tasks_class::popup);
 
-    // Task Action
     connect(pause_action, &QAction::triggered, this,
             [this]() { to_action("pause"); });
     connect(restart_action, &QAction::triggered, this, &tasks_class::restart);
@@ -137,7 +145,7 @@ void tasks_class::message(QString action, QString ask, QString tile)
 void tasks_class::to_action(QString action)
 {
     QJsonArray pks;
-    for (auto item_job : jobs->selectedItems())
+    for (auto item_job : jobs->get_tree()->selectedItems())
     {
         QString job_name = item_job->text(0);
 

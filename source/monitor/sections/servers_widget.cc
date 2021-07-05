@@ -7,12 +7,14 @@
 #include "tcp.h"
 #include "util.h"
 
-servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
+servers_class::servers_class(QWidget *__monitor, shared_variables *_shared,
                              log_class *_log)
 
-    : monitor(_monitor)
+    : _monitor(__monitor)
     , shared(_shared)
     , log(_log)
+    , layout(new QVBoxLayout(this))
+    , tree(new QTreeWidget)
 {
     // display job list
     show_all_action = new QAction("Show All");
@@ -48,7 +50,6 @@ servers_class::servers_class(QMainWindow *_monitor, shared_variables *_shared,
     server_turn_off_action->setIcon(icon("off"));
     server_free_ram_action->setIcon(icon("ram"));
 
-
     connections();
     setup_ui();
 }
@@ -57,35 +58,43 @@ servers_class::~servers_class() {}
 
 void servers_class::setup_ui()
 {
+    layout->setMargin(0);
+    layout->setSpacing(0);
+
     this->setObjectName("servers");
 
     QStringList columns{"Host Name",   "Status",      "Ins.",   "CPU Usage",
                         "CPU Temp",    "RAM Usage",   "System", "IP",
                         "MAC Address", "Job Rendered"};
-    this->setHeaderLabels(columns);
 
-    this->setSelectionMode(
-        QAbstractItemView::ExtendedSelection); // multi seleccion
-    this->setIndentation(0); // elimina el margen del principio
-    this->setAlternatingRowColors(true);
-    this->setFocusPolicy(Qt::NoFocus); // item con color alternativos
+    tree->setHeaderLabels(columns);
+    tree->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tree->setIndentation(0);
+    tree->setAlternatingRowColors(true);
+    tree->setFocusPolicy(Qt::NoFocus);
 
-    this->setGeometry(1000, 1000, 1000, 1000);
+    tree->setGeometry(1000, 1000, 1000, 1000);
 
     // ajusta el largo de las columnas
-    this->setColumnWidth(0, 150);
-    this->setColumnWidth(1, 100);
-    this->setColumnWidth(2, 50);
-    this->setColumnWidth(3, 177);
-    this->setColumnWidth(4, 100);
-    this->setColumnWidth(5, 177);
-    this->setColumnWidth(6, 100);
-    this->setColumnWidth(8, 130);
+    tree->setColumnWidth(0, 150);
+    tree->setColumnWidth(1, 100);
+    tree->setColumnWidth(2, 50);
+    tree->setColumnWidth(3, 177);
+    tree->setColumnWidth(4, 100);
+    tree->setColumnWidth(5, 177);
+    tree->setColumnWidth(6, 100);
+    tree->setColumnWidth(8, 130);
 
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    tree->setContextMenuPolicy(Qt::CustomContextMenu);
 
-    this->setSortingEnabled(true);
-    this->sortByColumn(0, Qt::AscendingOrder);
+    tree->setSortingEnabled(true);
+    tree->sortByColumn(0, Qt::AscendingOrder);
+
+    _title_bar = new title_bar("Servers");
+
+    // Layout
+    layout->addWidget(_title_bar);
+    layout->addWidget(tree);
 }
 
 void servers_class::connections()
@@ -197,9 +206,9 @@ void servers_class::connections()
 
 void servers_class::server_popup()
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
 
-    QMenu *menu = new QMenu(monitor);
+    QMenu *menu = new QMenu(_monitor);
     if (not selected.empty())
     {
 
@@ -211,8 +220,8 @@ void servers_class::server_popup()
         menu->addAction(server_show_log);
         menu->addSeparator();
 
-        QMenu *submenu = new QMenu("Number of instances", monitor);
-        QSignalMapper *mapper = new QSignalMapper(monitor);
+        QMenu *submenu = new QMenu("Number of instances", _monitor);
+        QSignalMapper *mapper = new QSignalMapper(_monitor);
 
         for (int i = 1; i < 16; ++i)
         {
@@ -257,7 +266,7 @@ void servers_class::cpu_limit(int limit)
 void servers_class::to_log()
 {
 
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
         QString host = (selected[0]->text(7));
@@ -280,12 +289,12 @@ void servers_class::message(QString (servers_class::*funtion)(QString, QString),
                             QString action, QString ask, QString tile,
                             QString info, servers_class *_class)
 {
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     if (not selected.empty())
     {
 
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(monitor, tile, ask,
+        reply = QMessageBox::question(_monitor, tile, ask,
                                       QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
@@ -297,7 +306,7 @@ void servers_class::message(QString (servers_class::*funtion)(QString, QString),
 QString servers_class::to_action(QString action, QString info)
 {
     QJsonArray pks;
-    auto selected = this->selectedItems();
+    auto selected = tree->selectedItems();
     for (auto item : selected)
     {
         QString server_name = item->text(0);
@@ -316,7 +325,7 @@ QString servers_class::to_action(QString action, QString info)
 
 QString servers_class::send_to_vserver(QString action, QString info)
 {
-    QList<QTreeWidgetItem *> selected = this->selectedItems();
+    QList<QTreeWidgetItem *> selected = tree->selectedItems();
 
     for (auto item : selected)
     {

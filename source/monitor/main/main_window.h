@@ -29,7 +29,6 @@ private:
     shared_variables *shared;
 
     void setup_ui();
-    QWidget *add_title(QWidget *widget, QString title);
 
     log_class *log;
     options_class *options;

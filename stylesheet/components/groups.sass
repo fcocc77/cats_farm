@@ -1,32 +1,33 @@
 #groups
-    @include treeitem
-    alternate-background-color: $b18
-    &::item
-        height: 12px
-        padding-top: 5px
-        padding-bottom: 5px
-        QLabel
-            padding: 5px
-        &:has-children
-            min-height: 200px
-            background: $b14
+    QTreeWidget
+        @include treeitem
+        alternate-background-color: $b18
+        &::item
+            height: 12px
+            padding-top: 5px
+            padding-bottom: 5px
+            QLabel
+                padding: 5px
+            &:has-children
+                min-height: 200px
+                background: $b14
+                @include treecolor
+        &::branch 
+            background: transparent
+            border-top: 1px solid transparent
+            border-bottom: 1px solid $b20
             @include treecolor
-    &::branch 
-        background: transparent
-        border-top: 1px solid transparent
-        border-bottom: 1px solid $b20
-        @include treecolor
-        &:selected
-            background: mix($base,$b15,10)
-        &:hover
-            background: mix($base,$b15,2)
-        &:has-children
-            background: $b14
             &:selected
-                background: mix($base,$b14,11)
+                background: mix($base,$b15,10)
             &:hover
-                background: mix($base,$b14,3)
-            &:open 
-                image: url('#{$images}/arrow_down_checked.png')
-            &:closed
-                image: url('#{$images}/arrow_right_normal.png')
+                background: mix($base,$b15,2)
+            &:has-children
+                background: $b14
+                &:selected
+                    background: mix($base,$b14,11)
+                &:hover
+                    background: mix($base,$b14,3)
+                &:open 
+                    image: url('#{$images}/arrow_down_checked.png')
+                &:closed
+                    image: url('#{$images}/arrow_right_normal.png')
