@@ -122,6 +122,10 @@ install() {
     chmod 777 -R "$dst/log"
 
     nuke_install $path
+
+    # Firewall
+    firewall-cmd --zone=public --permanent --add-port $manager_port/tcp
+    firewall-cmd --zone=public --permanent --add-port $server_port/tcp
 }
 
 uninstall() {
@@ -138,6 +142,10 @@ uninstall() {
     rm -rf $dst
 
     nuke_uninstall $path
+
+    # Firewall
+    firewall-cmd --zone=public --permanent --remove-port $manager_port/tcp
+    firewall-cmd --zone=public --permanent --remove-port $server_port/tcp
 }
 
 if [ $1 == install ]; then
