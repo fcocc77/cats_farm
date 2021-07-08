@@ -36,16 +36,22 @@ settings_monitor::settings_monitor(shared_variables *_shared)
     layout->addWidget(hosts_widget);
 }
 
-void settings_monitor::save()
+QJsonArray settings_monitor::get_hosts() const
 {
-    // guarda lista de ips de QString a un json, y borra los espacios
     QString zones = zones_edit->get_text();
+
     QJsonArray json_hosts;
     for (QString zone : zones.split(","))
         json_hosts.push_back(zone.replace(" ", ""));
 
+    return json_hosts;
+}
+
+void settings_monitor::save()
+{
+
     QJsonObject monitor_settings = shared->settings["monitor"].toObject();
-    monitor_settings["hosts"] = json_hosts;
+    monitor_settings["hosts"] = get_hosts();
 
     shared->settings["monitor"] = monitor_settings;
 
@@ -53,7 +59,7 @@ void settings_monitor::save()
 
     // agrega las ips al combobox de zonas
     shared->zone_box->clear();
-    for (QJsonValue ip : json_hosts)
+    for (QJsonValue ip : get_hosts())
         shared->zone_box->add_item(ip.toString());
 }
 

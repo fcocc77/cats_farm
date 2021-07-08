@@ -2,6 +2,7 @@
 #define SETTINGS_MONITOR_H
 
 #include <QWidget>
+#include <QJsonArray>
 
 #include "text_knob.h"
 #include "shared_variables.h"
@@ -17,5 +18,7 @@ public:
     settings_monitor(shared_variables *shared);
     void save();
     void restore();
+
+    QJsonArray get_hosts() const;
 };
 #endif // SETTINGS_MONITOR_H
