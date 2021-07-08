@@ -12,11 +12,10 @@ private:
     shared_variables *shared;
 
     text_knob *zones_edit;
-    text_knob *host_edit;
 
 public:
     settings_monitor(shared_variables *shared);
     void save();
-    void open();
+    void restore();
 };
 #endif // SETTINGS_MONITOR_H

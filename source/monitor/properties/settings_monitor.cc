@@ -17,14 +17,12 @@ settings_monitor::settings_monitor(shared_variables *_shared)
     hosts_layout->setSpacing(0);
 
     zones_edit = new text_knob("Manager ZONES");
-    host_edit = new text_knob("Manager HOST");
 
     int h = HORIZONTAL_MARGIN;
     int v = VERTICAL_MARGIN;
     int s = SPACING;
 
     zones_edit->layout()->setContentsMargins(h, v, h, s);
-    host_edit->layout()->setContentsMargins(h, s, h, v);
 
     QWidget *tabs_widget = new QWidget;
     tabs_widget->setObjectName("tabs_widget");
@@ -34,18 +32,12 @@ settings_monitor::settings_monitor(shared_variables *_shared)
 
     // Layout
     hosts_layout->addWidget(zones_edit);
-    hosts_layout->addWidget(host_edit);
 
     layout->addWidget(hosts_widget);
 }
 
 void settings_monitor::save()
 {
-    // guarda host del manager
-    QJsonObject manager = shared->settings["manager"].toObject();
-    manager["ip"] = host_edit->get_text();
-    shared->settings["manager"] = manager;
-
     // guarda lista de ips de QString a un json, y borra los espacios
     QString zones = zones_edit->get_text();
     QJsonArray json_hosts;
@@ -62,7 +54,7 @@ void settings_monitor::save()
         shared->zone_box->add_item(ip.toString());
 }
 
-void settings_monitor::open()
+void settings_monitor::restore()
 {
     QString hosts;
     for (QJsonValue host : shared->settings["hosts"].toArray())
@@ -71,7 +63,4 @@ void settings_monitor::open()
 
     zones_edit->set_text(hosts);
 
-    // setea el host del manager
-    QString host = shared->settings["manager"].toObject()["ip"].toString();
-    host_edit->set_text(host);
 }

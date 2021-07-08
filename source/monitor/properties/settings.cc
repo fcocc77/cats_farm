@@ -15,7 +15,8 @@ settings_class::settings_class(QWidget *__monitor, shared_variables *_shared)
     setup_ui();
     connections();
 
-    _settings_monitor->open();
+    _settings_monitor->restore();
+    _settings_server->restore();
 }
 
 settings_class::~settings_class() {}
@@ -35,9 +36,9 @@ void settings_class::setup_ui()
 
     _settings_manager = new settings_manager(shared);
     _settings_monitor = new settings_monitor(shared);
-    _settings_server = new settings_server();
+    _settings_server = new settings_server(shared);
 
-    QTabWidget *settings_tab = new QTabWidget();
+    settings_tab = new QTabWidget();
 
     // Layout
     settings_tab->addTab(_settings_monitor, "Monitor");
@@ -57,6 +58,16 @@ void settings_class::connections()
         static_cast<monitor *>(_monitor)->get_toolbar()->hide_properties();
     });
 
-    connect(save_button, &QPushButton::clicked, this,
-            [this]() { _settings_manager->save(); });
+    connect(save_button, &QPushButton::clicked, this, [this]() {
+        int tab_index = settings_tab->currentIndex();
+
+        if (tab_index == 0)
+            _settings_monitor->save();
+
+        else if (tab_index == 1)
+            _settings_manager->save();
+
+        else
+            _settings_server->save();
+    });
 }

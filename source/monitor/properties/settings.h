@@ -21,6 +21,8 @@ private:
     QWidget *_monitor;
     shared_variables *shared;
 
+    QTabWidget *settings_tab;
+
     settings_manager *_settings_manager;
     settings_monitor *_settings_monitor;
     settings_server *_settings_server;

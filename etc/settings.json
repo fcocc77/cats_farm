@@ -1,9 +1,11 @@
-{   "current_manager": "{{manager_ip}}",
+{
+    "current_manager": "{{manager_ip}}",
     "manager": {
         "ip": "{{manager_ip}}",
         "port": {{manager_port}}
     },
     "server": {
+        "handler_ip": "{{manager_ip}}",
         "port": {{server_port}}
     },
     "hosts": [

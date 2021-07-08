@@ -8,7 +8,7 @@ server::server()
 
     // obtiene los puertos del manager y server
     QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    QString manager_host = settings["manager"].toObject()["ip"].toString();
+    QString manager_host = settings["server"].toObject()["handler_ip"].toString();
 
     tcpClient(manager_host, MANAGER_PORT, &server::send_resources, this);
     tcpServer(SERVER_PORT, &server::recieveManager, this);
