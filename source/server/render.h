@@ -7,17 +7,20 @@
 
 class render_class : public QObject
 {
-public:
-    QJsonObject preferences;
-    QList<int> first_frame, last_frame, pid;
-    QList<QString> job_system;
-    QList<bool> task_kill, render_instance;
-    QList<QJsonObject> software_data;
+private:
+    struct instance_data
+    {
+        int first_frame;
+        int last_frame;
+        int pid;
+        bool task_kill;
+        bool render_instance;
+        QJsonObject software_data;
+        QString job_system;
+    };
+
     QMutex *mutex;
 
-    render_class(QMutex *_mutex);
-
-    QString render_task(QJsonObject _task);
     QString qprocess(QString cmd, int ins = -1, int timeout = -1);
 
     void get_correct_path(QString filename, QString *src, QString *dst);
@@ -29,6 +32,13 @@ public:
     bool houdini(int ins);
     bool ffmpeg(int ins);
     bool vinacomp(int ins);
+
+public:
+    render_class(QMutex *_mutex);
+
+    QString render_task(QJsonObject _task);
+    QJsonObject preferences;
+    QList<instance_data> idata;
 };
 
 #endif // RENDER_HPP

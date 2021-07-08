@@ -68,7 +68,7 @@ void groups_class::setup_ui()
 void groups_class::connections()
 {
 
-    connect(this, &QTreeWidget::customContextMenuRequested, this,
+    connect(tree, &QTreeWidget::customContextMenuRequested, this,
             &groups_class::popup);
 
     // Group Action

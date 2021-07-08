@@ -112,6 +112,7 @@ QString jobs::get_available_name(QString name)
 
 void jobs::make_job(QJsonObject __job)
 {
+    print("make jobs");
     int _task_size = __job["task_size"].toInt();
     int _first_frame = __job["first_frame"].toInt();
     int _last_frame = __job["last_frame"].toInt();

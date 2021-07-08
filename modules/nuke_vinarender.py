@@ -1,7 +1,8 @@
-from util import jread, fread, fwrite
+from vinarender_util import jread, fread, fwrite
 import os
 import subprocess
 import json
+import nuke
 
 vinarender_user = '/home/pancho/.vinarender'
 vinarender_path = '/opt/vinarender'

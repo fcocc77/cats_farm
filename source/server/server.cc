@@ -91,10 +91,10 @@ QString server::recieveManager(QString _recv)
         mutex.lock();
         for (auto i : recv)
         {
-            int pid = render->pid[i.toInt()];
+            int pid = render->idata[i.toInt()].pid;
             if (pid)
             {
-                render->task_kill[i.toInt()] = true;
+                render->idata[i.toInt()].task_kill = true;
                 os::kill(pid);
             }
         }

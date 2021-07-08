@@ -9,15 +9,17 @@ render_class::render_class(QMutex *_mutex)
     // inicializar instancias 16 veces
     for (int i = 0; i < 15; ++i)
     {
-        first_frame.push_back(0);
-        last_frame.push_back(0);
-        pid.push_back(0);
+        instance_data data;
 
-        task_kill.push_back(false);
-        render_instance.push_back(false);
+        data.first_frame = 0;
+        data.last_frame = 0;
+        data.pid = 0;
+        data.task_kill = false;
+        data.render_instance = false;
+        data.software_data = {};
+        data.job_system = "none";
 
-        software_data.push_back({});
-        job_system.push_back("none");
+        idata.push_back(data);
     }
 }
 
@@ -30,17 +32,17 @@ QString render_class::render_task(QJsonObject _task)
     int ins = _task["instance"].toInt();
     QString software = _task["software"].toString();
 
-    software_data[ins] = _task["software_data"].toObject();
-    first_frame[ins] = _task["first_frame"].toInt();
-    last_frame[ins] = _task["last_frame"].toInt();
-    job_system[ins] = _task["job_system"].toString();
+    idata[ins].software_data = _task["software_data"].toObject();
+    idata[ins].first_frame = _task["first_frame"].toInt();
+    idata[ins].last_frame = _task["last_frame"].toInt();
+    idata[ins].job_system = _task["job_system"].toString();
 
     // si alguna de las instancias ya esta en render no renderea
     bool renderNow = false;
 
-    if (not render_instance[ins])
+    if (not idata[ins].render_instance)
     {
-        render_instance[ins] = true;
+        idata[ins].render_instance = true;
         renderNow = true;
     }
 
@@ -63,9 +65,9 @@ QString render_class::render_task(QJsonObject _task)
             VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
 
         mutex->lock();
-        if (task_kill[ins])
+        if (idata[ins].task_kill)
         {
-            task_kill[ins] = false;
+            idata[ins].task_kill = false;
             status = "kill";
         }
         else
@@ -79,10 +81,10 @@ QString render_class::render_task(QJsonObject _task)
             }
         }
 
-        pid[ins] = 0;
+        idata[ins].pid = 0;
 
         // Habilita la instancia que ya termino, para que pueda renderizar
-        render_instance[ins] = false;
+        idata[ins].render_instance = false;
         mutex->unlock();
     }
 
@@ -125,7 +127,7 @@ QString render_class::qprocess(QString cmd, int ins, int timeout)
     QProcess proc;
     proc.start(cmd);
     if (ins > -1)
-        pid[ins] = proc.processId();
+        idata[ins].pid = proc.processId();
 
     if (timeout != -1)
         timeout *= 1000;
@@ -150,18 +152,19 @@ QString render_class::get_executable(QString software) const
 bool render_class::nuke(int ins)
 {
     mutex->lock();
+    QJsonObject data = idata[ins].software_data;
 
-    QJsonObject data = software_data[ins];
-    print(data);
     QString src_path, dst_path;
 
-    QString output_movie = data["output_movie"].toString();
+    QString filename = data["filename"].toString();
     QString render_node = data["render_node"].toString();
     QString proj = data["project"].toString();
 
-    get_correct_path(output_movie, &src_path, &dst_path);
+    mutex->unlock();
 
-    output_movie.replace(src_path, dst_path);
+    get_correct_path(filename, &src_path, &dst_path);
+
+    filename.replace(src_path, dst_path);
     proj.replace(src_path, dst_path);
 
     QString tmpProj = proj;
@@ -169,13 +172,10 @@ bool render_class::nuke(int ins)
 
     QString nk = fread(proj);
     nk.replace(src_path, dst_path);
-
     fwrite(tmpProj, nk);
 
-    mutex->unlock();
-
-    QString dirRender = os::dirname(output_movie);
-    QString fileRender = os::basename(output_movie);
+    QString dirRender = os::dirname(filename);
+    QString fileRender = os::basename(filename);
 
     QString ext = fileRender.split(".").last();
     fileRender = fileRender.split(".")[0];
@@ -206,15 +206,15 @@ bool render_class::nuke(int ins)
     QString cmd = "\"%1\" -remap \"%2,%3\" -f %4 -X %5 \"%6\" %7-%8";
 
     cmd = cmd.arg(exe, src_path, dst_path, xi, render_node, tmpProj,
-                  QString::number(first_frame[ins]),
-                  QString::number(last_frame[ins]));
+                  QString::number(idata[ins].first_frame),
+                  QString::number(idata[ins].last_frame));
 
     cmd = cmd.replace(src_path, dst_path);
 
-    mutex->unlock();
-
     QString log_file =
         VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
+
+    mutex->unlock();
 
     // rendering ...
     QString log;
@@ -234,7 +234,7 @@ bool render_class::nuke(int ins)
     os::remove(tmpProj);
 
     mutex->lock();
-    int total_frame = last_frame[ins] - first_frame[ins] + 1;
+    int total_frame = idata[ins].last_frame - idata[ins].first_frame + 1;
     mutex->unlock();
 
     if (log.count("Frame ") == total_frame)
@@ -245,12 +245,13 @@ bool render_class::nuke(int ins)
 
 bool render_class::maya(int ins)
 {
-    QJsonObject data = software_data[ins];
+    QJsonObject data = idata[ins].software_data;
 
     QString scene = data["scene"].toString();
     QString project_folder = data["project_folder"].toString();
 
     QString src_path, dst_path;
+
     get_correct_path(scene, &src_path, &dst_path);
 
     QString log_file =
@@ -261,8 +262,8 @@ bool render_class::maya(int ins)
     QString cmd = "/bin/sh -c \"export MAYA_DISABLE_CIP=1 && \"%1\" -r file -s "
                   "%2 -e %3 -proj \"%4\" \"%5\" -log \"%6\"";
 
-    cmd = cmd.arg(get_executable("maya"), QString::number(first_frame[ins]),
-                  QString::number(last_frame[ins]), project_folder, scene,
+    cmd = cmd.arg(get_executable("maya"), QString::number(idata[ins].first_frame),
+                  QString::number(idata[ins].last_frame), project_folder, scene,
                   log_file);
 
     cmd = cmd.replace(src_path, dst_path);
@@ -279,8 +280,7 @@ bool render_class::maya(int ins)
 
 bool render_class::houdini(int ins)
 {
-
-    QJsonObject data = software_data[ins];
+    QJsonObject data = idata[ins].software_data;
     QString hip_file = data["project"].toString();
     QString engine_node = data["engine"].toString();
 
@@ -293,8 +293,8 @@ bool render_class::houdini(int ins)
 
     cmd = cmd.arg(get_executable("houdini"),
                   VINARENDER_PATH + "/modules/houdiniVinaRender.py", hip_file,
-                  engine_node, QString::number(first_frame[ins]),
-                  QString::number(last_frame[ins]));
+                  engine_node, QString::number(idata[ins].first_frame),
+                  QString::number(idata[ins].last_frame));
 
     QString log_file =
         VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
@@ -304,7 +304,7 @@ bool render_class::houdini(int ins)
     fwrite(log_file, log);
 
     // post render
-    int total_frame = last_frame[ins] - first_frame[ins] + 1;
+    int total_frame = idata[ins].last_frame - idata[ins].first_frame + 1;
 
     if (log.count(" frame ") == total_frame)
         return true;
@@ -314,7 +314,7 @@ bool render_class::houdini(int ins)
 
 bool render_class::ffmpeg(int ins)
 {
-    QJsonObject data = software_data[ins];
+    QJsonObject data = idata[ins].software_data;
 
     QString input_file = data["input_file"].toString();
     QString output_folder = data["output_folder"].toString();
@@ -330,9 +330,9 @@ bool render_class::ffmpeg(int ins)
     output_folder.replace(src_path, dst_path);
 
     float start_time =
-        video::frame_to_seconds(first_frame[ins], meta.frame_rate);
+        video::frame_to_seconds(idata[ins].first_frame, meta.frame_rate);
 
-    float end_time = video::frame_to_seconds(last_frame[ins], meta.frame_rate);
+    float end_time = video::frame_to_seconds(idata[ins].last_frame, meta.frame_rate);
     end_time += (1.0 / meta.frame_rate) / 1.5;
 
     QString dir_file = output_folder + "/" + movie_name;
@@ -343,7 +343,7 @@ bool render_class::ffmpeg(int ins)
         os::system("chmod 777 -R \"" + dir_file + "\"");
     }
 
-    QString number = "0000000000" + QString::number(first_frame[ins]);
+    QString number = "0000000000" + QString::number(idata[ins].first_frame);
     number = number.right(10);
 
     QString out_movie =

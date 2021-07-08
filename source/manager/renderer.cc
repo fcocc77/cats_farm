@@ -329,19 +329,19 @@ void renderer::get_correct_path(QString filename, QString *src, QString *dst)
 
 void renderer::nuke_completed(job_struct *job)
 {
-    QString output_movie = job->software_data["output_movie"].toString();
-    QString ext = path_util::get_ext(output_movie);
+    QString filename = job->software_data["filename"].toString();
+    QString ext = path_util::get_ext(filename);
 
     QString src_path, dst_path;
-    get_correct_path(output_movie, &src_path, &dst_path);
+    get_correct_path(filename, &src_path, &dst_path);
 
     if (ext == "mov")
     {
         job->status = "Concatenate";
 
         // obtiene nombre de carpeta de renders
-        QString _dirname = os::dirname(output_movie);
-        QString _basename = os::basename(output_movie);
+        QString _dirname = os::dirname(filename);
+        QString _basename = os::basename(filename);
         _basename.replace(".mov", "");
 
         _dirname.replace(src_path, dst_path);

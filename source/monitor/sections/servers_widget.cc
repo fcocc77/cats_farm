@@ -163,7 +163,7 @@ void servers_class::connections()
 
     // Server List Connections
 
-    connect(this, &QTreeWidget::customContextMenuRequested, this,
+    connect(tree, &QTreeWidget::customContextMenuRequested, this,
             &servers_class::server_popup);
 
     // Server Action
