@@ -7,8 +7,7 @@ void submit::init(int argc, char const *argv[])
     QJsonObject data = jofs(argv[1]);
 
     QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    int port = settings["manager"].toObject()["port"].toInt();
-    QString host = settings["current_manager"].toString();
+    QString host = settings["submit"].toObject()["manager_ip"].toString();
 
-    tcpClient(host, port, jats({4, data}));
+    tcpClient(host, MANAGER_PORT, jats({4, data}));
 }

@@ -89,8 +89,6 @@ function install(){
 
     # guarda ip del manager y puertos en el settings
     settings="$app_data/settings.json"
-    sed -i "s|{{server_port}}|$server_port|g" "$settings"
-    sed -i "s|{{manager_port}}|$manager_port|g" "$settings"
     sed -i "s|{{manager_ip}}|$manager_ip|g" "$settings"
 
     # cambia ruta de linux por la de windows

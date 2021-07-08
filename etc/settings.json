@@ -1,14 +1,14 @@
 {
-    "current_manager": "{{manager_ip}}",
-    "manager": {
-        "ip": "{{manager_ip}}",
-        "port": {{manager_port}}
+    "monitor": {
+        "current_manager": "{{manager_ip}}",
+        "hosts": [
+            "{{manager_ip}}"
+        ]
+    },
+    "submit": {
+        "manager_ip": "{{manager_ip}}"
     },
     "server": {
-        "handler_ip": "{{manager_ip}}",
-        "port": {{server_port}}
-    },
-    "hosts": [
-        "{{manager_ip}}"
-    ]
+        "handler_ip": "{{manager_ip}}"
+    }
 }

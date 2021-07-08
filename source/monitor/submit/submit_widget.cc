@@ -172,10 +172,9 @@ void submit::submit_start(QString software)
 void submit::send_job(QJsonObject info)
 {
     QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    int port = settings["manager"].toObject()["port"].toInt();
     QString host = settings["current_manager"].toString();
 
-    tcpClient(host, port, jats({4, info}));
+    tcpClient(host, MANAGER_PORT, jats({4, info}));
 }
 
 void submit::submit_file(QString file)

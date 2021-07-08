@@ -139,8 +139,10 @@ void toolbar_class::hide_properties()
 
 void toolbar_class::load_zones()
 {
-    QJsonArray zones = shared->settings["hosts"].toArray();
-    QString current_manager = shared->settings["current_manager"].toString();
+    QJsonObject monitor_settings = shared->settings["monitor"].toObject();
+
+    QJsonArray zones = monitor_settings["hosts"].toArray();
+    QString current_manager = monitor_settings["current_manager"].toString();
 
     // agrega todas las zonas guardadas al combobox
     for (QJsonValue value : zones)
@@ -148,12 +150,10 @@ void toolbar_class::load_zones()
         QString zone = value.toString();
         shared->zone_box->add_item(zone);
     }
-    // ---------------------------
 
     // check zona actual en el combobox
     shared->zone_box->set_current_text(current_manager);
-    // ----------------------
+
     // establece por defecto la ultima zona guardada
     update->update(current_manager);
-    // ----------------------
 }

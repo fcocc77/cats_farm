@@ -17,6 +17,7 @@ settings_class::settings_class(QWidget *__monitor, shared_variables *_shared)
 
     _settings_monitor->restore();
     _settings_server->restore();
+    _settings_submit->restore();
 }
 
 settings_class::~settings_class() {}
@@ -37,6 +38,7 @@ void settings_class::setup_ui()
     _settings_manager = new settings_manager(shared);
     _settings_monitor = new settings_monitor(shared);
     _settings_server = new settings_server(shared);
+    _settings_submit = new settings_submit(shared);
 
     settings_tab = new QTabWidget();
 
@@ -44,6 +46,7 @@ void settings_class::setup_ui()
     settings_tab->addTab(_settings_monitor, "Monitor");
     settings_tab->addTab(_settings_manager, "Manager");
     settings_tab->addTab(_settings_server, "Server");
+    settings_tab->addTab(_settings_submit, "Submit");
 
     buttons_layout->addWidget(cancel_button);
     buttons_layout->addWidget(save_button);
@@ -67,7 +70,10 @@ void settings_class::connections()
         else if (tab_index == 1)
             _settings_manager->save();
 
-        else
+        else if (tab_index == 2)
             _settings_server->save();
+
+        else if (tab_index == 3)
+            _settings_submit->save();
     });
 }

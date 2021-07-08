@@ -44,7 +44,10 @@ void settings_monitor::save()
     for (QString zone : zones.split(","))
         json_hosts.push_back(zone.replace(" ", ""));
 
-    shared->settings["hosts"] = json_hosts;
+    QJsonObject monitor_settings = shared->settings["monitor"].toObject();
+    monitor_settings["hosts"] = json_hosts;
+
+    shared->settings["monitor"] = monitor_settings;
 
     jwrite(VINARENDER_CONF_PATH + "/settings.json", shared->settings);
 
@@ -56,8 +59,10 @@ void settings_monitor::save()
 
 void settings_monitor::restore()
 {
+    QJsonObject monitor_settings = shared->settings["monitor"].toObject();
+
     QString hosts;
-    for (QJsonValue host : shared->settings["hosts"].toArray())
+    for (QJsonValue host : monitor_settings["hosts"].toArray())
         hosts += host.toString() + ", ";
     hosts = hosts.left(hosts.length() - 2);
 
