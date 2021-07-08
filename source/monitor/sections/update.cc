@@ -57,7 +57,7 @@ void update_class::update(QString host)
     }
 
     // actualiza los datos de settings dependiendo de la zona
-    settings->update(host);
+    settings->get_manager()->update(host);
 
     // actualiza una ves antes del loop.
     QString recv = tcpClient(host, MANAGER_PORT, jats({2, "none"}));
