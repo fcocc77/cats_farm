@@ -9,7 +9,6 @@
 #include "settings_manager.h"
 #include "settings_monitor.h"
 #include "settings_server.h"
-#include "settings_submit.h"
 #include "shared_variables.h"
 #include "text_knob.h"
 
@@ -27,7 +26,6 @@ private:
     settings_manager *_settings_manager;
     settings_monitor *_settings_monitor;
     settings_server *_settings_server;
-    settings_submit *_settings_submit;
 
     QPushButton *cancel_button;
     QPushButton *save_button;

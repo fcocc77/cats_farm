@@ -9,6 +9,7 @@ update_monitor() {
     sh "$path/scripts/svg_converter.sh"
     sudo rm -rf /opt/vinarender/resources
     sudo cp -rf "$path/resources" /opt/vinarender
+    sudo chmod 755 -R /opt/vinarender/resources
 
     pkill -9 vmonitor
 
@@ -21,7 +22,7 @@ update_monitor() {
     sudo rm "$bin/vmonitor"
     sudo cp './release/vmonitor' "$bin/vmonitor"
 
-    mate-terminal -e "sh -c \"$bin/vmonitor\"" --geometry 70x20+0+475
+    mate-terminal -e "sh -c \"$bin/vmonitor\"" --geometry 70x20+0+0
 }
 
 update_manager() {

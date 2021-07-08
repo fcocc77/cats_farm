@@ -3,18 +3,21 @@
 
 #include <QWidget>
 
-#include "text_knob.h"
+#include "combo_box.h"
 #include "shared_variables.h"
 
 class settings_server : public QWidget
 {
 private:
     shared_variables *shared;
+    QWidget *settings_widget;
 
-    text_knob *manager_host;
+    combo_box *manager_host;
+    QString current_ip;
+    void update_ips();
 
 public:
-    settings_server(shared_variables *shared);
+    settings_server(shared_variables *shared, QWidget *settings_widget);
 
     void save();
     void restore();
