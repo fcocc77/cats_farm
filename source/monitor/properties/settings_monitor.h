@@ -20,6 +20,7 @@ private:
     QString current_submit_ip;
 
     void add_manager();
+    void remove_manager();
     void update_submit_ip();
 
 public:

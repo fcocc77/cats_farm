@@ -397,35 +397,13 @@ QMenuBar {
       #groups QTreeWidget::branch:has-children:closed {
         image: url("/opt/vinarender/resources/images/arrow_right_normal.png"); }
 
-#settings #hosts_widget {
+#settings QTabWidget QWidget {
   background: #2a2d32;
   border-radius: 2px; }
-  #settings #hosts_widget QLabel {
-    background: transparent; }
-  #settings #hosts_widget QLineEdit {
-    background: #2e3238;
-    border: 1px solid #2e3238;
-    padding: 3px;
-    border-radius: 2px;
-    background: #3a3f45;
-    border-color: #464b53; }
-    #settings #hosts_widget QLineEdit:hover {
-      background: #3a3f45;
-      border-color: #464b53; }
-    #settings #hosts_widget QLineEdit:focus {
-      background: #3a3f45;
-      border-color: #0099ff; }
-    #settings #hosts_widget QLineEdit:disabled {
-      color: #515861; }
 
-#settings #tabs_widget QWidget {
-  background: #2a2d32;
-  padding: 10px;
-  border-radius: 2px; }
-
-#settings #tabs_widget QTabBar {
+#settings QTabWidget QTabBar {
   background: transparent; }
-  #settings #tabs_widget QTabBar::tab {
+  #settings QTabWidget QTabBar::tab {
     padding: 4px;
     padding-left: 8px;
     padding-right: 8px;
@@ -433,13 +411,13 @@ QMenuBar {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     margin-right: 5px; }
-    #settings #tabs_widget QTabBar::tab:hover {
+    #settings QTabWidget QTabBar::tab:hover {
       color: #0099ff; }
-    #settings #tabs_widget QTabBar::tab:selected {
+    #settings QTabWidget QTabBar::tab:selected {
       background: #2a2d32;
       color: #0099ff; }
 
-#settings #tabs_widget QPlainTextEdit {
+#settings QTabWidget QPlainTextEdit {
   background: #23262a;
   border-radius: 2px;
   border: 1px solid #33373d; }
@@ -457,6 +435,37 @@ QMenuBar {
     border-color: #0099ff;
     color: #0099ff; }
   #settings QPushButton:disabled {
+    color: #515861; }
+
+#settings #combo_box #combobox_label {
+  background: #2e3238;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  padding-left: 9px;
+  padding-right: 9px; }
+  #settings #combo_box #combobox_label:hover {
+    background: #33373d;
+    color: white; }
+
+#settings #combo_box #arrow {
+  background: #2e3238;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px; }
+  #settings #combo_box #arrow:hover {
+    background: #3a3f45; }
+
+#settings QLineEdit {
+  background: #2e3238;
+  border: 1px solid #2e3238;
+  padding: 3px;
+  border-radius: 2px; }
+  #settings QLineEdit:hover {
+    background: #3a3f45;
+    border-color: #464b53; }
+  #settings QLineEdit:focus {
+    background: #3a3f45;
+    border-color: #0099ff; }
+  #settings QLineEdit:disabled {
     color: #515861; }
 
 #submit_widget #box_widget, #submit_widget #knobs_box, #options #box_widget, #options #knobs_box {

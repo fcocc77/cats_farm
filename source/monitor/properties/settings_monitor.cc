@@ -26,6 +26,7 @@ settings_monitor::settings_monitor(shared_variables *_shared)
     QPushButton *maker_remove_button = new QPushButton("remove");
 
     submit_ip = new combo_box();
+    QLabel *submit_ip_label = new QLabel("Submit Manager IP:");
 
     // Ajustes"
     maker_name_edit->setPlaceholderText("Manager IP: 0.0.0.0");
@@ -35,6 +36,9 @@ settings_monitor::settings_monitor(shared_variables *_shared)
     connect(maker_add_button, &QPushButton::clicked, this,
             &settings_monitor::add_manager);
 
+    connect(maker_remove_button, &QPushButton::clicked, this,
+            &settings_monitor::remove_manager);
+
     // Layout
     maker_layout->addWidget(maker_name_edit);
     maker_layout->addWidget(maker_add_button);
@@ -42,6 +46,7 @@ settings_monitor::settings_monitor(shared_variables *_shared)
 
     layout->addWidget(managers_tree);
     layout->addWidget(maker_widget);
+    layout->addWidget(submit_ip_label);
     layout->addWidget(submit_ip);
 }
 
@@ -74,6 +79,14 @@ void settings_monitor::add_manager()
     managers_tree->addTopLevelItem(item);
 }
 
+void settings_monitor::remove_manager()
+{
+    if (!managers_tree->selectedItems().count())
+        return;
+
+    delete managers_tree->selectedItems()[0];
+}
+
 void settings_monitor::update_submit_ip()
 {
     submit_ip->clear();
@@ -104,6 +117,8 @@ void settings_monitor::save()
 
 void settings_monitor::restore()
 {
+    managers_tree->clear();
+
     QJsonObject monitor_settings = shared->settings["monitor"].toObject();
 
     for (QJsonValue host : monitor_settings["hosts"].toArray())

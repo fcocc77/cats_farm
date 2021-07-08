@@ -1,21 +1,12 @@
+@import mixin
 #settings
-    #hosts_widget
-        background: $b18
-        border-radius: 2px
-        QLabel
-            background: transparent
-        QLineEdit
-            @include textedit
-            background: $b25
-            border-color: $b30
-    #tabs_widget
+    QTabWidget
         QWidget
             background: $b18
-            padding: 10px
             border-radius: 2px
         QTabBar
             background: transparent
-            &::tab 
+            &::tab
                 padding: 4px
                 padding-left: 8px
                 padding-right: 8px
@@ -34,3 +25,8 @@
             border: 1px solid $b22
     QPushButton
         @include button
+
+    #combo_box
+        @include combobox
+    QLineEdit
+        @include textedit

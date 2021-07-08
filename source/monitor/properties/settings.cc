@@ -14,9 +14,6 @@ settings_class::settings_class(QWidget *__monitor, shared_variables *_shared)
 {
     setup_ui();
     connections();
-
-    _settings_monitor->restore();
-    _settings_server->restore();
 }
 
 settings_class::~settings_class() {}
@@ -70,4 +67,12 @@ void settings_class::connections()
         else if (tab_index == 2)
             _settings_server->save();
     });
+}
+
+void settings_class::showEvent(QShowEvent *event)
+{
+    _settings_monitor->restore();
+    _settings_server->restore();
+
+    QWidget::showEvent(event);
 }

@@ -30,6 +30,8 @@ private:
     QPushButton *cancel_button;
     QPushButton *save_button;
 
+    void showEvent(QShowEvent *event) override;
+
 public:
     settings_class(QWidget *_monitor, shared_variables *_shared);
     ~settings_class();
