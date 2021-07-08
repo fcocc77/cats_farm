@@ -101,47 +101,27 @@ def send(write_node, panel):
     basename = os.path.basename(filename)
     dirname = os.path.dirname(filename)
 
-    basename_and_padding = basename.split(".")[-2]
-    padding = basename_and_padding.split("_")[-1]
     ext = filename.split(".")[-1]
 
-    project_dir = os.path.dirname(project_file)
-    project_name = os.path.basename(project_file).split('.')[0]
+    nuke.scriptSave()
+    project_data = fread(project_file)
 
     if ext == 'mov':
         basename_no_ext = basename.split('.')[-2]
         new_filename = dirname + '/' + basename_no_ext + \
             '/' + basename_no_ext + '_###########.' + ext
-    else:
-        basename_no_ext = basename_and_padding.replace('_' + padding, '')
-        new_filename = dirname + '/' + basename_no_ext + \
-            '/' + basename_no_ext + '_' + padding + '.' + ext
 
-    script_save = project_dir + '/.' + project_name + 'render_01.nk'
+        filename = project_data.split(
+            render_node)[-2].split("file")[-2].split("\n")[0].strip()
 
-    for number in range(1, 1000):
-        exist_file = os.path.isfile(script_save)
-
-        if number < 10:
-            number = '0' + str(number)
-        else:
-            number = str(number)
-
-        if exist_file:
-            script_save = project_dir + '/.' + project_name + '_render_' + number + '.nk'
-        else:
-            break
+        project_data = project_data.replace(filename, '"' + new_filename + '"')
 
 
-    project_data = fread(project_file)
-    filename = project_data.split(
-        render_node)[-2].split("file")[-2].split("\n")[0].strip()
-
-    data = project_data.replace(filename, '"' + new_filename + '"')
-    fwrite(script_save, data)
+    new_project = get_available_project(project_file)
+    fwrite(new_project, project_data)
 
     software_data = {
-        'project': script_save,
+        'project': new_project,
         'filename': filename,
         'render_node': render_node}
 
@@ -162,6 +142,31 @@ def send(write_node, panel):
     subprocess.Popen([submit_exe, json.dumps(submit_data)])
 
     nuke.message("Job Sended.")
+
+
+def get_available_project(project_file):
+
+    project_dir = os.path.dirname(project_file)
+    project_name = os.path.basename(project_file).split('.')[0]
+
+    available_project = project_dir + '/.' + project_name + 'render_01.nk'
+
+    for number in range(1, 1000):
+        exist_file = os.path.isfile(available_project)
+
+        if number < 10:
+            number = '0' + str(number)
+        else:
+            number = str(number)
+
+        if exist_file:
+            available_project = project_dir + '/.' + \
+                project_name + '_render_' + number + '.nk'
+        else:
+            break
+
+    return available_project
+
 
 def check_project():
     return True

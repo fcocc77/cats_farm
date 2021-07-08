@@ -167,33 +167,29 @@ bool render_class::nuke(int ins)
     filename.replace(src_path, dst_path);
     proj.replace(src_path, dst_path);
 
-    QString tmpProj = proj;
-    tmpProj.replace(".nk", "_" + os::hostName() + ".nk");
+    QString temp_project = proj;
+    temp_project.replace(".nk", "_" + os::hostName() + ".nk");
 
     QString nk = fread(proj);
     nk.replace(src_path, dst_path);
-    fwrite(tmpProj, nk);
+    fwrite(temp_project, nk);
 
-    QString dirRender = os::dirname(filename);
-    QString fileRender = os::basename(filename);
+    QString dirname = os::dirname(filename);
+    QString basename = os::basename(filename);
+    QString basename_no_ext = basename.split('.')[0];
 
-    QString ext = fileRender.split(".").last();
-    fileRender = fileRender.split(".")[0];
-    QString pad = fileRender.split("_").last();
+    QString ext = basename.split(".").last();
 
-    QString folder_name;
     if (ext == "mov")
-        folder_name = fileRender;
-    else
-        folder_name = fileRender.replace("_" + pad, "");
-
-    QString folderRender = dirRender + "/" + folder_name;
-
-    if (not os::isdir(folderRender))
     {
-        os::makedirs(folderRender);
-        if (_linux)
-            os::system("chmod 777 -R " + folderRender);
+        QString movie_chunks_dir = dirname + '/' + basename_no_ext;
+
+        if (not os::isdir(movie_chunks_dir))
+        {
+            os::makedirs(movie_chunks_dir);
+            if (_linux)
+                os::system("chmod 777 -R " + movie_chunks_dir);
+        }
     }
 
     // Si es hay licencia de nodo de render nuke_r poner true
@@ -205,7 +201,7 @@ bool render_class::nuke(int ins)
     QString exe = get_executable("nuke");
     QString cmd = "\"%1\" -remap \"%2,%3\" -f %4 -X %5 \"%6\" %7-%8";
 
-    cmd = cmd.arg(exe, src_path, dst_path, xi, render_node, tmpProj,
+    cmd = cmd.arg(exe, src_path, dst_path, xi, render_node, temp_project,
                   QString::number(idata[ins].first_frame),
                   QString::number(idata[ins].last_frame));
 
@@ -231,7 +227,7 @@ bool render_class::nuke(int ins)
     fwrite(log_file, log);
 
     // Borra proyecto temporal
-    os::remove(tmpProj);
+    os::remove(temp_project);
 
     mutex->lock();
     int total_frame = idata[ins].last_frame - idata[ins].first_frame + 1;

@@ -1,7 +1,7 @@
 cd $(dirname "$0")
 
 # IPs
-manager_ip=$(ifconfig | awk '/inet 192.168/{print $2}')
+manager_ip=$(ifconfig | awk '/inet 192.168/{print $2}' | awk NR==1'{print}')
 
 # Inicio de Servicios
 manager_start=true
