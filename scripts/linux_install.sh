@@ -7,6 +7,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+source ./nuke_module_install.sh
+
 # ruta de instalacion
 dst="/opt/vinarender"
 app_data="/home/$SUDO_USER/.vinarender"
@@ -31,41 +33,6 @@ compile() {
     bin=$path/bin
     mkdir -p $bin
     mv "$folder/release/$2" $bin
-}
-
-nuke() {
-    nuke_path="/opt/Nuke9.0v9"
-    plugins=$nuke_path"/plugins"
-    menu_py=$plugins"/menu.py"
-
-    if [ ! -d "$nuke_path" ]; then
-        return
-    fi
-
-    line1="import nukeVinaRender"
-    line2="menu_bar = nuke.menu('Nuke')"
-    line3="menu_bar.addCommand('J_Script/SendToVinaRender...', 'nukeVinaRender.VinaRenderSend()', 'Ctrl+r')"
-
-    if [ $1 == install ]; then
-        # copia modulos al directorio de plugins de nuke
-        cp $dst"/modules/nuke/util.py" $plugins
-        cp $dst"/modules/nuke/nukeVinaRender.py" $plugins
-
-        # Agrega accesos directo a vinarender
-        echo $line1 >>$menu_py
-        echo $line2 >>$menu_py
-        echo $line3 >>$menu_py
-    fi
-    if [ $1 == uninstall ]; then
-        # borra los modulos de nuke
-        rm $plugins"/util.py"
-        rm $plugins"/nukeVinaRender.py"
-
-        # borra todas las lineas de vinarender
-        sed -i "/$line1/d" $menu_py
-        sed -i "/$line2/d" $menu_py
-        sed -i "/SendToVinaRender/d" $menu_py
-    fi
 }
 
 install() {
@@ -156,7 +123,7 @@ install() {
     chown $SUDO_USER:$SUDO_USER -R "$app_data"
     chmod 777 -R "$dst/log"
 
-    nuke install
+    nuke_install $path
 }
 
 uninstall() {
@@ -172,7 +139,7 @@ uninstall() {
     rm "/usr/share/applications/VinaRender.desktop"
     rm -rf $dst
 
-    nuke uninstall
+    nuke_uninstall $path
 }
 
 if [ $1 == install ]; then
