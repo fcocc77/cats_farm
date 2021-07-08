@@ -162,7 +162,7 @@ bool render_class::nuke(int ins)
 
     mutex->unlock();
 
-    get_correct_path(filename, &src_path, &dst_path);
+    get_correct_path(proj, &src_path, &dst_path);
 
     filename.replace(src_path, dst_path);
     proj.replace(src_path, dst_path);

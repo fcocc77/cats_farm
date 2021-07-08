@@ -330,10 +330,11 @@ void renderer::get_correct_path(QString filename, QString *src, QString *dst)
 void renderer::nuke_completed(job_struct *job)
 {
     QString filename = job->software_data["filename"].toString();
+    QString project = job->software_data["project"].toString();
     QString ext = path_util::get_ext(filename);
 
     QString src_path, dst_path;
-    get_correct_path(filename, &src_path, &dst_path);
+    get_correct_path(project, &src_path, &dst_path);
 
     if (ext == "mov")
     {
