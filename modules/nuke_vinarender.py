@@ -20,6 +20,14 @@ def submit():
         else:
             nuke.message("You must select a Write Node")
 
+def get_absolute_path(filename):
+    project_file = nuke.root().knob('name').value()
+    project_dir = os.path.dirname(project_file)
+
+    filename = filename.replace(
+        '[file dirname [value root.name]]', project_dir)
+
+    return filename
 
 def open_panel(write_node):
 
@@ -94,14 +102,15 @@ def send(write_node, panel):
 
     paused = panel.value("Manually Start Job")
 
-    filename = write_node["file"].value()
+    #  filename = write_node["file"].value()
+    abs_filename = get_absolute_path(write_node["file"].value())
     render_node = write_node['name'].value()
     project_file = nuke.root().knob('name').value()
 
-    basename = os.path.basename(filename)
-    dirname = os.path.dirname(filename)
+    basename = os.path.basename(abs_filename)
+    dirname = os.path.dirname(abs_filename)
 
-    ext = filename.split(".")[-1]
+    ext = abs_filename.split(".")[-1]
 
     nuke.scriptSave()
     project_data = fread(project_file)
@@ -111,10 +120,7 @@ def send(write_node, panel):
         new_filename = dirname + '/' + basename_no_ext + \
             '/' + basename_no_ext + '_###########.' + ext
 
-        filename = project_data.split(
-            render_node)[-2].split("file")[-2].split("\n")[0].strip()
-
-        project_data = project_data.replace(filename, '"' + new_filename + '"')
+        project_data = project_data.replace(abs_filename, '"' + new_filename + '"')
 
 
     new_project = get_available_project(project_file)
@@ -122,7 +128,7 @@ def send(write_node, panel):
 
     software_data = {
         'project': new_project,
-        'filename': filename,
+        'filename': abs_filename,
         'render_node': render_node}
 
     submit_data = {
