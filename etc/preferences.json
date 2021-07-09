@@ -1,8 +1,7 @@
 {
     "paths": {
         "houdini": [
-            "/opt/hfs16.5.439/bin/hython",
-            "C:/Program Files/Side Effects Software/Houdini 16.5.439/bin/hython.exe"
+            "/opt/hfs18.0.868/bin/hython"
         ],
         "maya": [
             "/usr/autodesk/maya2020/bin/Render",
