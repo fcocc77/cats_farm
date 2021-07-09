@@ -108,7 +108,7 @@ void submit::submit_start(QString software)
 
     else if (software == "houdini")
         software_data = {{"project", _houdini_knobs->get_project()},
-                         {"engine", _houdini_knobs->get_engine()}};
+                         {"node_path", _houdini_knobs->get_engine()}};
 
     QJsonObject info = {
         {"job_name", _misc_knobs->get_job_name()},

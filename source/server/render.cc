@@ -276,36 +276,32 @@ bool render_class::maya(int ins)
 
 bool render_class::houdini(int ins)
 {
+    mutex->lock();
     QJsonObject data = idata[ins].software_data;
-    QString hip_file = data["project"].toString();
-    QString engine_node = data["engine"].toString();
 
     QString src_path, dst_path;
-    get_correct_path(hip_file, &src_path, &dst_path);
 
-    hip_file.replace(src_path, dst_path);
+    QString node_path = data["node_path"].toString();
+    QString project = data["project"].toString();
 
-    QString cmd = "\"%1\" %2 %3 %4 %5 %6";
+    mutex->unlock();
 
-    cmd = cmd.arg(get_executable("houdini"),
-                  VINARENDER_PATH + "/modules/houdiniVinaRender.py", hip_file,
-                  engine_node, QString::number(idata[ins].first_frame),
+    get_correct_path(project, &src_path, &dst_path);
+
+    QString houdini_module = VINARENDER_PATH + "/modules/houdini_save_geo.py";
+
+    QString exe = get_executable("houdini");
+    QString cmd = "\"%1\" \"%2\" \"%3\" \"%4\" %5 %6 %7";
+
+    cmd = cmd.arg(exe, houdini_module, project, node_path,
+                  QString::number(idata[ins].first_frame),
                   QString::number(idata[ins].last_frame));
 
-    QString log_file =
-        VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
+    cmd = cmd.replace(src_path, dst_path);
 
-    // rendering ...
-    QString log = qprocess(cmd, ins);
-    fwrite(log_file, log);
+    qprocess(cmd, ins);
 
-    // post render
-    int total_frame = idata[ins].last_frame - idata[ins].first_frame + 1;
-
-    if (log.count(" frame ") == total_frame)
-        return true;
-    else
-        return false;
+    return true;
 }
 
 bool render_class::ffmpeg(int ins)
