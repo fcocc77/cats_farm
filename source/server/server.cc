@@ -1,6 +1,6 @@
 #include "server.h"
-#include <hardware_monitor.h>
 #include "../global/global.h"
+#include <hardware_monitor.h>
 
 server::server()
 {
@@ -8,10 +8,11 @@ server::server()
 
     // obtiene los puertos del manager y server
     QJsonObject settings = jread(VINARENDER_CONF_PATH + "/settings.json");
-    QString manager_host = settings["server"].toObject()["handler_ip"].toString();
+    QString manager_host =
+        settings["server"].toObject()["handler_ip"].toString();
 
     tcpClient(manager_host, MANAGER_PORT, &server::send_resources, this);
-    tcpServer(SERVER_PORT, &server::recieveManager, this);
+    tcpServer(SERVER_PORT, &server::update_from_manager, this);
 }
 
 QString server::send_resources(QString recv, QJsonObject extra)
@@ -21,51 +22,29 @@ QString server::send_resources(QString recv, QJsonObject extra)
         mutex.lock();
         render->preferences = jofs(recv);
         mutex.unlock();
-        jwrite(VINARENDER_CONF_PATH + "/preferences_s.json", render->preferences);
+        jwrite(VINARENDER_CONF_PATH + "/preferences_s.json",
+               render->preferences);
     }
 
-    QString system = _linux ? "Linux" : "Windows";
-
-    // get ssh user
-    bool usr = false;
-    static QString username;
-    static QString userpass;
-
-    if (not usr)
-    {
-        if (_win32)
-        {
-            username = os::sh("echo %username%").split(" ")[0];
-            userpass = fread("C:/ProgramData/vinarender/user");
-        }
-        else
-        {
-            username = "root";
-            userpass = "vfx";
-        }
-        usr = true;
-    }
-
-    QJsonArray server_info = {os::hostName(),
-                              os::ip(),
-                              hm::get_cpu_used(),
-                              hm::get_iowait_cpu_used(),
-                              hm::get_ram_percent(),
-                              hm::get_ram_percent(true),
-                              hm::get_cpu_temp(),
-                              system,
-                              os::mac(),
-                              hm::get_ram_total(),
-                              hm::get_ram_used(),
-                              hm::get_cpu_cores(),
-                              "log",
-                              username,
-                              userpass};
+    QJsonObject server_info = {
+        {"hostname", os::hostName()},
+        {"ip", os::ip()},
+        {"cpu_used", hm::get_cpu_used()},
+        {"cpu_iowait", hm::get_iowait_cpu_used()},
+        {"cpu_temp", hm::get_cpu_temp()},
+        {"cpu_cores", hm::get_cpu_cores()},
+        {"ram_total", hm::get_ram_total()},
+        {"ram_usage", hm::get_ram_used()},
+        {"ram_usage_percent", hm::get_ram_percent()},
+        {"ram_cache_percent", hm::get_ram_percent(true)},
+        {"system", _linux ? "Linux" : "Windows"},
+        {"mac_address", os::mac()},
+    };
 
     return jats({1, server_info});
 }
 
-QString server::recieveManager(QString _recv)
+QString server::update_from_manager(QString _recv)
 {
 
     QJsonArray json = jafs(_recv);

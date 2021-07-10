@@ -384,14 +384,14 @@ void update_class::update_servers(QJsonObject recv)
         QString server_name = server["name"].toString();
         int max_instances = server["max_instances"].toInt();
         QString status = server["status"].toString();
-        QString host = server["host"].toString();
+        QString ip = server["ip"].toString();
         QString system = server["system"].toString();
-        int cpu = server["cpu"].toInt();
+        int cpu_used = server["cpu_used"].toInt();
         int cpu_iowait = server["cpu_iowait"].toInt();
-        int ram = server["ram"].toInt();
-        int ram_cached = server["ram_cached"].toInt();
-        int temp = server["temp"].toInt();
-        QString mac = server["mac"].toString();
+        int ram_usage_percent = server["ram_usage_percent"].toInt();
+        int ram_cache_percent = server["ram_cache_percent"].toInt();
+        int cpu_temp = server["cpu_temp"].toInt();
+        QString mac_address = server["mac_address"].toString();
         float ram_total = server["ram_total"].toDouble();
         float ram_used = server["ram_used"].toDouble();
         int cpu_cores = server["cpu_cores"].toInt();
@@ -437,7 +437,6 @@ void update_class::update_servers(QJsonObject recv)
             else
                 status = "idle";
         }
-        //--------------------------------------------------------------
 
         // si el jobs se borro recientemente no se agrega ni actualiza
         bool _delete = false;
@@ -445,7 +444,6 @@ void update_class::update_servers(QJsonObject recv)
             if (d == server_name)
                 _delete = true;
 
-        //---------------------------------
 
         if (not _delete)
         {
@@ -458,7 +456,6 @@ void update_class::update_servers(QJsonObject recv)
 
                 // agrega a la lista para saber que server ya no estan
                 server_name_list.push_back(server_name);
-                //------------------------------------
 
                 // Si el nombre no esta en la lista de la interface, agrega el
                 // nuevo job.
@@ -488,10 +485,10 @@ void update_class::update_servers(QJsonObject recv)
                     item->setText(0, server_name);
                     item->setText(1, status);
                     item->setText(2, QString::number(max_instances));
-                    item->setText(4, QString::number(temp));
+                    item->setText(4, QString::number(cpu_temp));
                     item->setText(6, system);
-                    item->setText(7, host);
-                    item->setText(8, mac);
+                    item->setText(7, ip);
+                    item->setText(8, mac_address);
                     item->setText(9, instance_job);
 
                     item->setForeground(8, QColor(100, 150, 200));
@@ -520,9 +517,9 @@ void update_class::update_servers(QJsonObject recv)
 
                         item->setText(0, server_name);
                         item->setText(2, QString::number(max_instances));
-                        item->setText(7, host);
+                        item->setText(7, ip);
                         item->setText(9, instance_job);
-                        item->setText(4, QString::number(temp) + "°C");
+                        item->setText(4, QString::number(cpu_temp) + "°C");
 
                         progress_bar_class *cpu_bar =
                             servers->get_tree()
@@ -534,18 +531,18 @@ void update_class::update_servers(QJsonObject recv)
                                 ->itemWidget(item, 5)
                                 ->findChild<progress_bar_class *>();
 
-                        cpu_bar->set_text(QString::number(cpu) + "% (" +
+                        cpu_bar->set_text(QString::number(cpu_used) + "% (" +
                                           QString::number(cpu_cores) +
                                           " Cores)");
-                        ram_bar->set_text(QString::number(ram) + "%  (" +
+                        ram_bar->set_text(QString::number(ram_usage_percent) + "%  (" +
                                           QString::number(ram_used) + " GB / " +
                                           QString::number(ram_total) + " GB)");
 
                         if (status == "absent")
                             item->setForeground(4, QColor(200, 200, 200));
-                        else if (temp < 60)
+                        else if (cpu_temp < 60)
                             item->setForeground(4, QColor(100, 200, 100));
-                        else if (temp < 85)
+                        else if (cpu_temp < 85)
                             item->setForeground(4, QColor(200, 200, 0));
                         else
                             item->setForeground(4, QColor(200, 0, 0));
@@ -564,8 +561,8 @@ void update_class::update_servers(QJsonObject recv)
 
                         else
                         {
-                            cpu_bar->set_value(cpu, cpu_iowait - cpu);
-                            ram_bar->set_value(ram, ram_cached);
+                            cpu_bar->set_value(cpu_used, cpu_iowait - cpu_used);
+                            ram_bar->set_value(ram_usage_percent, ram_cache_percent);
 
                             if (general_status[3])
                             {

@@ -181,7 +181,7 @@ void renderer::render_task(server_struct *server, inst_struct *instance,
             };
 
             QString result =
-                tcpClient(server->host, SERVER_PORT, jats({0, pks}));
+                tcpClient(server->ip, SERVER_PORT, jats({0, pks}));
 
             if (not(result == "ok"))
             {

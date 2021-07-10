@@ -30,8 +30,6 @@ public:
 
     void job_action(QJsonArray pks);
     QString update_options(QJsonObject pks);
-    QString job_log_action(QString pks);
-
     QString get_available_name(QString name);
 };
 

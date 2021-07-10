@@ -16,24 +16,20 @@ struct server_struct
 {
     QString name;
     QString status;
-    QString host;
+    QString ip;
     QString system;
-    int cpu;
+    int cpu_used;
     int cpu_iowait;
     int cpu_cores;
-    int ram;
-    int ram_cached;
+    int ram_usage_percent;
+    int ram_cache_percent;
     float ram_used;
     float ram_total;
-    int temp;
-    QString mac;
+    int cpu_temp;
+    QString mac_address;
     int response_time;
     QList<inst_struct *> instances;
     int max_instances;
-    QString sshUser;
-    QString sshPass;
-    QString vmSoftware;
-    QString log;
 };
 
 #endif // SERVER_STRUCT_H

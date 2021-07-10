@@ -345,12 +345,3 @@ QString jobs::update_options(QJsonObject pks)
     return "";
 }
 
-QString jobs::job_log_action(QString server_name)
-{
-    servers *_servers = static_cast<manager *>(_manager)->get_servers();
-
-    auto server = _servers->get_server(server_name);
-    QString result = server->log;
-
-    return result;
-}

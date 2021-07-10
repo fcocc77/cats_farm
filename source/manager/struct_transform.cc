@@ -65,17 +65,17 @@ void json_to_struct(QJsonObject info, jobs *__jobs, servers *__servers,
         server_struct *_server = new server_struct;
         _server->name = server["name"].toString();
         _server->status = server["status"].toString();
-        _server->host = server["host"].toString();
+        _server->ip = server["ip"].toString();
         _server->system = server["system"].toString();
-        _server->cpu = server["cpu"].toInt();
+        _server->cpu_used = server["cpu_used"].toInt();
         _server->cpu_iowait = server["cpu_iowait"].toInt();
         _server->cpu_cores = server["cpu_cores"].toInt();
-        _server->ram = server["ram"].toInt();
+        _server->ram_usage_percent = server["ram_usage_percent"].toInt();
         _server->ram_used = server["ram_used"].toDouble();
-        _server->ram_cached = server["ram_cached"].toInt();
+        _server->ram_cache_percent = server["ram_cache_percent"].toInt();
         _server->ram_total = server["ram_total"].toDouble();
-        _server->temp = server["temp"].toInt();
-        _server->mac = server["mac"].toString();
+        _server->cpu_temp = server["cpu_temp"].toInt();
+        _server->mac_address = server["mac_address"].toString();
         _server->response_time = server["response_time"].toInt();
 
         for (QJsonValue i : server["instances"].toArray())
@@ -91,9 +91,6 @@ void json_to_struct(QJsonObject info, jobs *__jobs, servers *__servers,
         }
 
         _server->max_instances = server["max_instances"].toInt();
-        _server->sshUser = server["sshUser"].toString();
-        _server->sshPass = server["sshPass"].toString();
-        _server->vmSoftware = server["vmSoftware"].toString();
 
         __servers->get_items()->push_back(_server);
     }
@@ -195,17 +192,17 @@ QJsonObject struct_to_json(jobs *__jobs, servers *__servers, groups *__groups)
         QJsonObject s;
         s["name"] = server->name;
         s["status"] = server->status;
-        s["host"] = server->host;
+        s["ip"] = server->ip;
         s["system"] = server->system;
-        s["cpu"] = server->cpu;
+        s["cpu_used"] = server->cpu_used;
         s["cpu_iowait"] = server->cpu_iowait;
         s["cpu_cores"] = server->cpu_cores;
-        s["ram"] = server->ram;
-        s["ram_cached"] = server->ram_cached;
+        s["ram_usage_percent"] = server->ram_usage_percent;
+        s["ram_cache_percent"] = server->ram_cache_percent;
         s["ram_used"] = server->ram_used;
         s["ram_total"] = server->ram_total;
-        s["temp"] = server->temp;
-        s["mac"] = server->mac;
+        s["cpu_temp"] = server->cpu_temp;
+        s["mac_address"] = server->mac_address;
         s["response_time"] = server->response_time;
 
         QJsonArray _instances;
@@ -213,12 +210,7 @@ QJsonObject struct_to_json(jobs *__jobs, servers *__servers, groups *__groups)
             _instances.push_back({{instance->index, instance->status,
                                    instance->reset, instance->job_task}});
         s["instances"] = _instances;
-
         s["max_instances"] = server->max_instances;
-        s["sshUser"] = server->sshUser;
-        s["sshPass"] = server->sshPass;
-        s["vmSoftware"] = server->vmSoftware;
-        s["log"] = server->log;
 
         _servers[server->name] = s;
     }

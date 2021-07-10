@@ -35,7 +35,6 @@ void main_menu_class::connections()
     servers_menu->addAction(servers->server_reactive_action);
     servers_menu->addAction(servers->delete_action);
     servers_menu->addSeparator();
-    servers_menu->addAction(servers->server_show_log);
     servers_menu->addAction(servers->server_free_ram_action);
 
     QMenu *groups_menu = new QMenu("Groups", this);

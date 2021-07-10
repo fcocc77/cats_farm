@@ -20,7 +20,7 @@ private:
 public:
     servers(void *manager);
 
-    QString update_server_thread(QJsonArray recv);
+    QString update_server_thread(QJsonObject recv);
     void reset_all_servers();
     server_struct *get_server(QString name);
 

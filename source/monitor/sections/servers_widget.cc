@@ -32,17 +32,14 @@ servers_class::servers_class(QWidget *__monitor, shared_variables *_shared,
     server_free_ram_action = new QAction("Free Ram");
     server_turn_on_action = new QAction("Turn ON");
     server_turn_off_action = new QAction("Turn OFF");
-    server_show_log = new QAction("Show Log");
     delete_action = new QAction("Delete Server");
 
-    server_show_log->setShortcut(QString("Ctrl+L"));
 
     auto icon = [=](QString name) {
         return QIcon(VINARENDER_PATH + "/resources/images/" + name +
                      "_normal.png");
     };
 
-    server_show_log->setIcon(icon("log"));
     server_inactive_action->setIcon(icon("disable_server"));
     server_reactive_action->setIcon(icon("enable_server"));
     delete_action->setIcon(icon("delete"));
@@ -200,8 +197,6 @@ void servers_class::connections()
         message(&servers_class::send_to_vserver, action, ask, tile, "None",
                 this);
     });
-
-    connect(server_show_log, &QAction::triggered, this, &servers_class::to_log);
 }
 
 void servers_class::server_popup()
@@ -216,8 +211,6 @@ void servers_class::server_popup()
         menu->addAction(server_reactive_action);
         menu->addAction(delete_action);
 
-        menu->addSeparator();
-        menu->addAction(server_show_log);
         menu->addSeparator();
 
         QMenu *submenu = new QMenu("Number of instances", _monitor);

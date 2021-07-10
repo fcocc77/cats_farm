@@ -41,7 +41,7 @@ QString manager::server_tcp(QString _recv)
     mutex->lock();
 
     if (input == 1)
-        send = _servers->update_server_thread(pks);
+        send = _servers->update_server_thread(recv[1].toObject());
     else if (input == 2)
         send = send_to_monitor_thread();
     else if (input == 3)
@@ -186,9 +186,6 @@ QString manager::recieve_monitor_thread(QJsonArray recv)
 
         if (id == "preferences")
             return preferences_action(pks);
-
-        if (id == "jobLogAction")
-            return _jobs->job_log_action(recv[0].toString());
     }
 
     return "";

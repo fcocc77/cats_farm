@@ -142,6 +142,7 @@ QString render_class::qprocess(QString cmd, int ins, int timeout)
 
 QString render_class::get_executable(QString software) const
 {
+    print(preferences);
     for (QJsonValue value : preferences["paths"].toObject()[software].toArray())
         if (os::isfile(value.toString()))
             return value.toString();
@@ -212,9 +213,11 @@ bool render_class::nuke(int ins)
 
     mutex->unlock();
 
+    print("exe", exe);
     // rendering ...
     QString log;
     log = qprocess(cmd, ins);
+    print(log);
     // al hacer render en una comp nueva por primera vez
     // aparece un error de "missing close-brace" y para evitar que
     // llegue el error al manager intenta en un segundo si vuelve

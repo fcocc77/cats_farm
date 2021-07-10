@@ -26,7 +26,7 @@ public:
 
     server();
     QString send_resources(QString recv, QJsonObject extra);
-    QString recieveManager(QString data);
+    QString update_from_manager(QString data);
 };
 
 #endif // SERVER_HPP

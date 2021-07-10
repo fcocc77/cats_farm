@@ -55,7 +55,6 @@ public:
     QAction *server_free_ram_action;
     QAction *server_turn_on_action;
     QAction *server_turn_off_action;
-    QAction *server_show_log;
     QAction *delete_action;
 
     inline QTreeWidget *get_tree() const;

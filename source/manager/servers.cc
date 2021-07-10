@@ -13,29 +13,28 @@ servers::servers(void *__manager)
     preferences = ___manager->get_preferences();
 }
 
-QString servers::update_server_thread(QJsonArray recv)
+QString servers::update_server_thread(QJsonObject recv)
 {
     if (not recv.empty())
     {
-        QString name = recv[0].toString();
-        QString host = recv[1].toString();
-        int cpu = recv[2].toInt();
-        int cpu_iowait = recv[3].toInt();
-        int ram = recv[4].toInt();
-        int ram_cached = recv[5].toInt();
-        int temp = recv[6].toInt();
-        QString system = recv[7].toString();
-        QString mac = recv[8].toString();
-        float ram_total = recv[9].toDouble();
-        float ram_used = recv[10].toDouble();
-        int cpu_cores = recv[11].toInt();
-        QString log = recv[12].toString();
-        QString sshUser = recv[13].toString();
-        QString sshPass = recv[14].toString();
+        QString hostname = recv["hostname"].toString();
+        QString ip = recv["ip"].toString();
+        QString mac_address = recv["mac_address"].toString();
+        QString system = recv["system"].toString();
+
+        int cpu_used = recv["cpu_used"].toInt();
+        int cpu_iowait = recv["cpu_iowait"].toInt();
+        int cpu_temp = recv["cpu_temp"].toInt();
+        int cpu_cores = recv["cpu_cores"].toInt();
+
+        int ram_usage_percent = recv["ram_usage_percent"].toInt();
+        int ram_cache_percent = recv["ram_cache_percent"].toInt();
+        float ram_total = recv["ram_total"].toDouble();
+        float ram_used = recv["ram_used"].toDouble();
 
         int response_time = time(0);
 
-        if (not contains(items, name))
+        if (not contains(items, hostname))
         {
             QList<inst_struct *> instances;
 
@@ -51,40 +50,36 @@ QString servers::update_server_thread(QJsonArray recv)
 
             server_struct *server = new server_struct;
 
-            server->name = name;
+            server->name = hostname;
             server->status = "idle";
-            server->host = host;
+            server->ip = ip;
             server->system = system;
-            server->cpu = cpu;
+            server->cpu_used = cpu_used;
             server->cpu_iowait = cpu_iowait;
             server->cpu_cores = cpu_cores;
-            server->ram = ram;
-            server->ram_cached = ram_cached;
+            server->ram_usage_percent = ram_usage_percent;
+            server->ram_cache_percent = ram_cache_percent;
             server->ram_used = ram_used;
             server->ram_total = ram_total;
-            server->temp = temp;
-            server->mac = mac;
+            server->cpu_temp = cpu_temp;
+            server->mac_address = mac_address;
             server->response_time = response_time;
             server->instances = instances;
             server->max_instances = 1;
-            server->sshUser = sshUser;
-            server->sshPass = sshPass;
-            server->log = log;
             items->push_back(server);
         }
 
         else
         {
-            auto server = get_server(name);
+            auto server = get_server(hostname);
 
             server->ram_used = ram_used;
-            server->cpu = cpu;
+            server->cpu_used = cpu_used;
             server->cpu_iowait = cpu_iowait;
-            server->ram = ram;
-            server->ram_cached = ram_cached;
-            server->temp = temp;
-            server->host = host;
-            server->log = log;
+            server->ram_usage_percent = ram_usage_percent;
+            server->ram_cache_percent = ram_cache_percent;
+            server->cpu_temp = cpu_temp;
+            server->ip = ip;
             server->response_time = response_time;
         }
     }
@@ -115,7 +110,7 @@ void servers::update()
         // si el porcentaje de la ram es mayor a 90 %, el tiempo de espera es
         // mas para que no quede aucente le servidor
         int response;
-        if (server->ram > 90)
+        if (server->ram_usage_percent > 90)
             response = 120;
         else
             response = 30;
@@ -165,7 +160,7 @@ QString servers::server_action(QJsonArray pks)
         auto server = get_server(name);
 
         if (server_action == "turn_on")
-            os::sh("ether-wake " + server->mac);
+            os::sh("ether-wake " + server->mac_address);
 
         if (server_action == "max_instances")
             server->max_instances = instances;
@@ -179,9 +174,6 @@ QString servers::server_action(QJsonArray pks)
         if (server_action == "delete")
             if (not(server->status == "active"))
                 erase_by_name(items, name);
-
-        if (server_action == "ssh")
-            return jats({server->sshUser, server->sshPass, server->host});
     }
 
     return "{}";
@@ -215,7 +207,7 @@ void servers::server_set_state(server_struct *server, bool state)
             kill_ins.push_back(i);
         }
 
-        tcpClient(server->host, SERVER_PORT, jats({3, kill_ins}));
+        tcpClient(server->ip, SERVER_PORT, jats({3, kill_ins}));
     }
 }
 
