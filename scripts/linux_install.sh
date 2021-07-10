@@ -125,6 +125,7 @@ install() {
     # Firewall
     firewall-cmd --zone=public --permanent --add-port $manager_port/tcp
     firewall-cmd --zone=public --permanent --add-port $server_port/tcp
+    firewall-cmd --reload
 }
 
 uninstall() {
@@ -145,6 +146,7 @@ uninstall() {
     # Firewall
     firewall-cmd --zone=public --permanent --remove-port $manager_port/tcp
     firewall-cmd --zone=public --permanent --remove-port $server_port/tcp
+    firewall-cmd --reload
 }
 
 if [ $1 == install ]; then
