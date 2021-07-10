@@ -16,7 +16,7 @@ jobs_class::jobs_class(shared_variables *_shared, QWidget *__monitor,
 
     : shared(_shared)
     , _monitor(__monitor)
-    , log(_log)
+    , log_widget(_log)
     , servers(_servers)
     , options(_options)
     , groups(_groups)
@@ -167,84 +167,53 @@ void jobs_class::popup()
 void jobs_class::show_log()
 {
     auto selected = tree->selectedItems();
-    if (not selected.empty())
+    if (selected.isEmpty())
+        return;
+
+    QString job_name = selected[0]->text(0);
+
+    // encuentra job seleccionado en los resividos del manager
+    QJsonObject job;
+    for (QJsonValue j : shared->jobs)
     {
-
-        QString job_name = selected[0]->text(0);
-
-        // encuentra job seleccionado en la jobs recividos
-        QJsonObject job;
-        for (QJsonValue j : shared->jobs)
-        {
-            QJsonObject _job = j.toObject();
-            if (_job["name"].toString() == job_name)
-                job = _job;
-        }
-
-        for (QJsonValue t : job["task"].toArray())
-        {
-            QJsonObject task = t.toObject();
-            log_server = task["server"].toString();
-            log_server = log_server.split(":")[0];
-
-            if (not(log_server == "..."))
-            {
-
-                QStringList vetoed_host;
-                QStringList vetoed_name;
-                QStringList all_host;
-                QStringList all_name;
-
-                for (int i = 0; i < servers->get_tree()->topLevelItemCount(); ++i)
-                {
-                    auto item = servers->get_tree()->topLevelItem(i);
-                    QString name = item->text(0);
-                    QString _host = item->text(7);
-
-                    for (QJsonValue vs : job["vetoed_servers"].toArray())
-                    {
-                        if (name == vs.toString())
-                        {
-                            vetoed_host.push_back(_host);
-                            vetoed_name.push_back(name);
-                        }
-                    }
-                    if (name == log_server)
-                    {
-                        all_host.push_back(_host);
-                        all_name.push_back(name);
-                    }
-                }
-
-                QString _name;
-                QString _host;
-                bool failed;
-                if (not all_host.empty())
-                {
-                    _host = all_host[0];
-                    _name = all_name[0];
-                    failed = false;
-                }
-                if (not vetoed_host.empty())
-                {
-                    _host = vetoed_host[0];
-                    _name = vetoed_name[0];
-                    failed = true;
-                }
-
-                QJsonArray send = {_host, QJsonArray({1, failed})};
-                QString result = tcpClient(shared->manager_host, MANAGER_PORT,
-                                           jats({5, send}));
-
-                log->set_text(_name + " Log:\n\n" + result);
-                break;
-            }
-            else
-                log->set_text("The jobs has not yet rendered");
-        }
-
-        properties->switch_widget("log");
+        QJsonObject _job = j.toObject();
+        if (_job["name"].toString() == job_name)
+            job = _job;
     }
+
+    QStringList servers = {};
+    for (QJsonValue _task : job["task"].toArray())
+    {
+        QJsonObject task = _task.toObject();
+        QString server = task["server"].toString().split(':')[0];
+
+        if (server != "..." && !servers.contains(server))
+            servers.push_back(server);
+    }
+
+    properties->switch_widget("log");
+
+    if (servers.isEmpty())
+    {
+        log_widget->set_text("The jobs has not yet rendered");
+        return;
+    }
+
+    QString software = job["software"].toString().toLower();
+    QString log_servers;
+
+    for (QString server : servers)
+    {
+        QString server_ip = shared->servers[server].toObject()["ip"].toString();
+
+        QJsonArray send = {server_ip, QJsonArray({1, ""})};
+        QString recv =
+            tcpClient(shared->manager_host, MANAGER_PORT, jats({5, send}));
+
+        log_servers += jofs(recv)[software].toString();
+    }
+
+    log_widget->set_text(log_servers);
 }
 
 void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,

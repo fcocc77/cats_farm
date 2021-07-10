@@ -19,7 +19,7 @@ public:
 
 inline void log_class::set_text(QString text)
 {
-    // code_editor->setPlainText(text);
+    code_editor->setPlainText(text);
 }
 
 #endif // LOG_HPP

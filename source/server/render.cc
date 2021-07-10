@@ -18,6 +18,7 @@ render_class::render_class(QMutex *_mutex)
         data.render_instance = false;
         data.software_data = {};
         data.job_system = "none";
+        data.software = "";
 
         idata.push_back(data);
     }
@@ -36,6 +37,7 @@ QString render_class::render_task(QJsonObject _task)
     idata[ins].first_frame = _task["first_frame"].toInt();
     idata[ins].last_frame = _task["last_frame"].toInt();
     idata[ins].job_system = _task["job_system"].toString();
+    idata[ins].software = software;
 
     // si alguna de las instancias ya esta en render no renderea
     bool renderNow = false;
@@ -149,6 +151,24 @@ QString render_class::get_executable(QString software) const
     return "";
 }
 
+void render_class::log_save(int ins, QString cmd, QString log)
+{
+    QString log_file = VINARENDER_PATH + "/log/" + idata[ins].software + '_' +
+                       QString::number(ins);
+
+    QString _log;
+
+    _log += "/////////////////////////////////////////////////\n\n";
+
+    _log += os::hostName() + " - " + idata[ins].software + " - Instance Nº " +
+            QString::number(ins) + ":\n\n\n";
+
+
+    _log += log;
+
+    fwrite(log_file, _log);
+}
+
 bool render_class::nuke(int ins)
 {
     mutex->lock();
@@ -207,26 +227,13 @@ bool render_class::nuke(int ins)
 
     cmd = cmd.replace(src_path, dst_path);
 
-    QString log_file =
-        VINARENDER_PATH + "/log/render_log_" + QString::number(ins);
-
     mutex->unlock();
 
-    print("exe", exe);
     // rendering ...
     QString log;
     log = qprocess(cmd, ins);
-    print(log);
-    // al hacer render en una comp nueva por primera vez
-    // aparece un error de "missing close-brace" y para evitar que
-    // llegue el error al manager intenta en un segundo si vuelve
-    // a aparecer manda el error
-    if (log.contains("missing close-brace"))
-    {
-        sleep(1);
-        log = qprocess(cmd, ins);
-    }
-    fwrite(log_file, log);
+
+    log_save(ins, cmd, log);
 
     // Borra proyecto temporal
     os::remove(temp_project);

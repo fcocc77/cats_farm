@@ -23,7 +23,6 @@ void log_class::setup_ui()
     code_editor->setKeywords(
         {"printf", "scanf", "atoi", "mbtoa", "strlen", "memcpy", "memset"});
     code_editor->setReadOnly(true);
-    //------------------------------------------
 
     QVBoxLayout *hbox = new QVBoxLayout();
     hbox->addWidget(code_editor);

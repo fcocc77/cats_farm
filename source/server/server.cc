@@ -46,7 +46,6 @@ QString server::send_resources(QString recv, QJsonObject extra)
 
 QString server::update_from_manager(QString _recv)
 {
-
     QJsonArray json = jafs(_recv);
     int input = json[0].toInt();
     QJsonArray recv = json[1].toArray();
@@ -57,13 +56,7 @@ QString server::update_from_manager(QString _recv)
         send = render->render_task(json[1].toObject());
 
     if (input == 1)
-    {
-        bool failed = recv[0].toBool();
-        if (failed)
-            send = fread(VINARENDER_PATH + "/log/render_log");
-        else
-            send = fread(VINARENDER_PATH + "/log/render_log_0");
-    }
+        send = get_log();
 
     if (input == 3)
     {
@@ -106,4 +99,26 @@ QString server::update_from_manager(QString _recv)
     }
 
     return send;
+}
+
+QString server::get_log() const
+{
+    QJsonObject logs;
+
+    for (QString software : {"nuke", "ffmpeg", "houdini"})
+    {
+        QString log;
+
+        for (int i = 0; i < 4; i++)
+        {
+            log += fread(VINARENDER_PATH + "/log/" + software + '_' +
+                         QString::number(i));
+
+            log += "\n\n";
+        }
+
+        logs[software] = log;
+    }
+
+    return jots(logs);
 }

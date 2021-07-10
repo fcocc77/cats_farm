@@ -20,13 +20,17 @@ using namespace std;
 
 class server : public QObject
 {
-public:
+private:
     render_class *render;
     QMutex mutex;
 
-    server();
     QString send_resources(QString recv, QJsonObject extra);
     QString update_from_manager(QString data);
+
+    QString get_log() const;
+
+public:
+    server();
 };
 
 #endif // SERVER_HPP

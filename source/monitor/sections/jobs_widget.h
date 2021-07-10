@@ -16,14 +16,13 @@ class jobs_class : public QWidget
 private:
     shared_variables *shared;
     QWidget *_monitor;
-    log_class *log;
+    log_class *log_widget;
     servers_class *servers;
     options_class *options;
     groups_class *groups;
     properties_class *properties;
     submit *_submit;
     QTreeWidgetItem *first_job_item;
-    QString log_server;
 
     QTreeWidget *tree;
     QVBoxLayout *layout;

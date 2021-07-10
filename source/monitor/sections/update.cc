@@ -77,7 +77,9 @@ QString update_class::manager_recieve_update(QString _recv, QJsonObject extra)
     {
         if (not shared->stopUpdate)
         {
-            shared->jobs = recv["jobs"].toObject(); // para las tasks
+            shared->jobs = recv["jobs"].toObject();
+            shared->servers = recv["servers"].toObject();
+
             update_jobs(recv["jobs"].toObject());
             update_servers(recv["servers"].toObject());
             update_groups(recv["groups"].toObject());

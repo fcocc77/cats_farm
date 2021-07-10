@@ -17,6 +17,7 @@ private:
         bool render_instance;
         QJsonObject software_data;
         QString job_system;
+        QString software;
     };
 
     QMutex *mutex;
@@ -32,6 +33,8 @@ private:
     bool houdini(int ins);
     bool ffmpeg(int ins);
     bool vinacomp(int ins);
+
+    void log_save(int ins, QString cmd, QString log);
 
 public:
     render_class(QMutex *_mutex);

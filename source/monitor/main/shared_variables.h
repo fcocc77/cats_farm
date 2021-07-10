@@ -14,7 +14,7 @@ struct shared_variables
     QJsonObject server_display;
     QJsonObject jobs;
     QJsonObject settings;
-    QJsonArray servers;
+    QJsonObject servers;
     bool stopUpdate;
     bool app_close;
     QString manager_host;
