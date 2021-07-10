@@ -191,7 +191,8 @@ void jobs_class::show_log()
             servers.push_back(server);
     }
 
-    properties->switch_widget("log");
+    if (!log_widget->isVisible())
+        properties->switch_widget("log");
 
     if (servers.isEmpty())
     {
