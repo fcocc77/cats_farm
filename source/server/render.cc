@@ -96,7 +96,7 @@ void render_class::get_correct_path(QString filename, QString *src, QString *dst
     QMutexLocker locker(mutex);
 
     QJsonArray system_path =
-        preferences["paths"].toObject()["system"].toArray();
+        settings_from_manager["paths"].toObject()["system"].toArray();
 
     QString src_path, dst_path, aux;
     for (QJsonValue p1 : system_path)
@@ -142,8 +142,7 @@ QString render_class::qprocess(QString cmd, int ins, int timeout)
 
 QString render_class::get_executable(QString software) const
 {
-    print(preferences);
-    for (QJsonValue value : preferences["paths"].toObject()[software].toArray())
+    for (QJsonValue value : settings_from_manager["paths"].toObject()[software].toArray())
         if (os::isfile(value.toString()))
             return value.toString();
 

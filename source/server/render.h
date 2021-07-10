@@ -37,7 +37,7 @@ public:
     render_class(QMutex *_mutex);
 
     QString render_task(QJsonObject _task);
-    QJsonObject preferences;
+    QJsonObject settings_from_manager;
     QList<instance_data> idata;
 };
 

@@ -16,7 +16,7 @@ general_class::general_class(QMainWindow *__monitor, shared_variables *_shared,
 {
 
     // General Action
-    preferences_action = new QAction("Preferences");
+    settings_action = new QAction("Settings");
     quit_action = new QAction("Quit");
     hide_action = new QAction("Hide");
     show_action = new QAction("Show App");
@@ -28,7 +28,7 @@ general_class::general_class(QMainWindow *__monitor, shared_variables *_shared,
                      "_normal.png");
     };
 
-    preferences_action->setIcon(icon("settings"));
+    settings_action->setIcon(icon("settings"));
     quit_action->setIcon(icon("quit"));
     hide_action->setIcon(icon("hide"));
     properties_hide->setIcon(icon("hide"));
@@ -40,12 +40,12 @@ general_class::general_class(QMainWindow *__monitor, shared_variables *_shared,
 
 void general_class::connections()
 {
-    connect(preferences_action, &QAction::triggered, this, [this]() {
+    connect(settings_action, &QAction::triggered, this, [this]() {
         static_cast<monitor *>(_monitor)->get_toolbar()->switch_widget(
             "settings");
     });
 
-    preferences_action->setShortcut(QString("S"));
+    settings_action->setShortcut(QString("S"));
 
     connect(quit_action, &QAction::triggered, this, [this]() {
         shared->app_close = true;

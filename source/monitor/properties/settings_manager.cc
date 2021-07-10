@@ -58,10 +58,10 @@ void settings_manager::update(QString host)
 
 void settings_manager::path_read()
 {
-    QJsonArray send = {"preferences", QJsonArray({"read", "none"})};
+    QJsonArray send = {"settings", QJsonArray({"read", "none"})};
     QString recv =
         tcpClient(shared->manager_host, MANAGER_PORT, jats({3, send}));
-    QJsonObject preferences = jofs(recv);
+    QJsonObject settings = jofs(recv);
 
     auto array_to_string = [](QJsonArray array) {
         QString ret;
@@ -70,9 +70,9 @@ void settings_manager::path_read()
         return ret.left(ret.length() - 1); // borra la ultima linea
     };
 
-    if (not preferences.empty())
+    if (!settings.empty())
     {
-        QJsonObject paths = preferences["paths"].toObject();
+        QJsonObject paths = settings["paths"].toObject();
         QString system, nuke, maya, houdini, ffmpeg, vinacomp;
 
         system = array_to_string(paths["system"].toArray());
@@ -126,5 +126,5 @@ void settings_manager::path_write()
     paths["vinacomp"] = vinacomp;
 
     tcpClient(shared->manager_host, MANAGER_PORT,
-              jats({3, {{"preferences", {{"write", paths}}}}}));
+              jats({3, {{"settings", {{"write", paths}}}}}));
 }

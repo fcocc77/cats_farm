@@ -28,7 +28,7 @@ public:
                   QWidget *_properties);
 
     // General Action
-    QAction *preferences_action;
+    QAction *settings_action;
     QAction *quit_action;
     QAction *hide_action;
     QAction *show_action;

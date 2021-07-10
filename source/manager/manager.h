@@ -22,7 +22,6 @@ private:
 
     QMutex *mutex;
 
-    QJsonObject *preferences;
     QJsonObject *settings;
 
     QString pivot_to_server(QJsonArray recv);
@@ -30,7 +29,7 @@ private:
     QString send_to_logger();
     void reactive_all();
     QString recieve_monitor_thread(QJsonArray recv);
-    QString preferences_action(QJsonArray pks);
+    QString settings_action(QJsonArray pks);
     QString server_tcp(QString recv);
 
     void container_save();
@@ -43,7 +42,6 @@ public:
     inline servers *get_servers() const;
     inline groups *get_groups() const;
     inline tasks *get_tasks() const;
-    inline QJsonObject *get_preferences() const;
     inline QJsonObject *get_settings() const;
     inline renderer *get_renderer() const;
 };
@@ -56,11 +54,6 @@ inline renderer *manager::get_renderer() const
 inline QJsonObject *manager::get_settings() const
 {
     return settings;
-}
-
-inline QJsonObject *manager::get_preferences() const
-{
-    return preferences;
 }
 
 inline jobs *manager::get_jobs() const

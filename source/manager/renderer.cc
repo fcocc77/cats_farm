@@ -298,7 +298,7 @@ void renderer::render_task(server_struct *server, inst_struct *instance,
 void renderer::get_correct_path(QString filename, QString *src, QString *dst)
 {
     QJsonArray system_path = static_cast<manager *>(_manager)
-                                 ->get_preferences()
+                                 ->get_settings()
                                  ->value("paths")
                                  .toObject()["system"]
                                  .toArray();

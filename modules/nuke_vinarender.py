@@ -45,11 +45,11 @@ def open_panel(write_node):
 
     p.addEnumerationPulldown( 'Priority', "Very\\ High High Normal Low Very\\ Low")
 
-    preferences = jread(vinarender_user + '/preferences_s.json')
+    settings_from_manager = jread(vinarender_user + '/settings_from_manager.json')
 
     nuke_groups = ["NUKE", "nuke", "Nuke"]
     server_groups = []
-    for group in preferences["groups"]:
+    for group in settings_from_manager["groups"]:
         if not group in nuke_groups:
             server_groups.append(group)
         else:
@@ -177,7 +177,7 @@ def get_available_project(project_file):
 def check_project():
     return True
 
-    #  path_list = jread(path + "/etc/preferences_s.json")["paths"]["system"]
+    #  path_list = jread(path + "/etc/settings_from_manager.json")["paths"]["system"]
     #  rutas = []
     #  for r in path_list:
         #  if os.path.isdir(r):

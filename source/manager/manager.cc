@@ -5,11 +5,8 @@
 
 manager::manager()
     : mutex(new QMutex)
-    , preferences(new QJsonObject)
     , settings(new QJsonObject)
 {
-    *preferences = jread(VINARENDER_CONF_PATH + "/preferences.json");
-
     _servers = new servers(this);
     _tasks = new tasks(this);
     _jobs = new jobs(this);
@@ -184,24 +181,24 @@ QString manager::recieve_monitor_thread(QJsonArray recv)
         if (id == "groupCreate")
             _groups->group_create(pks);
 
-        if (id == "preferences")
-            return preferences_action(pks);
+        if (id == "settings")
+            return settings_action(pks);
     }
 
     return "";
 }
 
-QString manager::preferences_action(QJsonArray _pks)
+QString manager::settings_action(QJsonArray _pks)
 {
     QString action = _pks[0].toString();
 
     if (action == "read")
-        return jots(jread(VINARENDER_CONF_PATH + "/preferences.json"));
+        return jots(jread(VINARENDER_CONF_PATH + "/settings.json"));
     else
     {
         QJsonObject pks = _pks[1].toObject();
-        preferences->insert("paths", pks);
-        jwrite(VINARENDER_CONF_PATH + "/preferences.json", *preferences);
+        settings->insert("paths", pks);
+        jwrite(VINARENDER_CONF_PATH + "/settings.json", *settings);
     }
 
     return "";

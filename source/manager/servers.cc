@@ -10,7 +10,7 @@ servers::servers(void *__manager)
     , items(new QList<server_struct *>)
 {
     manager *___manager = static_cast<manager *>(_manager);
-    preferences = ___manager->get_preferences();
+    settings = ___manager->get_settings();
 }
 
 QString servers::update_server_thread(QJsonObject recv)
@@ -85,10 +85,10 @@ QString servers::update_server_thread(QJsonObject recv)
     }
 
     // se usa mutex para que cuando se este generando el json no se este
-    // copiando informacion en "preferences" si no el programa se cae
+    // copiando informacion en "settings" si no el programa se cae
     QString ret;
 
-    ret = jots(*preferences);
+    ret = jots(*settings);
 
     return ret;
 }
@@ -135,7 +135,7 @@ void servers::update()
         }
     }
 
-    preferences->insert("servers", serverList);
+    settings->insert("servers", serverList);
 }
 
 void servers::reset_all_servers()

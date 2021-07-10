@@ -13,7 +13,7 @@ private:
     void *_manager;
 
     QList<server_struct *> *items;
-    QJsonObject *preferences;
+    QJsonObject *settings;
 
     void server_set_state(server_struct *server, bool state);
 

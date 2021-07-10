@@ -10,5 +10,31 @@
     },
     "server": {
         "handler_ip": "{{manager_ip}}"
+    },
+    "paths": {
+        "houdini": [
+            "/opt/hfs18.0.868/bin/hython"
+        ],
+        "maya": [
+            "/usr/autodesk/maya2020/bin/Render",
+            "/usr/autodesk/maya2021/bin/Render",
+            "C:/Program Files/Autodesk/Maya2020/bin/Render.exe",
+            "C:/Program Files/Autodesk/Maya2021/bin/Render.exe"
+        ],
+        "nuke": [
+            "/opt/Nuke12.1v2/Nuke12.1"
+        ],
+        "vinacomp": [
+            "/opt/vinacomp/bin/engine"
+        ],
+        "ffmpeg": [
+            "/usr/bin/ffmpeg",
+            "C:/Program Files/vinarender/win/ffmpeg/ffmpeg.exe"
+        ],
+        "system": [
+            "/mnt/Documents",
+            "/home/pancho/Documents",
+            "/"
+        ]
     }
 }

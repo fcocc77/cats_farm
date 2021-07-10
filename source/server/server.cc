@@ -20,10 +20,10 @@ QString server::send_resources(QString recv, QJsonObject extra)
     if (not recv.isEmpty())
     {
         mutex.lock();
-        render->preferences = jofs(recv);
+        render->settings_from_manager = jofs(recv);
         mutex.unlock();
-        jwrite(VINARENDER_CONF_PATH + "/preferences_s.json",
-               render->preferences);
+        jwrite(VINARENDER_CONF_PATH + "/settings_from_manager.json",
+               render->settings_from_manager);
     }
 
     QJsonObject server_info = {

@@ -63,7 +63,7 @@ void groups::update()
         group->activeMachine = activeMachine;
     }
 
-    __manager->get_preferences()->insert("groups", grouplist);
+    __manager->get_settings()->insert("groups", grouplist);
 }
 
 void groups::group_action(QJsonArray pks)

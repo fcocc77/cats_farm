@@ -26,7 +26,7 @@ void main_menu_class::connections()
 
     QMenu *edit_menu = new QMenu("Edit", this);
     this->addMenu(edit_menu);
-    edit_menu->addAction(global->preferences_action);
+    edit_menu->addAction(global->settings_action);
     edit_menu->addAction(global->properties_hide);
 
     QMenu *servers_menu = new QMenu("Servers", this);
