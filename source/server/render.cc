@@ -163,7 +163,7 @@ void render_class::log_save(int ins, QString cmd, QString log)
     _log += os::hostName() + " - " + idata[ins].software + " - Instance Nº " +
             QString::number(ins) + ":\n\n\n";
 
-
+    _log += cmd + "\n\n";
     _log += log;
 
     fwrite(log_file, _log);
