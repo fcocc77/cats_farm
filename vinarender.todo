@@ -24,6 +24,9 @@ monitor:
     ☐ al reescalar, los splitter deben conservar su tamaño
     ✔ columna de errores; contador de errores @done (9/27/2020, 8:23:29 PM)
     ✔ cambiar de QDockWidget a QSpliter @done (9/27/2020, 8:23:16 PM)
+    log:
+        ☐ ajustar el texto al tamaño del QTextEdit @hi
+
     toolbar:
         ✔ crear opciones de layout, y que queden fijos a un tamanio especifico @done (9/27/2020, 8:23:50 PM)
         ✔ poner icono a los botones finales @done(2021-06-28 23:31)
