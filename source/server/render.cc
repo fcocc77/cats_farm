@@ -297,10 +297,10 @@ bool render_class::houdini(int ins)
 
     get_correct_path(project, &src_path, &dst_path);
 
-    QString houdini_module = VINARENDER_PATH + "/modules/houdini_save_geo.py";
+    QString houdini_module = VINARENDER_PATH + "/modules/houdini_vinarender.py";
 
     QString exe = get_executable("houdini");
-    QString cmd = "\"%1\" \"%2\" \"%3\" \"%4\" %5 %6 %7";
+    QString cmd = "\"%1\" \"%2\" \"%3\" \"%4\" %5 %6";
 
     cmd = cmd.arg(exe, houdini_module, project, node_path,
                   QString::number(idata[ins].first_frame),
@@ -308,7 +308,11 @@ bool render_class::houdini(int ins)
 
     cmd = cmd.replace(src_path, dst_path);
 
-    qprocess(cmd, ins);
+    QString log = qprocess(cmd, ins);
+    log_save(ins, cmd, log);
+
+    if (log.contains("Segmentation fault") || log.contains("error"))
+        return false;
 
     return true;
 }
