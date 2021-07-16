@@ -13,7 +13,7 @@
 
 #elif _linux
 
-#define USER_DIR os::get_home()
+#define USER_DIR "/home/" + os::sh("cat /etc/vinarender_user").simplified()
 #define VINARENDER_CONF_PATH USER_DIR + "/.vinarender"
 #define VINARENDER_PATH QString("/opt/vinarender")
 

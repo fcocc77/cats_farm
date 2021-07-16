@@ -59,8 +59,6 @@ install() {
         sed -i "s|{{path}}|$dst|g" $service
     done
 
-    systemctl daemon-reload
-
     # los servicios son muy estrictos asi que esto corrige el servicio, si este se modifico mal
     sed -i -e 's/\r//g' $path/services/service.sh
 
@@ -81,8 +79,8 @@ install() {
     cp -rf "$path/services" $dst
     cp -rf "$path/modules" $dst
 
-    # guarda ruta de instalacion en etc del sistema operativo
     echo $dst >/etc/vinarender
+    echo $SUDO_USER > /etc/vinarender_user
 
     # guarda ip del manager y puertos en el settings
     settings="$app_data/settings.json"
