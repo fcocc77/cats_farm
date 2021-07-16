@@ -22,7 +22,7 @@ private:
 
     QMutex *mutex;
 
-    QString qprocess(QString cmd, int ins = -1, int timeout = -1);
+    QString qprocess(QString cmd, int ins, bool *error);
 
     void get_correct_path(QString filename, QString *src, QString *dst);
 

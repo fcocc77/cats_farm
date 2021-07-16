@@ -1,7 +1,7 @@
 #include "render.h"
 #include "../global/global.h"
-#include <hardware_monitor.h>
 #include "video.h"
+#include <hardware_monitor.h>
 
 render_class::render_class(QMutex *_mutex)
     : mutex(_mutex)
@@ -93,7 +93,8 @@ QString render_class::render_task(QJsonObject _task)
     return status;
 }
 
-void render_class::get_correct_path(QString filename, QString *src, QString *dst)
+void render_class::get_correct_path(QString filename, QString *src,
+                                    QString *dst)
 {
     QMutexLocker locker(mutex);
 
@@ -124,27 +125,28 @@ void render_class::get_correct_path(QString filename, QString *src, QString *dst
     *dst = dst_path;
 }
 
-QString render_class::qprocess(QString cmd, int ins, int timeout)
+QString render_class::qprocess(QString cmd, int ins, bool *error)
 {
     QProcess proc;
     proc.start(cmd);
     if (ins > -1)
         idata[ins].pid = proc.processId();
 
-    if (timeout != -1)
-        timeout *= 1000;
-
-    proc.waitForFinished(timeout);
+    proc.waitForFinished(-1);
     QString output =
         proc.readAllStandardOutput() + "\n" + proc.readAllStandardError();
     proc.close();
+
+    if (error)
+        *error = proc.exitCode() == 0 ? false : true;
 
     return output;
 }
 
 QString render_class::get_executable(QString software) const
 {
-    for (QJsonValue value : settings_from_manager["paths"].toObject()[software].toArray())
+    for (QJsonValue value :
+         settings_from_manager["paths"].toObject()[software].toArray())
         if (os::isfile(value.toString()))
             return value.toString();
 
@@ -230,8 +232,8 @@ bool render_class::nuke(int ins)
     mutex->unlock();
 
     // rendering ...
-    QString log;
-    log = qprocess(cmd, ins);
+    bool error;
+    QString log = qprocess(cmd, ins, &error);
 
     log_save(ins, cmd, log);
 
@@ -242,10 +244,10 @@ bool render_class::nuke(int ins)
     int total_frame = idata[ins].last_frame - idata[ins].first_frame + 1;
     mutex->unlock();
 
-    if (log.count("Frame ") == total_frame)
-        return true;
-    else
+    if (log.count("Frame ") != total_frame || error)
         return false;
+    else
+        return true;
 }
 
 bool render_class::maya(int ins)
@@ -267,20 +269,22 @@ bool render_class::maya(int ins)
     QString cmd = "/bin/sh -c \"export MAYA_DISABLE_CIP=1 && \"%1\" -r file -s "
                   "%2 -e %3 -proj \"%4\" \"%5\" -log \"%6\"";
 
-    cmd = cmd.arg(get_executable("maya"), QString::number(idata[ins].first_frame),
-                  QString::number(idata[ins].last_frame), project_folder, scene,
-                  log_file);
+    cmd =
+        cmd.arg(get_executable("maya"), QString::number(idata[ins].first_frame),
+                QString::number(idata[ins].last_frame), project_folder, scene,
+                log_file);
 
     cmd = cmd.replace(src_path, dst_path);
 
-    qprocess(cmd, ins);
+    bool error;
+    qprocess(cmd, ins, &error);
 
     // post render
     QString log = fread(log_file);
-    if (log.contains("completed."))
-        return true;
-    else
+    if (!log.contains("completed.") || error)
         return false;
+    else
+        return true;
 }
 
 bool render_class::houdini(int ins)
@@ -308,10 +312,11 @@ bool render_class::houdini(int ins)
 
     cmd = cmd.replace(src_path, dst_path);
 
-    QString log = qprocess(cmd, ins);
+    bool error;
+    QString log = qprocess(cmd, ins, &error);
     log_save(ins, cmd, log);
 
-    if (log.contains("Segmentation fault") || log.contains("error"))
+    if (log.contains("Segmentation fault") || log.contains("error") || error)
         return false;
 
     return true;
@@ -337,7 +342,8 @@ bool render_class::ffmpeg(int ins)
     float start_time =
         video::frame_to_seconds(idata[ins].first_frame, meta.frame_rate);
 
-    float end_time = video::frame_to_seconds(idata[ins].last_frame, meta.frame_rate);
+    float end_time =
+        video::frame_to_seconds(idata[ins].last_frame, meta.frame_rate);
     end_time += (1.0 / meta.frame_rate) / 1.5;
 
     QString dir_file = output_folder + "/" + movie_name;
@@ -359,9 +365,12 @@ bool render_class::ffmpeg(int ins)
     cmd = cmd.arg(exe, input_file, QString::number(start_time),
                   QString::number(end_time), command, out_movie);
 
-    qprocess(cmd);
+    bool error;
+    QString log = qprocess(cmd, ins, &error);
 
-    return true;
+    log_save(ins, cmd, log);
+
+    return !error;
 }
 
 bool render_class::vinacomp(int ins)
