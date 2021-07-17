@@ -287,5 +287,7 @@ namespace kgl {
             setViewportMargins(0, 0, 0, 0);
             m_LineWidget->setGeometry(0, 0, 0, 0);
         }
+
+        QPlainTextEdit::resizeEvent(event);
     }
 }

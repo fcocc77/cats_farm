@@ -25,7 +25,7 @@ monitor:
     ✔ columna de errores; contador de errores @done (9/27/2020, 8:23:29 PM)
     ✔ cambiar de QDockWidget a QSpliter @done (9/27/2020, 8:23:16 PM)
     log:
-        ☐ ajustar el texto al tamaño del QTextEdit @hi
+        ✔ ajustar el texto al tamaño del QTextEdit @hi @done(2021-07-16 21:19)
 
     toolbar:
         ✔ crear opciones de layout, y que queden fijos a un tamanio especifico @done (9/27/2020, 8:23:50 PM)
