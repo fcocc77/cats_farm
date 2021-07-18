@@ -46,6 +46,8 @@ private:
     main_menu_class *main_menu;
     toolbar_class *toolbar;
 
+    layout_widget *_layout_widget;
+
     submit *_submit;
 
     void closeEvent(QCloseEvent *event) override;

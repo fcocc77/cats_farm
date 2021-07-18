@@ -128,6 +128,24 @@ void toolbar_class::switch_widget(QString widget_name)
         options_button->set_checked(visible);
 }
 
+void toolbar_class::set_checked_tasks(bool checked)
+{
+    tasks->get_widget()->setVisible(checked);
+    tasks_switch->set_checked(checked);
+}
+
+void toolbar_class::set_checked_groups(bool checked)
+{
+    groups->setVisible(checked);
+    groups_switch->set_checked(checked);
+}
+
+void toolbar_class::set_checked_servers(bool checked)
+{
+    servers->setVisible(checked);
+    servers_switch->set_checked(checked);
+}
+
 void toolbar_class::hide_properties()
 {
     properties->hide();

@@ -1,9 +1,19 @@
 #include <QVBoxLayout>
+#include <QJsonObject>
 
 #include "layout_widget.h"
+#include "util.h"
+#include "../global/global.h"
 
-layout_widget::layout_widget(QWidget *properties, QWidget *jobs, QWidget *tasks,
-                             QWidget *groups, QWidget *servers)
+layout_widget::layout_widget(QWidget *_properties, QWidget *_jobs,
+                             QWidget *_tasks, QWidget *_groups,
+                             QWidget *_servers, toolbar_class *_toolbar)
+    : properties(_properties)
+    , jobs(_jobs)
+    , tasks(_tasks)
+    , groups(_groups)
+    , servers(_servers)
+    , toolbar(_toolbar)
 {
 
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -33,4 +43,26 @@ layout_widget::layout_widget(QWidget *properties, QWidget *jobs, QWidget *tasks,
     splitter_bottom->setSizes({300, 120});
 
     layout->addWidget(splitter_main);
+
+    restore_layout();
+}
+
+void layout_widget::save_layout()
+{
+    QJsonObject layout = {
+        {"properties", properties->isVisible()},
+        {"tasks", toolbar->get_tasks_switch()->isChecked()},
+        {"groups", toolbar->get_groups_switch()->isChecked()},
+        {"servers", toolbar->get_servers_switch()->isChecked()}};
+
+    jwrite(VINARENDER_CONF_PATH + "/layout.json", layout);
+}
+
+void layout_widget::restore_layout() {
+
+    QJsonObject layout = jread(VINARENDER_CONF_PATH + "/layout.json");
+
+    toolbar->set_checked_tasks(layout["tasks"].toBool());
+    toolbar->set_checked_groups(layout["groups"].toBool());
+    toolbar->set_checked_servers(layout["servers"].toBool());
 }

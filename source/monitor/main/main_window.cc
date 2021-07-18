@@ -52,8 +52,8 @@ void monitor::setup_ui()
                                 log, update, shared, settings, properties);
     toolbar->setMaximumHeight(40);
 
-    layout_widget *_layout = new layout_widget(
-        properties, jobs, tasks->get_widget(), groups, servers);
+    _layout_widget = new layout_widget(properties, jobs, tasks->get_widget(),
+                                       groups, servers, toolbar);
 
     QWidget *central_widget = new QWidget;
     QVBoxLayout *central_layout = new QVBoxLayout(central_widget);
@@ -61,13 +61,15 @@ void monitor::setup_ui()
     central_layout->setSpacing(0);
 
     central_layout->addWidget(toolbar);
-    central_layout->addWidget(_layout);
+    central_layout->addWidget(_layout_widget);
 
     this->setCentralWidget(central_widget);
 }
 
 void monitor::closeEvent(QCloseEvent *event)
 {
+    _layout_widget->save_layout();
+
     if (shared->app_close)
         event->accept();
     else

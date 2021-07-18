@@ -54,6 +54,29 @@ public:
 
     void switch_widget(QString widget_name);
     void hide_properties();
+
+    void set_checked_tasks(bool checked);
+    void set_checked_servers(bool checked);
+    void set_checked_groups(bool checked);
+
+    inline button *get_tasks_switch() const;
+    inline button *get_groups_switch() const;
+    inline button *get_servers_switch() const;
 };
+
+inline button *toolbar_class::get_tasks_switch() const
+{
+    return tasks_switch;
+}
+
+inline button *toolbar_class::get_groups_switch() const
+{
+    return groups_switch;
+}
+
+inline button *toolbar_class::get_servers_switch() const
+{
+    return servers_switch;
+}
 
 #endif // TOOLBAR_HPP
