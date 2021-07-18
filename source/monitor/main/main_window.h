@@ -17,6 +17,7 @@
 #include "main_menu.h"
 #include "toolbar.h"
 #include "submit_widget.h"
+#include "layout_widget.h"
 
 
 using namespace std;

@@ -1,9 +1,8 @@
-#include <QSplitter>
 #include <QTextEdit>
 
-#include "util.h"
 #include "../global/global.h"
 #include "main_window.h"
+#include "util.h"
 
 monitor::monitor(QWidget *parent)
     : QMainWindow(parent)
@@ -27,14 +26,6 @@ void monitor::setup_ui()
     shared->manager_host =
         shared->settings["manager"].toObject()["ip"].toString();
 
-    // Splitter
-    QSplitter *splitter_main = new QSplitter(this);
-    splitter_main->setOrientation(Qt::Vertical);
-    this->setCentralWidget(splitter_main);
-
-    QSplitter *splitter_top = new QSplitter(this);
-    QSplitter *splitter_bottom = new QSplitter(this);
-
     log = new log_class();
     options = new options_class(this, shared);
     settings = new settings_class(this, shared);
@@ -57,26 +48,22 @@ void monitor::setup_ui()
     main_menu = new main_menu_class(general, jobs, servers, groups, tasks);
     this->setMenuBar(main_menu);
 
-    toolbar = new toolbar_class(this, general, jobs, tasks, servers, groups, log,
-                                update, shared, settings, properties);
+    toolbar = new toolbar_class(this, general, jobs, tasks, servers, groups,
+                                log, update, shared, settings, properties);
     toolbar->setMaximumHeight(40);
 
-    // Layout
-    splitter_top->addWidget(properties);
-    splitter_top->addWidget(jobs);
-    splitter_top->addWidget(tasks->get_widget());
+    layout_widget *_layout = new layout_widget(
+        properties, jobs, tasks->get_widget(), groups, servers);
 
-    splitter_bottom->addWidget(servers);
-    splitter_bottom->addWidget(groups);
+    QWidget *central_widget = new QWidget;
+    QVBoxLayout *central_layout = new QVBoxLayout(central_widget);
+    central_layout->setMargin(0);
+    central_layout->setSpacing(0);
 
-    splitter_main->addWidget(toolbar);
-    splitter_main->addWidget(splitter_top);
-    splitter_main->addWidget(splitter_bottom);
+    central_layout->addWidget(toolbar);
+    central_layout->addWidget(_layout);
 
-    // Tamanio de Splitters
-    splitter_main->setSizes({10, 100, 10});
-    splitter_top->setSizes({120, 300, 120});
-    splitter_bottom->setSizes({300, 120});
+    this->setCentralWidget(central_widget);
 }
 
 void monitor::closeEvent(QCloseEvent *event)
