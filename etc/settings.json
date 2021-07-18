@@ -13,7 +13,7 @@
     },
     "paths": {
         "houdini": [
-            "/opt/hfs18.0.868/bin/hython"
+            "/opt/hfs18.0.597/bin/hython"
         ],
         "maya": [
             "/usr/autodesk/maya2020/bin/Render",

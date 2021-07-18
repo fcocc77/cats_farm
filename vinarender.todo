@@ -26,6 +26,7 @@ monitor:
     ✔ cambiar de QDockWidget a QSpliter @done (9/27/2020, 8:23:16 PM)
     log:
         ✔ ajustar el texto al tamaño del QTextEdit @hi @done(2021-07-16 21:19)
+        ☐ poner 2 combobox uno para filtrar por servidor y el otro para filtrar por instances y ponerle la opcion all
 
     toolbar:
         ✔ crear opciones de layout, y que queden fijos a un tamanio especifico @done (9/27/2020, 8:23:50 PM)
@@ -56,3 +57,6 @@ monitor:
 
     settings:
         ☐ al presionar cancelar o escape, que los valores queden como estaban, ahora si se modifica el 'QPlainText' se mantiene.
+
+    submit:
+        ☐ ffmpeg: opcion para tiempo en segundos

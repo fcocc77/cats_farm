@@ -72,3 +72,18 @@ elif node_type == 'opengl':
     node.parm("execute").pressButton()
 
     check_post_render('picture')
+
+elif node_type == 'arnold':
+    check_pre_render('ar_picture')
+
+    node.parm('trange').set(1)
+
+    node.parm('f1').deleteAllKeyframes()
+    node.parm('f2').deleteAllKeyframes()
+
+    node.parm('f1').set(first_frame)
+    node.parm('f2').set(last_frame)
+
+    node.parm("execute").pressButton()
+
+    check_post_render('ar_picture')
