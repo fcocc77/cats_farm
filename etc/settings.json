@@ -22,7 +22,7 @@
             "C:/Program Files/Autodesk/Maya2021/bin/Render.exe"
         ],
         "nuke": [
-            "/opt/Nuke12.1v2/Nuke12.1"
+            "/opt/Nuke12.1v2/nuke"
         ],
         "vinacomp": [
             "/opt/vinacomp/bin/engine"
