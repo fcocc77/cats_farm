@@ -46,6 +46,9 @@ monitor:
     groups:
         ☐ al sumar un servidor a un grupo, pero esta seleccionado el grupo y otro servidor, queda adentro del otro servidor.
         ✔ algunos label quedan en color negro @hi @done(2021-06-29 22:27)
+    
+    tasks:
+        ☐ opcion para abrir directamente el log del servidor selecciondo
 
     options:
         ☐ los cambios se pueden hacer solo en los jobs que estan pausados y no en rendering
