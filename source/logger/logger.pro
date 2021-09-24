@@ -8,14 +8,14 @@ TARGET = "logger"
 CONFIG += console
 INCLUDEPATH += ./
 INCLUDEPATH += ../utils
-INCLUDEPATH += ../../utils/c++
+INCLUDEPATH += ../../cpp_util
 
 QT += core gui multimedia widgets
 
 HEADERS += 	./*.h \
 			../utils/*.h \
-			../../utils/c++/*.h \
+			../../cpp_util/*.h \
 
 SOURCES += 	./*.cc \
 			../utils/*.cc \
-			../../utils/c++/*.cc \
+			../../cpp_util/*.cc \

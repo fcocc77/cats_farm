@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = "vserver"
 
 CONFIG += console
-INCLUDEPATH += ../../utils/c++
+INCLUDEPATH += ../../cpp_util
 INCLUDEPATH += ../utils
 INCLUDEPATH += ./
 
@@ -16,9 +16,9 @@ HEADERS += 	./*.h \
 			../manager/structs.h \
 			../utils/video.h \
 			../utils/hardware_monitor.h \
-			../../utils/c++/*.h \
+			../../cpp_util/*.h \
 
 SOURCES += 	./*.cc \
 			../utils/video.cc \
 			../utils/hardware_monitor.cc \
-			../../utils/c++/*cc \
+			../../cpp_util/*cc \

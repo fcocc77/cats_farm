@@ -8,14 +8,14 @@ RC_ICONS = ../../resources/icons/icon.ico
 CONFIG += console
 QT += core gui multimedia widgets
 
-INCLUDEPATH += ../../utils/c++
+INCLUDEPATH += ../../cpp_util
 INCLUDEPATH += ../utils
 INCLUDEPATH += ./
 
 HEADERS +=  ./*.h \
 			../utils/*.h \
-			../../utils/c++/*.h \
+			../../cpp_util/*.h \
 
 SOURCES += 	./*.cc \
 			../utils/*.cc \
-			../../utils/c++/*.cc \
+			../../cpp_util/*.cc \
