@@ -10,7 +10,7 @@ nuke_install()
     echo 'nuke.menu("Nuke").addCommand("Vina/VinaRender Submit", "nuke_vinarender.submit()", "Ctrl+R") #vinarender' >> $menu_py
 
     cp './modules/nuke_vinarender.py' $nuke_plugins
-    cp './utils/python/util.py' "$nuke_plugins/vinarender_util.py"
+    cp './python_util/util.py' "$nuke_plugins/vinarender_util.py"
 }
 
 nuke_uninstall()

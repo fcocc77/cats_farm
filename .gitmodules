@@ -1,3 +1,6 @@
 [submodule "cpp_util"]
 	path = cpp_util
 	url = https://github.com/fcocc77/cpp_util
+[submodule "python_util"]
+	path = python_util
+	url = https://github.com/fcocc77/python_util
