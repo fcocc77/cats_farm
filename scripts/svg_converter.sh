@@ -1,7 +1,7 @@
 cd $(dirname "$0")
 cd ..
 
-source utils/shell/svg2png.sh
+source shellscript_util/svg2png.sh
 
 normal_color="rgb(170,170,170)"
 disable_color="rgb(60,60,60)"

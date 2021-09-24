@@ -4,3 +4,6 @@
 [submodule "python_util"]
 	path = python_util
 	url = https://github.com/fcocc77/python_util
+[submodule "shellscript_util"]
+	path = shellscript_util
+	url = https://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@github.com/fcocc77/shellscript_util
