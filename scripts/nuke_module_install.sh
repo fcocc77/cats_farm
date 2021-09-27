@@ -1,5 +1,5 @@
 
-nuke_plugins='/opt/Nuke12.1v2/plugins'
+nuke_plugins='/opt/Nuke12.2v9/plugins'
 menu_py="$nuke_plugins/menu.py"
 
 nuke_install()
@@ -22,4 +22,3 @@ nuke_uninstall()
     rm "$nuke_plugins/vinarender_util.py"
     rm "$nuke_plugins/vinarender_util.pyc"
 }
-
