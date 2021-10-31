@@ -40,8 +40,6 @@ install() {
     compile manager vmanager
     compile monitor vmonitor
     compile submit submit
-    compile videovina videovina
-    compile logger logger
 
     # Creacion de servicios
     vserver="/etc/systemd/system/vserver.service"
