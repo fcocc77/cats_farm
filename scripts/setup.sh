@@ -19,7 +19,7 @@ sudo dnf -y --enablerepo=raven-extras install \
     sshpass \
     net-tools \
     nmap \
-    psmisc \ 
-    inkscape
+    psmisc \
+    inkscape \
 
 sudo dnf -y group install "Development Tools"
