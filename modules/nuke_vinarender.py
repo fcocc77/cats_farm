@@ -4,7 +4,7 @@ import subprocess
 import json
 import nuke
 
-vinarender_user = '/home/pancho/.vinarender'
+vinarender_user = os.path.expanduser('~') + '/.vinarender'
 vinarender_path = '/opt/vinarender'
 
 def submit():
@@ -20,14 +20,13 @@ def submit():
         else:
             nuke.message("You must select a Write Node")
 
-def get_absolute_path(filename):
-    project_file = nuke.root().knob('name').value()
-    project_dir = os.path.dirname(project_file)
 
-    filename = filename.replace(
-        '[file dirname [value root.name]]', project_dir)
+def get_absolute(filename):
+    if not '..' in filename:
+        return filename
 
-    return filename
+    return os.path.abspath(nuke.script_directory() + '/' + filename)
+
 
 def open_panel(write_node):
 
@@ -102,8 +101,7 @@ def send(write_node, panel):
 
     paused = panel.value("Manually Start Job")
 
-    #  filename = write_node["file"].value()
-    abs_filename = get_absolute_path(write_node["file"].value())
+    abs_filename = get_absolute(write_node["file"].value())
     render_node = write_node['name'].value()
     project_file = nuke.root().knob('name').value()
 
@@ -175,65 +173,67 @@ def get_available_project(project_file):
 
 
 def check_project():
-    return True
 
-    #  path_list = jread(path + "/etc/settings_from_manager.json")["paths"]["system"]
-    #  rutas = []
-    #  for r in path_list:
-        #  if os.path.isdir(r):
-            #  rutas.append(r)
-    #  if not rutas:
-        #  rutas.append("#none#")
+    settings_from_manager = jread(vinarender_user + '/settings_from_manager.json')
+    path_list = settings_from_manager['paths']['system']
 
-    #  failedNodes = ""
-    #  desconectNodes = ""
+    rutas = []
+    for r in path_list:
+        if os.path.isdir(r):
+            rutas.append(r)
+    if not rutas:
+        rutas.append("#none#")
 
-    #  checkOK = True
 
-    #  nuke.selectConnectedNodes()
+    failed_nodes = ""
+    desconected_nodes = ""
 
-    #  for node in nuke.selectedNodes():
-        #  name = node.name()
-        #  try:
-            #  file = node["file"].getText()
-        #  except:
-            #  file = None
+    checked = True
 
-        #  if file:
-            #  dirname = os.path.dirname(file)
-            #  rootScript = "[file dirname [value root.name]]"
+    nuke.selectConnectedNodes()
 
-            #  if rootScript in file:
-                #  None
-            #  elif not os.path.isdir(dirname):
-                #  desconectNodes = desconectNodes+name+"="+file+"\n"
-                #  checkOK = False
-            #  else:
-                #  f = False
-                #  for ruta in rutas:
-                    #  if ruta in file:
-                        #  f = True
-                #  if not f:
-                    #  checkOK = False
-                    #  failedNodes = failedNodes+name+"="+file+"\n"
+    for node in nuke.selectedNodes():
+        name = node.name()
+        try:
+            file = node["file"].getText()
+        except:
+            file = None
 
-    #  # deseleccionar todo
-    #  for n in nuke.allNodes():
-        #  n.knob("selected").setValue(False)
-    #  # ------------------------------------------
+        if file:
+            dirname = os.path.dirname(file)
+            relative = '..'
 
-    #  if not checkOK:
-        #  if failedNodes:
-            #  line1 = "These files are on your PC:"
-        #  else:
-            #  line1 = ""
+            if relative in file:
+                None
+            elif not os.path.isdir(dirname):
+                desconected_nodes = desconected_nodes + name + '=' + file + '\n'
+                checked = False
+            else:
+                f = False
+                for ruta in rutas:
+                    if ruta in file:
+                        f = True
+                if not f:
+                    checked = False
+                    failed_nodes = failed_nodes+name+"="+file+"\n"
 
-        #  if desconectNodes:
-            #  line2 = "These files are disconnected:"
-        #  else:
-            #  line2 = ""
+    for n in nuke.allNodes():
+        n.knob("selected").setValue(False)
 
-        #  message = line1+"\n\n" + failedNodes + "\n\n"+line2+"\n\n" + desconectNodes
-        #  nuke.message(message)
+    if not checked:
+        if failed_nodes:
+            line1 = "These files are on your PC:"
+        else:
+            line1 = ""
 
-    #  return checkOK
+        if desconected_nodes:
+            line2 = "These files are disconnected:"
+        else:
+            line2 = ""
+
+        message = line1 + '\n\n' + failed_nodes + \
+            '\n\n' + line2 + '\n\n' + desconected_nodes
+
+        nuke.message(message)
+
+    return checked
