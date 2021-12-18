@@ -101,7 +101,8 @@ def send(write_node, panel):
 
     paused = panel.value("Manually Start Job")
 
-    abs_filename = get_absolute(write_node["file"].value())
+    filename = write_node["file"].value()
+    abs_filename = get_absolute(filename)
     render_node = write_node['name'].value()
     project_file = nuke.root().knob('name').value()
 
@@ -118,8 +119,7 @@ def send(write_node, panel):
         new_filename = dirname + '/' + basename_no_ext + \
             '/' + basename_no_ext + '_###########.' + ext
 
-        project_data = project_data.replace(abs_filename, '"' + new_filename + '"')
-
+        project_data = project_data.replace(filename, '"' + new_filename + '"')
 
     new_project = get_available_project(project_file)
     fwrite(new_project, project_data)
