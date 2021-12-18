@@ -156,23 +156,21 @@ QList<float> get_ram_from_windows()
 
 int get_ram_percent(bool cached_percent)
 {
-    int total, free, buffers, cached, used, percent;
+    int percent;
 
     if (_linux)
     {
-        QString mem = os::sh("cat /proc/meminfo");
-        total = mem.split("MemTotal:")[1].split("kB")[0].toInt();
+        QString mem = os::sh("free").split("\n")[1].simplified();
+        QStringList mem_list = mem.split(" ");
 
-        free = mem.split("MemFree:")[1].split("kB")[0].toInt();
-        buffers = mem.split("Buffers:")[1].split("kB")[0].toInt();
-        cached = mem.split("Cached:")[1].split("kB")[0].toInt();
-
-        used = (total - free) - (buffers + cached);
+        float total = mem_list[1].toFloat();
+        float used = mem_list[2].toFloat();
+        float cached = mem_list[5].toFloat();
 
         if (cached_percent)
-            used = (total - free) - used;
-
-        percent = (used * 100) / total;
+            percent = int((cached * 100.0) / total);
+        else
+            percent = int((used * 100.0) / total);
     }
 
     else if (_win32)

@@ -34,7 +34,7 @@ QString server::send_resources(QString recv, QJsonObject extra)
         {"cpu_temp", hm::get_cpu_temp()},
         {"cpu_cores", hm::get_cpu_cores()},
         {"ram_total", hm::get_ram_total()},
-        {"ram_usage", hm::get_ram_used()},
+        {"ram_used", hm::get_ram_used()},
         {"ram_usage_percent", hm::get_ram_percent()},
         {"ram_cache_percent", hm::get_ram_percent(true)},
         {"system", _linux ? "Linux" : "Windows"},
