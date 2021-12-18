@@ -15,12 +15,12 @@ clang++
 -I./libs/QCodeEditor/include/KGL/Design
 -I./libs/QCodeEditor/include/KGL/Widgets
 
+-I./cpp_util
 -I./source/global
--I./source/logger
 -I./source/manager
+-I./source/server
 -I./source/submit
 -I./source/utils
--I./source/videovina
 
 -I./source/monitor/main
 -I./source/monitor/submit
