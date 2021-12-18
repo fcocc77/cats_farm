@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <hardware_monitor.h>
 #include "../global/global.h"
+#include <hardware_monitor.h>
 #include <os.h>
 #include <util.h>
 
@@ -224,15 +224,24 @@ float get_ram_used()
 int get_cpu_temp()
 {
     static int temp;
+
     if (_linux)
     {
         QString sensors = os::sh("sensors");
         if (!sensors.contains("No sensors found!"))
+        {
+            QString vendor = os::sh("sh -c \"cat /proc/cpuinfo | awk "
+                                    "'/vendor_id/{print $3; exit}'\"")
+                                 .simplified();
 
-            temp = sensors.split("Package id")[1]
-                       .split('.')[0]
-                       .split('+')[1]
-                       .toInt();
+            if (vendor == "AuthenticAMD")
+                ;
+            else
+                temp = sensors.split("Package id")[1]
+                           .split('.')[0]
+                           .split('+')[1]
+                           .toInt();
+        }
     }
 
     if (_win32)
