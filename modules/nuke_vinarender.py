@@ -63,7 +63,7 @@ def open_panel(write_node):
         groups += ' ' + server
 
     p.addEnumerationPulldown('Server Group', groups)
-    p.addEnumerationPulldown('Instances', "1 2 3 4")
+    p.addEnumerationPulldown('Instances', "1 2 3 4 5 6 7 8")
     p.addBooleanCheckBox('Manually Start Job', False)
 
     p.addButton('Cancel')

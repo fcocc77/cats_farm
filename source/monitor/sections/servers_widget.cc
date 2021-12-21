@@ -268,7 +268,7 @@ void servers_class::to_log()
         QString result =
             tcpClient(shared->manager_host, MANAGER_PORT, jats({5, send}));
 
-        log->set_text(result);
+        log->update_log(result);
         log->parentWidget()->show();
     }
 }

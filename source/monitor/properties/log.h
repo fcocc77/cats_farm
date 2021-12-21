@@ -1,25 +1,26 @@
 #ifndef LOG_HPP
 #define LOG_HPP
 
-#include <QWidget>
 #include <QCodeEditor.hpp>
+#include <QStringList>
+#include <QWidget>
+
+#include "../components/combo_box.h"
 
 class log_class : public QWidget
 {
 private:
     void setup_ui();
 
+    QString text;
+    combo_box *servers_box;
+
 public:
     log_class();
     ~log_class();
 
     kgl::QCodeEditor *code_editor;
-    inline void set_text(QString text);
+    void update_log(QString text, QStringList servers = {});
 };
-
-inline void log_class::set_text(QString text)
-{
-    code_editor->setPlainText(text);
-}
 
 #endif // LOG_HPP

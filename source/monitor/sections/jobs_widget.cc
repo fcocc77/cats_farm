@@ -196,7 +196,7 @@ void jobs_class::show_log()
 
     if (servers.isEmpty())
     {
-        log_widget->set_text("The jobs has not yet rendered");
+        log_widget->update_log("The jobs has not yet rendered");
         return;
     }
 
@@ -214,7 +214,7 @@ void jobs_class::show_log()
         log_servers += jofs(recv)[software].toString();
     }
 
-    log_widget->set_text(log_servers);
+    log_widget->update_log(log_servers, servers);
 }
 
 void jobs_class::message(void (jobs_class::*funtion)(QString), QString action,

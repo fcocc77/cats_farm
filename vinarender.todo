@@ -7,13 +7,14 @@ general:
     ☐ crear un log general, con cada paso que va haciendo el manager y server cuando esta renderizando,( log de vinarender no de los softwares)
 
 manager:
-    ☐ hacer que siga funcionando la cola de render al desconectarse, por un corte de luz o baja del internet, y si demora mas de 2 minutos en volver, transferir todos los trabajos a otra zona
+    ☐ hacer que siga funcionando la cola de render al desconectarse, por un corte de luz o baja del internet
     ✔ corregir tiempo estimado y tiempo total @done (5/28/2020, 9:48:00 AM)
     ☐ no funciona el tiempo estimado, cuando va el progreso pasa el 50%
     ☐ al exportar un solo frame, cuando termina a veces queda en 'queue', pasa cuando exportamos con Natron los frame de referencia, hacer un check a todos los job casa 10 segundos y si estan todas las tareas hechas, ponerla como completado
     ☐ a veces queda en queue, y terminaron todas las tareas, hacer un loop que valla verificando si todas las tareas estan en 'Complete'
     ☐ verificar que cuando se borre un 'jobs' no quede en la memoria, hay que utilizar 'delete jobs->'
     ☐ al activar el cortafuegos en pleno render, y se desabilita el servidor en el monitor, luego se de desactiva el cortafuego, la tarea se queda pegada en 'active' (solo si el servidor no es el local)
+    ☐ que el concat mantenga el bitrate del cada trozo de video
 
 render:
     ✘ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios @cancelled(2021-06-28 23:34)
@@ -27,6 +28,7 @@ monitor:
     log:
         ✔ ajustar el texto al tamaño del QTextEdit @hi @done(2021-07-16 21:19)
         ☐ poner 2 combobox uno para filtrar por servidor y el otro para filtrar por instances y ponerle la opcion all
+        ☐ agregarle en la parte superior el job el cual se esta mostrando el log
 
     toolbar:
         ✔ crear opciones de layout, y que queden fijos a un tamanio especifico @done (9/27/2020, 8:23:50 PM)
