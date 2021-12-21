@@ -15,8 +15,7 @@ struct meta
 meta get_meta_data(QString file);
 float frame_to_seconds(int frame, float frame_rate);
 
-void concat(QString folder, int task_size, float frame_rate = 24,
-            QString format = "mov");
+void concat(QString folder, int task_size, QString format = "mov");
 
 }; // namespace video
 

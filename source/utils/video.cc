@@ -6,7 +6,7 @@
 namespace video
 {
 
-void concat(QString folder, int task_size, float frame_rate, QString format)
+void concat(QString folder, int task_size, QString format)
 {
     QString ffmpeg =
         _linux ? "ffmpeg" : VINARENDER_PATH + "/os/win/ffmpeg/ffmpeg.exe";
@@ -20,6 +20,7 @@ void concat(QString folder, int task_size, float frame_rate, QString format)
     QString movie_list = "";
     QStringList dir_list = os::listdir(folder);
 
+    float frame_rate = get_meta_data(dir_list[0]).frame_rate;
     float piece_duration = (float)task_size / frame_rate;
 
     sort(dir_list.begin(), dir_list.end());

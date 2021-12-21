@@ -14,7 +14,7 @@ manager:
     ☐ a veces queda en queue, y terminaron todas las tareas, hacer un loop que valla verificando si todas las tareas estan en 'Complete'
     ☐ verificar que cuando se borre un 'jobs' no quede en la memoria, hay que utilizar 'delete jobs->'
     ☐ al activar el cortafuegos en pleno render, y se desabilita el servidor en el monitor, luego se de desactiva el cortafuego, la tarea se queda pegada en 'active' (solo si el servidor no es el local)
-    ☐ que el concat mantenga el bitrate del cada trozo de video
+    ✔ que el concat mantenga el frame_rate del cada trozo de video @done(2021-12-21 13:08)
 
 render:
     ✘ no funcionan los proyectos natron con doble punto : ej my_project:02.ntp ni el output con 2 puntos ej output:01.mov y espacios @cancelled(2021-06-28 23:34)
