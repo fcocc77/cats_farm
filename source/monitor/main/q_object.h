@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 // permite que funcionen los estilos cuando usamos el macro 'Q_OBJECT' de Qt,
 // ese .h tenemos que incluirlo despues del Q_OBJECT
 protected:

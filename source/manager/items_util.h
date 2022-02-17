@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 #ifndef ITEMS_UTIL_H
 #define ITEMS_UTIL_H
 

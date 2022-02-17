@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 #ifndef HOUDINI_KNOBS_H
 #define HOUDINI_KNOBS_H
 

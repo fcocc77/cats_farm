@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 #ifndef HARDWARE_MONITOR_H
 #define HARDWARE_MONITOR_H
 

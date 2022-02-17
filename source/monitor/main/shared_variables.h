@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 #ifndef SHARED_VARIABLES_HPP
 #define SHARED_VARIABLES_HPP
 

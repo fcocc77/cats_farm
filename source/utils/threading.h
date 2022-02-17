@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 /* threading.hpp : VinaRender 2.0
 
 Esta clase funciona con el QThread, y solo funciona dentro de classes,

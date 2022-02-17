@@ -1,3 +1,6 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
 
 #define SPACING 3
 #define HORIZONTAL_MARGIN 20

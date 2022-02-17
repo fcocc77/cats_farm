@@ -1,3 +1,7 @@
+// Author: Francisco Jose Contreras Cuevas
+// Office: VFX Artist - Senior Compositor
+// Website: videovina.com
+
 #ifndef PROGRESS_BAR_HPP
 #define PROGRESS_BAR_HPP
 
